@@ -24,15 +24,15 @@ db.define_table('project',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
                 Field('startdate', 'date', label='Start Date',
-                      default=time.utcnow),
+                      default=datetime.datetime.utcnow()),
                 Field('enddate', 'date', label='End Date',
-                      default=(time.utcnow + datetime.timedelta(days=365))),
+                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=365))),
                 Field('description', 'text'),
                 Field('proj_shared', 'boolean', default=True, label='Shared Project',
                       comment='Allows other users to link questions'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False,
                       label='Owner'),
-                Field('createdate', 'datetime', default=time.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 format='%(proj_name)s')
 
 db.commit()
