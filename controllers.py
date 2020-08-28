@@ -42,6 +42,7 @@ def index():
 
 
 @action("new_project")
+@action.uses('new_project.html', session)
 def new_project():
     # This allows creation and editing of projects by their owner
     # 'answer_group' removed as no other security functions for projects and events yet - not currently needed
