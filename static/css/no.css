@@ -119,7 +119,7 @@ code {
 }
 
 p,li,button,fieldset,input,select,textarea,blockquote,table {
-  margin-bottom: 1.0rem;
+  margin-bottom: 0.2rem;
 }
 
 /****************************************************
