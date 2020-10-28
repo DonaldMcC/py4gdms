@@ -2,13 +2,12 @@
 This file defines the database models
 """
 
-from .common import db
-from py4web import Field
+from .common import db, auth, T, session
+from py4web import Field, request
 from pydal.validators import *
 import datetime
 
 not_empty = IS_NOT_EMPTY()
-
 # TODO setup auth again
 # TODO - move to parameters/setup
 db.define_table('system_scope',
@@ -199,7 +198,7 @@ db.define_table('question',
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
                 Field('plan_editor', 'list:reference auth_user', label='Plan Editors', default=[auth.user_id]),
                 Field('category', 'string', default='Unspecified', label='Category',
-                      comment='Optional', readable=usecategory, writable=usecategory),
+                      comment='Optional'),
                 Field('factopinion', 'string', default='Opinion',
                       requires=IS_IN_SET(['Fact', 'Opinion']),
                       label='Fact or Opinion'),
@@ -233,16 +232,17 @@ db.define_table('question',
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                    label='Date Action Starts', widget=bsdatepicker_widget()),
+                       label='Date Action Starts'),
                 Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                label='Date Action Ends', widget=bsdatepicker_widget()),
+                label='Date Action Ends'),
                 Field('recurrence', 'string', default='None',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
-                Field('picture', 'upload', requires=IS_EMPTY_OR(IS_IMAGE()),comment='Pictures are optional'),
+                Field('picture', 'upload', requires=IS_EMPTY_OR(IS_IMAGE()), comment='Pictures are optional'),
                 Field('challenge', 'boolean', default=False),
-                Field('shared_editing', 'boolean', default=True, label='Shared Edit', comment='Allow anyone to edit action status and dates'),
+                Field('shared_editing', 'boolean', default=True, label='Shared Edit',
+                      comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
                 Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
                 Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
@@ -254,7 +254,8 @@ db.define_table('question',
                       error_message='Must be between 0 and 100')),
                 Field('recurcomplete', 'list:integer', default=[0, 0], readable=False, writable=False,
                       comment='allows flagging completion of recurring tasks'),
-                Field('notes', 'text', label='Notes', comment='General notes about question - may also document answers from knowledge engines'),
+                Field('notes', 'text', label='Notes',
+                      comment='General notes about question - may also document answers from knowledge engines'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
@@ -272,9 +273,9 @@ db.define_table('userquestion',
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                      error_message='Must be between 1 and 10'), widget=range_widget),
+                      error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                      error_message='Must be between 1 and 10'), widget=range_widget),
+                      error_message='Must be between 1 and 10')),
                 Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),
@@ -370,28 +371,22 @@ db.define_table('viewscope',
                 Field('projid', 'reference project', label='Project'),
                 Field('responsible', 'string', label='Responsible'),
                 Field('searchstring', 'string', label='Search:', default=session.searchstring),
-                Field('coord', 'string', label='Lat/Longitude',
-                      default=(use_address and (session.coord or (auth.user and auth.user.coord) or '0'))),
+                Field('coord', 'string', label='Lat/Longitude'),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
                 Field('startdate', 'date', default=request.utcnow, label='From Date'),
                 Field('enddate', 'date', default=request.utcnow, label='To Date'),
                 Field('linklevels', 'integer', default=1, label='No of generations of linked items',
                       requires=IS_IN_SET([0, 1, 2, 3, 4, 5])))
 
-db.viewscope.view_scope.requires = IS_IN_SET(scopes)
+
 db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
 db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
                                             multiple=True)
-db.viewscope.selection.widget = hcheckbutton_widget
 db.viewscope.execstatus.requires = IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
-db.viewscope.execstatus.widget = hcheckbutton_widget
 db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event','Responsible'],
                                           multiple=True)
-db.viewscope.filters.widget = hcheckbutton_widget
 
 # db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
-db.viewscope.view_scope.widget = hradio_widget
-db.viewscope.sortorder.widget = hradio_widget
 # db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
 db.viewscope.searchstring.requires = IS_NOT_EMPTY()
 db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
