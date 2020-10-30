@@ -81,8 +81,8 @@ elif settings.SESSION_TYPE == "database":
 auth = Auth(session, db, define_tables=False)
 auth.use_username = True
 # this triggers an error at present - not clear why
-#auth.param.registration_requires_confirmation = settings.VERIFY_EMAIL
-#auth.param.registration_requires_approval = settings.REQUIRES_APPROVAL
+auth.param.registration_requires_confirmation = settings.VERIFY_EMAIL
+auth.param.registration_requires_approval = settings.REQUIRES_APPROVAL
 auth.allowed_actions = ["all"]
 auth.login_expiration_time = 3600
 auth.password_complexity = {"entropy": 50}
