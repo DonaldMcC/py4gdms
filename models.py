@@ -104,7 +104,7 @@ db.define_table('locn',
                 Field('locn_shared', 'boolean', label='Shared', default=True,
                       comment='Allows other users to link events'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
-                Field('createdate', 'datetime',  default=request.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime',  default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
@@ -131,27 +131,6 @@ db.define_table('project',
 
 # Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
 
-db.define_table('locn',
-                Field('location_name', label='Location Name', requires=[not_empty,
-                                                                        IS_NOT_IN_DB(db, 'locn.location_name')]),
-                Field('address1', label='Address 1', writable=False, readable=False),
-                Field('address2', label='Address 2', writable=False, readable=False),
-                Field('address3', label='Address 3', writable=False, readable=False),
-                Field('address4', label='Address 4', writable=False, readable=False),
-                Field('addrcode', label='Postal Code', writable=False, readable=False),
-                Field('addrurl', label='Location Website'),
-                Field('continent', default='Unspecified', label='Continent'),
-                Field('country', default='Unspecified', label='Country'),
-                Field('subdivision', default='Unspecified', label='Subdivision'),
-                Field('coord', label='Lat/Longitude'),  # ignore values in this field
-                Field('locn_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
-                Field('locn_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
-                Field('description', 'text'),
-                Field('locn_shared', 'boolean', label='Shared', default=True,
-                      comment='Allows other users to link events'),
-                Field('createdate', 'datetime',  default=datetime.datetime.utcnow(), writable=False, readable=False),
-                format='%(location_name)s')
-
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location'),
@@ -175,14 +154,14 @@ db.define_table('evt',
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
-db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
-                                                     minimum=datetime.datetime(2014, 6, 15, 00, 00),
-                                                     maximum=datetime.datetime(2021, 12, 31, 23, 59),
-                                                     error_message='must be YYYY-MM-DD HH:MM::SS!')
-db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
-                                                   minimum=datetime.datetime(2014, 6, 15, 00, 00),
-                                                   maximum=datetime.datetime(2021, 12, 31, 23, 59),
-                                                   error_message='must be YYYY-MM-DD HH:MM::SS!')
+#db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+#                                                     minimum=datetime.datetime(2014, 6, 15, 00, 00),
+#                                                     maximum=datetime.datetime(2021, 12, 31, 23, 59),
+#                                                     error_message='must be YYYY-MM-DD HH:MM::SS!')
+#db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+#                                                   minimum=datetime.datetime(2014, 6, 15, 00, 00),
+#                                                   maximum=datetime.datetime(2021, 12, 31, 23, 59),
+#                                                   error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
 
@@ -221,14 +200,14 @@ db.define_table('question',
                 Field('subquests', 'list:integer'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
                 Field('unpanswers', 'integer', default=0, writable=False, readable=False),
-                Field('createdate', 'datetime', writable=False, label='Date Submitted', default=request.utcnow),
+                Field('createdate', 'datetime', writable=False, label='Date Submitted', default=datetime.datetime.utcnow()),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'),
                 Field('challengedate', 'datetime', writable=False, label='Date Challenged'),
                 Field('answerreasons', 'text', writable=False, label='Reason1'),
                 Field('answerreason2', 'text', writable=False, label='Reason2'),
                 Field('answerreason3', 'text', writable=False, label='Reason3'),
                 Field('duedate', 'datetime', label='Expiry Date',
-                      default=(request.utcnow + datetime.timedelta(days=1)),
+                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=1)),
                       comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
@@ -260,10 +239,10 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
 
-db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
-                                                    minimum=datetime.datetime(2013, 1, 1, 10, 30),
-                                                    maximum=datetime.datetime(2030, 12, 31, 11, 45),
-                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
+#db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+#                                                    minimum=datetime.datetime(2013, 1, 1, 10, 30),
+#                                                    maximum=datetime.datetime(2030, 12, 31, 11, 45),
+#                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False),
@@ -278,7 +257,7 @@ db.define_table('userquestion',
                       error_message='Must be between 1 and 10')),
                 Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
-                Field('ansdate', 'datetime', default=request.now, writable=False, readable=False),
+                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 Field('category', 'string', default='Unspecified'),
                 Field('changecat', 'boolean', default=False, label='Change Category'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'))
@@ -288,7 +267,7 @@ db.define_table('questchallenge',
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('status', 'string', default='In Progress', writable=False, readable=False),
                 Field('challengereason', 'text'),
-                Field('challengedate', 'datetime', default=request.now, writable=False, readable=False))
+                Field('challengedate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 
 # this holds details of who has agreed and disagreed on the answer to a question
@@ -304,7 +283,7 @@ db.define_table('questagreement',
                 Field('questionid', 'reference question', writable=False),
                 Field('auth_userid', 'reference auth_user', writable=False),
                 Field('agree', 'integer', writable=False, readable=False),
-                Field('agreedate', 'datetime', default=request.now, writable=False, readable=False),
+                Field('agreedate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 Field('urgency', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
                 Field('importance', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
                 Field('agmt_level', 'integer', default=1, readable=False, writable=False))
@@ -333,7 +312,7 @@ db.define_table('questlink',
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Draft', 'Active', 'Rejected'])),
                 Field('lastdeleter', 'reference auth_user'),
                 Field('lastaction', 'string', default='create'),
-                Field('createdate', 'datetime', default=request.utcnow, writable=False, readable=False))
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 # this holds comments for resolved questions
 # it may be extended to allow comments against unresolved but not yet
@@ -342,8 +321,7 @@ db.define_table('questlink',
 # and on follow-up questions
 
 db.define_table('questcomment',
-                Field('questionid', 'reference question', writable=False, readable=False,
-                      default=session.questid),
+                Field('questionid', 'reference question', writable=False, readable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False,
                       default=auth.user_id),
                 Field('qc_comment', 'text', requires=IS_NOT_EMPTY()),
@@ -351,7 +329,7 @@ db.define_table('questcomment',
                       requires=IS_IN_SET(['OK', 'NOK'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
-                Field('commentdate', 'datetime', default=request.utcnow, writable=False, readable=False))
+                Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 # This table is never populated but holds settings and options for configuring
 # many of the displays of actions and questions
@@ -370,11 +348,11 @@ db.define_table('viewscope',
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('responsible', 'string', label='Responsible'),
-                Field('searchstring', 'string', label='Search:', default=session.searchstring),
+                Field('searchstring', 'string', label='Search:'),
                 Field('coord', 'string', label='Lat/Longitude'),
                 Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
-                Field('startdate', 'date', default=request.utcnow, label='From Date'),
-                Field('enddate', 'date', default=request.utcnow, label='To Date'),
+                Field('startdate', 'date', default=datetime.datetime.utcnow(), label='From Date'),
+                Field('enddate', 'date', default=datetime.datetime.utcnow(), label='To Date'),
                 Field('linklevels', 'integer', default=1, label='No of generations of linked items',
                       requires=IS_IN_SET([0, 1, 2, 3, 4, 5])))
 
@@ -430,7 +408,7 @@ db.define_table('eventmap',
 db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and
                                                      row.eventmap.answers[row.eventmap.correctans]) or '')
 
-db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
+#db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
 db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
 db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
 
@@ -442,9 +420,9 @@ db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
 #                                            _and=IS_IN_DB(subset, 'group_members.access_group'))
 
 db.viewscope.category.requires = IS_IN_DB(db, 'category.cat_desc')
-db.viewscope.continent.requires = IS_IN_DB(db, 'continent.continent_name')
+#db.viewscope.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 db.userquestion.category.requires = IS_IN_DB(db, 'category.cat_desc')
-db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name')
+#db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name')
 
 
 # need to figure out how I am storing the shape date - not currently using
@@ -456,7 +434,7 @@ db.define_table('shape_template',
                 Field('cub_action', 'text'))
 
 db.define_table('email_runs',
-                Field('datecreate', 'datetime', default=request.utcnow, writable=False),
+                Field('datecreate', 'datetime', default=datetime.datetime.utcnow(), writable=False),
                 Field('daterun', 'datetime', writable=False),
                 Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
                 Field('datefrom', 'datetime'),
