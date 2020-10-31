@@ -5,10 +5,8 @@ from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
 
-
-
 @action("new_project")
-@action.uses('new_project.html', session)
+@action.uses('new_project.html', session, db)
 def new_project():
     # This allows creation and editing of projects by their owner
     # 'answer_group' removed as no other security functions for projects and events yet - not currently needed

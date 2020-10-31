@@ -14,8 +14,8 @@ from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
 @action("new_location")
-@action.uses('new_project.html', session)
-def new_project():
+@action.uses('new_location.html', session, db)
+def new_location():
     # This allows creation and editing of projects by their owner
     # 'answer_group' removed as no other security functions for projects and events yet - not currently needed
     #fields = ['proj_name', 'description', 'proj_url', 'startdate', 'enddate', 'proj_shared']
@@ -27,7 +27,7 @@ def new_project():
     #        redirect(URL('new_project'))
     #    form = SQLFORM(db.project, record, fields=fields)
     #else:
-    form = Form(db.project)
+    form = Form(db.locn)
 
     #if form.validate():
     #    if projid is not None:

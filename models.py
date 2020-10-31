@@ -84,7 +84,6 @@ db.define_table('download',
 
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
-
 db.define_table('locn',
                 Field('location_name', label='Location Name', requires=[not_empty,
                                                                         IS_NOT_IN_DB(db, 'locn.location_name')]),
