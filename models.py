@@ -106,6 +106,7 @@ db.define_table('locn',
                 Field('createdate', 'datetime',  default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
 
+db.locn.location_name.requires = IS_NOT_IN_DB(db, db.locn.location_name)
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
 
@@ -127,6 +128,7 @@ db.define_table('project',
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 format='%(proj_name)s')
 
+db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
 
 # Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
 

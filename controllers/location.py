@@ -13,7 +13,7 @@ from py4web.utils.form import Form
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
-@action("new_location")
+@action("new_location", method=['GET', 'POST'])
 @action.uses('new_location.html', session, db)
 def new_location():
     # This allows creation and editing of projects by their owner
