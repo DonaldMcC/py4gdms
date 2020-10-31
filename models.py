@@ -155,6 +155,7 @@ db.define_table('evt',
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
+#TODO reinstate this
 #db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
 #                                                     minimum=datetime.datetime(2014, 6, 15, 00, 00),
 #                                                     maximum=datetime.datetime(2021, 12, 31, 23, 59),

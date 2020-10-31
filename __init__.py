@@ -10,6 +10,8 @@ from .models import db
 from .controllers import controllers
 from .controllers import project
 from .controllers import location
+from .controllers import event
+from .controllers import question
 
 # optional parameters
 __version__ = "0.0.1"
