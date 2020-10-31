@@ -183,15 +183,11 @@ db.define_table('question',
                 Field('factopinion', 'string', default='Opinion',
                       requires=IS_IN_SET(['Fact', 'Opinion']),
                       label='Fact or Opinion'),
-                Field('scopetext', compute=lambda row: (row.activescope == '1 Global' and row.activescope) or
-                      (row.activescope == '2 Continenal' and row.continent) or
-                      (row.activescope == '3 National' and row.country) or row.subdivision),
                 Field('answers', 'list:string'),
                 Field('answercounts', 'list:integer'),
                 Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
-                Field('totratings', 'integer', default=0, writable=False, label='what is this'),
                 Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
                 Field('othercounts', 'list:integer', default=[0, 0, 0, 0, 0, 0], readable=False, writable=False,
@@ -202,25 +198,20 @@ db.define_table('question',
                 Field('subquests', 'list:integer'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
                 Field('unpanswers', 'integer', default=0, writable=False, readable=False),
-                Field('createdate', 'datetime', writable=False, label='Date Submitted', default=datetime.datetime.utcnow()),
+                Field('createdate', 'datetime', writable=False, label='Date Submitted'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'),
                 Field('challengedate', 'datetime', writable=False, label='Date Challenged'),
                 Field('answerreasons', 'text', writable=False, label='Reason1'),
                 Field('answerreason2', 'text', writable=False, label='Reason2'),
                 Field('answerreason3', 'text', writable=False, label='Reason3'),
-                Field('duedate', 'datetime', label='Expiry Date',
-                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=1)),
-                      comment='This only applies to items resolved by vote'),
+                Field('duedate', 'datetime', label='Expiry Date', comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                       label='Date Action Starts'),
-                Field('enddate', 'datetime', requires=IS_DATE(format=T('%Y-%m-%d')),
-                label='Date Action Ends'),
+                Field('startdate', 'datetime', label='Date Action Starts'),
+                Field('enddate', 'datetime', label='Date Action Ends'),
                 Field('recurrence', 'string', default='None',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
-                Field('picture', 'upload', requires=IS_EMPTY_OR(IS_IMAGE()), comment='Pictures are optional'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
@@ -412,7 +403,7 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -
 
 #db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
 db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
-db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
+#db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
 
 
 # db.question.answer_group.requires = IS_IN_DB(db(db.group_members==auth.user_id), 'access_group', '%(group_name)s')
