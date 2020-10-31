@@ -177,14 +177,11 @@ db.define_table('question',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
-                Field('plan_editor', 'list:reference auth_user', label='Plan Editors', default=[auth.user_id]),
                 Field('category', 'string', default='Unspecified', label='Category',
                       comment='Optional'),
                 Field('factopinion', 'string', default='Opinion',
-                      requires=IS_IN_SET(['Fact', 'Opinion']),
-                      label='Fact or Opinion'),
-                Field('answers', 'list:string'),
-                Field('answercounts', 'list:integer'),
+                      requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion'),
+                Field('answercounts', 'list:integer', writable=False,),
                 Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
@@ -192,45 +189,41 @@ db.define_table('question',
                       label='Priority'),
                 Field('othercounts', 'list:integer', default=[0, 0, 0, 0, 0, 0], readable=False, writable=False,
                       comment='numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
-                Field('testcounts', 'list:integer'),
-                Field('eventlevel', 'integer', default=0),
-                Field('masterquest', 'integer', default=0),
                 Field('subquests', 'list:integer'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
-                Field('unpanswers', 'integer', default=0, writable=False, readable=False),
-                Field('createdate', 'datetime', writable=False, label='Date Submitted'),
+                Field('createdate', 'datetime', writable=False, default=datetime.datetime.utcnow(), label='Date Submitted'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'),
                 Field('challengedate', 'datetime', writable=False, label='Date Challenged'),
-                Field('answerreasons', 'text', writable=False, label='Reason1'),
-                Field('answerreason2', 'text', writable=False, label='Reason2'),
-                Field('answerreason3', 'text', writable=False, label='Reason3'),
+                Field('answerreasons', 'list:string', writable=False, label='Answer Reasons'),
                 Field('duedate', 'datetime', label='Expiry Date', comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', label='Date Action Starts'),
-                Field('enddate', 'datetime', label='Date Action Ends'),
-                Field('recurrence', 'string', default='None',
-                      requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
+                Field('startdate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Starts'),
+                Field('enddate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Ends'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('projid', 'reference project', label='Project'),
                 Field('challenge', 'boolean', default=False),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', default=0.0, label='xcoord'),  # x pos on the eventmap
-                Field('ypos', 'double', default=0.0, label='ycoord'),  # y pos on the eventmap
-                Field('projxpos', 'double', default=0.0, label='projxcoord'),  # x pos on projectmap
-                Field('projypos', 'double', default=0.0, label='projycoord'),  # y pos on the projecttmap
-                Field('coord', 'string', label='Lat/Longitude'),
-                Field('question_long', 'double', default=0.0, label='Latitude', writable=False, readable=False),
-                Field('question_lat', 'double', default=0.0, label='Longitude', writable=False, readable=False),
+                Field('xpos', 'double', writable=False, default=0.0, label='xcoord'),  # x pos on the eventmap
+                Field('ypos', 'double', writable=False, default=0.0, label='ycoord'),  # y pos on the eventmap
+                Field('projxpos', 'double', writable=False, default=0.0, label='projxcoord'),  # x pos on projectmap
+                Field('projypos', 'double', writable=False, default=0.0, label='projycoord'),  # y pos on the projecttmap
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
                       error_message='Must be between 0 and 100')),
-                Field('recurcomplete', 'list:integer', default=[0, 0], readable=False, writable=False,
-                      comment='allows flagging completion of recurring tasks'),
                 Field('notes', 'text', label='Notes',
                       comment='General notes about question - may also document answers from knowledge engines'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
+
+
+# So thinking that we just support two answers for everything
+#if form.vars.qtype == 'action':
+#    form.vars.answers = ['Approve', 'Disapprove']
+#elif form.vars.qtype == 'issue':
+#    form.vars.answers = ['Agree', 'Disagree']
+#else:
+# True/False, Yes/No, More than x/less than or equal to x,
 
 #db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
 #                                                    minimum=datetime.datetime(2013, 1, 1, 10, 30),

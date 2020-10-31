@@ -27,6 +27,11 @@ def new_question():
     #        redirect(URL('new_project'))
     #    form = SQLFORM(db.project, record, fields=fields)
     #else:
+    qtype = request.args(0, default='quest')
+    questid = request.args(1, cast=int, default=0)
+
+
+
     form = Form(db.question)
 
     #if form.validate():
