@@ -8,12 +8,11 @@ from pydal.validators import *
 import datetime
 
 not_empty = IS_NOT_EMPTY()
-# TODO setup auth again
+# TODO setup auth extra fields again to extent still required
 # TODO - move to parameters/setup
 db.define_table('system_scope',
                 Field('description', 'string'),
                 format='%(description)s')
-
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
@@ -42,9 +41,9 @@ db.define_table('website_parameters',
                 Field('level3desc', label=T('Level3Desc'), comment=T('Third Location Level')),
                 Field('copyright', label=T('Copyright'),
                       default='Has probably been eliminated on more advanced planets'),
-                Field('self_resolve',  'boolean', default=True, label=T('Allow self resolved actions')),
-                Field('self_answer',  'boolean', default=True, label=T('Allow self-answer questions')),
-                Field('anon_resolve',  'boolean', default=False, label=T('Anonymous answers on resolve')),
+                Field('self_resolve', 'boolean', default=True, label=T('Allow self resolved actions')),
+                Field('self_answer', 'boolean', default=True, label=T('Allow self-answer questions')),
+                Field('anon_resolve', 'boolean', default=False, label=T('Anonymous answers on resolve')),
                 Field('force_language', label=T('Force a language (en, it, es, fr, ...)')),
                 Field('google_analytics_id', label=T('Google analytics id'),
                       comment=T('Your Google Analytics account ID')),
@@ -72,7 +71,6 @@ db.define_table('category',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'category.cat_desc'), IS_LOWER()]),
                 Field('categorydesc', 'text', label='Description'),
                 format='%(cat_desc)s')
-
 
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
@@ -103,12 +101,11 @@ db.define_table('locn',
                 Field('locn_shared', 'boolean', label='Shared', default=True,
                       comment='Allows other users to link events'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
-                Field('createdate', 'datetime',  default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
 
 db.locn.location_name.requires = IS_NOT_IN_DB(db, db.locn.location_name)
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
-
 
 db.define_table('project',
                 Field('proj_name', label='Project Name'),
@@ -155,34 +152,32 @@ db.define_table('evt',
                 format='%(evt_name)s')
 
 db.evt.eventurl.requires = IS_EMPTY_OR(IS_URL())
-#TODO reinstate this
-#db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+# TODO reinstate this
+# db.evt.startdatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
 #                                                     minimum=datetime.datetime(2014, 6, 15, 00, 00),
 #                                                     maximum=datetime.datetime(2021, 12, 31, 23, 59),
 #                                                     error_message='must be YYYY-MM-DD HH:MM::SS!')
-#db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
+# db.evt.enddatetime.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
 #                                                   minimum=datetime.datetime(2014, 6, 15, 00, 00),
 #                                                   maximum=datetime.datetime(2021, 12, 31, 23, 59),
 #                                                   error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
 
-
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
                 Field('questiontext', 'text', label='Question', requires=not_empty),
-                Field('question_level', 'integer', default=1, writable=False),
                 Field('status', 'string', default='In Progress',
-                      requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected']),
+                      requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
-                Field('category', 'string', default='Unspecified', label='Category',
-                      comment='Optional'),
                 Field('factopinion', 'string', default='Opinion',
                       requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion'),
-                Field('answercounts', 'list:integer', writable=False,),
-                Field('correctans', 'integer', default=-1, writable=False, label='Correct Ans'),
+                Field('answertext', 'text', label='Question', requires=not_empty),
+                Field('num_yes', 'integer', writable=False, ),
+                Field('num_no', 'integer', writable=False, ),
+                Field('correctans', 'integer', writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
@@ -191,11 +186,11 @@ db.define_table('question',
                       comment='numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
                 Field('subquests', 'list:integer'),
                 Field('resolvemethod', 'string', default='Standard', label='Resolution Method'),
-                Field('createdate', 'datetime', writable=False, default=datetime.datetime.utcnow(), label='Date Submitted'),
+                Field('createdate', 'datetime', writable=False, default=datetime.datetime.utcnow(),
+                      label='Date Submitted'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'),
                 Field('challengedate', 'datetime', writable=False, label='Date Challenged'),
                 Field('answerreasons', 'list:string', writable=False, label='Answer Reasons'),
-                Field('duedate', 'datetime', label='Expiry Date', comment='This only applies to items resolved by vote'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Starts'),
                 Field('enddate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Ends'),
@@ -206,46 +201,39 @@ db.define_table('question',
                       comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', writable=False, default=0.0, label='xcoord'),  # x pos on the eventmap
                 Field('ypos', 'double', writable=False, default=0.0, label='ycoord'),  # y pos on the eventmap
-                Field('projxpos', 'double', writable=False, default=0.0, label='projxcoord'),  # x pos on projectmap
-                Field('projypos', 'double', writable=False, default=0.0, label='projycoord'),  # y pos on the projecttmap
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
-                      error_message='Must be between 0 and 100')),
+                                                                                                               error_message='Must be between 0 and 100')),
                 Field('notes', 'text', label='Notes',
                       comment='General notes about question - may also document answers from knowledge engines'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
+# So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
+# is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
+# but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
 
-
-# So thinking that we just support two answers for everything
-#if form.vars.qtype == 'action':
+# Actions are Approve, Disapp
+# if form.vars.qtype == 'action':
 #    form.vars.answers = ['Approve', 'Disapprove']
-#elif form.vars.qtype == 'issue':
+# elif form.vars.qtype == 'issue':
 #    form.vars.answers = ['Agree', 'Disagree']
-#else:
+# else:
 # True/False, Yes/No, More than x/less than or equal to x,
 
-#db.question.duedate.requires = IS_DATETIME_IN_RANGE(format=T('%Y-%m-%d %H:%M:%S'),
-#                                                    minimum=datetime.datetime(2013, 1, 1, 10, 30),
-#                                                    maximum=datetime.datetime(2030, 12, 31, 11, 45),
-#                                                    error_message='must be YYYY-MM-DD HH:MM::SS!')
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('status', 'string', default='In Progress', writable=False, readable=False),
-                Field('uq_level', 'integer', readable=False, writable=False, comment='Level'),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                      error_message='Must be between 1 and 10')),
+                                                                                error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                      error_message='Must be between 1 and 10')),
+                                                                                   error_message='Must be between 1 and 10')),
                 Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
-                Field('category', 'string', default='Unspecified'),
-                Field('changecat', 'boolean', default=False, label='Change Category'),
                 Field('resolvedate', 'datetime', writable=False, label='Date Resolved'))
 
 db.define_table('questchallenge',
@@ -254,7 +242,6 @@ db.define_table('questchallenge',
                 Field('status', 'string', default='In Progress', writable=False, readable=False),
                 Field('challengereason', 'text'),
                 Field('challengedate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
-
 
 # this holds details of who has agreed and disagreed on the answer to a question
 # no points are awarded for this at present but it may be configured to prevent
@@ -287,6 +274,7 @@ db.define_table('questurgency',
 # when delete count exceeds createcount and deletecount is also greater than one
 # so that may mean that status can be a computed field but would need to be queried on
 # so not a virtual field
+# may need to rethink links as going more event focussed but some things may get carried over and others not??
 
 db.define_table('questlink',
                 Field('sourceid', 'reference question'),
@@ -317,47 +305,6 @@ db.define_table('questcomment',
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
-# This table is never populated but holds settings and options for configuring
-# many of the displays of actions and questions
-
-db.define_table('viewscope',
-                Field('sortorder', 'string', default='1 Priority', label='Sort Order'),
-                Field('showscope', 'boolean', label='Show scope Filter', comment='Uncheck to show all'),
-                Field('filters', 'string'),
-                Field('view_scope', 'string', default='1 Global'),
-                Field('showcat', 'boolean', label='Show Category Filter', comment='Uncheck to show all'),
-                Field('category', 'string', default='Unspecified', label='Category', comment='Optional'),
-                Field('selection', 'string', default=['Issue', 'Question', 'Action', 'Resolved']),
-                Field('execstatus', 'string', label='Execution Status',
-                      default=['Proposed', 'Planned', 'In Progress', 'Completed']),
-                Field('answer_group', 'string', default='Unspecified', label='Answer Group'),
-                Field('eventid', 'reference evt', label='Event'),
-                Field('projid', 'reference project', label='Project'),
-                Field('responsible', 'string', label='Responsible'),
-                Field('searchstring', 'string', label='Search:'),
-                Field('coord', 'string', label='Lat/Longitude'),
-                Field('searchrange', 'integer', default=100, label='Search Range in Kilometers'),
-                Field('startdate', 'date', default=datetime.datetime.utcnow(), label='From Date'),
-                Field('enddate', 'date', default=datetime.datetime.utcnow(), label='To Date'),
-                Field('linklevels', 'integer', default=1, label='No of generations of linked items',
-                      requires=IS_IN_SET([0, 1, 2, 3, 4, 5])))
-
-
-db.viewscope.sortorder.requires = IS_IN_SET(['1 Priority', '2 Resolved Date', '3 Submit Date', '4 Answer Date'])
-db.viewscope.selection.requires = IS_IN_SET(['Issue', 'Question', 'Action', 'Proposed', 'Resolved', 'Draft'],
-                                            multiple=True)
-db.viewscope.execstatus.requires = IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'], multiple=True)
-db.viewscope.filters.requires = IS_IN_SET(['Scope', 'Category', 'AnswerGroup', 'Date', 'Project', 'Event','Responsible'],
-                                          multiple=True)
-
-# db.viewscope.selection.widget = SQLFORM.widgets.checkboxes.widget
-# db.viewscope.sortorder.widget = SQLFORM.widgets.radio.widget
-db.viewscope.searchstring.requires = IS_NOT_EMPTY()
-db.viewscope.eventid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.evt.id, '%(evt_name)s'))
-db.viewscope.projid.requires = IS_EMPTY_OR(IS_IN_DB(db, db.project.id, '%(proj_name)s'))
-db.viewscope.responsible.requires = IS_EMPTY_OR(IS_IN_DB(db, db.question.responsible, groupby=db.question.responsible))
-
-
 # This contains two standard messages one for general objective and a second
 # for specific action which someone is responsible for
 db.define_table('app_message', Field('msgtype', 'string'),
@@ -365,67 +312,38 @@ db.define_table('app_message', Field('msgtype', 'string'),
                 Field('app_message_text', 'text'))
 
 db.define_table('eventmap',
-    Field('eventid', 'reference evt'),
-    Field('questid', 'reference question'),
-    Field('xpos', 'double', default=0.0, label='xcoord'),
-    Field('ypos', 'double', default=0.0, label='ycoord'),
-    Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
-    Field('status', 'string', default='In Progress', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
-    Field('questiontext', 'text',  writable=False, label='Question'),
-    Field('answers', 'list:string', writable=False),
-    Field('correctans', 'integer', default=-1, label='Correct Ans'),
-    Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
-          comment='Restrict answers to members of a group'),
-    Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
-    Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
-    Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
+                Field('eventid', 'reference evt'),
+                Field('questid', 'reference question'),
+                Field('xpos', 'double', default=0.0, label='xcoord'),
+                Field('ypos', 'double', default=0.0, label='ycoord'),
+                Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
+                Field('status', 'string', default='In Progress', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+                Field('questiontext', 'text', writable=False, label='Question'),
+                Field('answers', 'list:string', writable=False),
+                Field('correctans', 'integer', default=-1, label='Correct Ans'),
+                Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
+                      comment='Restrict answers to members of a group'),
+                Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
+                Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
+                Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
-    Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
-    Field('adminresolve', 'boolean', default=False, label='True if answer or status adjusted by event owner'),
-    Field('responsible', label='Responsible'),
-    Field('eventlevel', 'integer', default=0),
-    Field('masterquest', 'integer', default=0),
-    Field('subquests', 'list:integer'),
-    Field('queststatus', 'string', default='In Progress',
-          requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Agreed', 'Disagreed', 'Rejected', 'Admin Resolved']),
-          comment='Select draft to defer for later editing'),
-    Field('notes', 'text', label='Notes'))
-
-db.eventmap.correctanstext = Field.Lazy(lambda row: (row.eventmap.correctans > -1 and
-                                                     row.eventmap.answers[row.eventmap.correctans]) or '')
-
-#db.auth_user.exclude_categories.requires = IS_EMPTY_OR(IS_IN_DB(db, 'category.cat_desc', multiple=True))
-db.question.category.requires = IS_IN_DB(db, 'category.cat_desc')
-#db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
+                Field('auth_userid', 'reference auth_user', writable=False, label='Submitter', default=auth.user_id),
+                Field('adminresolve', 'boolean', default=False,
+                      label='True if answer or status adjusted by event owner'),
+                Field('responsible', label='Responsible'),
+                Field('eventlevel', 'integer', default=0),
+                Field('masterquest', 'integer', default=0),
+                Field('subquests', 'list:integer'),
+                Field('queststatus', 'string', default='In Progress',
+                      requires=IS_IN_SET(
+                          ['Draft', 'In Progress', 'Resolved', 'Rejected', 'Admin Resolved']),
+                      comment='Select draft to defer for later editing'),
+                Field('notes', 'text', label='Notes'))
 
 
-# db.question.answer_group.requires = IS_IN_DB(db(db.group_members==auth.user_id), 'access_group', '%(group_name)s')
-
+# db.question.resolvemethod.requires = IS_IN_DB(db, 'resolve.resolve_name')
 # subset=db(db.group_members.auth_userid==auth.user_id)
 # db.question.answer_group.requires = IS_IN_DB(db(db.access_group.id>0), 'access_group.id', '%(group_name)s',
 #                                            _and=IS_IN_DB(subset, 'group_members.access_group'))
-
-db.viewscope.category.requires = IS_IN_DB(db, 'category.cat_desc')
-#db.viewscope.continent.requires = IS_IN_DB(db, 'continent.continent_name')
-db.userquestion.category.requires = IS_IN_DB(db, 'category.cat_desc')
-#db.userquestion.continent.requires = IS_IN_DB(db, 'continent.continent_name')
-
-
-# need to figure out how I am storing the shape date - not currently using
-db.define_table('shape_template',
-                Field('shape_type', 'string'),
-                Field('shape_prefix', 'string', comment='Three character prefix for ids created with this shape'),
-                Field('shape_json', 'text'),
-                Field('description', 'text'),
-                Field('cub_action', 'text'))
-
-db.define_table('email_runs',
-                Field('datecreate', 'datetime', default=datetime.datetime.utcnow(), writable=False),
-                Field('daterun', 'datetime', writable=False),
-                Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
-                Field('datefrom', 'datetime'),
-                Field('dateto', 'datetime'),
-                Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
-                Field('error', 'text'))
 
 db.commit()
