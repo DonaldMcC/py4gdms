@@ -14,13 +14,14 @@ from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
 
+@action("new_question/<questid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
-def new_question():
+def new_question(questid='0'):
     # TODO find out how request.args works with bottle prob different
     # qtype = request.args(0, default='quest')
-    # questid = request.args(1, cast=int, default=0)
-
+    #questid = request.url_args(0, cast=int, default=0)
+    print('arg'+str(questid))
     form = Form([db.question.questiontext,
                  db.question.factopinion,
                  db.question.answertext,
