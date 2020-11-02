@@ -13,6 +13,23 @@ from py4web.utils.form import Form
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
+
+from py4web.utils.grid import Grid, GridClassStyle
+from py4web.utils.param import Param
+
+
+@action('eventgrid', method=['POST', 'GET'])
+@action.uses(session, db, auth.user, 'grid.html')
+def eventgrid(**kwargs):
+
+    queries = [(db.evt.id > 0)]
+    orderby = [db.evt.id]
+
+    grid = Grid(query=queries,
+                orderby=orderby)
+    return dict(grid=grid)
+
+
 @action("new_event", method=['GET', 'POST'])
 @action.uses('new_event.html', session, db)
 def new_event():
