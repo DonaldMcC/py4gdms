@@ -13,6 +13,7 @@ from .controllers import location
 from .controllers import event
 from .controllers import question
 from .controllers import category
+from .controllers import gridtest
 
 
 # optional parameters
