@@ -34,6 +34,8 @@ def new_question(questid='0'):
 @action("new_action", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
 def new_action():
+    #form.vars.answers = ['Approve', 'Disapprove']
+
     # TODO need to make label dynamic
     form = Form([db.question.questiontext,
                  db.question.responsible,
@@ -46,6 +48,7 @@ def new_action():
 @action("new_issue", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
 def new_issue():
+    #form.vars.answers = ['Agree', 'Disagree']
     # TODO need to make label dynamic
     # Sticking with approach that you don't get to grade your own issues for urgency and importance at creation
     form = Form([db.question.questiontext])
