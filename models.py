@@ -100,6 +100,7 @@ db.define_table('locn',
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
+
 db.locn.location_name.requires = IS_NOT_IN_DB(db, db.locn.location_name)
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
