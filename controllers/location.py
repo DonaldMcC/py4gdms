@@ -25,7 +25,7 @@ def new_location():
 @action('locationgrid', method=['POST', 'GET'])
 @action('locationgrid/<path:path>', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, 'locationgrid.html')
-def projectgrid(path=None):
+def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -33,7 +33,7 @@ def projectgrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,
-              db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.desription,
+              db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description,
               db.locn.locn_shared]
 
     orderby = [db.locn.location_name]
