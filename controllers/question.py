@@ -57,7 +57,7 @@ def questiongrid(path=None):
                 db.question,
                 fields=fields,
                 left=[db.evt.on(db.question.eventid == db.evt.id),
-                      db.project.on(db.question.projid == db.project.id)],
+                      db.project.on(db.evt.projid == db.project.id)],
                 headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
                           'Resolvemethod', 'Event', 'Project'],
                 orderby=orderby,
