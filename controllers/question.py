@@ -7,12 +7,16 @@
 # License Content: Creative Commons Attribution 3.0
 #
 
+from functools import reduce
 
 from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
+from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
+from ..libs.utils import GridSearch
+
 
 @action("new_question/<questid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
@@ -27,7 +31,6 @@ def new_question(questid='0'):
                  db.question.answertext,
                  db.question.answer1,
                  db.question.answer2])
-
     return dict(form=form)
 
 
@@ -95,3 +98,112 @@ def new_issue():
     form = Form([db.question.questiontext])
 
     return dict(form=form)
+
+
+headings = ['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
+            'Resolvemethod', 'Event', 'Project'],
+
+@unauthenticated
+@action('datatables', method=['GET', 'POST'])
+@action.uses(session, db, auth, 'datatables.html')
+def datatables():
+    """
+    display a page with a datatables.net grid on it
+    :return:
+    """
+    dt = DataTablesResponse(fields=[DataTablesField(name='DT_RowId', visible=False),
+                                    DataTablesField(name='Type'),
+                                    DataTablesField(name='Status'),
+                                    DataTablesField(name='Text'),
+                                    DataTablesField(name='Fact_Opinon'),
+                                    DataTablesField(name='Answer1')],
+                            data_url=URL('datatables_data'),
+                            create_url=URL('question/0'),
+                            edit_url=URL('question/record_id'),
+                            delete_url=URL('question/delete/record_id'),
+                            sort_sequence=[[1, 'asc']])
+    dt.script()
+    return dict(dt=dt)
+
+
+@unauthenticated
+@action('datatables_data', method=['GET', 'POST'])
+@action.uses(session, db, auth)
+def datatables_data():
+    """
+    datatables.net makes an ajax call to this method to get the data
+    :return:
+    """
+    dtr = DataTablesRequest(dict(request.query.decode()))
+    dtr.order(db, 'question')
+
+    queries = [(db.question.id > 0)]
+    if dtr.search_value and dtr.search_value != '':
+        queries.append((db.question.question_text.contains(dtr.search_value)) |
+                       (db.question.responsible(dtr.search_value)))
+
+    query = reduce(lambda a, b: (a & b), queries)
+    record_count = db(db.zip_code.id > 0).count()
+    filtered_count = db(query).count()
+
+    data = [dict(DT_RowId=z.id,
+                 zip_code=z.zip_code,
+                 zip_type=z.zip_type,
+                 state=z.state,
+                 county=z.county,
+                 primary_city=z.primary_city) for z in db(query).select(orderby=dtr.dal_orderby,
+                                                                        limitby=[dtr.start, dtr.start + dtr.length])]
+
+    return json.dumps(dict(data=data, recordsTotal=record_count, recordsFiltered=filtered_count))
+
+
+@action('zip_code/<zip_code_id>', method=['GET', 'POST'])
+@action.uses(session, db, auth, 'libs/edit.html')
+def zip_code(zip_code_id):
+    db.zip_code.id.readable = False
+    db.zip_code.id.writable = False
+
+    db.zip_code.zip_type.requires = IS_IN_SET(
+        [x.zip_type for x in db(db.zip_code.id > 0).select(db.zip_code.zip_type, distinct=True)])
+    db.zip_code.state.requires = IS_IN_SET(
+        [x.state for x in db(db.zip_code.id > 0).select(db.zip_code.state, distinct=True)])
+    db.zip_code.timezone.requires = IS_IN_SET(
+        [x.timezone for x in db(db.zip_code.id > 0).select(db.zip_code.timezone, distinct=True)])
+
+    form = Form(db.zip_code, record=zip_code_id, formstyle=FormStyleGrid)
+
+    if form.accepted:
+        redirect(URL('datatables'))
+
+    return dict(form=form, id=zip_code_id)
+
+
+@action('zip_code/delete/<zip_code_id>', method=['GET', 'POST'])
+@action.uses(session, db, auth, 'grid.html')
+def zip_code_delete(zip_code_id):
+    result = db(db.zip_code.id == zip_code_id).delete()
+    redirect(URL('datatables'))
+
+
+def FormStyleGrid(table, vars, errors, readonly, deletable):
+    classes = {
+        "outer": "field",
+        "inner": "control",
+        "label": "label is-uppercase",
+        "info": "help",
+        "error": "help is-danger py4web-validation-error",
+        "submit": "button is-success",
+        "input": "input",
+        "input[type=text]": "input",
+        "input[type=date]": "input",
+        "input[type=time]": "input",
+        "input[type=datetime-local]": "input",
+        "input[type=radio]": "radio",
+        "input[type=checkbox]": "checkbox",
+        "input[type=submit]": "button",
+        "input[type=password]": "password",
+        "input[type=file]": "file",
+        "select": "control select",
+        "textarea": "textarea",
+    }
+    return FormStyleDefault(table, vars, errors, readonly, deletable, classes)
