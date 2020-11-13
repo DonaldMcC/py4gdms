@@ -7,6 +7,7 @@
 # License Content: Creative Commons Attribution 3.0
 #
 
+import json
 from functools import reduce
 
 from py4web import action, request, abort, redirect, URL
@@ -30,7 +31,8 @@ def new_question(questid='0'):
                  db.question.factopinion,
                  db.question.answertext,
                  db.question.answer1,
-                 db.question.answer2])
+                 db.question.answer2],
+                formstyle=FormStyleBulma)
     return dict(form=form)
 
 
@@ -54,7 +56,7 @@ def questiongrid(path=None):
 
     search_queries = [['Search by Name', lambda value: db.question.questiontext == value]]
 
-    #search = GridSearch(search_queries, queries)
+    # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
                 db.question,
@@ -112,11 +114,11 @@ def datatables():
     :return:
     """
     dt = DataTablesResponse(fields=[DataTablesField(name='DT_RowId', visible=False),
-                                    DataTablesField(name='Type'),
-                                    DataTablesField(name='Status'),
-                                    DataTablesField(name='Text'),
-                                    DataTablesField(name='Fact_Opinon'),
-                                    DataTablesField(name='Answer1')],
+                                    DataTablesField(name='qtype'),
+                                    DataTablesField(name='status'),
+                                    DataTablesField(name='questiontext'),
+                                    DataTablesField(name='factopinon'),
+                                    DataTablesField(name='answer1')],
                             data_url=URL('datatables_data'),
                             create_url=URL('question/0'),
                             edit_url=URL('question/record_id'),
@@ -140,18 +142,31 @@ def datatables_data():
     queries = [(db.question.id > 0)]
     if dtr.search_value and dtr.search_value != '':
         queries.append((db.question.question_text.contains(dtr.search_value)) |
-                       (db.question.responsible(dtr.search_value)))
+                       (db.question.responsible.contains(dtr.search_value)))
 
     query = reduce(lambda a, b: (a & b), queries)
-    record_count = db(db.zip_code.id > 0).count()
+    record_count = db(db.question.id > 0).count()
     filtered_count = db(query).count()
 
+    dt = DataTablesResponse(fields=[DataTablesField(name='DT_RowId', visible=False),
+                                    DataTablesField(name='qtype'),
+                                    DataTablesField(name='Status'),
+                                    DataTablesField(name='questiontext'),
+                                    DataTablesField(name='factopinion'),
+                                    DataTablesField(name='answer1')],
+                            data_url=URL('datatables_data'),
+                            create_url=URL('question/0'),
+                            edit_url=URL('question/record_id'),
+                            delete_url=URL('question/delete/record_id'),
+                            sort_sequence=[[1, 'asc']])
+
+
     data = [dict(DT_RowId=z.id,
-                 zip_code=z.zip_code,
-                 zip_type=z.zip_type,
-                 state=z.state,
-                 county=z.county,
-                 primary_city=z.primary_city) for z in db(query).select(orderby=dtr.dal_orderby,
+                 qtype=z.qtype,
+                 status=z.status,
+                 questiontext=z.questiontext,
+                 factopinion=z.factopinion,
+                 answer1=z.answer1) for z in db(query).select(orderby=dtr.dal_orderby,
                                                                         limitby=[dtr.start, dtr.start + dtr.length])]
 
     return json.dumps(dict(data=data, recordsTotal=record_count, recordsFiltered=filtered_count))
