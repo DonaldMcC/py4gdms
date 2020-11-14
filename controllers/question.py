@@ -117,12 +117,12 @@ def datatables():
                                     DataTablesField(name='qtype'),
                                     DataTablesField(name='status'),
                                     DataTablesField(name='questiontext'),
-                                    DataTablesField(name='factopinon'),
+                                    DataTablesField(name='factopinion'),
                                     DataTablesField(name='answer1')],
                             data_url=URL('datatables_data'),
-                            create_url=URL('question/0'),
-                            edit_url=URL('question/record_id'),
-                            delete_url=URL('question/delete/record_id'),
+                            create_url=URL('new_question/0'),
+                            edit_url=URL('new_question/record_id'),
+                            delete_url=URL('new_question/delete/record_id'),
                             sort_sequence=[[1, 'asc']])
     dt.script()
     return dict(dt=dt)
