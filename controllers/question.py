@@ -11,7 +11,7 @@ import json
 from functools import reduce
 
 from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault
+from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
@@ -19,20 +19,23 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from ..libs.utils import GridSearch
 
 
-@action("new_question/<questid>", method=['GET', 'POST'])
+@action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
-def new_question(questid='0'):
+def new_question(qid='0'):
+    db.question.id.readable = False
+    db.question.id.writable = False
     # TODO find out how request.args works with bottle prob different
-    # qtype = request.args(0, default='quest')
-    #questid = request.url_args(0, cast=int, default=0)
-    print('arg'+str(questid))
-    form = Form([db.question.questiontext,
-                 db.question.factopinion,
-                 db.question.answertext,
-                 db.question.answer1,
-                 db.question.answer2],
-                formstyle=FormStyleBulma)
+    # questid = request.url_args(0, cast=int, default=0)
+
+    # form = Form([db.question.questiontext, db.question.factopinion, db.question.answertext,
+    #             db.question.answer1, db.question.answer2],
+    #            formstyle=FormStyleGrid)
+    # Note fieldlist creates error if you specify a record - so l
+    form = Form(db.question, formstyle=FormStyleGrid, record=qid)
+
+    if form.accepted:
+        redirect(URL('datatables'))
     return dict(form=form)
 
 
@@ -75,35 +78,6 @@ def questiongrid(path=None):
 
     return dict(grid=grid)
 
-
-
-@action("new_action", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db)
-def new_action():
-    #form.vars.answers = ['Approve', 'Disapprove']
-
-    # TODO need to make label dynamic
-    form = Form([db.question.questiontext,
-                 db.question.responsible,
-                 db.question.startdate,
-                 db.question.enddate])
-
-    return dict(form=form)
-
-
-@action("new_issue", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db)
-def new_issue():
-    #form.vars.answers = ['Agree', 'Disagree']
-    # TODO need to make label dynamic
-    # Sticking with approach that you don't get to grade your own issues for urgency and importance at creation
-    form = Form([db.question.questiontext])
-
-    return dict(form=form)
-
-
-headings = ['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
-            'Resolvemethod', 'Event', 'Project'],
 
 @unauthenticated
 @action('datatables', method=['GET', 'POST'])
