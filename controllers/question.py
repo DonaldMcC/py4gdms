@@ -17,7 +17,7 @@ from ..common import db, session, T, cache, auth, logger, authenticated, unauthe
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
-
+from pydal.validators import *
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
@@ -25,6 +25,7 @@ from ..libs.utils import GridSearch
 def new_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
     # TODO find out how request.args works with bottle prob different
     # questid = request.url_args(0, cast=int, default=0)
 
