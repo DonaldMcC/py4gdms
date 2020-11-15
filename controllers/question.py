@@ -19,6 +19,14 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from ..libs.utils import GridSearch
 from pydal.validators import *
 
+def check_and_set(form):
+    if form.vars['qtype'] == 'action':
+        print('I fired and got an action')
+        form.vars['answer1'] = 'Approve'
+        form.vars['answer2'] = 'Disapprove'
+    return form
+
+
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
@@ -33,7 +41,9 @@ def new_question(qid='0'):
     #             db.question.answer1, db.question.answer2],
     #            formstyle=FormStyleGrid)
     # Note fieldlist creates error if you specify a record - so l
-    form = Form(db.question, formstyle=FormStyleGrid, record=qid)
+    form = Form(db.question,
+                record=qid,
+                formstyle=FormStyleGrid)
 
     if form.accepted:
         redirect(URL('datatables'))

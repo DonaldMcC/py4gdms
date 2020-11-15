@@ -20,8 +20,11 @@ $(document).ready(function(){
               if($('#question_qtype option:selected').text()=='issue' || $('#question_qtype option:selected').text()=='action' )
                  {$('#question_factopinion').hide();
                   $("label[for='question_factopinion']").hide();
+                  $('#question_answer1').val('Approve');
                   $('#question_answer1').hide();
                   $("label[for='question_answer1']").hide();
+                  $('#question_answer2').show();
+                  $('#question_answer2').val('Disapprove');
                   $('#question_answer2').hide();
                   $("label[for='question_answer2']").hide();
                   $("label[for='question_answertext']").hide();
