@@ -19,13 +19,6 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from ..libs.utils import GridSearch
 from pydal.validators import *
 
-def check_and_set(form):
-    if form.vars['qtype'] == 'action':
-        print('I fired and got an action')
-        form.vars['answer1'] = 'Approve'
-        form.vars['answer2'] = 'Disapprove'
-    return form
-
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
@@ -44,7 +37,6 @@ def new_question(qid='0'):
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleGrid)
-
     if form.accepted:
         redirect(URL('datatables'))
     return dict(form=form)
@@ -86,7 +78,6 @@ def questiongrid(path=None):
                 editable=True,
                 deletable=True,
                 **GRID_DEFAULTS)
-
     return dict(grid=grid)
 
 
@@ -145,43 +136,20 @@ def datatables_data():
                             delete_url=URL('question/delete/record_id'),
                             sort_sequence=[[1, 'asc']])
 
-
     data = [dict(DT_RowId=z.id,
                  qtype=z.qtype,
                  status=z.status,
                  questiontext=z.questiontext,
                  factopinion=z.factopinion,
                  answer1=z.answer1) for z in db(query).select(orderby=dtr.dal_orderby,
-                                                                        limitby=[dtr.start, dtr.start + dtr.length])]
-
+                                                              limitby=[dtr.start, dtr.start + dtr.length])]
     return json.dumps(dict(data=data, recordsTotal=record_count, recordsFiltered=filtered_count))
 
 
-@action('zip_code/<zip_code_id>', method=['GET', 'POST'])
-@action.uses(session, db, auth, 'libs/edit.html')
-def zip_code(zip_code_id):
-    db.zip_code.id.readable = False
-    db.zip_code.id.writable = False
-
-    db.zip_code.zip_type.requires = IS_IN_SET(
-        [x.zip_type for x in db(db.zip_code.id > 0).select(db.zip_code.zip_type, distinct=True)])
-    db.zip_code.state.requires = IS_IN_SET(
-        [x.state for x in db(db.zip_code.id > 0).select(db.zip_code.state, distinct=True)])
-    db.zip_code.timezone.requires = IS_IN_SET(
-        [x.timezone for x in db(db.zip_code.id > 0).select(db.zip_code.timezone, distinct=True)])
-
-    form = Form(db.zip_code, record=zip_code_id, formstyle=FormStyleGrid)
-
-    if form.accepted:
-        redirect(URL('datatables'))
-
-    return dict(form=form, id=zip_code_id)
-
-
-@action('zip_code/delete/<zip_code_id>', method=['GET', 'POST'])
+@action('new_question/delete/<questid>', method=['GET', 'POST'])
 @action.uses(session, db, auth, 'grid.html')
-def zip_code_delete(zip_code_id):
-    result = db(db.zip_code.id == zip_code_id).delete()
+def new_question_delete(questid):
+    result = db(db.question.id == questid).delete()
     redirect(URL('datatables'))
 
 
