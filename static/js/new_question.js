@@ -17,16 +17,29 @@ $(document).ready(function(){
     */
 
           $('#question_qtype').change(function(){
-              if($('#question_qtype option:selected').text()=='issue')
-                {$('#question_answer1').hide()}
-              if($('#question_qtype option:selected').text()=='action')
-                {$('#question_answer1').hide()}
-              if($('#question_qtype option:selected').text()=='quest')
-                {$('#question_answer1').show()}
-                });
+              if($('#question_qtype option:selected').text()=='issue' || $('#question_qtype option:selected').text()=='action' )
+                 {$('#question_factopinion').hide();
+                  $("label[for='question_factopinion']").hide();
+                  $('#question_answer1').hide();
+                  $("label[for='question_answer1']").hide();
+                  $('#question_answer2').hide();
+                  $("label[for='question_answer2']").hide();
+                  $("label[for='question_answertext']").hide();
+                  $('#question_answertext').hide();};
+              if($('#question_qtype option:selected').text()=='quest'){
+                  $('#question_factopinion').show();
+                  $("label[for='question_factopinion']").show();
+                  $('#question_factopinion option:selected').text()=='Fact';
+                  $('#question_answer1').show();
+                  $("label[for='question_answer1']").show();
+                  $('#question_answer2').show();
+                  $("label[for='question_answer2']").show();
+                  $('#question_answertext').hide();
+                  $("label[for='question_answertext']").hide();
+                 };
+                 });
 
           $('#question_factopinion').change(function(){
-              console.log("changed");
               if($('#question_factopinion option:selected').text()=='Fact')
                 {$('#question_answer1').hide();
                 $("label[for='question_answer1']").hide();
