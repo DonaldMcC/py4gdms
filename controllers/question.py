@@ -58,21 +58,27 @@ def questiongrid(path=None):
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
-    queries = [(db.question.id > 0)]
+    queries = [(db.question.eventid == db.evt.id)]
 
-    search_queries = [['Search by Name', lambda value: db.question.questiontext == value]]
 
-    # search = GridSearch(search_queries, queries)
+    eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
+                                                                                              orderby=db.evt.evt_name,
+                                                                                              distinct=True)]))
+
+    search_queries = [['Search by Event', lambda val: db.evt.evt_name == val,eventlist],
+                      ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
+
+    search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
-                db.question,
+                search.query,
                 fields=fields,
-                left=[db.evt.on(db.question.eventid == db.evt.id),
-                      db.project.on(db.evt.projid == db.project.id)],
+                left=[db.project.on(db.evt.projid == db.project.id)],
                 headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
                           'Resolvemethod', 'Event', 'Project'],
                 orderby=orderby,
-                search_queries=search_queries,
+                search_form=search.search_form,
+                #search_queries=search_queries,
                 create=True,
                 details=True,
                 editable=True,
