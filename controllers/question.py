@@ -70,6 +70,9 @@ def questiongrid(path=None):
 
     search = GridSearch(search_queries, queries)
 
+    # TODO move to entirely inner join and add project search query
+    # TODO Get existing new_question form rather than default and we are then progressing a bit
+
     grid = Grid(path,
                 search.query,
                 fields=fields,
