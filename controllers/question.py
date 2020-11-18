@@ -27,13 +27,8 @@ def new_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
-    # TODO find out how request.args works with bottle prob different
-    # questid = request.url_args(0, cast=int, default=0)
 
-    # form = Form([db.question.questiontext, db.question.factopinion, db.question.answertext,
-    #             db.question.answer1, db.question.answer2],
-    #            formstyle=FormStyleGrid)
-    # Note fieldlist creates error if you specify a record - so l
+    # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleGrid)
@@ -58,34 +53,35 @@ def questiongrid(path=None):
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
-    queries = [(db.question.eventid == db.evt.id)]
+    queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
 
 
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
                                                                                               orderby=db.evt.evt_name,
                                                                                               distinct=True)]))
 
-    search_queries = [['Search by Event', lambda val: db.evt.evt_name == val,eventlist],
+    projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
+                                                                                              orderby=db.project.proj_name,
+                                                                                              distinct=True)]))
+
+    search_queries = [['Search by Project', lambda val: db.project.proj_name == val,projlist],
+                      ['Search by Event', lambda val: db.evt.evt_name == val,eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
 
     search = GridSearch(search_queries, queries)
 
-    # TODO move to entirely inner join and add project search query
-    # TODO Get existing new_question form rather than default and we are then progressing a bit
-
     grid = Grid(path,
                 search.query,
                 fields=fields,
-                left=[db.project.on(db.evt.projid == db.project.id)],
                 headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
                           'Resolvemethod', 'Event', 'Project'],
                 orderby=orderby,
                 search_form=search.search_form,
                 #search_queries=search_queries,
-                create=True,
+                create=URL('new_question/0'),
                 details=True,
-                editable=True,
-                deletable=True,
+                editable=URL('new_question/'),
+                deletable=URL('new_question/delete/'),
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 
@@ -113,6 +109,9 @@ def datatables():
     return dict(dt=dt)
 
 
+
+#TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
+
 @unauthenticated
 @action('datatables_data', method=['GET', 'POST'])
 @action.uses(session, db, auth)
@@ -124,7 +123,8 @@ def datatables_data():
     dtr = DataTablesRequest(dict(request.query.decode()))
     dtr.order(db, 'question')
 
-    queries = [(db.question.id > 0)]
+    # queries = [(db.question.id > 0)]
+    queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
     if dtr.search_value and dtr.search_value != '':
         queries.append((db.question.question_text.contains(dtr.search_value)) |
                        (db.question.responsible.contains(dtr.search_value)))
