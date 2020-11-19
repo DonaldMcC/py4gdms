@@ -28,6 +28,9 @@
         <label for="hamburger">☰</label>
         <input type="checkbox" id="hamburger">
         <!-- Left menu ul/li -->
+        <!-- [[if response.menu:]]
+          [[=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')]]
+          [[pass]] -->
         [[block page_left_menu]][[end]]
         <!-- Right menu ul/li -->
         <ul>
