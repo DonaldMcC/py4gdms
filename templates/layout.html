@@ -27,11 +27,16 @@
         <!-- Do not touch this -->
         <label for="hamburger">☰</label>
         <input type="checkbox" id="hamburger">
-        <!-- Left menu ul/li -->
-        <!-- [[if response.menu:]]
-          [[=MENU(response.menu, _class='nav navbar-nav',li_class='dropdown',ul_class='dropdown-menu')]]
-          [[pass]] -->
         [[block page_left_menu]][[end]]
+        <div class="navbar-start">
+          <a class="navbar-item" href="[[=URL('index')]]">About</a>
+          <a class="navbar-item" href="[[=URL('home')]]">Projects</a>
+          <a class="navbar-item" href="[[=URL('friends')]]">Events</a>
+          <a class="navbar-item" href="[[=URL('friends')]]">Issues</a>
+          <a class="navbar-item" href="[[=URL('friends')]]">Questions</a>
+          <a class="navbar-item" href="[[=URL('friends')]]">Actions</a>
+          <a class="navbar-item" href="[[=URL('friends')]]">Answer</a>
+        </div>
         <!-- Right menu ul/li -->
         <ul>
           [[if globals().get('user'):]]

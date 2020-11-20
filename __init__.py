@@ -5,7 +5,6 @@ assert py4web.check_compatible("0.1.20190709.1")
 
 # by importing db you expose it to the _dashboard/dbadmin
 from .models import db
-from .menu import response
 
 # by importing controllers you expose the actions defined in it
 from .controllers import controllers

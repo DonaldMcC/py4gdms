@@ -19,6 +19,111 @@
 # much easier than it used to be
 
 from py4web import response, URL
+from yatl.helpers import DIV, LI, UL, A, SELECT, CAT
+
+#Below for reference
+class MENU():
+    """
+    Used to build menus
+    Args:
+        _class: defaults to 'web2py-menu web2py-menu-vertical'
+        ul_class: defaults to 'web2py-menu-vertical'
+        li_class: defaults to 'web2py-menu-expand'
+        li_first: defaults to 'web2py-menu-first'
+        li_last: defaults to 'web2py-menu-last'
+    Use like::
+        menu = MENU([['name', False, URL(...), [submenu]], ...])
+        {{=menu}}
+    """
+
+    tag = 'ul'
+
+    def __init__(self, data, **args):
+        self.data = data
+        self.attributes = args
+        self.components = []
+        if '_class' not in self.attributes:
+            self['_class'] = 'web2py-menu web2py-menu-vertical'
+        if 'ul_class' not in self.attributes:
+            self['ul_class'] = 'web2py-menu-vertical'
+        if 'li_class' not in self.attributes:
+            self['li_class'] = 'web2py-menu-expand'
+        if 'li_first' not in self.attributes:
+            self['li_first'] = 'web2py-menu-first'
+        if 'li_last' not in self.attributes:
+            self['li_last'] = 'web2py-menu-last'
+        if 'li_active' not in self.attributes:
+            self['li_active'] = 'web2py-menu-active'
+        if 'mobile' not in self.attributes:
+            self['mobile'] = False
+
+    def serialize(self, data, level=0):
+        if level == 0:
+            ul = UL(**self.attributes)
+        else:
+            ul = UL(_class=self['ul_class'])
+        for item in data:
+            if isinstance(item, LI):
+                ul.append(item)
+            else:
+                (name, active, link) = item[:3]
+                if isinstance(link, DIV):
+                    li = LI(link)
+                elif 'no_link_url' in self.attributes and self['no_link_url'] == link:
+                    li = LI(DIV(name))
+                elif isinstance(link, dict):
+                    li = LI(A(name, **link))
+                elif link:
+                    li = LI(A(name, _href=link))
+                elif not link and isinstance(name, A):
+                    li = LI(name)
+                else:
+                    li = LI(A(name, _href='#',
+                              _onclick='javascript:void(0);return false;'))
+                if level == 0 and item == data[0]:
+                    li['_class'] = self['li_first']
+                elif level == 0 and item == data[-1]:
+                    li['_class'] = self['li_last']
+                if len(item) > 3 and item[3]:
+                    li['_class'] = self['li_class']
+                    li.append(self.serialize(item[3], level + 1))
+                if active or ('active_url' in self.attributes and self['active_url'] == link):
+                    if li['_class']:
+                        li['_class'] = li['_class'] + ' ' + self['li_active']
+                    else:
+                        li['_class'] = self['li_active']
+                if len(item) <= 4 or item[4] is True:
+                    ul.append(li)
+        return ul
+
+    def serialize_mobile(self, data, select=None, prefix=''):
+        if not select:
+            select = SELECT(**self.attributes)
+        custom_items = []
+        for item in data:
+            # Custom item aren't serialized as mobile
+            if len(item) >= 3 and (not item[0]) or (isinstance(item[0], DIV) and not (item[2])):
+                # ex: ('', False, A('title', _href=URL(...), _title="title"))
+                # ex: (A('title', _href=URL(...), _title="title"), False, None)
+                custom_items.append(item)
+            elif len(item) <= 4 or item[4] is True:
+                select.append(OPTION(CAT(prefix, item[0]),
+                                     _value=item[2], _selected=item[1]))
+                if len(item) > 3 and len(item[3]):
+                    self.serialize_mobile(
+                        item[3], select, prefix=CAT(prefix, item[0], '/'))
+        select['_onchange'] = 'window.location=this.value'
+        # avoid to wrap the select if no custom items are present
+        html = DIV(select, self.serialize(custom_items)) if len(custom_items) else select
+        return html
+
+    def xml(self):
+        if self['mobile']:
+            return self.serialize_mobile(self.data, 0).xml()
+        else:
+            return self.serialize(self.data, 0).xml()
+
+
 
 sub_menu = [('Create Location', False, URL('location', 'new_location')),
             ('Create Project', False, URL('project', 'new_project')),
@@ -29,7 +134,7 @@ sub_menu = [('Create Location', False, URL('location', 'new_location')),
             ('Self Ans Question', False, URL('submit', 'new_question/selfquest')),
             ('Create Action', False, URL('submit', 'new_question/action'))]
 
-response.menu = [
+appmenu = [
     ('About', False, '#',
      [('Home', False, URL('default', 'index')),
       ('Search', False, URL('search', 'newsearch')),
@@ -39,8 +144,6 @@ response.menu = [
       ('Enhancements', False, URL('about', 'enhance')),
       ('Privacy Policy', False, URL('about', 'privacy')),
       ('Downloads', False, URL('about', 'download'))]),
-      ('Create', False, '#',
-       sub_menu),
       ('Answer', False, '#',
      [('Approve Issues', False, URL('answer', 'get_question/issue')),
       ('Answer Questions', False, URL('answer', 'get_question/quest')),
