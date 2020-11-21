@@ -72,7 +72,15 @@ def questiongrid(path=None):
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
     #queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
-    queries = [db.question.id > 0]
+    if 'qtype' in request.query:
+        qtype = request.query.get('qtype')
+    else:
+        qtype = None
+
+    if qtype:
+        queries = [db.question.qtype == qtype]
+    else:
+        queries = [db.question.id > 0]
 
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
                                                                                               orderby=db.evt.evt_name,

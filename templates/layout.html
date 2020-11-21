@@ -32,9 +32,9 @@
           <a class="navbar-item" href="[[=URL('index')]]">About</a>
           <a class="navbar-item" href="[[=URL('projectgrid')]]">Projects</a>
           <a class="navbar-item" href="[[=URL('eventgrid')]]">Events</a>
-          <a class="navbar-item" href="[[=URL('questiongrid')]]">Issues</a>
-          <a class="navbar-item" href="[[=URL('questiongrid')]]">Questions</a>
-          <a class="navbar-item" href="[[=URL('questiongrid')]]">Actions</a>
+          <a class="navbar-item" href="[[=URL('questiongrid',vars=dict(qtype='issue'))]]">Issues</a>
+          <a class="navbar-item" href="[[=URL('questiongrid',vars=dict(qtype='quest'))]]">Questions</a>
+          <a class="navbar-item" href="[[=URL('questiongrid',vars=dict(qtype='action'))]]">Actions</a>
           <a class="navbar-item" href="[[=URL('answergrid')]]">Answer</a>
         </div>
         <!-- Right menu ul/li -->
