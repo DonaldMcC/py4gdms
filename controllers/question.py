@@ -33,7 +33,7 @@ def new_question(qid='0'):
                 record=qid,
                 formstyle=FormStyleGrid)
     if form.accepted:
-        redirect(URL('datatables'))
+        redirect(URL('questiongrid'))
     return dict(form=form)
 
 
@@ -48,7 +48,7 @@ def questiongrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.question.qtype, db.question.status, db.question.questiontext, db.question.factopinion,
-              db.question.answer1, db.question.answer2, db.question.answertext, db.question.resolvemethod,
+              db.question.answertext, db.question.resolvemethod,
               db.evt.evt_name, db.project.proj_name]
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
@@ -73,7 +73,7 @@ def questiongrid(path=None):
     grid = Grid(path,
                 search.query,
                 fields=fields,
-                headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answer1', 'Answer2', 'Answertext',
+                headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answertext',
                           'Resolvemethod', 'Event', 'Project'],
                 orderby=orderby,
                 search_form=search.search_form,
