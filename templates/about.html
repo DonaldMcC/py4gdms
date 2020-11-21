@@ -1,14 +1,13 @@
-[[left_sidebar_enabled,right_sidebar_enabled=False,False]]
 [[extend 'layout.html']]
 
 <h1>About Networked Decision Making</h1>
 <p>Networked Decision Making is software designed to support group decision making without meetings.
-    Many tools make meetings work better but there are few tools available to eliminate many
-    meetings and support consensual group decision making.  Meetings have scalability, efficiency and equality issues.
+    Many tools make meetings work better but there are few tools available to eliminate meetings and support
+    consensual group decision making.  Meetings have scalability, efficiency and equality issues.
     We have issues with this as it excludes people from decisions that impact their lives.
-    An established asynchronous decision making system is a necessary step on the way to a better lives.</p>
+    An established asynchronous decision making system is a necessary step on the way to better lives.</p>
 <h2>Approach</h2>
-    <p>The approach is based on the simple idea that if 3 or more peoople independently agree the answer to a question
+    <p>The approach is based on the simple idea that if 3 or more people independently agree the answer to a question
         then they may well be correct and we should go with that answer until challenged or it becomes clear that they
         are wrong or their solution isn't working.  It focuses effort on prioritised areas of contention.</p>
 
@@ -19,19 +18,21 @@
     <li>Action Approval</li>
 </ol>
 
-<p>It provides a loosely hierarchical approach with questions that create different answers being ‘promoted’ and answered
-    again by more experienced problem solvers.  It also allows users to propose actions that they think should be
-    completed.  Issues, actions and questions can be linked into logical chains and visualised.  Actions and issues
-    follow a similar n person at a time review process but they only have two options of approve or disapprove.
-    An approved action is considered a mandate for action.  The system also allows on-going prioritisation of actions
-    as this is important to get visibility of the highest priorities.  If this approach attains critical mass it would
+<p>A key difference from the previous approach to this is that it is also aimed at individual use.  The vast majority of
+    decisions are personal and providing a platform that allows people to do this but also readily share and consult when
+    appropriate is importatnt.  The platform allows users to propose actions that they think should be
+    completed.  Issues, actions and questions can be linked into logical chains and visualised with questions of fact
+    expected to be answered by the submitter at some point rather than consulted on.  Actions and issues
+    can follow a similar n person at a time review process but they only have two options of approve or disapprove.
+    An approved action is considered a mandate.  The system also allows on-going prioritisation of actions
+    as this is important to get visibility of priorities.  If this approach attains critical mass it would
     resemble a crowd-sourced global strategy.  Issues can also be prioritised and serve as a starting point of a series
     of linked questions and actions to address the issue.</p>
 
 <p>This version of the software can be used by small to medium sized groups of people to provide a decision trail
     on a specific subject or subjects and identify what they agree and disagree about. Topics of disagreement could well
     be the focus of meetings and further discussion using existing tools and methods.  While the demo systems are fully
-    open to all at present web2py provides many mechanisms to restrict access to defined groups if desired.</p>
+    open to all at present py4web can restrict access to defined groups if desired.</p>
 
 <h1>Standard Routing</h1>
 <p> The routing schemes in use are configurable with a basic model of n responses being required before evaluation and x% 
@@ -63,21 +64,6 @@
     no information on other people’s answers being visible. After a question is resolved then any reasons given for the
     answer are visible and these may help users to decide if they wish to challenge or not.  While we greatly appreciate
     the value of other peoples thoughts and ideas, we also appreciate the danger of being led by other peoples thinking.</p>
-
-<h1>Scoring</h1>
-<p>Points will be received for the following activities: </p>
-<ol><li>Submitting questions and urgent and important questions attract more points</li>
-    <li>Answering questions wrongly (but not very many)</li>
-    <li>Answering questions correctly</li>
-    <li>Correctly grading the urgency and importance of the question (still to be developed)</li>
-    <li>The higher the level at which the question gets resolved the more points you get for getting it correct (at all
-        previous levels)</li>
-    <li>Raising a successful challenges (one that changes the resolved answer to the question).</li></ol>
-
-<p>Points are only ever lost for raising an unsuccessful challenge. Users only ever get asked each question once unless
-    it is challenged. Challenged questions may be re-sent to users that have previously answered the question.  This may
-    be changed in future versions and we may also introduce some options for users to review and advise on whether they
-    agree or disagree in situations where there answer differs from the resolved answer.</p>
 
 <h1>Find Out More and Contribute to a Better World</h1>
 
