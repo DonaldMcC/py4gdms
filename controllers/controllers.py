@@ -1,3 +1,39 @@
+# - Coding UTF8 -
+#
+# Networked Decision Making
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
+#
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#   http://netdecisionmaking.com/gdmsdemo/
+#
+# License Code: MIT
+# License Content: Creative Commons Attribution 3.0
+#
+# Also visit: www.py4web.com
+# or Groups: http://groups.google.com/group/py4web
+# For details on the web framework used for this development
+#
+# With thanks to Guido, Massimo and many other that make this sort of thing
+# much easier than it used to be
+
+
+# This controller provides details about network decision making
+# and access to the FAQ
+
+"""
+    exposes:
+    http://..../[app]/about/index
+    http://..../[app]/about/privacy
+    http://..../[app]/about/faq
+    http://..../[app]/about/present
+    http://..../[app]/about/enhance
+    http://..../[app]/about/stdmsg
+    http://..../[app]/about/download
+    http://..../[app]/about/getfile
+
+    """
+
 """
 This file defines actions, i.e. functions the URLs are mapped into
 The @action(path) decorator exposed the function at URL:
@@ -40,5 +76,50 @@ def index():
     user = auth.get_user()
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     return dict(message=message, flash="Hello world")
+
+
+@unauthenticated()
+@action("about")
+@action.uses("about.html")
+def about():
+    return dict(message="all done in the view")
+
+
+@unauthenticated()
+@action("privacy")
+@action.uses("privacy.html")
+def privacy():
+    return dict(message="all done in the view")
+
+
+@unauthenticated()
+@action("faq")
+@action.uses("faq.html")
+def faq():
+    return dict(message="all done in the view")
+
+
+@unauthenticated()
+@action("faq")
+@action.uses("faq.html")
+def present():
+    return dict(message="all done in the view")
+
+
+@unauthenticated()
+@action("enhance")
+@action.uses("enhance.html")
+def enhance():
+    return dict(message="all done in the view")
+
+
+@unauthenticated()
+@action("download")
+@action.uses("download.html")
+def download():
+    downloads = db().select(db.download.ALL, orderby=db.download.title)
+    return dict(downloads=downloads)
+
+
 
 
