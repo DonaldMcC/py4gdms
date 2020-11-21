@@ -37,6 +37,24 @@ def new_question(qid='0'):
     return dict(form=form)
 
 
+@action("view_question/<qid>", method=['GET','POST'])
+@action("view_question", method=['GET', 'POST'])
+@action.uses('new_question.html', session, db)
+def view_question(qid='0'):
+    db.question.id.readable = False
+    db.question.id.writable = False
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
+
+    # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
+    form = Form(db.question,
+                readonly=True,
+                record=qid,
+                formstyle=FormStyleGrid)
+    if form.accepted:
+        redirect(URL('questiongrid'))
+    return dict(form=form)
+
+
 @action('questiongrid', method=['POST', 'GET'])
 @action('questiongrid/<path:path>', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, 'questiongrid.html')
@@ -53,8 +71,8 @@ def questiongrid(path=None):
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
-    queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
-
+    #queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
+    queries = [db.question.id > 0]
 
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
                                                                                               orderby=db.evt.evt_name,
@@ -75,11 +93,12 @@ def questiongrid(path=None):
                 fields=fields,
                 headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answertext',
                           'Resolvemethod', 'Event', 'Project'],
+                left=[db.evt.on(db.question.eventid == db.evt.id),
+                      db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
-                #search_queries=search_queries,
                 create=URL('new_question/0'),
-                details=True,
+                details=URL('view_question/'),
                 editable=URL('new_question/'),
                 deletable=URL('new_question/delete/'),
                 **GRID_DEFAULTS)
@@ -109,9 +128,7 @@ def datatables():
     return dict(dt=dt)
 
 
-
 #TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
-
 @unauthenticated
 @action('datatables_data', method=['GET', 'POST'])
 @action.uses(session, db, auth)
