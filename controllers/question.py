@@ -26,7 +26,7 @@ from pydal.validators import *
 def new_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
-    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress','Resolved'])
 
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
