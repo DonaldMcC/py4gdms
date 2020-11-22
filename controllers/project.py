@@ -6,9 +6,9 @@ from ..common import db, session, T, cache, auth, logger, authenticated, unauthe
 #from .libs.utils import GridSearch
 from py4web.utils.grid import Grid, GridClassStyleBulma
 
-
-@action("new_project", method=['GET', 'POST'])
-@action.uses('new_project.html', session, db)
+@authenticated
+# @action("new_project", method=['GET', 'POST'])
+# @action.uses('new_project.html', session, db)
 def new_project():
     form = Form(db.project)
     return dict(form=form)

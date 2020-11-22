@@ -14,9 +14,7 @@ from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 
-
-@action("new_location", method=['GET', 'POST'])
-@action.uses('new_location.html', session, db)
+@authenticated
 def new_location():
     form = Form(db.locn)
     return dict(form=form)

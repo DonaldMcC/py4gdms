@@ -11,7 +11,6 @@ from py4web.utils.form import Form, FormStyleBulma
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyle, GridClassStyleBulma
-from py4web.utils.param import Param
 
 
 @action('eventgrid', method=['POST', 'GET'])
@@ -33,7 +32,7 @@ def eventgrid(path=None):
 
     search_queries = [['Search by Name', lambda value: db.evt.evt_name == value]]
 
-    #search = GridSearch(search_queries, queries)
+    # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
                 db.evt,
@@ -48,12 +47,12 @@ def eventgrid(path=None):
                 editable=True,
                 deletable=True,
                 **GRID_DEFAULTS)
-
     return dict(grid=grid)
 
 
-@action("new_event", method=['GET', 'POST'])
-@action.uses('new_event.html', session, db)
+@authenticated
+# @action("new_event", method=['GET', 'POST'])
+# @action.uses('new_event.html', session, db)
 def new_event():
     form = Form(db.evt)
     return dict(form=form)

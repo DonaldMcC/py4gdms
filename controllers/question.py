@@ -20,6 +20,11 @@ from ..libs.utils import GridSearch
 from pydal.validators import *
 
 
+# make a "like" button factory
+@authenticated.callback()
+def like(id):
+    db.item_like.insert(item_id=id)
+
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
