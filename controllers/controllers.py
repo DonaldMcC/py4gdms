@@ -63,17 +63,20 @@ Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app w
 
 from ..common import db, T,  auth, unauthenticated, authenticated
 
-
-@unauthenticated()
-def index():
-    user = auth.get_user()
-    message = T("Hello {first_name}".format(**user) if user else "Hello")
-    return dict(message=message, flash="Hello world")
-
 # make a "like" button factory
-#@authenticated.callback()
-#def like(id):
-#    db.item_like.insert(item_id=id)
+@authenticated.callback()
+def agree(id):
+    print(str(id)+'was called')
+    #db.item_like.insert(item_id=id)
+
+
+@authenticated()
+def index():
+    #user = auth.get_user()
+    #message = T("Hello {first_name}".format(**user) if user else "Hello")
+    actions = db(db.question.qtype=='action').select(orderby=~db.question.id, limitby=(0, 10))
+    return dict(actions=actions, agree=agree)
+
 
 @unauthenticated()
 def about():

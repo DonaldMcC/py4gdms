@@ -2,18 +2,18 @@
 
 <div class="section">
   <div class="vars">
-      [[=message]]
+<p>Some blurb.</p>
   </div>
 </div>
 
-[[for item in items:]]
+[[for action in actions:]]
 <div class="post">
-  <a href="[[=URL('home', item.created_by)]]">
-    [[=item.created_by.first_name]]
-    [[=item.created_by.last_name]]
+  <a href="[[=URL('viewquest', action.id)]]">
+    [[=action.qtype]]
+    [[=action.questiontext]]
   </a>
-  on [[=item.created_on]] says
-  <blockquote>[[=item.body]]</blockquote>
-  [[=like.button('Like', _class=("clicked" if item.liked else ""))(id=item.id)]]
+  [[=action.startdate]]
+  <blockquote>[[=action.responsible]]</blockquote>
+  <p>[[=agree.button('Agree', _class=("clicked" if action.id else ""))(id=action.id)]]</p>
 </div>
 [[pass]]
