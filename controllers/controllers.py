@@ -61,7 +61,7 @@ session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
 
-from ..common import db, T,  auth, unauthenticated
+from ..common import db, T,  auth, unauthenticated, authenticated
 
 
 @unauthenticated()
@@ -70,6 +70,10 @@ def index():
     message = T("Hello {first_name}".format(**user) if user else "Hello")
     return dict(message=message, flash="Hello world")
 
+# make a "like" button factory
+#@authenticated.callback()
+#def like(id):
+#    db.item_like.insert(item_id=id)
 
 @unauthenticated()
 def about():
