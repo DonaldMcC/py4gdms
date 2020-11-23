@@ -19,7 +19,7 @@ sys.path.append('./fts/lib')
 sys.path.append('../../gluon')  # to use web2py modules
 
 # ROOT = 'http://localhost:8080/gdms'
-ROOT = 'http://localhost:8081/gdms'
+ROOT = 'http://localhost:8001/py4gdms'
 # ROOT = 'http://localhost:8081/gdms'
 # ROOT = 'https://www.netdecisionmaking.com/gdmssql'
 
@@ -50,7 +50,7 @@ class FunctionalTest(unittest.TestCase):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
 
-        self.browser = webdriver.Chrome('d:\python37\chromedriver.exe',chrome_options=chrome_options)
+        self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
         self.browser.maximize_window()
 
         #self.browser = webdriver.Chrome()
