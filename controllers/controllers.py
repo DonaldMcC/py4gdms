@@ -74,9 +74,13 @@ def agree(id):
 def index():
     #user = auth.get_user()
     #message = T("Hello {first_name}".format(**user) if user else "Hello")
-    actions = db(db.question.qtype=='action').select(orderby=~db.question.id, limitby=(0, 10))
+    actions = get_actions()
     return dict(actions=actions, agree=agree)
 
+
+def get_actions():
+    actions = db(db.question.qtype=='action').select(orderby=~db.question.id, limitby=(0, 10))
+    return actions
 
 @unauthenticated()
 def about():

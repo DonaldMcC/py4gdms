@@ -6,14 +6,4 @@
   </div>
 </div>
 
-[[for action in actions:]]
-<div class="post">
-  <a href="[[=URL('viewquest', action.id)]]">
-    [[=action.qtype]]
-    [[=action.questiontext]]
-  </a>
-  [[=action.startdate]]
-  <blockquote>[[=action.responsible]]</blockquote>
-  <p>[[=agree.button('Agree', _class=("clicked" if action.id else ""))(id=action.id)]]</p>
-</div>
-[[pass]]
+[[include 'action.html']]

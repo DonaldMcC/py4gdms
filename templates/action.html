@@ -1,0 +1,26 @@
+
+[[if actions:]]
+<h1>Actions</h1>
+<table id=actions class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th>Status</th>
+                        <th width="50%">Action</th>
+                        <th>End Date</th>
+                        <th class="min-tablet-p">Resp</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for i,row in enumerate(actions):]]
+<tr>
+<th>[[=row.status]]</th>
+<td>[[=row.questiontext]]
+<div id='btns[[=str(row.id)]]'>
+=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
+<td>[[if row.enddate:]][[=prettydate(row.enddate.date())]][[pass]]</td>
+<td>[[=row.responsible]]</td>
+</tr>
+[[pass]]
+</tbody>
+</table>
+[[pass]]
