@@ -80,19 +80,36 @@ def index():
     return dict(actions=actions, questions=questions, issues=issues, agree=agree)
 
 
-def get_actions():
-    actions = db(db.question.qtype=='action').select(orderby=~db.question.id, limitby=(0, 10))
+def get_actions(qtype='action', x=0, y=10):
+    query=make_query(qtype)
+    # TODO will request specific fields at some point and probably pass through datatable options eg search and so
+    # forth
+    sortby = ~db.question.id
+    actions = db(query).select(orderby=[sortby], limitby=(x, y))
     return actions
 
 
-def get_questions():
-    questions = db(db.question.qtype=='quest').select(orderby=~db.question.id, limitby=(0, 10))
+def get_questions(x=0, y=10):
+    query=make_query()
+    questions = db(query).select(orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
-def get_issues():
-    issues = db(db.question.qtype=='issue').select(orderby=~db.question.id, limitby=(0, 10))
+def get_issues(qtype='issue', x=0, y=10):
+    query=make_query(qtype)
+    issues = db(query).select(orderby=~db.question.id, limitby=(x, y))
     return issues
+
+
+def make_query(qtype='quest'):
+    if qtype=='quest':
+        query = db.question.qtype=='quest'
+    elif qtype == 'action':
+        query = db.question.qtype=='action'
+    else:
+        query = db.question.qtype == 'issue'
+    return query
+
 
 @unauthenticated()
 def about():
