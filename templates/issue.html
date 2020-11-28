@@ -1,7 +1,7 @@
 
-[[if actions:]]
-<h1>Actions</h1>
-<table id=actions class='table issuetable2 table-bordered table-condensed'>
+[[if issues:]]
+<h1>Issues</h1>
+<table id=issues class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
 						<th>Status</th>
@@ -11,7 +11,7 @@
                     </tr>
                 </thead>
                     <tbody>
-[[for i,row in enumerate(actions):]]
+[[for row in issues:]]
 <tr>
 <th>[[=row.status]]</th>
 <td>[[=row.questiontext]]
@@ -25,6 +25,6 @@
 </table>
 [[pass]]
 <script>
-$('#actions').DataTable({responsive: true, paging: false, searching:false});
+$('#issues').DataTable({responsive: true, paging: false, searching:false});
 </script>
 [[pass]]

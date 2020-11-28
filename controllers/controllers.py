@@ -75,12 +75,24 @@ def index():
     #user = auth.get_user()
     #message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = get_actions()
-    return dict(actions=actions, agree=agree)
+    questions = get_questions()
+    issues = get_issues()
+    return dict(actions=actions, questions=questions, issues=issues, agree=agree)
 
 
 def get_actions():
     actions = db(db.question.qtype=='action').select(orderby=~db.question.id, limitby=(0, 10))
     return actions
+
+
+def get_questions():
+    questions = db(db.question.qtype=='quest').select(orderby=~db.question.id, limitby=(0, 10))
+    return questions
+
+
+def get_issues():
+    issues = db(db.question.qtype=='issue').select(orderby=~db.question.id, limitby=(0, 10))
+    return issues
 
 @unauthenticated()
 def about():
