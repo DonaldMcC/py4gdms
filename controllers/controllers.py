@@ -65,10 +65,9 @@ from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, abort, redirect, URL
 
 
-@action("quickanswer/<questid>/<answer>", method=['GET', 'POST'])
-@action("quickanswer", method=['GET', 'POST'])
+@action("quickanswer", method=['POST'])
 @action.uses(session, db, auth)
-def quickanswer(questid, answer):
+def quickanswer():
     """
     This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
     basically needs to create a userquestion record and remove the buttons from the relevant row which
@@ -76,6 +75,9 @@ def quickanswer(questid, answer):
     geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
     and retrieve them from the question
     """
+    questid = request.json['questid']
+    answer = request.json['answer']
+
     print(questid + 'was called with answer ' + answer)
     quest = db(db.question.id == questid).select().first()
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id) &
