@@ -61,7 +61,40 @@ session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
 
-from ..common import db, T,  auth, unauthenticated, authenticated
+from ..common import db, unauthenticated, authenticated
+#from ..ndspermt import get_buttons
+
+
+def quickanswer(questid,answer):
+    """
+    This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
+    basically needs to create a userquestion record and remove the buttons from the relevant row which
+    may be more challenging - it will never apply to questions and there is a question about how scope changes and
+    geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
+    and retrieve them from the question
+    """
+
+    quest = db(db.question.id == questid).select().first()
+    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id) &
+            (db.userquestion.status == 'In Progress')).select()
+
+    if quest and not uq:
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, uq_level=quest.question_level,
+                                      answer=answer, reject=False, urgency=quest.urgency, importance=quest.importance,
+                                      category=quest.category, activescope=quest.activescope, continent=quest.continent,
+                                      country=quest.country)
+        messagetxt = 'Answer recorded for item:' + str(questid)
+
+        db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
+                                              urgency=quest.urgency, importance=quest.importance)
+    elif uq:
+        messagetxt = 'You have already answered this item'
+    else:
+        messagetxt = 'Answer not recorded'
+
+    #TODO - will probalby look to return a flashbar of some srot in a bit
+    return messagetxt
+
 
 # make a "like" button factory
 @authenticated.callback()

@@ -1,13 +1,10 @@
 
 [[if issues:]]
-<h1>Issues</h1>
 <table id=issues class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th>Status</th>
-                        <th width="50%">Action</th>
-                        <th>End Date</th>
-                        <th class="min-tablet-p">Resp</th>
+						<th width="10% >Status</th>
+                        <th width="90%">Issue</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -17,8 +14,6 @@
 <td>[[=row.questiontext]]
 <div id='btns[[=str(row.id)]]'>
 =get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
-<td>[[if row.enddate:]][[=prettydate(row.enddate.date())]][[pass]]</td>
-<td>[[=row.responsible]]</td>
 </tr>
 [[pass]]
 </tbody>

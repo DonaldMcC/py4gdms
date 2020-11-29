@@ -1,13 +1,13 @@
-
 [[if questions:]]
 <h1>Questions</h1>
 <table id=questions class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th>Status</th>
-                        <th width="50%">Question</th>
-                        <th>End Date</th>
-                        <th class="min-tablet-p">Resp</th>
+						<th width="10%">Status</th>
+                        <th width="40%">Question</th>
+                        <th width="5%">F/O</th>
+                        <th width="20%">Answer(s)</th>
+                        <th width="25%" class="min-tablet-p">Notes</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -15,10 +15,13 @@
 <tr>
 <th>[[=row.status]]</th>
 <td>[[=row.questiontext]]
-<div id='btns[[=str(row.id)]]'>
-=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
-<td>[[if row.enddate:]][[=prettydate(row.enddate.date())]][[pass]]</td>
-<td>[[=row.responsible]]</td>
+<div id='btns[[=str(row.id)]]'></div></td>
+<td>[[=row.factopinion]]</td>
+<td>[[=row.answer1]]
+    <INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="[[=URL('viewquest','challenge')]])" VALUE="Challenge">
+    <br>[[=row.answer2]]
+<INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="[[=URL('viewquest','challenge')]])" VALUE="Challenge"></td>
+    <td>[[=row.notes]]</td>
 </tr>
 [[pass]]
 </tbody>
