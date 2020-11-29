@@ -1,3 +1,23 @@
+<script type="text/javascript">
+    var onsuccess = function(res) {
+        var data = JSON.parse(res.data);
+        document.getElementById('display_first').innerHTML = data.first;
+        document.getElementById('display_last').innerHTML = data.last;
+    };
+    var onerror = function(res) {
+        alert('ERROR in call');
+    };
+
+    function get_names() {
+        var first = document.getElementById("first_name").value;
+        var last = document.getElementById("last_name").value;
+        Q.ajax("POST", "[[=URL('get_names')]]", {
+            first: first,
+            last: last
+        }).then(onsuccess).catch(onerror);
+    }
+</script>
+
 [[if questions:]]
 <h1>Questions</h1>
 <table id=questions class='table issuetable2 table-bordered table-condensed'>
@@ -18,9 +38,9 @@
 <div id='btns[[=str(row.id)]]'></div></td>
 <td>[[=row.factopinion]]</td>
 <td>[[=row.answer1]]
-    <INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="[[=URL('viewquest','challenge')]])" VALUE="Challenge">
+    <INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="get_names()", VALUE="Answer1">
     <br>[[=row.answer2]]
-<INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="[[=URL('viewquest','challenge')]])" VALUE="Challenge"></td>
+<INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="[[=URL('viewquest','challenge')]]", VALUE="Challenge"></td>
     <td>[[=row.notes]]</td>
 </tr>
 [[pass]]

@@ -61,11 +61,14 @@ session, db, T, auth, and tempates are examples of Fixtures.
 Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
 """
 
-from ..common import db, unauthenticated, authenticated
-#from ..ndspermt import get_buttons
+from ..common import db, unauthenticated, authenticated, auth, session
+from py4web import action, request, abort, redirect, URL
 
 
-def quickanswer(questid,answer):
+@action("quickanswer/<questid>/<answer>", method=['GET', 'POST'])
+@action("quickanswer", method=['GET', 'POST'])
+@action.uses(session, db, auth)
+def quickanswer(questid, answer):
     """
     This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
     basically needs to create a userquestion record and remove the buttons from the relevant row which
@@ -73,20 +76,23 @@ def quickanswer(questid,answer):
     geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
     and retrieve them from the question
     """
-
+    print(questid + 'was called with answer ' + answer)
     quest = db(db.question.id == questid).select().first()
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id) &
             (db.userquestion.status == 'In Progress')).select()
 
     if quest and not uq:
-        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, uq_level=quest.question_level,
-                                      answer=answer, reject=False, urgency=quest.urgency, importance=quest.importance,
-                                      category=quest.category, activescope=quest.activescope, continent=quest.continent,
-                                      country=quest.country)
+        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
         messagetxt = 'Answer recorded for item:' + str(questid)
 
-        db(db.question.id == quest.id).update(answercounts=anscount, unpanswers=intunpanswers,
-                                              urgency=quest.urgency, importance=quest.importance)
+        questcounts=quest.othercounts
+        if answer == '1':
+            questcounts[0] += 1
+        else:
+            questcounts[1] += 1
+
+        #TODO - think this will be a function call in a bit
+        db(db.question.id == quest.id).update(othercounts=questcounts)
     elif uq:
         messagetxt = 'You have already answered this item'
     else:
