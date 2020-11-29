@@ -13,14 +13,9 @@ not_empty = IS_NOT_EMPTY()
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
-                Field('description', 'text', default='Explain how the resolution method works',
-                      label='Description of resolution method'),
-                Field('resolve_method', 'string', default='Network', requires=IS_IN_SET(['Network', 'Vote'])),
-                Field('responses', 'integer', default=3, label='Number of Responses before evaluation'),
-                Field('consensus', 'double', default=100, label='Percentage Agmt required to resolve'),
-                Field('userselect', 'boolean', default=True, label='Allow users to select to answer'),
-                Field('adminresolve', 'boolean', default=True,
-                      label='Allow event owners to resolve on behalf of group'),
+                Field('responses', 'integer', default=3, label='Min Number of Responses before resolution'),
+                Field('consensus', 'double', default=60, label='Percentage Agmt required to resolve'),
+                Field('adminresolve', 'boolean', default=True, label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
 
 

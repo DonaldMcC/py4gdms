@@ -63,7 +63,7 @@ Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app w
 
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, abort, redirect, URL
-from ndsfunctions import score_question
+from ..ndsfunctions import score_question
 
 
 @action("quickanswer", method=['POST'])

@@ -22,8 +22,8 @@ import datetime
 import calendar
 from yatl.helpers import XML
 from py4web import action, request, abort, redirect, URL
-from common import db, session, T, cache, auth
-from d3js2py import getevent
+from .common import db, session, T, cache, auth
+from .d3js2py import getevent
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
     value = str(value)

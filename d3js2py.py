@@ -22,9 +22,9 @@ import datetime
 import calendar
 from yatl.helpers import XML
 from py4web import action, request, abort, redirect, URL
-from common import db, session, T, cache, auth
+from .common import db, session, T, cache, auth
 
-from ndsfunctions import creategraph
+#from .ndsfunctions import creategraph
 
 
 def getwraptext(textstring, answer, maxlength=200, qtype='quest'):
