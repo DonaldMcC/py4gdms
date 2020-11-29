@@ -63,6 +63,7 @@ Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app w
 
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, abort, redirect, URL
+from ndsfunctions import score_question
 
 
 @action("quickanswer", method=['POST'])
@@ -86,7 +87,7 @@ def quickanswer():
     if quest and not uq:
         uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
         messagetxt = 'Answer recorded for item:' + str(questid)
-
+        # status = score_question(questid, form2.vars.id, False, anon_resolve=PARAMS.anon_resolve)
         questcounts=quest.othercounts
         if answer == '1':
             questcounts[0] += 1

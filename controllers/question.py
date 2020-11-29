@@ -153,11 +153,11 @@ def datatables_data():
     dtr = DataTablesRequest(dict(request.query.decode()))
     dtr.order(db, 'question')
 
-    # queries = [(db.question.id > 0)]
-    queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
-    if dtr.search_value and dtr.search_value != '':
-        queries.append((db.question.question_text.contains(dtr.search_value)) |
-                       (db.question.responsible.contains(dtr.search_value)))
+    queries = [(db.question.id > 0)]
+    #queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
+    #if dtr.search_value and dtr.search_value != '':
+    #    queries.append((db.question.questiontext.contains(dtr.search_value)) |
+    #                  (db.question.responsible.contains(dtr.search_value)))
 
     query = reduce(lambda a, b: (a & b), queries)
     record_count = db(db.question.id > 0).count()
