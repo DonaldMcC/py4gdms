@@ -36,7 +36,7 @@ def new_question(qid='0'):
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
-                formstyle=FormStyleGrid)
+                formstyle=FormStyleBootstrap4)
     if form.accepted:
         redirect(URL('questiongrid'))
     return dict(form=form)
@@ -54,7 +54,7 @@ def view_question(qid='0'):
     form = Form(db.question,
                 readonly=True,
                 record=qid,
-                formstyle=FormStyleGrid)
+                formstyle=FormStyleBootstrap4)
     if form.accepted:
         redirect(URL('questiongrid'))
     return dict(form=form)
