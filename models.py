@@ -10,6 +10,7 @@ import datetime
 not_empty = IS_NOT_EMPTY()
 # TODO setup auth extra fields again to extent still required
 
+# TOD make consensus be above 50% as now only 2 possible answers!!
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),

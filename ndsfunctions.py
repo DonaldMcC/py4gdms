@@ -135,22 +135,30 @@ def score_question(questid, answer=0):
     """
 
     quest = db(db.question.id == questid).select().first()
-    resmethods = db(db.resolve.resolve_name == quest.resolvemethod).select()
+    resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
 
-    if resmethods:
-        resmethod = resmethods.first()
-        answers_per_level = resmethod.responses
-        method = resmethod.resolve_method
-        consensus = resmethod.consensus
-    else:
-        answers_per_level = 3
-        method = 'Network'
-        consensus = 100
+    if answer == 1:
+        quest.answer1 += 1
+    elif answer == 2:
+        quest.answer2 += 1
 
+    numanswers = quest.numanswer1 + quest.numanswer2
+    if numanswers >= resmethod.responses:
+        if ((100 * quest.numanswer1) / numanswers >= resmethod.consensus or
+            (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
+            quest.status = 'Resolved'
+            if quest.numanswer1 > quest.numanswer2:
+                pass
+            else:
+                pass
+        else:
+            #Just may need an unresolvedate??
+            quest.satus = 'In Progress'
 
-    db(db.question.id == quest.id).update()
+    quest.update()
+    db.commit()
 
-    return status
+    return quest.status
 
 
 def most_common(lst):
