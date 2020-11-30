@@ -78,24 +78,13 @@ def quickanswer():
     """
     questid = request.json['questid']
     answer = request.json['answer']
-
     print(questid + 'was called with answer ' + answer)
-    quest = db(db.question.id == questid).select().first()
-    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id) &
-            (db.userquestion.status == 'In Progress')).select()
+    uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
 
-    if quest and not uq:
+    if not uq:
         uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
         messagetxt = 'Answer recorded for item:' + str(questid)
-        # status = score_question(questid, form2.vars.id, False, anon_resolve=PARAMS.anon_resolve)
-        questcounts=quest.othercounts
-        if answer == '1':
-            questcounts[0] += 1
-        else:
-            questcounts[1] += 1
-
-        #TODO - think this will be a function call in a bit
-        db(db.question.id == quest.id).update(othercounts=questcounts)
+        status = score_question(questid, answer)
     elif uq:
         messagetxt = 'You have already answered this item'
     else:

@@ -125,7 +125,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
     return result
 
 
-def score_question(questid, uqid=0, answer=0):
+def score_question(questid, answer=0):
     """
     This routine is now called for all answers to questions but a couple of changes 
     a) only ever two answers to a question
@@ -133,7 +133,6 @@ def score_question(questid, uqid=0, answer=0):
     c) thresholds are minimum number of answers and %age level eg 3 and 60% would take the answer that 2 peopel went
        for
     """
-
 
     quest = db(db.question.id == questid).select().first()
     resmethods = db(db.resolve.resolve_name == quest.resolvemethod).select()
