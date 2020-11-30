@@ -147,13 +147,16 @@ def score_question(questid, answer=0):
         if ((100 * quest.numanswer1) / numanswers >= resmethod.consensus or
             (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
             quest.status = 'Resolved'
+            quest.resolvedate = datetime.datetime.utcnow()
             if quest.numanswer1 > quest.numanswer2:
-                pass
+                quest.correctans = 1
             else:
-                pass
+                quest.correctans = 2
         else:
-            #Just may need an unresolvedate??
-            quest.satus = 'In Progress'
+            #Just may need an unresolvedate - lets just use resolveddate as unresolvedate for now
+            quest.status = 'In Progress'
+            quest.correctans = 0
+            quest.resolvedate = datetime.datetime.utcnow()
 
     quest.update()
     db.commit()
