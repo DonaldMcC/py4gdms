@@ -12,7 +12,6 @@ from .controllers import project
 from .controllers import location
 from .controllers import event
 from .controllers import question
-from .controllers import category
 from .controllers import resolve
 
 # optional parameters

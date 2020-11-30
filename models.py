@@ -29,15 +29,9 @@ db.define_table('website_parameters',
                 Field('website_url', label=T('Url'), comment=T('URL of the website used for emailing external links')),
                 Field('longdesc', 'text', label=T('Long Description'), comment=T('Subject of the website')),
                 Field('shortdesc', label=T('Url'), comment=T('Short Description of the website')),
-                Field('level1desc', label=T('Level1Desc'), comment=T('First Location Level')),
-                Field('level2desc', label=T('Level2Desc'), comment=T('Second Location Level')),
-                Field('level3desc', label=T('Level3Desc'), comment=T('Third Location Level')),
-                Field('copyright', label=T('Copyright'),
-                      default='Has probably been eliminated on more advanced planets'),
                 Field('self_resolve', 'boolean', default=True, label=T('Allow self resolved actions')),
                 Field('self_answer', 'boolean', default=True, label=T('Allow self-answer questions')),
                 Field('anon_resolve', 'boolean', default=False, label=T('Anonymous answers on resolve')),
-                Field('force_language', label=T('Force a language (en, it, es, fr, ...)')),
                 Field('google_analytics_id', label=T('Google analytics id'),
                       comment=T('Your Google Analytics account ID')),
                 Field('seo_website_title', label=T('SEO : Website title'),
@@ -58,12 +52,6 @@ db.define_table('website_parameters',
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 db.website_parameters.default_resolve_name.requires = IS_EMPTY_OR(IS_IN_DB(db, 'resolve.resolve_name'))
 
-
-db.define_table('category',
-                Field('cat_desc', 'string', label='Category',
-                      requires=[not_empty, IS_NOT_IN_DB(db, 'category.cat_desc'), IS_LOWER()]),
-                Field('categorydesc', 'text', label='Description'),
-                format='%(cat_desc)s')
 
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
@@ -156,25 +144,22 @@ db.define_table('question',
                       comment='Factual questions should be answered by either submitter or knowledge engines '),
                 Field('answer1', 'string'),
                 Field('answer2', 'string'),
+                Field('numanswer1', 'integer', readable=False, writable=False),
+                Field('numanswer2', 'integer', readable=False, writable=False),
                 Field('correctans', 'integer', readable=False, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, readable=False, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'], writable=False,
                       label='Priority'),
-                Field('othercounts', 'list:integer', default=[0, 0, 0, 0, 0, 0, 0, 0], readable=False, writable=False,
-                      comment='numanswer1, numanswer2, numpass, numchallenges, numchallenged, numagree, numdisagree, numcomments'),
-                Field('subquests', 'list:integer', readable=False, writable=False),
-                Field('resolvemethod', 'string', default='Standard', readable=False, writable=False, label='Resolution Method'),
+                Field('subquests', 'list:integer', readable=False, writable=False, label='Sub Questions'),
+                Field('resolvemethod', 'reference resolve', default='Standard', readable=False, writable=False, label='Resolution Method'),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
-                Field('challengedate', 'datetime', readable=False, writable=False, label='Date Challenged'),
-                Field('answerreasons', 'list:string', readable=False, writable=False, label='Answer Reasons'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Starts'),
                 Field('enddate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Ends'),
                 Field('eventid', 'reference evt', label='Event'),
-                Field('challenge', 'boolean', readable=False, writable=False, default=False),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', readable=False, writable=False, default=0.0, label='xcoord'),  # x pos on the eventmap
@@ -194,60 +179,14 @@ db.define_table('question',
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
-                Field('status', 'string', default='In Progress', writable=False, readable=False),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
                                 error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
                                 error_message='Must be between 1 and 10')),
-                Field('score', 'integer', default=0, writable='False'),
                 Field('answerreason', 'text', label='Reasoning'),
-                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
-                Field('resolvedate', 'datetime', writable=False, label='Date Resolved'))
-
-
-db.define_table('questchallenge',
-                Field('questionid', 'reference question', writable=False, readable=False),
-                Field('auth_userid', 'reference auth_user', writable=False, readable=False),
-                Field('status', 'string', default='In Progress', writable=False, readable=False),
-                Field('challengereason', 'text'),
-                Field('challengedate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
-
-# this holds details of who has agreed and disagreed on the answer to a question
-# no points are awarded for this at present but it may be configured to prevent
-# challenges if the agreement to disagreement ratio is above some point this will also
-# now support logging agreement to actions and so urgency and importance have been
-# added to this table - however they are also picked up in userquestion - thinking is
-# questions will not show this but actions will ie will pick-up in one place only
-# Some users may want to record agreement without ranking immediately - but will
-# accept their default values for now as no way of knowing if intended or not
-
-
-db.define_table('questagreement',
-                Field('questionid', 'reference question', writable=False),
-                Field('auth_userid', 'reference auth_user', writable=False),
-                Field('agree', 'integer', writable=False, readable=False),
-                Field('agreedate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
-                Field('urgency', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('importance', 'integer', default=0, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('agmt_level', 'integer', default=1, readable=False, writable=False))
-
-
-db.define_table('questurgency',
-                Field('questionid', 'reference question', writable=False),
-                Field('auth_userid', 'reference auth_user', writable=False),
-                Field('urgency', 'integer', default=5, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('importance', 'integer', default=5, requires=IS_IN_SET([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])),
-                Field('urge_level', 'integer', default=1, readable=False, writable=False))
-
-# questlinks replaces priorquests and subsquests in the questtion table at present as
-# list reference fields weren't going to be enough to provide funcionality to
-# allow creation and deletion of links I now think the record gets deleted
-# when delete count exceeds createcount and deletecount is also greater than one
-# so that may mean that status can be a computed field but would need to be queried on
-# so not a virtual field
-# may need to rethink links as going more event focussed but some things may get carried over and others not??
+                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 
 db.define_table('questlink',
@@ -261,6 +200,7 @@ db.define_table('questlink',
                 Field('lastdeleter', 'reference auth_user'),
                 Field('lastaction', 'string', default='create'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+
 
 # this holds comments for resolved questions
 # it may be extended to allow comments against unresolved but not yet
@@ -308,6 +248,5 @@ db.define_table('eventmap',
                           ['Draft', 'In Progress', 'Resolved', 'Rejected', 'Admin Resolved']),
                       comment='Select draft to defer for later editing'),
                 Field('notes', 'text', label='Notes'))
-
 
 db.commit()

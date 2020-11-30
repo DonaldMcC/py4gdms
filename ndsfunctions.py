@@ -125,7 +125,7 @@ def resulthtml(questiontext, answertext, id=0, output='html'):
     return result
 
 
-def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
+def score_question(questid, uqid=0, answer=0):
     """
     This routine is now called for all answers to questions but a couple of changes 
     a) only ever two answers to a question
@@ -134,7 +134,6 @@ def score_question(questid, uqid=0, endvote=False, anon_resolve=False):
        for
     """
 
-    status = 'In Progress'
 
     quest = db(db.question.id == questid).select().first()
     resmethods = db(db.resolve.resolve_name == quest.resolvemethod).select()
