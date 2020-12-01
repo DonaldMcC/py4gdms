@@ -18,9 +18,17 @@
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td>[[=row.question.factopinion]]</td>
 <td>[[=row.question.answer1]]
-    <INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','1')", VALUE="Yes">
+    [[if row.userquestion.answer == 1:]]
+      <INPUT TYPE=BUTTON title="Already Answered" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','1')", VALUE="UnAnswer">
+    [[else:]]
+    <INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','1')", VALUE="Answer">
+    [[pass]]
     <br>[[=row.question.answer2]]
-<INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','2')", VALUE="Yes"></td>
+    [[if row.userquestion.answer == 2:]]
+    <INPUT TYPE=BUTTON title="Already Answered" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','1')", VALUE="UnAnswer">
+    [[else:]]
+<INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','2')", VALUE="Answer"></td>
+    [[pass]]
     <td>[[=row.question.notes]]</td>
 </tr>
 [[pass]]
