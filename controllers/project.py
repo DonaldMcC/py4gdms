@@ -5,6 +5,8 @@ from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 #from .libs.utils import GridSearch
 from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
+
 
 #@authenticated
 @action("new_project", method=['GET', 'POST'])
@@ -21,7 +23,7 @@ def projectgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
+                         formstyle=FormStyleBootstrap4,
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.project.proj_name, db.project.proj_status, db.project.startdate, db.project.enddate,

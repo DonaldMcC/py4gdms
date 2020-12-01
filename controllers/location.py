@@ -9,7 +9,7 @@
 
 
 from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
@@ -29,7 +29,7 @@ def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
+                         formstyle=FormStyleBootstrap4,
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,
