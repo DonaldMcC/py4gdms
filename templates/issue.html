@@ -3,17 +3,17 @@
 <table id=issues class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th width="10% >Status</th>
+						<th width="10%">Status</th>
                         <th width="90%">Issue</th>
                     </tr>
                 </thead>
                     <tbody>
 [[for row in issues:]]
 <tr>
-<th>[[=row.status]]</th>
-<td>[[=row.questiontext]]
-<div id='btns[[=str(row.id)]]'>
-=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
+<th>[[=row.question.status]]</th>
+<td>[[=row.question.questiontext]]
+<div id='btns[[=str(row.question.id)]]'>
+=get_buttons(row.question.qtype, row.question.status, row.question.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
 </tr>
 [[pass]]
 </tbody>

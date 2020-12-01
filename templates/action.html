@@ -13,12 +13,11 @@
                     <tbody>
 [[for i,row in enumerate(actions):]]
 <tr>
-<th>[[=row.status]]</th>
-<td>[[=row.questiontext]]
-<div id='btns[[=str(row.id)]]'>
-=get_buttons(row.qtype, row.status, row.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
-<td>[[if row.enddate:]][[=prettydate(row.enddate.date())]][[pass]]</td>
-<td>[[=row.responsible]]</td>
+<th>[[=row.question.status]]</th>
+<td>[[=row.question.questiontext]]
+    <div id='btns[[=str(row.question.id)]]'></div></td>
+<td>[[if row.question.enddate:]][[=prettydate(row.question.enddate.date())]][[pass]]</td>
+<td>[[=row.question.responsible]]</td>
 </tr>
 [[pass]]
 </tbody>

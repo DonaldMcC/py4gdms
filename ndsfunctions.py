@@ -136,7 +136,7 @@ def score_question(questid, answer=0):
 
     quest = db(db.question.id == questid).select().first()
     resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
-
+    print(questid)
     if answer == 1:
         quest.answer1 += 1
     elif answer == 2:

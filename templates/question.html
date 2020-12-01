@@ -13,15 +13,15 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=row.status]]</th>
-<td>[[=row.questiontext]]
-<div id='btns[[=str(row.id)]]'></div></td>
-<td>[[=row.factopinion]]</td>
-<td>[[=row.answer1]]
-    <INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.id]]','1')", VALUE="Yes">
-    <br>[[=row.answer2]]
-<INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.id]]','2')", VALUE="Yes"></td>
-    <td>[[=row.notes]]</td>
+<th>[[=row.question.status]]</th>
+<td>[[=row.question.questiontext]]
+<div id='btns[[=str(row.question.id)]]'></div></td>
+<td>[[=row.question.factopinion]]</td>
+<td>[[=row.question.answer1]]
+    <INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','1')", VALUE="Yes">
+    <br>[[=row.question.answer2]]
+<INPUT TYPE=BUTTON title="Click to Answer" class="btn btn-warning  btn-sm" onclick="quickanswer('[[=row.question.id]]','2')", VALUE="Yes"></td>
+    <td>[[=row.question.notes]]</td>
 </tr>
 [[pass]]
 </tbody>

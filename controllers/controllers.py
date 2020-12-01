@@ -76,6 +76,7 @@ def quickanswer():
     geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
     and retrieve them from the question
     """
+    print('qickans called')
     questid = request.json['questid']
     answer = request.json['answer']
     print(questid + 'was called with answer ' + answer)
@@ -116,19 +117,22 @@ def get_actions(qtype='action', x=0, y=10):
     # TODO will request specific fields at some point and probably pass through datatable options eg search and so
     # forth
     sortby = ~db.question.id
-    actions = db(query).select(orderby=[sortby], limitby=(x, y))
+    actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
+                                orderby=[sortby], limitby=(x, y))
     return actions
 
 
 def get_questions(x=0, y=10):
     query=make_query()
-    questions = db(query).select(orderby=~db.question.id, limitby=(x, y))
+    questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
+                                  orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
 def get_issues(qtype='issue', x=0, y=10):
     query=make_query(qtype)
-    issues = db(query).select(orderby=~db.question.id, limitby=(x, y))
+    issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
+                               orderby=~db.question.id, limitby=(x, y))
     return issues
 
 
