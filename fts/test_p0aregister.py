@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
-        self.url = ROOT + '/default/user/register'        
+        self.url = ROOT + '/auth/register'
         get_browser = self.browser.get(self.url)
 
     # def test_can_view_register_page(self):
@@ -24,10 +24,16 @@ class TestRegisterPage (FunctionalTest):
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 
+
+
         # first_name = self.browser.find_element_by_name("first_name")
         first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
         first_name.send_keys(user)
+
+        username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("username"))
+        username.clear()
+        username.send_keys(user)
         
         last_name = self.browser.find_element_by_name("last_name")
         last_name.clear()
@@ -46,17 +52,20 @@ class TestRegisterPage (FunctionalTest):
         password.clear()
         password.send_keys(passwd)
 
-        verify_password = self.browser.find_element_by_name("password_two")
+        verify_password = self.browser.find_element_by_name("password_again")
         verify_password.clear()
         verify_password.send_keys(passwd)
 
-        data_consent = self.browser.find_element_by_name("data_consent")
-        data_consent.click()
+        #data_consent = self.browser.find_element_by_name("data_consent")
+        #data_consent.click()
 
-        register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        register_button = self.browser.find_element_by_css_selector("input[type=submit]")
 
+        time.sleep(10)
         register_button.click()
-        time.sleep(3)
+        #self.browser.find_element_by_xpath(r"id('page-content')//input[@type='submit']").click()
+
+        time.sleep(10)
         resultstring = 'Welcome ' + user
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)
