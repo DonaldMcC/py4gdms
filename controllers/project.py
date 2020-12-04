@@ -9,10 +9,15 @@ from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleB
 
 
 #@authenticated
+@action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
 @action.uses('new_project.html', session, db)
-def new_project():
-    form = Form(db.project)
+def new_project(pid=0):
+    form = Form(db.project,
+                record=pid,
+                formstyle=FormStyleBootstrap4)
+    if form.accepted:
+        redirect(URL('projectgrid'))
     return dict(form=form)
 
 
@@ -43,10 +48,10 @@ def projectgrid(path=None):
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description', 'Shared'],
                 orderby=orderby,
                 search_queries=search_queries,
-                create=True,
+                create=URL('new_project/0'),
                 details=True,
-                editable=True,
-                deletable=True,
+                editable=URL('new_project/'),
+                deletable=URL('new_project/delete/'),
                 **GRID_DEFAULTS)
 
     return dict(grid=grid)

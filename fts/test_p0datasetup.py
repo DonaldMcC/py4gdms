@@ -51,7 +51,7 @@ class AnswerQuestion (FunctionalTest):
 
 
     def test_addresolvemethods(self):
-        self.url = ROOT + '/admin/addresolvemethods'
+        self.url = ROOT + '/new_'
         get_browser = self.browser.get(self.url)
         time.sleep(1)
 
