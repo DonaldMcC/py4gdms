@@ -13,6 +13,18 @@ from ..common import db, session, T, cache, auth, logger, authenticated, unauthe
 from py4web.utils.grid import Grid, GridClassStyle, GridClassStyleBulma
 
 
+@action("new_event/<eid>", method=['GET', 'POST'])
+@action("new_event", method=['GET', 'POST'])
+@action.uses('new_event.html', session, db)
+def new_event(eid=0):
+    form = Form(db.evt,
+                record=eid,
+                formstyle=FormStyleBootstrap4)
+    if form.accepted:
+        redirect(URL('eventgrid'))
+    return dict(form=form)
+
+
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, 'eventgrid.html')
@@ -27,9 +39,7 @@ def eventgrid(path=None):
               db.evt.enddatetime, db.evt.description, db.evt.evt_shared]
 
     orderby = [db.evt.projid, db.evt.evt_name, db.evt.startdatetime]
-
     queries = [(db.evt.id > 0)]
-
     search_queries = [['Search by Name', lambda value: db.evt.evt_name == value]]
 
     # search = GridSearch(search_queries, queries)
@@ -48,11 +58,3 @@ def eventgrid(path=None):
                 deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
-
-
-@authenticated
-# @action("new_event", method=['GET', 'POST'])
-# @action.uses('new_event.html', session, db)
-def new_event():
-    form = Form(db.evt)
-    return dict(form=form)
