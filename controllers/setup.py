@@ -28,12 +28,10 @@ def datasetup():
                              startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
                              enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
-    # Now adding resolved as normal option to assist with test and support chain of thought
     if db(db.resolve.resolve_name == "Standard").isempty():
         resolveid = db.resolve.insert(resolve_name="Standard")
 
     if db(db.resolve.resolve_name == "Single").isempty():
-        resolveid = db.resolve.insert(resolve_name="Single")
+        resolveid = db.resolve.insert(resolve_name="Single", responses=1)
 
     return locals()
-

@@ -10,15 +10,15 @@ import datetime
 not_empty = IS_NOT_EMPTY()
 # TODO setup auth extra fields again to extent still required
 
-# TOD make consensus be above 50% as now only 2 possible answers!!
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
                 Field('responses', 'integer', default=3, label='Min Number of Responses before resolution'),
-                Field('consensus', 'double', default=60, label='Percentage Agmt required to resolve'),
+                Field('consensus', 'double', default=60,
+                      requires=IS_DECIMAL_IN_RANGE(50.01,100,error_message='Must be in range 50.01 to 100'),
+                      label='Percentage Agmt required to resolve'),
                 Field('adminresolve', 'boolean', default=True, label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
-
 
 db.define_table('website_parameters',
                 Field('system_scope', 'string'),
@@ -163,8 +163,8 @@ db.define_table('question',
                 Field('eventid', 'reference evt', label='Event'),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', readable=False, writable=False, default=0.0, label='xcoord'),  # x pos on the eventmap
-                Field('ypos', 'double', readable=False, writable=False, default=0.0, label='ycoord'),  # y pos on the eventmap
+                Field('xpos', 'double', readable=False, writable=False, default=0.0, label='xcoord'), # xpos on eventmap
+                Field('ypos', 'double', readable=False, writable=False, default=0.0, label='ycoord'), # ypos on eventmap
                 Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
                                                                                                                error_message='Must be between 0 and 100')),
                 Field('notes', 'text', label='Notes',
