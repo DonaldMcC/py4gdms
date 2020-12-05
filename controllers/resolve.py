@@ -4,7 +4,7 @@ from ..common import db, session, T, cache, auth, logger, authenticated, unauthe
 from py4web.utils.grid import Grid, GridClassStyle
 
 
-#@authenticated
+# @authenticated
 @action("new_resolve", method=['GET', 'POST'])
 @action.uses('new_resolve.html', session, db)
 def new_resolve():

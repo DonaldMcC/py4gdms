@@ -10,10 +10,9 @@
 import json
 from functools import reduce
 
-from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
-from yatl.helpers import A
-from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
+from py4web import action, request, redirect, URL
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..common import db, session, auth, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
@@ -22,8 +21,9 @@ from pydal.validators import *
 
 # make a "like" button factory
 @authenticated.callback()
-def like(id):
-    db.item_like.insert(item_id=id)
+def like(qid):
+    db.item_like.insert(item_id=qid)
+
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
@@ -31,7 +31,7 @@ def like(id):
 def new_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
-    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress','Resolved'])
+    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
 
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
@@ -42,7 +42,7 @@ def new_question(qid='0'):
     return dict(form=form)
 
 
-@action("view_question/<qid>", method=['GET','POST'])
+@action("view_question/<qid>", method=['GET', 'POST'])
 @action("view_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db)
 def view_question(qid='0'):
@@ -67,7 +67,7 @@ def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
+                         formstyle=FormStyleBootstrap4,
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.question.qtype, db.question.status, db.question.questiontext, db.question.factopinion,
@@ -76,7 +76,7 @@ def questiongrid(path=None):
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
-    #queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
+    # queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
     if 'qtype' in request.query:
         qtype = request.query.get('qtype')
     else:
@@ -88,15 +88,15 @@ def questiongrid(path=None):
         queries = [db.question.id > 0]
 
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
-                                                                                              orderby=db.evt.evt_name,
-                                                                                              distinct=True)]))
+                                                                                   orderby=db.evt.evt_name,
+                                                                                   distinct=True)]))
 
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
-                                                                                              orderby=db.project.proj_name,
-                                                                                              distinct=True)]))
+                                                                                       orderby=db.project.proj_name,
+                                                                                       distinct=True)]))
 
-    search_queries = [['Search by Project', lambda val: db.project.proj_name == val,projlist],
-                      ['Search by Event', lambda val: db.evt.evt_name == val,eventlist],
+    search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
+                      ['Search by Event', lambda val: db.evt.evt_name == val, eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
 
     search = GridSearch(search_queries, queries)
@@ -141,7 +141,7 @@ def datatables():
     return dict(dt=dt)
 
 
-#TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
+# TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
 @unauthenticated
 @action('datatables_data', method=['GET', 'POST'])
 @action.uses(session, db, auth)
@@ -154,8 +154,8 @@ def datatables_data():
     dtr.order(db, 'question')
 
     queries = [(db.question.id > 0)]
-    #queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
-    #if dtr.search_value and dtr.search_value != '':
+    # queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
+    # if dtr.search_value and dtr.search_value != '':
     #    queries.append((db.question.questiontext.contains(dtr.search_value)) |
     #                  (db.question.responsible.contains(dtr.search_value)))
 
@@ -213,4 +213,4 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
         "select": "control select",
         "textarea": "textarea",
     }
-    return FormStyleDefault(table, vars, errors, readonly, deletable, classes)
+    return FormStyleBootstrap4(table, vars, errors, readonly, deletable)

@@ -7,11 +7,10 @@
 # License Content: Creative Commons Attribution 3.0
 #
 
-from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
-from yatl.helpers import A
-from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
-from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web import action, redirect, URL
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..common import db, session, auth, authenticated, unauthenticated
+from py4web.utils.grid import Grid, GridClassStyle
 
 
 # @authenticated
@@ -35,7 +34,7 @@ def locationgrid(path=None):
                          include_action_button_text=True,
                          search_button_text='Filter',
                          formstyle=FormStyleBootstrap4,
-                         grid_class_style=GridClassStyleBulma)
+                         grid_class_style=GridClassStyle)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,
               db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description,
@@ -47,8 +46,7 @@ def locationgrid(path=None):
 
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]
 
-    #search = GridSearch(search_queries, queries)
-
+    # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
                 db.locn,

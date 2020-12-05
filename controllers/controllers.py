@@ -54,6 +54,7 @@ def quickanswer():
     answer = request.json['answer']
     print(questid + 'was called with answer ' + answer)
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
+    status = 'In Progress'
 
     if not uq:
         uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
@@ -66,13 +67,13 @@ def quickanswer():
 
     # TODO - will probalby look to return a flashbar of some srot in a bit - but std flash looks like wont
     # work without eval or similar
-    return messagetxt
+    return messagetxt, status
 
 
 # make a "like" button factory
 @authenticated.callback()
-def agree(id):
-    print(str(id)+'was called')
+def agree(qid):
+    print(str(qid) + 'was called')
     # db.item_like.insert(item_id=id)
 
 
@@ -87,26 +88,26 @@ def index():
 
 
 def get_actions(qtype='action', x=0, y=10):
-    query=make_query(qtype)
+    query = make_query(qtype)
     # TODO will request specific fields at some point and probably pass through datatable options eg search and so
     # forth
     sortby = ~db.question.id
     actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                                orderby=[sortby], limitby=(x, y))
+                               orderby=[sortby], limitby=(x, y))
     return actions
 
 
 def get_questions(x=0, y=10):
-    query=make_query()
+    query = make_query()
     questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                orderby=~db.question.id, limitby=(x, y))
+                                 orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
 def get_issues(qtype='issue', x=0, y=10):
-    query=make_query(qtype)
+    query = make_query(qtype)
     issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                               orderby=~db.question.id, limitby=(x, y))
+                              orderby=~db.question.id, limitby=(x, y))
     return issues
 
 

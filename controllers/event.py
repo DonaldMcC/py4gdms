@@ -6,11 +6,10 @@
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
-from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma, FormStyleBootstrap4
-from yatl.helpers import A
-from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
-from py4web.utils.grid import Grid, GridClassStyle, GridClassStyleBulma
+from py4web import action, redirect, URL
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..common import db, session,  auth, authenticated, unauthenticated
+from py4web.utils.grid import Grid, GridClassStyle
 
 
 @action("new_event/<eid>", method=['GET', 'POST'])
@@ -33,7 +32,7 @@ def eventgrid(path=None):
                          include_action_button_text=True,
                          search_button_text='Filter',
                          formstyle=FormStyleBootstrap4,
-                         grid_class_style=GridClassStyleBulma)
+                         grid_class_style=GridClassStyle)
 
     fields = [db.evt.evt_name, db.locn.location_name, db.project.proj_name, db.evt.status, db.evt.startdatetime,
               db.evt.enddatetime, db.evt.description, db.evt.evt_shared]

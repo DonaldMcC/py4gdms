@@ -1,14 +1,12 @@
 
-from py4web import action, request, abort, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma
-from yatl.helpers import A
-from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
+from py4web import action, redirect, URL
+from ..common import db, session, auth, authenticated, unauthenticated
 #from .libs.utils import GridSearch
 from py4web.utils.grid import Grid, GridClassStyleBulma
-from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBootstrap4
 
 
-#@authenticated
+# @authenticated
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
 @action.uses('new_project.html', session, db)
