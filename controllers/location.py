@@ -7,18 +7,23 @@
 # License Content: Creative Commons Attribution 3.0
 #
 
-
 from py4web import action, request, abort, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault, FormStyleBootstrap4
 from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 
-#@authenticated
+
+# @authenticated
+@action("new_location/<lid>", method=['GET', 'POST'])
 @action("new_location", method=['GET', 'POST'])
 @action.uses('new_location.html', session, db)
-def new_location():
-    form = Form(db.locn)
+def new_location(lid=0):
+    form = Form(db.locn,
+                record=lid,
+                formstyle=FormStyleBootstrap4)
+    if form.accepted:
+        redirect(URL('locationgrid'))
     return dict(form=form)
 
 
@@ -44,6 +49,7 @@ def locationgrid(path=None):
 
     #search = GridSearch(search_queries, queries)
 
+
     grid = Grid(path,
                 db.locn,
                 fields=fields,
@@ -51,10 +57,10 @@ def locationgrid(path=None):
                           'Country', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
-                create=True,
+                create=URL('new_location/0'),
                 details=True,
-                editable=True,
-                deletable=True,
+                editable=URL('new_location/'),
+                deletable=URL('new_project/delete/'),
                 **GRID_DEFAULTS)
 
     return dict(grid=grid)
