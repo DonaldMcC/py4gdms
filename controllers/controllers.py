@@ -34,40 +34,13 @@
 
     """
 
-"""
-This file defines actions, i.e. functions the URLs are mapped into
-The @action(path) decorator exposed the function at URL:
-
-    http://127.0.0.1:8000/{app_name}/{path}
-
-If app_name == '_default' then simply
-
-    http://127.0.0.1:8000/{path}
-
-If path == 'index' it can be omitted:
-
-    http://127.0.0.1:8000/
-
-The path follows the bottlepy syntax.
-
-@action.uses('generic.html')  indicates that the action uses the generic.html template
-@action.uses(session)         indicates that the action uses the session
-@action.uses(db)              indicates that the action uses the db
-@action.uses(T)               indicates that the action uses the i18n & pluralization
-@action.uses(auth.user)       indicates that the action requires a logged in user
-@action.uses(auth)            indicates that the action requires the auth object
-
-session, db, T, auth, and tempates are examples of Fixtures.
-Warning: Fixtures MUST be declared with @action.uses({fixtures}) else your app will result in undefined behavior
-"""
-
 from ..common import db, unauthenticated, authenticated, auth, session
-from py4web import action, request, abort, redirect, URL
+from py4web import action, request, Flash
 from ..ndsfunctions import score_question
 
 
 @action("quickanswer", method=['POST'])
-@action.uses(session, db, auth)
+@action.uses(session, db, auth, Flash)
 def quickanswer():
     """
     This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
@@ -91,7 +64,8 @@ def quickanswer():
     else:
         messagetxt = 'Answer not recorded'
 
-    #TODO - will probalby look to return a flashbar of some srot in a bit
+    # TODO - will probalby look to return a flashbar of some srot in a bit - but std flash looks like wont
+    # work without eval or similar
     return messagetxt
 
 
@@ -99,13 +73,13 @@ def quickanswer():
 @authenticated.callback()
 def agree(id):
     print(str(id)+'was called')
-    #db.item_like.insert(item_id=id)
+    # db.item_like.insert(item_id=id)
 
 
 @authenticated()
 def index():
-    #user = auth.get_user()
-    #message = T("Hello {first_name}".format(**user) if user else "Hello")
+    # user = auth.get_user()
+    # message = T("Hello {first_name}".format(**user) if user else "Hello")
     actions = get_actions()
     questions = get_questions()
     issues = get_issues()
@@ -125,7 +99,7 @@ def get_actions(qtype='action', x=0, y=10):
 def get_questions(x=0, y=10):
     query=make_query()
     questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                                  orderby=~db.question.id, limitby=(x, y))
+                orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
@@ -137,10 +111,10 @@ def get_issues(qtype='issue', x=0, y=10):
 
 
 def make_query(qtype='quest'):
-    if qtype=='quest':
-        query = db.question.qtype=='quest'
+    if qtype == 'quest':
+        query = db.question.qtype == 'quest'
     elif qtype == 'action':
-        query = db.question.qtype=='action'
+        query = db.question.qtype == 'action'
     else:
         query = db.question.qtype == 'issue'
     return query
@@ -175,7 +149,3 @@ def enhance():
 def download():
     downloads = db().select(db.download.ALL, orderby=db.download.title)
     return dict(downloads=downloads)
-
-
-
-
