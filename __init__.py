@@ -13,6 +13,7 @@ from .controllers import location
 from .controllers import event
 from .controllers import question
 from .controllers import resolve
+from .controllers import setup
 
 # optional parameters
 __version__ = "0.0.1"

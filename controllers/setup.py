@@ -4,7 +4,9 @@ from py4web import action, request, abort, redirect, URL
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 
 
-@auth.requires_login()
+# @authenticated
+@action("datasetup", method=['GET', 'POST'])
+@action.uses('datasetup.html', session, db)
 def datasetup():
     if db(db.website_parameters.id > 0).isempty():
         db.website_parameters.insert(website_name='NDS Test System', website_title='Net Decision Making',
@@ -23,8 +25,8 @@ def datasetup():
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
-                             startdatetime=request.utcnow - datetime.timedelta(days=10),
-                             enddatetime=request.utcnow - datetime.timedelta(days=9))
+                             startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
+                             enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
     # Now adding resolved as normal option to assist with test and support chain of thought
     if db(db.resolve.resolve_name == "Standard").isempty():
