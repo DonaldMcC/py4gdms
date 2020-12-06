@@ -1,6 +1,6 @@
 
 from py4web import action, redirect, URL
-from ..common import db, session, auth, authenticated, unauthenticated
+from ..common import db, session, auth
 #from .libs.utils import GridSearch
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from py4web.utils.form import Form, FormStyleBootstrap4
@@ -9,7 +9,7 @@ from py4web.utils.form import Form, FormStyleBootstrap4
 # @authenticated
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
-@action.uses('new_project.html', session, db)
+@action.uses('new_project.html', session, db, auth.user)
 def new_project(pid=0):
     form = Form(db.project,
                 record=pid,

@@ -27,7 +27,7 @@ def like(qid):
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db)
+@action.uses('new_question.html', session, db, auth.user)
 def new_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -44,7 +44,7 @@ def new_question(qid='0'):
 
 @action("view_question/<qid>", method=['GET', 'POST'])
 @action("view_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db)
+@action.uses('new_question.html', session, db, auth.user)
 def view_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -186,7 +186,7 @@ def datatables_data():
 
 
 @action('new_question/delete/<questid>', method=['GET', 'POST'])
-@action.uses(session, db, auth, 'grid.html')
+@action.uses(session, db, auth.user, 'grid.html')
 def new_question_delete(questid):
     result = db(db.question.id == questid).delete()
     redirect(URL('datatables'))

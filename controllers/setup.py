@@ -4,9 +4,7 @@ from py4web import action, redirect, URL
 from ..common import db, session, auth, authenticated, unauthenticated
 
 
-# @authenticated
-@action("datasetup", method=['GET', 'POST'])
-@action.uses('datasetup.html', session, db)
+@authenticated()
 def datasetup():
     if db(db.website_parameters.id > 0).isempty():
         db.website_parameters.insert(website_name='NDS Test System', website_title='Net Decision Making',

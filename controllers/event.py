@@ -8,13 +8,13 @@
 #
 from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBootstrap4
-from ..common import db, session,  auth, authenticated, unauthenticated
+from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyle
 
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
-@action.uses('new_event.html', session, db)
+@action.uses('new_event.html', session, db, auth.user)
 def new_event(eid=0):
     form = Form(db.evt,
                 record=eid,

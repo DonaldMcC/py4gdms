@@ -1,12 +1,11 @@
-from py4web import action, request, abort, redirect, URL
+from py4web import action
 from py4web.utils.form import Form, FormStyleBootstrap4
-from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
+from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyle
 
 
-# @authenticated
 @action("new_resolve", method=['GET', 'POST'])
-@action.uses('new_resolve.html', session, db)
+@action.uses('new_resolve.html', session, db, auth.user)
 def new_resolve():
     form = Form(db.resolve)
     return dict(form=form)
