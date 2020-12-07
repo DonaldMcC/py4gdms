@@ -14,6 +14,7 @@ from .controllers import event
 from .controllers import question
 from .controllers import resolve
 from .controllers import setup
+from .controllers import answer
 
 # optional parameters
 __version__ = "0.0.1"
