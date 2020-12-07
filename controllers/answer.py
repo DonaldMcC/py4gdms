@@ -1,14 +1,14 @@
 
 
 # Not sure if using - may well do in controllers.py
-
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
 from ..ndsfunctions import score_question
 
+#@action.uses(Template('index.html', delimiters='[[ ]]'))
 
-@action("quickanswer", method=['POST'])
-@action.uses(session, db, auth, Flash)
+
+@authenticated()
 def quickanswer():
     """
     This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
@@ -33,7 +33,7 @@ def quickanswer():
     else:
         messagetxt = 'Answer not recorded'
 
-    # TODO - will probalby look to return a flashbar of some srot in a bit - but std flash looks like wont
+    # TODO - will probalby look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
     return messagetxt, status
 

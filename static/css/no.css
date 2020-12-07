@@ -183,7 +183,7 @@ thead th {
   text-align: center;
   text-decoration: none;
   white-space: nowrap;
-  min-width: 100px;
+  min-width: 60px;
 }
 
 [role="button"]:focus, [role="button"]:hover, button:focus, button:hover, input[type='button']:focus, input[type='button']:hover, input[type='reset']:focus, input[type='reset']:hover, input[type='submit']:focus, input[type='submit']:hover {
