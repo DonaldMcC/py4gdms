@@ -17,19 +17,12 @@
 <td>[[=row.question.questiontext]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td>[[=row.question.factopinion]]</td>
-    [[if not row.userquestion.answer:
-    title = 'Click to Answer'
-    sclass = 'button is-small'
-    else:
-    title='Change Answer'
-    sclass='button is-small clicked'
-    pass]]
-<td><INPUT TYPE=button title="[[=title]]"
-           class="[[=sclass]]" onclick="quickanswer('[[=row.question.id]]','1')",
+<td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
            VALUE="[[=row.question.answer1]]">
-    <INPUT TYPE=button title="[[=title]]"
-           class="[[=sclass]]" onclick="quickanswer('[[=row.question.id]]','2')",
-           VALUE="[[=row.question.answer2]]">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           VALUE="[[=row.question.answer2]]"></td>
     <td>[[=row.question.notes]]</td>
 </tr>
 [[pass]]

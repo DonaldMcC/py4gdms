@@ -44,6 +44,22 @@ def agree(qid):
     print(str(qid) + 'was called')
     # db.item_like.insert(item_id=id)
 
+def get_disabled(ans, useranswer):
+    return 'disabled title=You_already_answered ' if ans==useranswer else ' title=Click_to_Answer '
+
+def get_class(qtype='quest', answer=1, framework='Bulma'):
+    # Function to return button classes - only supporting Bulma.css for now
+    # is-success and is-danger for agree disagree on issues and approve disapprove on actions
+    default = 'button is-small is-rounded '
+    if qtype=='quest':
+        return default
+    else:
+        if answer == 1:
+            return default + ' is-success'
+        else:
+            return default + ' is-danger'
+#    title = 'Click to Answer'
+#    title='Change Answer'
 
 @authenticated()
 def index():
@@ -52,7 +68,8 @@ def index():
     actions = get_actions()
     questions = get_questions()
     issues = get_issues()
-    return dict(actions=actions, questions=questions, issues=issues, agree=agree)
+    return dict(actions=actions, questions=questions, issues=issues, agree=agree, get_class=get_class,
+                get_disabled=get_disabled)
 
 
 def get_actions(qtype='action', x=0, y=10):

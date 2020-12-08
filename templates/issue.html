@@ -4,7 +4,8 @@
 				<thead>
 					<tr>
 						<th width="10%">Status</th>
-                        <th width="90%">Issue</th>
+                        <th width="80%">Issue</th>
+                        <th width="10%">Answer</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -12,8 +13,13 @@
 <tr>
 <th>[[=row.question.status]]</th>
 <td>[[=row.question.questiontext]]
-<div id='btns[[=str(row.question.id)]]'>
-=get_buttons(row.question.qtype, row.question.status, row.question.resolvemethod, row.id, row.auth_userid, auth.user_id, False, source)</td>
+    <div id='btns[[=str(row.question.id)]]'></div></td>
+<td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
+           VALUE="Agree">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           VALUE="Disagree"></td>
 </tr>
 [[pass]]
 </tbody>
