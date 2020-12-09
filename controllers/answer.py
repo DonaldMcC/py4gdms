@@ -65,15 +65,16 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
 def index():
     # user = auth.get_user()
     # message = T("Hello {first_name}".format(**user) if user else "Hello")
-    actions = get_actions()
-    questions = get_questions()
-    issues = get_issues()
-    return dict(actions=actions, questions=questions, issues=issues, agree=agree, get_class=get_class,
-                get_disabled=get_disabled)
+    actions = get_actions(status='In Progress')
+    questions = get_questions(status='In Progress')
+    issues = get_issues(status='In Progress')
+    res_actions = get_actions(status='Resolved')
+    return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
+                get_class=get_class, get_disabled=get_disabled)
 
 
-def get_actions(qtype='action', x=0, y=10):
-    query = make_query(qtype)
+def get_actions(qtype='action', status='', x=0, y=10):
+    query = make_query(qtype, status)
     # TODO will request specific fields at some point and probably pass through datatable options eg search and so
     # forth
     sortby = ~db.question.id
@@ -82,25 +83,27 @@ def get_actions(qtype='action', x=0, y=10):
     return actions
 
 
-def get_questions(x=0, y=10):
-    query = make_query()
+def get_questions(qtype='quest', status='', x=0, y=10):
+    query = make_query(qtype, status)
     questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                  orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
-def get_issues(qtype='issue', x=0, y=10):
-    query = make_query(qtype)
+def get_issues(qtype='issue', status='', x=0, y=10):
+    query = make_query(qtype, status)
     issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                               orderby=~db.question.id, limitby=(x, y))
     return issues
 
 
-def make_query(qtype='quest'):
+def make_query(qtype='quest', status=''):
     if qtype == 'quest':
-        query = db.question.qtype == 'quest'
+        query = (db.question.qtype == 'quest')
     elif qtype == 'action':
-        query = db.question.qtype == 'action'
+        query = (db.question.qtype == 'action')
     else:
-        query = db.question.qtype == 'issue'
+        query = (db.question.qtype == 'issue')
+    if status:
+        query &= (db.question.status == status)
     return query
