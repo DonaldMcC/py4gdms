@@ -15,7 +15,7 @@ db.define_table('resolve',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
                 Field('responses', 'integer', default=3, label='Min Number of Responses before resolution'),
                 Field('consensus', 'double', default=60,
-                      requires=IS_DECIMAL_IN_RANGE(50.01,100,error_message='Must be in range 50.01 to 100'),
+                      requires=IS_DECIMAL_IN_RANGE(50.01, 100,error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
                 Field('adminresolve', 'boolean', default=True, label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')

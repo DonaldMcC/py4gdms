@@ -1,29 +1,31 @@
 
 [[if actions:]]
+
 <h1 class="title is-4">Actions in Progress</h1>
 <table id=actions class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-						<th>Status</th>
-                        <th width="50%">Action</th>
-                        <th>End Date</th>
-                        <th class="min-tablet-p">Resp</th>
+                        <th width="80%">Action</th>
+                        <th>Answer</th>
                     </tr>
                 </thead>
                     <tbody>
 [[for i,row in enumerate(actions):]]
 <tr>
-<th>[[=row.question.status]]</th>
 <td>[[=row.question.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
-<td>[[if row.question.enddate:]][[=prettydate(row.question.enddate.date())]][[pass]]</td>
-<td>[[=row.question.responsible]]</td>
+    <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
+           VALUE="Approve">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           VALUE="Disapprove"></td>
 </tr>
 [[pass]]
 </tbody>
 </table>
 [[pass]]
 <script>
-$('#actions').DataTable({responsive: true, paging: false, searching:false});
+$('#actions').DataTable({responsive: true, paging: false, searching:false, info: false});
 </script>
 [[pass]]

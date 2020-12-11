@@ -7,7 +7,7 @@
 # License Content: Creative Commons Attribution 3.0
 #
 from py4web import action, redirect, URL
-from py4web.utils.form import Form, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyle
 
@@ -18,7 +18,7 @@ from py4web.utils.grid import Grid, GridClassStyle
 def new_event(eid=0):
     form = Form(db.evt,
                 record=eid,
-                formstyle=FormStyleBootstrap4)
+                formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('eventgrid'))
     return dict(form=form)
@@ -31,7 +31,7 @@ def eventgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBootstrap4,
+                         formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyle)
 
     fields = [db.evt.evt_name, db.locn.location_name, db.project.proj_name, db.evt.status, db.evt.startdatetime,
