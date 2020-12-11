@@ -75,7 +75,7 @@ def index():
 
 def get_actions(qtype='action', status='', x=0, y=10):
     query = make_query(qtype, status)
-    # TODO will request specific fields at some point and probably pass through datatable options eg search and so
+    # TODO will request specific fields at some point and probably pass through datatable options eg search and so on
     # forth
     sortby = ~db.question.id
     actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
