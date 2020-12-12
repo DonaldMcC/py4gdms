@@ -70,9 +70,9 @@ def questiongrid(path=None):
                          formstyle=FormStyleBootstrap4,
                          grid_class_style=GridClassStyleBulma)
 
-    fields = [db.question.qtype, db.question.status, db.question.questiontext, db.question.factopinion,
+    fields = [db.question.qtype, db.question.questiontext,
               db.question.answertext, db.question.resolvemethod,
-              db.evt.evt_name, db.project.proj_name]
+              db.evt.evt_name]
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
