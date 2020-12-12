@@ -137,15 +137,17 @@ def score_question(questid, answer=0):
     quest = db(db.question.id == questid).select().first()
     resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
     print('Ihave'+str(questid))
-    if answer == 1:
-        quest.answer1 += 1
-    elif answer == 2:
-        quest.answer2 += 1
+    if answer == '1':
+        quest.numanswer1 += 1
+    elif answer == '2':
+        quest.numanswer2 += 1
 
     numanswers = quest.numanswer1 + quest.numanswer2
+    print(numanswers)
     if numanswers >= resmethod.responses:
         if ((100 * quest.numanswer1) / numanswers >= resmethod.consensus or
             (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
+            print('resolved')
             quest.status = 'Resolved'
             quest.resolvedate = datetime.datetime.utcnow()
             if quest.numanswer1 > quest.numanswer2:
@@ -158,7 +160,7 @@ def score_question(questid, answer=0):
             quest.correctans = 0
             quest.resolvedate = datetime.datetime.utcnow()
 
-    quest.update()
+    quest.update_record()
     db.commit()
 
     return quest.status

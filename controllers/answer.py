@@ -1,11 +1,8 @@
-
-
-# Not sure if using - may well do in controllers.py
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
 from ..ndsfunctions import score_question
 
-#@action.uses(Template('index.html', delimiters='[[ ]]'))
+# @action.uses(Template('index.html', delimiters='[[ ]]'))
 
 
 @authenticated()
@@ -17,7 +14,7 @@ def quickanswer():
     geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
     and retrieve them from the question
     """
-    print('qickans called')
+
     questid = request.json['questid']
     answer = request.json['answer']
     print(questid + 'was called with answer ' + answer)
@@ -44,14 +41,16 @@ def agree(qid):
     print(str(qid) + 'was called')
     # db.item_like.insert(item_id=id)
 
+
 def get_disabled(ans, useranswer):
-    return 'disabled title=You_already_answered ' if ans==useranswer else ' title=Click_to_Answer '
+    return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
+
 
 def get_class(qtype='quest', answer=1, framework='Bulma'):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
     default = 'button is-small is-rounded '
-    if qtype=='quest':
+    if qtype == 'quest':
         return default
     else:
         if answer == 1:
@@ -60,6 +59,7 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
             return default + ' is-danger'
 #    title = 'Click to Answer'
 #    title='Change Answer'
+
 
 @authenticated()
 def index():
