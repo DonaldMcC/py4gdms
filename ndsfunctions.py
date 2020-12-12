@@ -42,7 +42,7 @@ def convrow(row, dependlist='', hasdepend=False):
         milestone = 1
     else:
         milestone = 0
-    plink = URL('submit', 'question_plan', args=['quest', row.id], extension='html')
+    plink = URL('submit', 'question_plan')
     projrow = '<task>'
     projrow += convxml(row.id, 'pID')
     projrow += convxml(row.questiontext, 'pName', True, False)
@@ -54,7 +54,7 @@ def convrow(row, dependlist='', hasdepend=False):
     projrow += convxml(row.responsible, 'pRes', True)
     projrow += convxml(row.perccomplete, 'pComp')
     projrow += convxml('1', 'pOpen')
-    projrow += convxml(row.masterquest, 'pParent')
+    projrow += convxml('', 'pParent')
 
     if hasdepend:
         projrow += convxml('1', 'pGroup')
@@ -538,14 +538,7 @@ def get_gantt_data(quests):
     intlinks = getlinks(questlist)
 
     for i, row in enumerate(quests):
-        if row.eventlevel == 0:
-            subrows = quests.find(lambda subrow: subrow.masterquest == row.id)
-            if subrows:
-                projxml += convrow(row, getstrdepend(intlinks, row.id), True)
-                for subrow in subrows:
-                    projxml += convrow(subrow, getstrdepend(intlinks, subrow.id), False)
-            else:
-                projxml += convrow(row, getstrdepend(intlinks, row.id), True)
+        projxml += convrow(row, getstrdepend(intlinks, row.id), True)
 
     projxml += '</project>'
     # print(projxml)

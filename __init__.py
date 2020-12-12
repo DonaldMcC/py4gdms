@@ -15,6 +15,7 @@ from .controllers import question
 from .controllers import resolve
 from .controllers import setup
 from .controllers import answer
+from .controllers import gantt
 
 # optional parameters
 __version__ = "0.0.1"
