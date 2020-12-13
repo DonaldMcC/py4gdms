@@ -38,11 +38,12 @@ $('#res_actions').on('change', 'input', function () {
     var row = $(this).closest('tr');
         console.log('I fired');
         var data1 = row.find("input[type='range']").val();
-        console.log(data1);
-        console.log(row.attr('id'));
+    Q.ajax("POST", "[[=URL('perccomplete')]]", {
+            questid: row.attr('id'),
+            perccomplete: data1
+        }).then(onsuccess).catch(onerror);
+
 });
-
-
 
 </script>
 [[pass]]

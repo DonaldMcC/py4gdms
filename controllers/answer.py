@@ -30,9 +30,27 @@ def quickanswer():
     else:
         messagetxt = 'Answer not recorded'
 
-    # TODO - will probalby look to return a flashbar of some sort in a bit - but std flash looks like wont
+    # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
     return messagetxt, status
+
+@authenticated()
+def perccomplete():
+    """
+    This updates percent complete on resolved actions
+    """
+    questid = request.json['questid']
+    perccomplete = int(request.json['perccomplete'])
+    quest = db(db.question.id == questid).select().first()
+    quest.perccomplete = perccomplete
+    if perccomplete == 100:
+        quest.execstatus = 'Completed'
+    quest.update_record()
+    db.commit()
+
+    # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
+    # work without eval or similar
+    return
 
 
 # make a "like" button factory
