@@ -1,3 +1,4 @@
+import datetime
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
 from ..ndsfunctions import score_question
@@ -41,8 +42,18 @@ def perccomplete():
     """
     questid = request.json['questid']
     perccomplete = int(request.json['perccomplete'])
+    resp = request.json['responsible']
+    duestr = request.json['duedate']
     quest = db(db.question.id == questid).select().first()
+    try:
+        duedate = datetime.datetime.strptime(duestr, "%Y-%m-%d")
+        quest.enddate = duedate
+    except ValueError:
+        pass
+
     quest.perccomplete = perccomplete
+    quest.responsible = resp
+
     if perccomplete == 100:
         quest.execstatus = 'Completed'
     quest.update_record()
@@ -119,7 +130,7 @@ def make_query(qtype='quest', status=''):
     if qtype == 'quest':
         query = (db.question.qtype == 'quest')
     elif qtype == 'action':
-        query = (db.question.qtype == 'action')
+        query = (db.question.qtype == 'action') & (db.question.execstatus != 'Completed')
     else:
         query = (db.question.qtype == 'issue')
     if status:

@@ -1,15 +1,15 @@
-
+[[import datetime]]
 [[if res_actions:]]
 <br>
 <h1 class="title is-4">Resolved Actions</h1>
 <table id=res_actions class='table issuetable2 table-bordered table-condensed'>
 				<thead>
 					<tr>
-                        <th width="50%">Action</th>
+                        <th>Action</th>
                         <th>Due Date</th>
-                        <th class="min-tablet-p">Resp</th>
-                        <th class="min-tablet-p">% Complete</th>
-                        <th class="min-tablet-p">Feedback</th>
+                        <th>Resp</th>
+                        <th>% Complete</th>
+                        <th>Feedback</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -17,8 +17,12 @@
 <tr id="[[=row.question.id]]">
 <td>[[=row.question.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
-<td>[[if row.question.enddate:]][[=prettydate(row.question.enddate.date())]][[pass]]</td>
-<td>[[=row.question.responsible]]</td>
+<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
+    =row.question.enddate.date().strftime('%Y-%m-%d')
+    else:
+    ''
+    pass]]"> </td>
+<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
     <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
     <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
@@ -32,15 +36,22 @@
 </table>
 [[pass]]
 
+
+
 <script>
 $('#res_actions').DataTable({responsive: true, paging: false, searching:false, info: false});
 $('#res_actions').on('change', 'input', function () {
     var row = $(this).closest('tr');
         console.log('I fired');
-        var data1 = row.find("input[type='range']").val();
+        var perc = row.find("input[type='range']").val();
+        var resp = row.find("input[type='text']").val();
+        var due = row.find("input[type='date']").val();
+                console.log(due);
     Q.ajax("POST", "[[=URL('perccomplete')]]", {
             questid: row.attr('id'),
-            perccomplete: data1
+            perccomplete: perc,
+            responsible: resp,
+            duedate: due
         }).then(onsuccess).catch(onerror);
 
 });
