@@ -9,7 +9,7 @@
 from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
-from py4web.utils.grid import Grid, GridClassStyle
+from py4web.utils.grid import Grid, GridClassStyleBulma
 
 
 @action("new_event/<eid>", method=['GET', 'POST'])
@@ -32,7 +32,7 @@ def eventgrid(path=None):
                          include_action_button_text=True,
                          search_button_text='Filter',
                          formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyle)
+                         grid_class_style=GridClassStyleBulma)
 
     fields = [db.evt.evt_name, db.locn.location_name, db.project.proj_name, db.evt.status, db.evt.startdatetime,
               db.evt.enddatetime, db.evt.description, db.evt.evt_shared]
