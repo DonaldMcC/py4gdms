@@ -33,11 +33,16 @@ def new_question(qid='0'):
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
 
+    try:
+        db.question.eventid.default=session.event
+    except (KeyError, AttributeError):
+        pass
+
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleBootstrap4)
-    #unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
+
     if form.accepted:
         session.event=form.vars.eventid
         redirect(URL('questiongrid'))
