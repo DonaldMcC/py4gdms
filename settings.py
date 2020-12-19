@@ -77,6 +77,9 @@ T_FOLDER = os.path.join(APP_FOLDER, "translations")
 USE_CELERY = False
 CELERY_BROKER = "redis://localhost:6379/0"
 
+# App Settings
+DEFAULT_RESOLUTION='Single'
+
 # try import private settings
 try:
     from .settings_private import *

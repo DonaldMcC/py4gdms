@@ -37,7 +37,9 @@ def new_question(qid='0'):
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleBootstrap4)
+    #unspecprojid = db(db.project.proj_name == 'Unspecified').select(db.project.id).first().id
     if form.accepted:
+        session.event=form.vars.eventid
         redirect(URL('questiongrid'))
     return dict(form=form)
 

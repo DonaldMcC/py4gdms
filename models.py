@@ -250,4 +250,12 @@ db.define_table('eventmap',
                       comment='Select draft to defer for later editing'),
                 Field('notes', 'text', label='Notes'))
 
+try:
+    from .settings import DEFAULT_RESOLUTION
+    if DEFAULT_RESOLUTION:
+        resmethod = db(db.resolve.resolve_name == DEFAULT_RESOLUTION).select(db.resolve.id).first().id
+        db.question.resolvemethod.default = resmethod
+except (ImportError, ModuleNotFoundError):
+    pass
+
 db.commit()
