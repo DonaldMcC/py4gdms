@@ -17,6 +17,13 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
+import urllib
+
+wolfram = True
+try:
+    import wolframalpha
+except ImportError as error:
+    wolfram=False
 
 
 # make a "like" button factory
@@ -221,3 +228,40 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
         "textarea": "textarea",
     }
     return FormStyleBootstrap4(table, vars, errors, readonly, deletable)
+
+
+@auth.requires_login()
+def wolfram_alpha_lookup():
+    # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
+    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
+    # general this will only be used for self answered questions - however it might be called for other things in due
+    # course and we may amend to support different knowledge engines later as well
+    if not wolfram:
+        return 'Wolfram Alpha Client not installed'
+    client = wolframalpha.Client(wa_id)
+
+    if request.args(0):
+        qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
+    else:
+        return "You need to enter a question to lookup the answer on Wolfram Alpha"
+
+    res = client.query(qtext)
+    try:
+        answer = ''
+        for pod in res.pods:
+            # print '{p.title}: {p.text}'.format(p=pod)
+            if pod.title == 'Result':
+                for sub in pod.subpods:
+                    # print(sub.plaintext)
+                    if sub.plaintext:
+                        answer += sub.plaintext
+                        answer += '\r'
+            else:
+                'No result found for this question'
+
+        # responsetext = 'Answer received'
+    except AttributeError:
+        answer = "No answer received"
+        # responsetext = "No answer received"
+
+    return answer
