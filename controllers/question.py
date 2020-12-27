@@ -11,7 +11,7 @@ import json
 from functools import reduce
 
 from py4web import action, request, redirect, URL
-from py4web.utils.form import Form, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth, authenticated, unauthenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
@@ -41,7 +41,7 @@ def new_question(qid='0'):
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
-                formstyle=FormStyleBootstrap4)
+                formstyle=FormStyleBulma)
 
     if form.accepted:
         session.event=form.vars.eventid

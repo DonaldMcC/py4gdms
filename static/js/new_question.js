@@ -49,7 +49,10 @@ $(document).ready(function(){
                  $('#question_answer2').hide();
                  $("label[for='question_answer2']").hide();
                  $("label[for='question_answertext']").show();
-                 $('#question_answertext').show();};
+                 $('#question_answertext').show();
+                 $('#question_buttons').append('<p></p><input type="BUTTON" id="wolflookup" ' +
+         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()"></p>');
+};
               if($('#question_factopinion option:selected').text()=='Opinion')
                 {$('#question_answer1').show();
                 $("label[for='question_answer1']").show();
