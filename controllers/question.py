@@ -22,6 +22,7 @@ import urllib
 wolfram = True
 try:
     import wolframalpha
+    from ..settings_private import WA_ID
 except ImportError as error:
     wolfram=False
 
@@ -81,7 +82,7 @@ def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBootstrap4,
+                         formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.question.qtype, db.question.questiontext,
@@ -227,10 +228,12 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
         "select": "control select",
         "textarea": "textarea",
     }
-    return FormStyleBootstrap4(table, vars, errors, readonly, deletable)
+    return FormStyleBulma(table, vars, errors, readonly, deletable)
 
 
-@auth.requires_login()
+@authenticated
+@action('wolfram_alpha_lookup', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
 def wolfram_alpha_lookup():
     # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
@@ -238,12 +241,10 @@ def wolfram_alpha_lookup():
     # course and we may amend to support different knowledge engines later as well
     if not wolfram:
         return 'Wolfram Alpha Client not installed'
-    client = wolframalpha.Client(wa_id)
+    client = wolframalpha.Client(WA_ID)
 
-    if request.args(0):
-        qtext = urllib.unquote(request.args(0)).decode('utf8').replace('_', ' ')
-    else:
-        return "You need to enter a question to lookup the answer on Wolfram Alpha"
+    qtext = request.json['questiontext']
+    print(qtext)
 
     res = client.query(qtext)
     try:
@@ -263,5 +264,5 @@ def wolfram_alpha_lookup():
     except AttributeError:
         answer = "No answer received"
         # responsetext = "No answer received"
-
+    print(answer)
     return answer

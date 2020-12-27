@@ -9,3 +9,27 @@
 <div id="question_buttons"></div>
 
 <script src="js/new_question.js"></script>
+
+<script>
+    function wolfram_alpha_lookup() {
+    var qtext = $('#question_questiontext').val();
+    /^ Now we call via ajax and put returned value into notes */
+      console.log("Looking up answer on Wolfram Alpha");
+     $("#question_notes").val("Looking up answer on Wolfram Alpha");
+
+    var onsuccess = function(res) {
+    console.log('success');
+    console.log(result);
+    $("#question_notes").val(result);
+    };
+    var onerror = function(res) {
+        alert('ERROR in call');
+    };
+
+    result= Q.ajax("POST", "[[=URL('wolfram_alpha_lookup')]]", {
+            questiontext: qtext
+        }).then(onsuccess).catch(onerror);
+
+};
+
+</script>

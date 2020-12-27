@@ -35,6 +35,7 @@ def quickanswer():
     # work without eval or similar
     return messagetxt, status
 
+
 @authenticated()
 def perccomplete():
     """
