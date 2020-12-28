@@ -244,8 +244,6 @@ def wolfram_alpha_lookup():
     client = wolframalpha.Client(WA_ID)
 
     qtext = request.json['questiontext']
-    print(qtext)
-
     res = client.query(qtext)
     try:
         answer = ''
@@ -253,16 +251,12 @@ def wolfram_alpha_lookup():
             # print '{p.title}: {p.text}'.format(p=pod)
             if pod.title == 'Result':
                 for sub in pod.subpods:
-                    # print(sub.plaintext)
                     if sub.plaintext:
                         answer += sub.plaintext
                         answer += '\r'
             else:
                 'No result found for this question'
 
-        # responsetext = 'Answer received'
     except AttributeError:
         answer = "No answer received"
-        # responsetext = "No answer received"
-    print(answer)
     return answer

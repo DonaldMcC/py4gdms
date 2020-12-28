@@ -15,12 +15,10 @@
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
       console.log("Looking up answer on Wolfram Alpha");
-     $("#question_notes").val("Looking up answer on Wolfram Alpha");
+     $("#question_notes").val('Looking up answer on Wolfram Alpha');
 
     var onsuccess = function(res) {
-    console.log('success');
-    console.log(result);
-    $("#question_notes").val(result);
+    $("#question_notes").val(res.data);
     };
     var onerror = function(res) {
         alert('ERROR in call');
