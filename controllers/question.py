@@ -26,6 +26,8 @@ try:
 except ImportError as error:
     wolfram=False
 
+import wikipedia
+
 
 # make a "like" button factory
 @authenticated.callback()
@@ -260,3 +262,28 @@ def wolfram_alpha_lookup():
     except AttributeError:
         answer = "No answer received"
     return answer
+
+
+@authenticated
+@action('wikipedia_lookup', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def wikipedia_lookup():
+    # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
+    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
+    # general this will only be used for self answered questions - however it might be called for other things in due
+    # course and we may amend to support different knowledge engines later as well
+
+    qtext = request.json['questiontext']
+    print(qtext)
+    pages=wikipedia.search(qtext, results=3)
+    resultpage = wikipedia.summary(pages[0])
+
+    #print(wikipedia.summary("Key (cryptography)"))
+
+    print(resultpage)
+
+    if resultpage:
+        res = resultpage
+    else:
+        res = 'No result found for this topic'
+    return res
