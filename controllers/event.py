@@ -24,6 +24,19 @@ def new_event(eid=0):
     return dict(form=form)
 
 
+@action("view_event/<eid>", method=['GET', 'POST'])
+@action("view_event", method=['GET', 'POST'])
+@action.uses('view_event.html', session, db, auth.user)
+def view_event(eid='0'):
+    eventrow = db(db.evt.id == eid).select().first()
+    if eventrow:
+        session.eventid = eid
+        session.projid = eventrow.projid
+        if eventrow.status == 'Archived':
+            redirect(URL('event', 'eventreview', args=eventid))
+    return dict(eventrow=eventrow, eventid=eid)
+
+
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, 'eventgrid.html')
@@ -51,9 +64,9 @@ def eventgrid(path=None):
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description', 'Shared'],
                 orderby=orderby,
                 search_queries=search_queries,
-                create=True,
-                details=True,
-                editable=True,
-                deletable=True,
+                create=URL('new_event'),
+                details=URL('view_event/'),
+                editable=URL('new_event/'),
+                deletable=URL('new_event/delete/'),
                 **GRID_DEFAULTS)
     return dict(grid=grid)

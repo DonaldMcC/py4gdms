@@ -71,7 +71,7 @@ def view_question(qid='0'):
     form = Form(db.question,
                 readonly=True,
                 record=qid,
-                formstyle=FormStyleBootstrap4)
+                formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('questiongrid'))
     return dict(form=form)
