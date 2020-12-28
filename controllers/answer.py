@@ -2,6 +2,7 @@ import datetime
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
 from ..ndsfunctions import score_question
+from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 
 # @action.uses(Template('index.html', delimiters='[[ ]]'))
 
@@ -72,25 +73,6 @@ def agree(qid):
     # db.item_like.insert(item_id=id)
 
 
-def get_disabled(ans, useranswer):
-    return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
-
-
-def get_class(qtype='quest', answer=1, framework='Bulma'):
-    # Function to return button classes - only supporting Bulma.css for now
-    # is-success and is-danger for agree disagree on issues and approve disapprove on actions
-    default = 'button is-small is-rounded '
-    if qtype == 'quest':
-        return default
-    else:
-        if answer == 1:
-            return default + ' is-success'
-        else:
-            return default + ' is-danger'
-#    title = 'Click to Answer'
-#    title='Change Answer'
-
-
 @authenticated()
 def index():
     # user = auth.get_user()
@@ -101,39 +83,3 @@ def index():
     res_actions = get_actions(status='Resolved')
     return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled)
-
-
-def get_actions(qtype='action', status='', x=0, y=10):
-    query = make_query(qtype, status)
-    # TODO will request specific fields at some point and probably pass through datatable options eg search and so on
-    # forth
-    sortby = ~db.question.id
-    actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                               orderby=[sortby], limitby=(x, y))
-    return actions
-
-
-def get_questions(qtype='quest', status='', x=0, y=10):
-    query = make_query(qtype, status)
-    questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                                 orderby=~db.question.id, limitby=(x, y))
-    return questions
-
-
-def get_issues(qtype='issue', status='', x=0, y=10):
-    query = make_query(qtype, status)
-    issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
-                              orderby=~db.question.id, limitby=(x, y))
-    return issues
-
-
-def make_query(qtype='quest', status=''):
-    if qtype == 'quest':
-        query = (db.question.qtype == 'quest')
-    elif qtype == 'action':
-        query = (db.question.qtype == 'action') & (db.question.execstatus != 'Completed')
-    else:
-        query = (db.question.qtype == 'issue')
-    if status:
-        query &= (db.question.status == status)
-    return query

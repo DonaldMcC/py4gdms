@@ -10,7 +10,7 @@ from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
-
+from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
@@ -33,8 +33,16 @@ def view_event(eid='0'):
         session.eventid = eid
         session.projid = eventrow.projid
         if eventrow.status == 'Archived':
-            redirect(URL('event', 'eventreview', args=eventid))
-    return dict(eventrow=eventrow, eventid=eid)
+            redirect(URL('event', 'eventreview', args=eid))
+
+    actions = get_actions(status='In Progress', event=eid)
+    questions = get_questions(status='In Progress', event=eid)
+    issues = get_issues(status='In Progress', event=eid)
+    res_actions = get_actions(status='Resolved', event=eid)
+
+    return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
+                issues=issues, res_actions=res_actions,
+                get_class=get_class, get_disabled=get_disabled)
 
 
 @action('eventgrid', method=['POST', 'GET'])
