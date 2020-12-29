@@ -1,0 +1,36 @@
+[[if questions:]]
+<br>
+<h1 class="title is-4">Questions</h1>
+<table id=questions class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="10%">Status</th>
+                        <th width="40%">Question</th>
+                        <th width="5%">F/O</th>
+                        <th width="20%">Answer(s)</th>
+                        <th width="25%" class="min-tablet-p">Notes</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for row in questions:]]
+<tr>
+<th>[[=row.question.status]]</th>
+<td>[[=row.question.questiontext]]
+<div id='btns[[=str(row.question.id)]]'></div></td>
+<td>[[=row.question.factopinion]]</td>
+<td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
+           VALUE="[[=row.question.answer1]]">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           VALUE="[[=row.question.answer2]]"></td>
+    <td>[[=row.question.notes]]</td>
+</tr>
+[[pass]]
+</tbody>
+</table>
+
+<script>
+$('#questions').DataTable({responsive: true, paging: false, searching:false, info: false});
+</script>
+[[pass]]

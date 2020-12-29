@@ -35,13 +35,14 @@ def view_event(eid='0'):
         if eventrow.status == 'Archived':
             redirect(URL('event', 'eventreview', args=eid))
 
-    actions = get_actions(event=eid)
-    questions = get_questions(event=eid)
-    issues = get_issues(status='In Progress', event=eid)
+    actions = get_actions(status='In Progress', event=eid)
+    questions = get_questions(status='In Progress', event=eid)
+    issues = get_issues(event=eid)
     res_actions = get_actions(status='Resolved', event=eid)
+    res_questions = get_questions(status='Resolved', event=eid)
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
-                issues=issues, res_actions=res_actions,
+                issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled)
 
 
