@@ -16,7 +16,7 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
         else:
             return default + ' is-danger'
 
-def get_actions(qtype='action', status='', x=0, y=10, event=None):
+def get_actions(qtype='action', status=None, x=0, y=10, event=None):
     query = make_query(qtype, status, event)
     # TODO will request specific fields at some point and probably pass through datatable options eg search and so on
     # forth
@@ -26,21 +26,21 @@ def get_actions(qtype='action', status='', x=0, y=10, event=None):
     return actions
 
 
-def get_questions(qtype='quest', status='', x=0, y=10, event=None):
+def get_questions(qtype='quest', status=None, x=0, y=10, event=None):
     query = make_query(qtype, status, event)
     questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                  orderby=~db.question.id, limitby=(x, y))
     return questions
 
 
-def get_issues(qtype='issue', status='', x=0, y=10, event=None):
+def get_issues(qtype='issue', status=None, x=0, y=10, event=None):
     query = make_query(qtype, status, event)
     issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                               orderby=~db.question.id, limitby=(x, y))
     return issues
 
 
-def make_query(qtype='quest', status='', event=None):
+def make_query(qtype='quest', status=None, event=None):
     if qtype == 'quest':
         query = (db.question.qtype == 'quest')
     elif qtype == 'action':

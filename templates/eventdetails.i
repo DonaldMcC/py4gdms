@@ -1,14 +1,14 @@
 <div>
-<h1>Event Details</h1>
-<table id='TabAnswers' class='issuetable'>
+<h1 class="title is-3">Event Details</h1>
+<table id='TabAnswers' class='table'>
 <tbody>
 <tr>
 <th width="10%"></th>
-<th width="70%">[[=eventrow.evt_name]]</th>
-<th width="10%" >Start</th>
-<th width="10%">End</th>
+<th width="60%">[[=eventrow.evt_name]]</th>
+<th width="15%" >Start</th>
+<th width="15%">End</th>
 </tr>
-<tr>
+<tr class='is-selected'>
 <th>Description</th>
 <td>[[=eventrow.description]]</td>
 <td class="text-center">[[=eventrow.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>

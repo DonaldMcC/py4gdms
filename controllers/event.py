@@ -35,8 +35,8 @@ def view_event(eid='0'):
         if eventrow.status == 'Archived':
             redirect(URL('event', 'eventreview', args=eid))
 
-    actions = get_actions(status='In Progress', event=eid)
-    questions = get_questions(status='In Progress', event=eid)
+    actions = get_actions(event=eid)
+    questions = get_questions(event=eid)
     issues = get_issues(status='In Progress', event=eid)
     res_actions = get_actions(status='Resolved', event=eid)
 
