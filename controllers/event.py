@@ -50,7 +50,7 @@ def view_event(eid='0'):
 
     eventlevel = 0 #  so think we report <= to this
     parentquest = 0
-    redraw = 'false'
+    redraw = 'true'
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 

@@ -25,7 +25,7 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 </p>
     <div id="target"></div>
     <div id="graph" class="graph-V" >
-    [[debug='True']]
+    [[debug='False']]
     [[if debug == 'True':]]
     <div id="toolbox" class >
       <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/py4gdms/static/images/upload-icon.png" alt="upload graph">
