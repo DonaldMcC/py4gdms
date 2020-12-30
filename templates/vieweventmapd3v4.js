@@ -38,7 +38,7 @@
     var d32py =  {
         vieweventmap: true,
         editable: [[=eventowner]],
-        eventid: [[=str(eventrowid)]],
+        eventid: [[=str(eventid)]],
         projid: [[=str(projid)]],
         edges: [],
         qtext: '',
@@ -50,14 +50,14 @@
         globalnode: []
   };
 
-        var nodes = [[=XML(json(nodes))]];
-        var links = [[=XML(json(links))]];
+        var nodes = [[=nodes]];
+        var links = [[=links]];
         var edges = [];
 
         //console.log(nodes);
 
         var itemUrl = '[[=URL('submit', 'new_questload.load')]]';
-        var baselowerUrl = '[[=URL('event', 'vieweventmapd3.html',args=(eventrowid))]]';
+        var baselowerUrl = '[[=URL('event', 'vieweventmapd3.html')]]';
         //location.href = "http://127.0.0.1:8081/gdms/event/vieweventmapd3.html/"
         var sub
 
@@ -143,5 +143,5 @@
 
         function moveElement(sourceId, sourceposx, sourceposy)
         {
-        ajax('[[=URL('event','move')]]'+'/'+[[=eventrowid]]+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
+        ajax('[[=URL('event','move')]]'+'/'+[[=eventid]]+'/'+sourceId+'/'+sourceposx+'/'+sourceposy+'/', ['bla'], 'target');
         };

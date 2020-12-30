@@ -48,10 +48,19 @@ def view_event(eid='0'):
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
+    #TODO finalise if events have owners or security
+    # if auth.user and eventrow.evt_owner == auth.user.id:
+
+    if auth.user:
+        editable = 'true'
+    else:
+        editable = 'false'
+
+
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
-                resultstring=resultstring, redraw=redraw)
+                resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid)
 
 
 

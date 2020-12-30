@@ -98,7 +98,7 @@ def merge_two_dicts(x, y):
 
 
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
-              status='In Progress', qtype='quest', priority=50, answers=''):
+              status='In Progress', qtype='quest', priority=50, answer1='', answer2=''):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -140,7 +140,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['swidth'] = 5
 
     d3dict['fontsize'] = 10
-    d3dict['answers'] = answers
+    d3dict['answers'] = answer1, answer2
     d3dict['qtype'] = qtype
     d3dict['status'] = status
     d3dict['priority'] = priority
@@ -237,24 +237,16 @@ def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
     if status == 'Archived':
         orderstr = db.eventmap.questid
         if parentquest == 0:
-            quests = db((db.eventmap.eventid == eventid) &
-                                (db.eventmap.eventlevel <= eventlevel)).select(orderby=orderstr)
+            quests = db(db.eventmap.eventid == eventid).select(orderby=orderstr)
         else:
             quests = db((db.question.eventid == eventid) &
                                 (db.question.masterquest == parentquest)).select(orderby=orderstr)
     else:
         if parentquest == 0:
-            quests = db((db.question.eventid == eventid) &
-                                (db.question.eventlevel <= eventlevel)).select(orderby=orderstr)
+            quests = db(db.question.eventid == eventid).select(orderby=orderstr)
         else:
             quests = db((db.question.eventid == eventid) &
                                 (db.question.masterquest == parentquest)).select(orderby=orderstr)
-
-    if quests:  # having issue here with quests being undefined and next line erroring - so lets catch and move on
-        try:
-            alreadyans = quests.exclude(lambda row: row.answer_group in session.exclude_groups)
-        except TypeError:
-            pass
 
     questlist = [x.id for x in quests]
     return quests, questlist
@@ -303,7 +295,7 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     for i, x in enumerate(quests):
         dicty = x.as_dict()
         dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(),
-                          x.status, x.qtype, x.priority, x.answers)
+                          x.status, x.qtype, x.priority, x.answer1, x.answer2)
         nodes.append(merge_two_dicts(dicty, dictx))
 
     edges = []
@@ -321,6 +313,36 @@ def _test():
     doctest.testmod()
 
 
+def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
+    # this should only need to use eventmap
+    # now change to use quest
+    stdwidth = 1000
+    stdheight = 1000
+    resultstring = 'OK'
+    linklist = []
+    links = None
+    intlinks = None
+    nodepositions = {}
+
+    quests, questlist = getevent(eventid, status)
+    if not questlist:
+        resultstring = 'No Items setup for event'
+    else:
+        intlinks = getlinks(questlist)
+        links = [x.sourceid for x in intlinks]
+
+        if links:
+            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
+
+        for row in quests:
+            nodepositions[row.id] = (
+            ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+
+    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
+                resultstring=resultstring)
+
+
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run
     _test()
+

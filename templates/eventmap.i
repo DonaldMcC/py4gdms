@@ -24,8 +24,8 @@ Resolved items have thicker border" data-content="" VALUE="Key">
 </div>
 </p>
     <div id="target"></div>
-    <div id="graph" [[if len(request.args) < 2 or request.args[1] != 'homepage':]]class="graph-V" [[pass]]]]>
-
+    <div id="graph" class="graph-V" >
+    [[debug='True']]
     [[if debug == 'True':]]
     <div id="toolbox" class >
       <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/nds/static/images/upload-icon.png" alt="upload graph">

@@ -172,6 +172,10 @@ db.define_table('question',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
+
+db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
+                                                     (row.question.correctans == 2 and row.question.answer2) or ''))
+
 # So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
 # is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation

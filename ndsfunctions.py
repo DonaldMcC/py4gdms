@@ -23,7 +23,6 @@ import calendar
 from yatl.helpers import XML
 from py4web import action, request, abort, redirect, URL
 from .common import db, session, T, cache, auth
-from .d3js2py import getevent
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
     value = str(value)
@@ -456,35 +455,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     else:
         linklist = []
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
-
-
-def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
-    # this should only need to use eventmap
-    # now change to use quest
-    stdwidth = 1000
-    stdheight = 1000
-    resultstring = 'OK'
-    linklist = []
-    links = None
-    intlinks = None
-    nodepositions = {}
-
-    quests, questlist = getevent(eventid, status)
-    if not questlist:
-        resultstring = 'No Items setup for event'
-    else:
-        intlinks = getlinks(questlist)
-        links = [x.sourceid for x in intlinks]
-
-        if links:
-            linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
-
-        for row in quests:
-            nodepositions[row.id] = (
-            ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
-
-    return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
-                resultstring=resultstring)
 
 
 def getlinks(questlist):
