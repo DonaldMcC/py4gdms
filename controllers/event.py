@@ -11,6 +11,7 @@ from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
+from ..d3js2py import getlinks, getd3graph
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
@@ -41,9 +42,18 @@ def view_event(eid='0'):
     res_actions = get_actions(status='Resolved', event=eid)
     res_questions = get_questions(status='Resolved', event=eid)
 
+    eventlevel = 0 #  so think we report <= to this
+    parentquest = 0
+    redraw = False
+
+    quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
+
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
-                get_class=get_class, get_disabled=get_disabled)
+                get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
+                resultstring=resultstring, redraw=redraw)
+
+
 
 
 @action('eventgrid', method=['POST', 'GET'])
