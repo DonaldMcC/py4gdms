@@ -28,9 +28,9 @@ Resolved items have thicker border" data-content="" VALUE="Key">
     [[debug='True']]
     [[if debug == 'True':]]
     <div id="toolbox" class >
-      <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/nds/static/images/upload-icon.png" alt="upload graph">
-        <input type="image" id="download-input" title="download graph" src="/nds/static/images/download-icon.png" alt="download graph">
-        <input type="image" id="delete-graph" title="delete graph" src="/nds/static/images/trash-icon.png" alt="delete graph">
+      <input type="file" id="hidden-file-upload"><input id="upload-input" type="image" title="upload graph" src="/py4gdms/static/images/upload-icon.png" alt="upload graph">
+        <input type="image" id="download-input" title="download graph" src="/py4gdms/static/images/download-icon.png" alt="download graph">
+        <input type="image" id="delete-graph" title="delete graph" src="/py4gdms/static/images/trash-icon.png" alt="delete graph">
     </div>
     [[pass]]
     </div>

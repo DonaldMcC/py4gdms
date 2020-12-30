@@ -6,6 +6,7 @@
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
+import datetime
 from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
@@ -23,6 +24,11 @@ def new_event(eid=0):
     if form.accepted:
         redirect(URL('eventgrid'))
     return dict(form=form)
+
+
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
 
 
 @action("view_event/<eid>", method=['GET', 'POST'])
@@ -44,10 +50,11 @@ def view_event(eid='0'):
 
     eventlevel = 0 #  so think we report <= to this
     parentquest = 0
-    redraw = False
+    redraw = 'false'
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
+    #print(nodes)
     #TODO finalise if events have owners or security
     # if auth.user and eventrow.evt_owner == auth.user.id:
 
@@ -60,7 +67,8 @@ def view_event(eid='0'):
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
-                resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid)
+                resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
+                myconverter=myconverter)
 
 
 

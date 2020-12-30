@@ -1,4 +1,4 @@
-[[import json]]
+[[import simplejson]]
     var inputmode = 'V';
     var newitems = false;
     var prevclass = 'graph-V'
@@ -49,12 +49,12 @@
         formaction: '',
         globalnode: []
   };
-
-        var nodes = [[=nodes]];
+        var nodes = '';
+        var nodes = [[=XML(simplejson.dumps(nodes, default=myconverter))]];
         var links = [[=links]];
         var edges = [];
 
-        //console.log(nodes);
+        console.log(nodes);
 
         var itemUrl = '[[=URL('submit', 'new_questload.load')]]';
         var baselowerUrl = '[[=URL('event', 'vieweventmapd3.html')]]';
