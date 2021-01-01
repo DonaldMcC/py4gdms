@@ -15,6 +15,7 @@
 
     <style>.py4web-validation-error{margin-top:-16px; font-size:0.8em;color:red}</style>
     [[block page_head]]<!-- individual pages can customize header here -->[[end]]
+    [[load_graph=False]]
   </head>
   <body>
     <header>
@@ -85,7 +86,9 @@
   <!-- You've gotta have utils.js -->
   <script src="js/utils.js"></script>
         <script src="https://d3js.org/d3.v5.min.js"></script>
+  [[if load_graph:]]
     <script src="js/graphd3v4.js"></script>
+  [[pass]]
 
   [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
 </html>

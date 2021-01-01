@@ -404,7 +404,7 @@ function redrawnodes() {
         if (linksource == '0') {
             linksource = d.serverid.title;
         }
-        requestLink(linksource, linkdest);
+        requestLink(linksource, linkdest, 'create');
         redrawlinks();
         graphvars.mousedownnode.selected = false;
         graphvars.mousedownnode = null;
@@ -464,7 +464,7 @@ function redrawnodes() {
             nodeid = d.serverid.title;
         }
         d3.select("body").select('div.tooltip').remove();
-        promoteNode(nodeid, d32py.eventid);
+        promoteNode(nodeid, d32py.eventid, 'promote');
         nodes.splice(nodes.indexOf(d), 1);
         spliceLinksForNode(d);
         graphvars.mousedownnode = null;

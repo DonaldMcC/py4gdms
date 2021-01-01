@@ -19,7 +19,7 @@
 """
 
 import json
-from d3js2py import getd3graph
+from ..d3js2py import getd3graph
 import datetime
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
@@ -319,7 +319,7 @@ def ajaxquest():
     return json.dumps(results)
 
 
-@authenticated
+@authenticated()
 def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
     http://bl.ocks.org/cjrd/6863459
@@ -379,6 +379,43 @@ def network():
     return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
                 eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
                 redraw=redraw)
+
+
+@authenticated()
+def move():
+    # This will allow moving the position of questions on an eventmap - but not on a general map at present
+    # as no obvious way to save them - however think we will comment out the code if not authorised
+    stdwidth = 1000
+    stdheight = 1000
+
+    print(request.json)
+
+    questid = int(request.json['sourceid'])
+    newxpos = int(request.json['sourceposx'])
+    newypos = int(request.json['sourceposy'])
+
+    # ensure xpos and ypos within range
+    newxpos = max(0, min(newxpos, stdwidth))
+    newypos = max(0, min(newypos, stdheight))
+    questrec = db(db.question.id == questid).select().first()
+
+    if auth.user is None:
+        responsetext = 'You must be logged in to save movements'
+    elif questrec.eventid == 0:
+        responsetext = 'No event set - movements not saved'
+    else:
+        event = db(db.evt.id == questrec.eventid).select().first()
+        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
+            questrec.update_record(xpos=newxpos, ypos=newypos)
+            db.commit()
+            responsetext = 'Element moved'
+        else:
+            if event.status != 'Open':
+                responsetext = 'Move not saved - event is archiving and map cannot be changed'
+            else:
+                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+    print(responsetext)
+    return responsetext
 
 
 def no_questions():

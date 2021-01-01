@@ -3,9 +3,10 @@
     var newitems = false;
     var prevclass = 'graph-V'
 
-        var onsuccess = function(res) {
+    var onsuccess = function(res) {
     console.log('success');
     };
+
     var onerror = function(res) {
         alert('ERROR in call');
     };
@@ -122,60 +123,61 @@
         };
 
 
-        function requestLink(sourceId,targetId)
+        function requestLink(sourceId,targetId, action)
         {
         Q.ajax("POST", "[[=URL('linkrequest')]]", {
             sourceid: sourceId,
-            targetid: targetId
-            linkaction: 'create'
+            targetid: targetId,
+            action: action
         }).then(onsuccess).catch(onerror);
         };
 
 
-        function deleteLink(sourceId,targetId)
+        function deleteLink(sourceId,targetId, action)
         {
         Q.ajax("POST", "[[=URL('linkrequest')]]", {
             sourceid: sourceId,
-            targetid: targetId
-            linkaction: 'delete'
+            targetid: targetId,
+            action: action
         }).then(onsuccess).catch(onerror);
         };
 
-        function deleteNode(nodeid, eventid)
+        function deleteNode(nodeid, eventid, action)
         {
         Q.ajax("POST", "[[=URL('nodedelete')]]", {
             nodeid: sourceId,
-            eventid: eventid
-            action: 'delete'
+            eventid: eventid,
+            action: action
         }).then(onsuccess).catch(onerror);
         };
 
-        function demoteNode(nodeid, eventid, parentid)
+        function demoteNode(nodeid, eventid, parentid, action)
         {
         Q.ajax("POST", "[[=URL('nodedemote')]]", {
             nodeid: nodeid,
-            eventid: eventid
-            parentid: parentid
+            eventid: eventid,
+            parentid: parentid,
+            action: action
         }).then(onsuccess).catch(onerror);
 
         };
 
-        function promoteNode(nodeid, eventid)
+        function promoteNode(nodeid, eventid, action)
         {
         Q.ajax("POST", "[[=URL('nodedemote')]]", {
             nodeid: nodeid,
-            eventid: eventid
-            parentid: parentid
+            eventid: eventid,
+            parentid: parentid,
+            action: action
         }).then(onsuccess).catch(onerror);
 
         };
 
-        function moveElement(sourceId, sourceposx, sourceposy)
+        function moveElement(sourceid, sourceposx, sourceposy)
         {
-        Q.ajax("POST", "[[=URL('eventmove')]]", {
-            eventid: eventid
-            sourceid: sourceid
-            sourceposx: sourceposx
+        Q.ajax("POST", "[[=URL('move')]]", {
+            sourceid: sourceid,
+            sourceposx: sourceposx,
             sourceposy: sourceposy
         }).then(onsuccess).catch(onerror);
 
