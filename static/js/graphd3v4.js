@@ -741,7 +741,6 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
          .attr("dy", "-" + 7.3 * 7.5);
 
      while (i < lines.length && words.length > 0) {
-
          line = lines[i++];
          var lineData = calcAllowableWords(line.maxLength, words);
          //console.log(lineData);
