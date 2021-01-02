@@ -59,7 +59,7 @@
   };
         var nodes = '';
         var nodes = [[=XML(simplejson.dumps(nodes, default=myconverter))]];
-        var links = [[=links]];
+        var links = [[=XML(simplejson.dumps(links, default=myconverter))]];
         var edges = [];
 
         console.log(nodes);

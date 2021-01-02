@@ -56,9 +56,9 @@ def linkrequest():
     # and wil style the links a bit based on this too
 
 
-    sourceid = request.json('sourceid')
-    targetid = request.json('targetid')
-    linkaction = request.json('linkaction')
+    sourceid = request.json['sourceid']
+    targetid = request.json['targetid']
+    linkaction = request.json['action']
 
     sourcerecs = db(db.question.questiontext == sourceid).select(
                             db.question.id, orderby=~db.question.createdate)
@@ -66,8 +66,6 @@ def linkrequest():
     targetrecs = db(db.question.questiontext == targetid).select(
                             db.question.id, orderby=~db.question.createdate)
 
-
-    linkaction = 'create'
     responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
             # print responsetext
     query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
