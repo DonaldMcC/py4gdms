@@ -2,8 +2,8 @@
 This file defines the database models
 """
 
-from .common import db, auth, T, session
-from py4web import Field, request
+from .common import db, auth, T
+from py4web import Field
 from pydal.validators import *
 import datetime
 
@@ -15,9 +15,10 @@ db.define_table('resolve',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
                 Field('responses', 'integer', default=3, label='Min Number of Responses before resolution'),
                 Field('consensus', 'decimal(4,4)', default=60,
-                      requires=IS_DECIMAL_IN_RANGE(50.01, 100,error_message='Must be in range 50.01 to 100'),
+                      requires=IS_DECIMAL_IN_RANGE(50.01, 100, error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
-                Field('adminresolve', 'boolean', default=True, label='Allow event owners to resolve on behalf of group'),
+                Field('adminresolve', 'boolean', default=True,
+                      label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
 
 db.define_table('website_parameters',
@@ -53,7 +54,6 @@ db.define_table('website_parameters',
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 db.website_parameters.default_resolve_name.requires = IS_EMPTY_OR(IS_IN_DB(db, 'resolve.resolve_name'))
 
-
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
                 Field('title'),
@@ -62,7 +62,6 @@ db.define_table('download',
                 Field('download_version', 'string', default='1'),
                 format='%(title)s')
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
-
 
 db.define_table('locn',
                 Field('location_name', label='Location Name', requires=[not_empty,
@@ -88,7 +87,6 @@ db.define_table('locn',
 db.locn.location_name.requires = IS_NOT_IN_DB(db, db.locn.location_name)
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
-
 db.define_table('project',
                 Field('proj_name', label='Project Name'),
                 Field('proj_url', label='Project Website'),
@@ -107,7 +105,6 @@ db.define_table('project',
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 format='%(proj_name)s')
 db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
-
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
@@ -130,7 +127,6 @@ db.define_table('evt',
                 format='%(evt_name)s')
 db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
 
-
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',
                       requires=IS_IN_SET(['quest', 'action', 'issue']), default='quest'),
@@ -138,7 +134,8 @@ db.define_table('question',
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
-                Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter', default=auth.user_id),
+                Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter',
+                      default=auth.user_id),
                 Field('factopinion', 'string', default='Opinion',
                       requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion'),
                 Field('answertext', 'text', label='Fact Answer',
@@ -150,9 +147,8 @@ db.define_table('question',
                 Field('correctans', 'integer', readable=False, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, readable=False, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
-                Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'], writable=False,
-                      label='Priority'),
-                Field('subquests', 'list:integer', readable=False, writable=False, label='Sub Questions'),
+                Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
+                      writable=False, label='Priority'),
                 Field('resolvemethod', 'reference resolve', label='Resolution Method'),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
@@ -163,15 +159,14 @@ db.define_table('question',
                 Field('eventid', 'reference evt', label='Event'),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
-                Field('xpos', 'double', readable=False, writable=False, default=0.0, label='xcoord'), # xpos on eventmap
-                Field('ypos', 'double', readable=False, writable=False, default=0.0, label='ycoord'), # ypos on eventmap
-                Field('perccomplete', 'integer', default=0, label='Percent Complete', requires=IS_INT_IN_RANGE(0, 101,
-                                                                                                               error_message='Must be between 0 and 100')),
+                Field('xpos', 'double', readable=False, writable=False, default=0.0, label='xcoord'),
+                Field('ypos', 'double', readable=False, writable=False, default=0.0, label='ycoord'),
+                Field('perccomplete', 'integer', default=0, label='Percent Complete',
+                      requires=IS_INT_IN_RANGE(0, 101, error_message='Must be between 0 and 100')),
                 Field('notes', 'text', label='Notes',
                       comment='General notes about question - may also document answers from knowledge engines'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
-
 
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
@@ -186,13 +181,12 @@ db.define_table('userquestion',
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
-                Field('urgency', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                                error_message='Must be between 1 and 10')),
-                Field('importance', 'integer', default=5, requires=IS_INT_IN_RANGE(1, 11,
-                                error_message='Must be between 1 and 10')),
+                Field('urgency', 'integer', default=5,
+                      requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
+                Field('importance', 'integer', default=5,
+                      requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
-
 
 db.define_table('questlink',
                 Field('sourceid', 'reference question'),
@@ -205,7 +199,6 @@ db.define_table('questlink',
                 Field('lastdeleter', 'reference auth_user'),
                 Field('lastaction', 'string', default='create'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
-
 
 # this holds comments for resolved questions
 # it may be extended to allow comments against unresolved but not yet
@@ -223,7 +216,6 @@ db.define_table('questcomment',
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
-
 
 db.define_table('eventmap',
                 Field('eventid', 'reference evt'),
@@ -256,6 +248,7 @@ db.define_table('eventmap',
 
 try:
     from .settings import DEFAULT_RESOLUTION
+
     if DEFAULT_RESOLUTION:
         resmethod = db(db.resolve.resolve_name == DEFAULT_RESOLUTION).select(db.resolve.id).first().id
         db.question.resolvemethod.default = resmethod
