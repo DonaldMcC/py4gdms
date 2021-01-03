@@ -15,7 +15,11 @@ def new_project(pid=0):
                 record=pid,
                 formstyle=FormStyleBootstrap4)
     if form.accepted:
+        session.projid = form.vars.id
+        print(form.vars)
+        print('projid', session.projid)
         redirect(URL('projectgrid'))
+
     return dict(form=form)
 
 

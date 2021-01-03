@@ -106,6 +106,7 @@ db.define_table('project',
                 format='%(proj_name)s')
 db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
 
+
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location'),
@@ -126,6 +127,7 @@ db.define_table('evt',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 format='%(evt_name)s')
 db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
+
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',

@@ -18,9 +18,14 @@ from ..d3js2py import getlinks, getd3graph
 @action("new_event", method=['GET', 'POST'])
 @action.uses('new_event.html', session, db, auth.user)
 def new_event(eid=0):
+    try:
+        db.evt.projid.default = session.projid
+    except AttributeError:
+        pass
     form = Form(db.evt,
                 record=eid,
                 formstyle=FormStyleBulma)
+
     if form.accepted:
         redirect(URL('eventgrid'))
     return dict(form=form)
