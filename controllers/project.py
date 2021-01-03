@@ -16,8 +16,6 @@ def new_project(pid=0):
                 formstyle=FormStyleBootstrap4)
     if form.accepted:
         session.projid = form.vars.id
-        print(form.vars)
-        print('projid', session.projid)
         redirect(URL('projectgrid'))
 
     return dict(form=form)
@@ -53,7 +51,7 @@ def projectgrid(path=None):
                 create=URL('new_project/0'),
                 details=True,
                 editable=URL('new_project/'),
-                deletable=URL('new_project/delete/'),
+                deletable=True,
                 **GRID_DEFAULTS)
 
     return dict(grid=grid)

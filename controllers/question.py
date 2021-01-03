@@ -44,7 +44,7 @@ def new_question(qid='0'):
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
 
     try:
-        db.question.eventid.default=session.event
+        db.question.eventid.default=session.eventid
     except (KeyError, AttributeError):
         pass
 
@@ -54,7 +54,7 @@ def new_question(qid='0'):
                 formstyle=FormStyleBulma)
 
     if form.accepted:
-        session.event=form.vars.eventid
+        session.eventid=form.vars.eventid
         redirect(URL('questiongrid'))
     return dict(form=form)
 
@@ -130,7 +130,7 @@ def questiongrid(path=None):
                 create=URL('new_question/0'),
                 details=URL('view_question/'),
                 editable=URL('new_question/'),
-                deletable=URL('new_question/delete/'),
+                deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 

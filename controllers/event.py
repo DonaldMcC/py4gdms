@@ -27,6 +27,7 @@ def new_event(eid=0):
                 formstyle=FormStyleBulma)
 
     if form.accepted:
+        session.eventid = form.vars.id
         redirect(URL('eventgrid'))
     return dict(form=form)
 
@@ -108,6 +109,6 @@ def eventgrid(path=None):
                 create=URL('new_event'),
                 details=URL('view_event/'),
                 editable=URL('new_event/'),
-                deletable=URL('new_event/delete/'),
+                deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
