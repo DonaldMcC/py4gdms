@@ -109,7 +109,7 @@ db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
 
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
-                Field('locationid', 'reference locn', label='Location'),
+                Field('locationid', 'reference locn', label='Location', required=True),
                 Field('projid', 'reference project', label='Project'),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
@@ -126,6 +126,7 @@ db.define_table('evt',
                 Field('recurrence', 'string', default='None',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 format='%(evt_name)s')
+
 db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
 
 
@@ -139,9 +140,9 @@ db.define_table('question',
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter',
                       default=auth.user_id),
                 Field('factopinion', 'string', default='Opinion',
-                      requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion'),
-                Field('answertext', 'text', label='Fact Answer',
-                      comment='Factual questions should be answered by either submitter or knowledge engines '),
+                      requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion',
+                      comment='Factual questions should be answered by either submitter or knowledge engines'),
+                Field('answertext', 'text', label='Fact Answer'),
                 Field('answer1', 'string'),
                 Field('answer2', 'string'),
                 Field('numanswer1', 'integer', default=0, readable=False, writable=False),

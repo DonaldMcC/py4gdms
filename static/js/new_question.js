@@ -18,8 +18,7 @@ $(document).ready(function(){
 
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='issue' || $('#question_qtype option:selected').text()=='action' )
-                 {$('#question_factopinion').hide();
-                  $("label[for='question_factopinion']").hide();
+                 {$('#question_factopinion').parent().parent().hide();
                   $('#question_answer1').val('Approve');
                   $('#question_answer1').hide();
                   $("label[for='question_answer1']").hide();
@@ -30,9 +29,8 @@ $(document).ready(function(){
                   $("label[for='question_answertext']").hide();
                   $('#question_answertext').hide();};
               if($('#question_qtype option:selected').text()=='quest'){
-                  $('#question_factopinion').show();
-                  $("label[for='question_factopinion']").show();
-                  $('#question_factopinion option:selected').text()=='Fact';
+                  $('#question_factopinion').parent().parent().show();
+                  $('#question_factopinion option:selected').text()=='Opinion';
                   $('#question_answer1').show();
                   $("label[for='question_answer1']").show();
                   $('#question_answer2').show();

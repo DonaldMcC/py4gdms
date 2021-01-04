@@ -88,8 +88,7 @@ def questiongrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.question.qtype, db.question.questiontext,
-              db.question.answertext, db.question.resolvemethod,
-              db.evt.evt_name]
+              db.question.answertext, db.evt.evt_name, db.project.proj_name]
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
@@ -121,8 +120,8 @@ def questiongrid(path=None):
     grid = Grid(path,
                 search.query,
                 fields=fields,
-                headings=['Type', 'Status', 'Text', 'Fact_Opinion', 'Answertext',
-                          'Resolvemethod', 'Event', 'Project'],
+                headings=['Type', 'Text', 'Answertext',
+                           'Event', 'Project'],
                 left=[db.evt.on(db.question.eventid == db.evt.id),
                       db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
