@@ -50,6 +50,7 @@ $(document).ready(function(){
                  $("label[for='question_answer2']").hide();
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
+                 $('#question_status option:selected').text()=='Resolved'
                  $('#question_buttons').append('<p></p><input type="BUTTON" id="wolflookup" ' +
          'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()"></p>');
                  $('#question_buttons').append('<p></p><input type="BUTTON" id="wikiplookup" ' +

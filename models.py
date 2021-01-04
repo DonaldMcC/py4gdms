@@ -114,9 +114,9 @@ db.define_table('evt',
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time',
-                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=10))),
+                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")),
                 Field('enddatetime', 'datetime', label='End Date Time',
-                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=11))),
+                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")),
                 Field('description', 'text'),
                 Field('evt_shared', 'boolean', default=True, label='Shared Event',
                       comment='Allows other users to link questions'),
@@ -156,8 +156,10 @@ db.define_table('question',
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
                 Field('responsible', label='Responsible'),
-                Field('startdate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Starts'),
-                Field('enddate', 'datetime', default=datetime.datetime.utcnow(), label='Date Action Ends'),
+                Field('startdate', 'datetime', default=(datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")),
+                      label='Date Action Starts'),
+                Field('enddate', 'datetime', default=(datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")),
+                      label='Date Action Ends'),
                 Field('eventid', 'reference evt', label='Event'),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
@@ -173,6 +175,8 @@ db.define_table('question',
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
+
+#default=datetime.datetime.utcnow(),
 # So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
 # is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
