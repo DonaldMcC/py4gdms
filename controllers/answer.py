@@ -47,6 +47,7 @@ def perccomplete():
     resp = request.json['responsible']
     duestr = request.json['duedate']
     quest = db(db.question.id == questid).select().first()
+
     try:
         duedate = datetime.datetime.strptime(duestr, "%Y-%m-%d")
         quest.enddate = duedate
@@ -63,7 +64,7 @@ def perccomplete():
 
     # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
-    return
+    return()
 
 
 # make a "like" button factory

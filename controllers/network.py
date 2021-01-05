@@ -26,22 +26,6 @@ from py4web import action, request, Flash
 
 
 @authenticated()
-def perccomplete():
-    """
-    This updates percent complete on resolved actions
-    """
-    questid = request.json['questid']
-    perccomplete = int(request.json['perccomplete'])
-    resp = request.json['responsible']
-    duestr = request.json['duedate']
-    quest = db(db.question.id == questid).select().first()
-    try:
-        duedate = datetime.datetime.strptime(duestr, "%Y-%m-%d")
-        quest.enddate = duedate
-    except ValueError:
-        pass
-
-@authenticated()
 def linkrequest():
     # this is called when a link is requested from the graph or event function
     # at present we are keeping limited audit trail on link requests - only last updater
