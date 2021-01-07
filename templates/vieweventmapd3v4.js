@@ -141,19 +141,19 @@
         }).then(onsuccess).catch(onerror);
         };
 
-        function deleteNode(nodeid, eventid, action)
+        function deleteNode(sourceId, eventid, action)
         {
         Q.ajax("POST", "[[=URL('nodedelete')]]", {
             nodeid: sourceId,
             eventid: eventid,
-            action: action
+            action: 'event'
         }).then(onsuccess).catch(onerror);
         };
 
-        function demoteNode(nodeid, eventid, parentid, action)
+        function demoteNode(sourceId, eventid, parentid, action)
         {
         Q.ajax("POST", "[[=URL('nodedemote')]]", {
-            nodeid: nodeid,
+            nodeid: sourceId,
             eventid: eventid,
             parentid: parentid,
             action: action
@@ -161,10 +161,10 @@
 
         };
 
-        function promoteNode(nodeid, eventid, action)
+        function promoteNode(sourceId, eventid, action)
         {
         Q.ajax("POST", "[[=URL('nodedemote')]]", {
-            nodeid: nodeid,
+            nodeid: sourceId,
             eventid: eventid,
             parentid: parentid,
             action: action
@@ -172,10 +172,10 @@
 
         };
 
-        function moveElement(sourceid, sourceposx, sourceposy)
+        function moveElement(sourceId, sourceposx, sourceposy)
         {
         Q.ajax("POST", "[[=URL('move')]]", {
-            sourceid: sourceid,
+            sourceid: sourceId,
             sourceposx: sourceposx,
             sourceposy: sourceposy
         }).then(onsuccess).catch(onerror);

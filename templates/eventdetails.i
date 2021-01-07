@@ -15,10 +15,10 @@
 <td class="text-center">[[=eventrow.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 </tr>
 <tr>
-<th>Location</th>
+<th>Project</th>
+<td>[[=eventrow.projid.proj_name]]</td>
+<td>Location</td>
 <td>[[=eventrow.locationid.location_name]]</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <th>Status: </th>

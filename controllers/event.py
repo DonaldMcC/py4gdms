@@ -18,6 +18,8 @@ from ..d3js2py import getlinks, getd3graph
 @action("new_event", method=['GET', 'POST'])
 @action.uses('new_event.html', session, db, auth.user)
 def new_event(eid=0):
+    db.evt.startdatetime.default = (datetime.datetime.utcnow()
+                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     try:
         db.evt.projid.default = session.projid
     except AttributeError:

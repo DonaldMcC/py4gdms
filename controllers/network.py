@@ -88,6 +88,7 @@ def linkrequest():
     return responsetext
 
 
+@authenticated()
 def nodedelete():
     # this is called via ajax when a node deletion request is received from an eventmap
     # there are various situations to consider:
@@ -97,56 +98,38 @@ def nodedelete():
     # if the event is not shared and you are not the event owner then you cannot delete anything
     # if event is shared and question is in draft status
 
-    if len(request.args) < 2:
-        responsetext = 'not enough args incorrect call'
+    nodestring = request.json['nodeid']
+    eventid = request.json['eventid']
+    action = request.json['action']
+
+    if nodestring.isdigit():
+        nodeid = int(nodestring)
     else:
-        sourcetext = request.args(0)
-        eventid = request.args(1, cast=int, default=0)
-
-        action = request.args(2)
-        linktype = request.args(3, default='event')
-        
-        if sourcetext.isdigit():
-            nodeid = int(sourcetext)
-        else:
-            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
-            sourcerecs = db(db.question.questiontext == sourcetext).select(
+        sourcetext = nodestring.replace("_", " ")  # This will do for now - other chars may be problem
+        sourcerecs = db(db.question.questiontext == sourcetext).select(
                             db.question.id, orderby=~db.question.createdate)
-            if sourcerecs:
-                nodeid = sourcerecs.first().id
-            else:
-                responsetext = 'Target of link could not be found'
-                return responsetext
-
-        if auth.user_id is None:
-            responsetext = 'You must be logged in to delete nodes'
-        elif eventid == 0:
-            responsetext = 'No event set node deletion not possible'
+        if sourcerecs:
+            nodeid = sourcerecs.first().id
         else:
-            quest = db(db.question.id == nodeid).select().first()
-            if quest.auth_userid == auth.user_id and quest.status == 'Draft':
-                db(db.questlink.sourceid == nodeid).delete()
-                db(db.questlink.targetid == nodeid).delete()
-                db(db.question.id == nodeid).delete()
-                responsetext = 'Question deleted'
-            elif linktype != 'project':
-                event = db(db.evt.id == eventid).select().first()
-                if event.evt_owner == auth.user_id or event.shared is True:
-                    responsetext = 'Question removed from event'
-                    unspecevent = db(db.evt.evt_name == 'Unspecified').select(
-                        db.evt.id, cache=(cache.ram, 3600)).first()
-                    db(db.question.id == nodeid).update(eventid=unspecevent.id)
-                else:
-                    responsetext = 'You are not event owner and event not shared - deletion not allowed'
-            else:
-                project = db(db.project.id == eventid).select().first()
-                if project.proj_owner == auth.user_id or project.proj_shared is True:
-                    responsetext = 'Question removed from project'
-                    unspecitem = db(db.project.proj_name == 'Unspecified').select(
-                                    db.project.id, cache=(cache.ram, 3600),).first()
-                    db(db.question.id == nodeid).update(projid=unspecitem.id)
-                else:
-                    responsetext = 'You are not project owner and project not shared - deletion not allowed'
+            responsetext = 'Target of link could not be found'
+            return responsetext
+
+
+    if eventid == 0:
+        responsetext = 'No event set node deletion not possible'
+    else:
+        quest = db(db.question.id == nodeid).select().first()
+        if quest.auth_userid == auth.user_id and quest.status == 'Draft':
+            db(db.questlink.sourceid == nodeid).delete()
+            db(db.questlink.targetid == nodeid).delete()
+            db(db.question.id == nodeid).delete()
+            responsetext = 'Question deleted'
+        else:
+            event = db(db.evt.id == eventid).select().first()
+            responsetext = 'Question removed from event'
+            unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first()
+            db(db.question.id == nodeid).update(eventid=unspecevent.id)
+    print(responsetext)
     return responsetext
 
 
