@@ -44,7 +44,8 @@ def make_query(qtype='quest', status=None, event=None):
     if qtype == 'quest':
         query = (db.question.qtype == 'quest')
     elif qtype == 'action':
-        query = (db.question.qtype == 'action') & (db.question.execstatus != 'Completed')
+        #query = (db.question.qtype == 'action') & (db.question.execstatus != 'Completed')
+        query = (db.question.qtype == 'action')
     else:
         query = (db.question.qtype == 'issue')
     if status:

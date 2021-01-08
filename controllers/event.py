@@ -62,7 +62,6 @@ def view_event(eid='0'):
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
-    #print(nodes)
     #TODO finalise if events have owners or security
     # if auth.user and eventrow.evt_owner == auth.user.id:
 
