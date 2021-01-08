@@ -92,10 +92,7 @@
             var serverid = '';
 
             if (action == 'New') {
-                $.web2py.component(itemUrl + '/', 'itemload');
-                setTimeout(function () {
-                    initform(posx, posy)
-                }, 1000);
+                window.open("[[=URL('new_question/0')]]","_self");
             }
 
             if (action == 'Edit') {

@@ -88,7 +88,7 @@ def questiongrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.question.qtype, db.question.questiontext,
-              db.question.answertext, db.evt.evt_name, db.project.proj_name]
+              db.question.status, db.evt.evt_name, db.project.proj_name]
 
     orderby = [db.question.qtype, db.question.status, db.question.questiontext]
 
