@@ -36,7 +36,7 @@ def like(qid):
 
 
 @action("new_question/<qid>", method=['GET', 'POST'])
-@action("new_question/<qid>/<eid>/<xpos>/<ypos>/<soureurl>", method=['GET', 'POST'])
+@action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, auth.user)
 def new_question(qid='0', eid='0', xpos=0, ypos=0, sourceurl='questiongrid'):
@@ -45,21 +45,23 @@ def new_question(qid='0', eid='0', xpos=0, ypos=0, sourceurl='questiongrid'):
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
 
     try:
-        db.question.eventid.default=session.eventid
-    except (KeyError, AttributeError):
+        db.question.eventid.default = int(eid) if eid.isnumeric() else session.eventid
+    except AttributeError:
         pass
+
+    db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
+    db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
 
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
+                dbio=False,
                 formstyle=FormStyleBulma)
-
-    form.vars.eventid=int(eid) if eid.isnumeric() else 0
-    form.vars.xpos=int(xpos) if xpos.isnumeric() else 0
-    form.vars.ypos=ypos if ypos.isnumeric() else 0
 
     if form.accepted:
         session.eventid=form.vars.eventid
+        sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        db.question.insert(**form.vars)
         redirect(URL(sourceurl))
     return dict(form=form)
 

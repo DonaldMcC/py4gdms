@@ -58,7 +58,7 @@ def view_event(eid='0'):
 
     eventlevel = 0 #  so think we report <= to this
     parentquest = 0
-    redraw = 'false' # not sure if this should depend on something - but lets leave out for now 
+    redraw = 'false' # not sure if this should depend on something - but lets leave out for now
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
@@ -76,8 +76,6 @@ def view_event(eid='0'):
                 get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
                 resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
                 myconverter=myconverter)
-
-
 
 
 @action('eventgrid', method=['POST', 'GET'])

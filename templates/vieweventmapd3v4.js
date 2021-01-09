@@ -93,8 +93,9 @@
 
 
             if (action == 'New') {
-
-                window.open("[[=URL('new_question/0/eventid/posx/posy/viewevent')]]","_self");
+                var urlstring = ['', d32py.eventid, posx, posy, 'view_event'].join('/');
+                /*console.log(urlstring)*/
+                window.open("[[=URL('new_question/0')]]"+urlstring,"_self");
             }
 
             if (action == 'Edit') {
