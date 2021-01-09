@@ -36,9 +36,10 @@ def like(qid):
 
 
 @action("new_question/<qid>", method=['GET', 'POST'])
+@action("new_question/<qid>/<eid>/<xpos>/<ypos>/<soureurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, auth.user)
-def new_question(qid='0'):
+def new_question(qid='0', eid='0', xpos=0, ypos=0, sourceurl='questiongrid'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -53,9 +54,13 @@ def new_question(qid='0'):
                 record=qid,
                 formstyle=FormStyleBulma)
 
+    form.vars.eventid=int(eid) if eid.isnumeric() else 0
+    form.vars.xpos=int(xpos) if xpos.isnumeric() else 0
+    form.vars.ypos=ypos if ypos.isnumeric() else 0
+
     if form.accepted:
         session.eventid=form.vars.eventid
-        redirect(URL('questiongrid'))
+        redirect(URL(sourceurl))
     return dict(form=form)
 
 
