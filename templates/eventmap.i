@@ -12,6 +12,7 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="L">Link</a>
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="A">Add</a>
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Delete</a>
+<a id="redraw-graph" class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Redraw</a>
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>
