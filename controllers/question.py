@@ -39,7 +39,7 @@ def like(qid):
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, auth.user)
-def new_question(qid='0', eid='0', xpos=0, ypos=0, sourceurl='questiongrid'):
+def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])

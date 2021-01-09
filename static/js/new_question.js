@@ -1,16 +1,13 @@
 $(document).ready(function(){
    $('#question_answertext').hide();
    $("label[for='question_answertext']").hide();
-      $('#question_responsible').hide();
-   $("label[for='question_responsible']").hide();
-         $('#question_perccomplete').hide();
-   $("label[for='question_perccomplete']").hide();
-         $('#question_execstatus').hide();
-   $("label[for='question_execstatus']").hide();
-      $("label[for='question_startdate']").hide();
-         $('#question_startdate').hide();
-   $("label[for='question_enddate']").hide();
-         $('#question_enddate').hide();
+   $('#question_responsible').parent().parent().hide();
+   $('#question_perccomplete').parent().parent().hide();
+   $('#question_execstatus').parent().parent().hide();
+   $('#question_startdate').parent().parent().hide();
+   $('#question_enddate').parent().parent().hide();
+   $('#question_xpos').parent().parent().hide();
+   $('#question_ypos').parent().parent().hide();
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');

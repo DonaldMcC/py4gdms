@@ -70,7 +70,6 @@ def view_event(eid='0'):
     else:
         editable = 'false'
 
-
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
@@ -111,3 +110,76 @@ def eventgrid(path=None):
                 deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
+
+
+def archive():
+    # This callable via a button from view_event
+    # with all records in it and it will probably be restricted to project owner in due course-
+    # May Need a fairly lengthy explanation
+    # of what archiving is and current status shows in the event details then probably sort of OK
+    # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
+    # pop up on this before submission
+    # poss move to :eval on this for response.flash as done on quickanswer now
+
+    eventid = 'to do'
+
+    event = db(db.evt.id == eventid).select().first()
+    nexteventid = event.next_evt
+    if event and event.status == 'Open':
+        status = 'Archiving'
+        responsetext = 'Event moved to archiving'
+    elif event and event.status == 'Archiving':
+        status = 'Archived'
+        responsetext = 'Event moved to archived status'
+        if not nexteventid:
+            responsetext += ' WARNING: No follow-on event has been setup yet'
+        else:
+            responsetext = 'Only open events can be archived'
+            return responsetext
+
+        event.update_record(status=status)
+        query = db.question.eventid == eventid
+        quests = db(query).select()
+
+        # so below runs through if archiving lets leave as is albeit expectation is this function
+        # is only called once so would always be doing inserts - maybe rearchive is possible though
+        # so fine for now
+
+    if status == 'Archiving':
+        for row in quests:
+            recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
+                                                     eventid=eventid, questid=row.id,
+                                                     status='Archiving',
+                                                     xpos=row.xpos,
+                                                     ypos=row.ypos,
+                                                     answer_group=row.answer_group,
+                                                     questiontext=row.questiontext, answers=row.answers,
+                                                     qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                     responsible=row.responsible,
+                                                     eventlevel=row.eventlevel,
+                                                     masterquest=row.masterquest,
+                                                     subquests=row.subquests,
+                                                     correctans=row.correctans, queststatus=row.status,
+                                                     notes=row.notes)
+
+    if status == 'Archived':
+        # So I think there will be a warning as a popup if no next event - if there is a next event
+        # then approach will be to roll all open issues and open questions and any actions which are not
+        # down as completed - completed actions and disagreed issues will still go to unspecified event
+        # the following event will now need to be sent to this
+
+        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first()
+        unspecid = unspecevent.id
+        for x in quests:
+            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or
+                                    (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
+                updateid = nexteventid
+            else:
+                updateid = unspecid
+                x.update_record(eventid=updateid)
+
+        query = db.eventmap.eventid == eventid
+        eventquests = db(query).select()
+        for row in eventquests:
+            row.update_record(status='Archived')
+        return '$(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
