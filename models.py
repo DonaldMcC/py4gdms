@@ -174,12 +174,9 @@ db.define_table('question',
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
-
-#default=datetime.datetime.utcnow(),
 # So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
 # is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
-
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False),
@@ -230,10 +227,9 @@ db.define_table('eventmap',
                 Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),
                 Field('status', 'string', default='In Progress', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('questiontext', 'text', writable=False, label='Question'),
-                Field('answers', 'list:string', writable=False),
-                Field('correctans', 'integer', default=-1, label='Correct Ans'),
-                Field('answer_group', 'string', default='Unspecified', label='Submit to Group',
-                      comment='Restrict answers to members of a group'),
+                Field('answer1', 'string', writable=False),
+                Field('answer2', 'string', writable=False),
+                Field('correctans', 'integer', readable=False, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', compute=lambda r: r['urgency'] * r['importance'], writable=False,
@@ -246,10 +242,12 @@ db.define_table('eventmap',
                 Field('masterquest', 'integer', default=0),
                 Field('subquests', 'list:integer'),
                 Field('queststatus', 'string', default='In Progress',
-                      requires=IS_IN_SET(
-                          ['Draft', 'In Progress', 'Resolved', 'Rejected', 'Admin Resolved']),
+                      requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected', 'Admin Resolved']),
                       comment='Select draft to defer for later editing'),
                 Field('notes', 'text', label='Notes'))
+
+db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
+                                                     (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
 try:
     from .settings import DEFAULT_RESOLUTION
