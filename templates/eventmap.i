@@ -13,8 +13,7 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="A">Add</a>
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Delete</a>
 <a id="redraw-graph" class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Redraw</a>
-<a class="button is-small is-outlined is-info is-rounded modal-button" data-target="#myModal"
-aria-haspopup="true">Archive</a>
+<a class="button is-small is-outlined is-info is-rounded modal-button" data-target="#myModal" aria-haspopup="true">Archive</a>
 
 <div class="modal" id="myModal">
   <div class="modal-background"></div>
@@ -24,9 +23,12 @@ aria-haspopup="true">Archive</a>
              to the unspecified event but agreed issues, unresolved questions and actions which are not completed will
               roll-forward to the next event if it has been created before the event is archived.
                {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set. {{pass}}
+                   <button type="button" class="mode-close button is-small is-info is-rounded">Close</button>
+                  <button type="button" class="button is-small is-warning is-rounded"
+                  onclick="console.log('I was clicked')">
+              Save changes</button>
            </div>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
 </div>
 
 
