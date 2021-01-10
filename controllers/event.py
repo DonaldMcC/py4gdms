@@ -31,6 +31,22 @@ def new_event(eid=0):
     if form.accepted:
         session.eventid = form.vars.id
         redirect(URL('eventgrid'))
+        #TODO - will change form process and always create next event on form entry if recurrence
+        #and finally link them
+        if form.vars.recurrence == 'Weekly':
+            recurdays = 7
+        elif form.vars.recurrence == 'Bi-weekly':
+            recurdays = 14
+        elif form.vars.recurrence == 'Monthly':
+            recurdays = 28
+        elif form.vars.recurrence == 'Quarterly':
+            recurdays = 90
+        else:
+            recurdays = 1
+
+        form.vars.startdatetime = form.vars.startdatetime + datetime.timedelta(days=recurdays)
+        form.vars.enddatetime = form.vars.enddatetime + datetime.timedelta(days=recurdays)
+
     return dict(form=form)
 
 
