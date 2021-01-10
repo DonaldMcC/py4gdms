@@ -13,7 +13,23 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="A">Add</a>
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Delete</a>
 <a id="redraw-graph" class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Redraw</a>
-<a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="R">Archive</a>
+<a class="button is-small is-outlined is-info is-rounded modal-button" data-target="#myModal"
+aria-haspopup="true">Archive</a>
+
+<div class="modal" id="myModal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">This set the archiving event to archived which permanently locks the outcome - make sure everything is
+            set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues
+             to the unspecified event but agreed issues, unresolved questions and actions which are not completed will
+              roll-forward to the next event if it has been created before the event is archived.
+               {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set. {{pass}}
+           </div>
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+
+
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>
