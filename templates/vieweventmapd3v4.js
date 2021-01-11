@@ -180,4 +180,10 @@
             sourceposy: sourceposy
         }).then(onsuccess).catch(onerror);
 
+       function archive(eventid, answer) {
+        Q.ajax("POST", "[[=URL('archive')]]", {
+            eventid: eventid
+        }).then(onsuccess).catch(onerror);
+    }
+
         };

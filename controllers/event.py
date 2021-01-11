@@ -7,7 +7,7 @@
 # License Content: Creative Commons Attribution 3.0
 #
 import datetime
-from py4web import action, redirect, URL
+from py4web import action, redirect, request, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
@@ -143,7 +143,7 @@ def archive():
     # pop up on this before submission
     # poss move to :eval on this for response.flash as done on quickanswer now
 
-    eventid = 'to do'
+    eventid = int(request.json['eventid'])
 
     event = db(db.evt.id == eventid).select().first()
     nexteventid = event.next_evt
