@@ -9,7 +9,7 @@
 import datetime
 from py4web import action, redirect, request, URL
 from py4web.utils.form import Form, FormStyleBulma
-from ..common import db, session,  auth
+from ..common import db, session,  auth, authenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
@@ -69,14 +69,12 @@ def view_event(eid='0'):
     if eventrow:
         session.eventid = eid
         session.projid = eventrow.projid
-        if eventrow.status == 'Archived':
-            redirect(URL('event', 'eventreview', args=eid))
-
-    actions = get_actions(status='In Progress', event=eid)
-    questions = get_questions(status='In Progress', event=eid)
-    issues = get_issues(event=eid)
-    res_actions = get_actions(status='Resolved', event=eid)
-    res_questions = get_questions(status='Resolved', event=eid)
+        
+    actions = get_actions(status='In Progress', event=eid, eventstatus=eventrow.status)
+    questions = get_questions(status='In Progress', event=eid, eventstatus=eventrow.status)
+    issues = get_issues(event=eid, eventstatus=eventrow.status)
+    res_actions = get_actions(status='Resolved', event=eid, eventstatus=eventrow.status)
+    res_questions = get_questions(status='Resolved', event=eid, eventstatus=eventrow.status)
 
     eventlevel = 0 #  so think we report <= to this
     parentquest = 0
@@ -133,7 +131,7 @@ def eventgrid(path=None):
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 
-
+@authenticated()
 def archive():
     # This callable via a button from view_event
     # with all records in it and it will probably be restricted to project owner in due course-
@@ -159,13 +157,13 @@ def archive():
             responsetext = 'Only open events can be archived'
             return responsetext
 
-        event.update_record(status=status)
-        query = db.question.eventid == eventid
-        quests = db(query).select()
+    event.update_record(status=status)
+    query = db.question.eventid == eventid
+    quests = db(query).select()
 
-        # so below runs through if archiving lets leave as is albeit expectation is this function
-        # is only called once so would always be doing inserts - maybe rearchive is possible though
-        # so fine for now
+    # so below runs through if archiving lets leave as is albeit expectation is this function
+    # is only called once so would always be doing inserts - maybe rearchive is possible though
+    # so fine for now
 
     if status == 'Archiving':
         for row in quests:
@@ -204,4 +202,5 @@ def archive():
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
-        return '$(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
+
+    return '$(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'

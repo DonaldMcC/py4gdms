@@ -25,7 +25,7 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
                {{if not eventrow.next_evt:}} WARNING: this event does not currently have a next event set. {{pass}}
                    <button type="button" class="mode-close button is-small is-info is-rounded">Close</button>
                   <button type="button" class="button is-small is-warning is-rounded"
-                  onclick=="archive('[[=eventrow.id]]')">
+                  onclick="archive('[[=eventrow.id]]')">
               Save changes</button>.
            </div>
   </div>
