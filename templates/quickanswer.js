@@ -1,7 +1,9 @@
     var onsuccess = function(res) {
+    Q.flash({'message':'Answer noted', 'class':'info'})
     console.log('success');
     };
     var onerror = function(res) {
+    Q.flash({'message':'Error, 'class':'error'})
         alert('ERROR in call');
     };
 

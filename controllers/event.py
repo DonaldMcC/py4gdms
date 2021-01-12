@@ -14,6 +14,12 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
 
+@action("flash_example")
+@action.uses("flash_example.html")
+def flash_example_naive():
+    return dict(flash={"message": "hello", "class": "error"})
+
+
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
 @action.uses('new_event.html', session, db, auth.user)
@@ -69,7 +75,7 @@ def view_event(eid='0'):
     if eventrow:
         session.eventid = eid
         session.projid = eventrow.projid
-        
+
     actions = get_actions(status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_questions(status='In Progress', event=eid, eventstatus=eventrow.status)
     issues = get_issues(event=eid, eventstatus=eventrow.status)
@@ -172,13 +178,10 @@ def archive():
                                                      status='Archiving',
                                                      xpos=row.xpos,
                                                      ypos=row.ypos,
-                                                     answer_group=row.answer_group,
-                                                     questiontext=row.questiontext, answers=row.answers,
+                                                     questiontext=row.questiontext, answer1=row.answer1,
+                                                     answer2=row.answer2,
                                                      qtype=row.qtype, urgency=row.urgency, importance=row.importance,
                                                      responsible=row.responsible,
-                                                     eventlevel=row.eventlevel,
-                                                     masterquest=row.masterquest,
-                                                     subquests=row.subquests,
                                                      correctans=row.correctans, queststatus=row.status,
                                                      notes=row.notes)
 
