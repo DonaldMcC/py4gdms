@@ -457,6 +457,11 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=links, resultstring='OK')
 
 
+def myconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
+
+
 def getlinks(questlist):
     intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
         db.questlink.sourceid.belongs(questlist))

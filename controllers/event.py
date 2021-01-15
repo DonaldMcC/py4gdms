@@ -13,6 +13,7 @@ from ..common import db, session,  auth, authenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
+from ..ndsfunctions import myconverter
 
 @action("flash_example")
 @action.uses("flash_example.html")
@@ -45,8 +46,8 @@ def create_next_event(eid, recurrence):
     # and finally link them
     if recurrence == 'Weekly':
         recurdays = 7
-    elif recurrence == 'Bi- = 14weekly':
-        recurdays
+    elif recurrence == 'Bi-weekly':
+        recurdays = 14
     elif recurrence == 'Monthly':
         recurdays = 28
     elif recurrence == 'Quarterly':
@@ -60,11 +61,6 @@ def create_next_event(eid, recurrence):
     enddatetime = enddatetime + datetime.timedelta(days=recurdays)
 
     return
-
-
-def myconverter(o):
-    if isinstance(o, datetime.datetime):
-        return o.__str__()
 
 
 @action("view_event/<eid>", method=['GET', 'POST'])

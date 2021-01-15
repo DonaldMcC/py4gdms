@@ -16,8 +16,8 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
         else:
             return default + ' is-danger'
 
-def get_actions(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open'):
-    query = make_query(qtype, status, event, eventstatus)
+def get_actions(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
+    query = make_query(qtype, status, event, eventstatus, project)
     # TODO will request specific fields at some point and probably pass through datatable options eg search and so on
     # forth
     if eventstatus == 'Archived':
@@ -31,7 +31,7 @@ def get_actions(qtype='action', status=None, x=0, y=10, event=None, eventstatus=
     return actions
 
 
-def get_questions(qtype='quest', status=None, x=0, y=10, event=None, eventstatus='Open'):
+def get_questions(qtype='quest', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
     query = make_query(qtype, status, event, eventstatus)
 
     if eventstatus == 'Archived':
@@ -43,7 +43,7 @@ def get_questions(qtype='quest', status=None, x=0, y=10, event=None, eventstatus
     return questions
 
 
-def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='Open'):
+def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
     query = make_query(qtype, status, event, eventstatus)
 
     if eventstatus == 'Archived':
@@ -55,7 +55,7 @@ def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='O
     return issues
 
 
-def make_query(qtype='quest', status=None, event=None, eventstatus='Open'):
+def make_query(qtype='quest', status=None, event=None, eventstatus='Open', project=None):
     if eventstatus=='Archived':
         if qtype == 'quest':
             query = (db.eventmap.qtype == 'quest')
@@ -80,4 +80,9 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open'):
             query &= (db.question.status == status)
         if event:
             query &= (db.question.eventid == event)
+        if project:
+            events = db(db.evt.projid==project).select(db.evt.id)
+            eventlist = [row.id for row in events] if events else []
+            query &= (db.question.eventid.belongs(eventlist))
+
     return query
