@@ -4,8 +4,6 @@ from py4web import action, request, Flash
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 
-# @action.uses(Template('index.html', delimiters='[[ ]]'))
-
 
 @authenticated()
 def quickanswer():
@@ -19,22 +17,19 @@ def quickanswer():
 
     questid = request.json['questid']
     answer = request.json['answer']
-    print(questid + 'was called with answer ' + answer)
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
-    status = 'In Progress'
 
     if not uq:
         uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
         messagetxt = 'Answer recorded for item:' + str(questid)
         status = score_question(questid, answer)
+        messagetxt+=status
     elif uq:
-        messagetxt = 'You have already answered this item'
+        messagetxt = 'You already answered this one'
     else:
         messagetxt = 'Answer not recorded'
 
-    # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
-    # work without eval or similar
-    return messagetxt, status
+    return messagetxt
 
 
 @authenticated()

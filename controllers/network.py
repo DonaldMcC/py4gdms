@@ -275,10 +275,8 @@ def network():
             eventid = events.id
         else:
             pass
-            #redirect(URL('event', 'noevent'))
 
     eventrow = db(db.evt.id == eventid).select().first()
-
     quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
 
     # set if moves on the diagram are written back - only owner for now

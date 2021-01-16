@@ -17,15 +17,13 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
-import urllib
 
 wolfram = True
 try:
     import wolframalpha
     from ..settings_private import WA_ID
 except ImportError as error:
-    wolfram=False
-
+    wolfram = False
 import wikipedia
 
 
@@ -59,7 +57,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid')
                 formstyle=FormStyleBulma)
 
     if form.accepted:
-        session.eventid=form.vars.eventid
+        session.eventid = form.vars.eventid
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         db.question.insert(**form.vars)
         redirect(URL(sourceurl))
@@ -127,8 +125,7 @@ def questiongrid(path=None):
     grid = Grid(path,
                 search.query,
                 fields=fields,
-                headings=['Type', 'Text', 'Answertext',
-                           'Event', 'Project'],
+                headings=['Type', 'Text', 'Answertext', 'Event', 'Project'],
                 left=[db.evt.on(db.question.eventid == db.evt.id),
                       db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
@@ -281,10 +278,10 @@ def wikipedia_lookup():
 
     qtext = request.json['questiontext']
     print(qtext)
-    pages=wikipedia.search(qtext, results=3)
+    pages = wikipedia.search(qtext, results=3)
     resultpage = wikipedia.summary(pages[0])
 
-    #print(wikipedia.summary("Key (cryptography)"))
+    # print(wikipedia.summary("Key (cryptography)"))
 
     print(resultpage)
 

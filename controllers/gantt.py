@@ -19,7 +19,7 @@
 
 """
     exposes:
-    http://..../[app]/gantt/index.html
+    http://..../[app]/gantt.html
 
     """
 from builtins import range
@@ -27,6 +27,7 @@ from ..ndsfunctions import getlinks, get_gantt_data
 from ..common import db, unauthenticated, authenticated, auth, session
 from py4web import action, request, Flash
 from yatl.helpers import XML
+
 
 @action("gantt", method=['GET', 'POST'])
 @action.uses('gantt.html', session, db, auth.user)

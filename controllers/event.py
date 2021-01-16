@@ -15,6 +15,7 @@ from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_
 from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter
 
+
 @action("flash_example")
 @action.uses("flash_example.html")
 def flash_example_naive():
@@ -42,8 +43,7 @@ def new_event(eid=0):
 
 
 def create_next_event(eid, recurrence):
-    # TODO - will change form process and always create next event on form entry if recurrence
-    # and finally link them
+    # TODO - sort event recurrence - think warning on archive as before
     if recurrence == 'Weekly':
         recurdays = 7
     elif recurrence == 'Bi-weekly':
@@ -54,12 +54,10 @@ def create_next_event(eid, recurrence):
         recurdays = 90
     else:
         recurdays = 1
-
     startdatetime = datetime.datetime.utcnow()
-    enddatetime=startdatetime
+    enddatetime = startdatetime
     startdatetime = startdatetime + datetime.timedelta(days=recurdays)
     enddatetime = enddatetime + datetime.timedelta(days=recurdays)
-
     return
 
 
@@ -78,9 +76,9 @@ def view_event(eid='0'):
     res_actions = get_actions(status='Resolved', event=eid, eventstatus=eventrow.status)
     res_questions = get_questions(status='Resolved', event=eid, eventstatus=eventrow.status)
 
-    eventlevel = 0 #  so think we report <= to this
+    eventlevel = 0
     parentquest = 0
-    redraw = 'false' # not sure if this should depend on something - but lets leave out for now
+    redraw = 'false'
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
@@ -133,6 +131,7 @@ def eventgrid(path=None):
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 
+
 @authenticated()
 def archive():
     # This callable via a button from view_event
@@ -144,13 +143,16 @@ def archive():
     # poss move to :eval on this for response.flash as done on quickanswer now
 
     eventid = int(request.json['eventid'])
-
     event = db(db.evt.id == eventid).select().first()
+    if not event:
+        return 'No matching event found'
     nexteventid = event.next_evt
-    if event and event.status == 'Open':
+    status = event.status
+    responsetext = ''
+    if event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
-    elif event and event.status == 'Archiving':
+    elif event.status == 'Archiving':
         status = 'Archived'
         responsetext = 'Event moved to archived status'
         if not nexteventid:
@@ -202,4 +204,4 @@ def archive():
         for row in eventquests:
             row.update_record(status='Archived')
 
-    return '$(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' + responsetext + '"); {document.getElementById("eventstatus").innerHTML="' + status + '"};'
+    return responsetext

@@ -17,12 +17,12 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
-import builtins
 import datetime
 import calendar
 from yatl.helpers import XML
-from py4web import action, request, abort, redirect, URL
-from .common import db, session, T, cache, auth
+from py4web import request, URL
+from .common import db, session, auth
+
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
     value = str(value)
@@ -107,23 +107,6 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
     return colorclass
 
 
-def resulthtml(questiontext, answertext, id=0, output='html'):
-    """This formats the email for sending from the schedule on email resolution
-    """
-
-    params = db(db.website_parameters.id > 0).select().first()
-    stripheader = params.website_url[7:]  # to avoid duplicated header
-    if output == 'html':
-        result = '<p>' + questiontext + r'</p>'
-        result += r'<p>Users have resolved the correct answer is:</p>'
-        result += '<p>' + answertext + r'</p>'
-        result += URL('viewquest', 'index', args=[id], scheme='http', host=stripheader)
-        result = '<html>' + result + r'</html>'
-    else:
-        result = questiontext + '/n Users have resolved the correct answer is: /n' + answertext
-    return result
-
-
 def score_question(questid, answer=0):
     """
     This routine is now called for all answers to questions but a couple of changes 
@@ -135,18 +118,17 @@ def score_question(questid, answer=0):
 
     quest = db(db.question.id == questid).select().first()
     resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
-    print('Ihave'+str(questid))
+    print('Ihave' + str(questid))
     if answer == '1':
         quest.numanswer1 += 1
     elif answer == '2':
         quest.numanswer2 += 1
 
     numanswers = quest.numanswer1 + quest.numanswer2
-    print(numanswers)
+    origstatus = quest.status
     if numanswers >= resmethod.responses:
         if ((100 * quest.numanswer1) / numanswers >= resmethod.consensus or
-            (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
-            print('resolved')
+                (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
             quest.status = 'Resolved'
             quest.resolvedate = datetime.datetime.utcnow()
             if quest.numanswer1 > quest.numanswer2:
@@ -154,15 +136,16 @@ def score_question(questid, answer=0):
             else:
                 quest.correctans = 2
         else:
-            #Just may need an unresolvedate - lets just use resolveddate as unresolvedate for now
             quest.status = 'In Progress'
             quest.correctans = 0
             quest.resolvedate = datetime.datetime.utcnow()
 
     quest.update_record()
     db.commit()
-
-    return quest.status
+    if origstatus != quest.status:
+        return 'Item changed to status ' + quest.status
+    else:
+        return 'Item still ' + quest.status
 
 
 def most_common(lst):
@@ -187,7 +170,7 @@ def check_change(lst, numrequired, unchangedvalue):
     result, qty = most_common(lst)
     if qty < numrequired:
         result = unchangedvalue
-    return (result)
+    return result
 
 
 def getindex(qtype, status):
@@ -217,7 +200,6 @@ def getindex(qtype, status):
 def userdisplay(userid):
     """This should take a user id and return the corresponding
        value to display depending on the users privacy setting"""
-    usertext = userid
     userpref = db(db.auth_user.id == userid).select().first()
     if userpref.privacypref == 'Standard':
         usertext = userpref.first_name + ' ' + userpref.last_name
@@ -250,10 +232,8 @@ def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
         return ''
     if mark:
         if len(questiontext) < maxlen:
-            #txt = MARKMIN(questiontext)
             txt = questiontext
         else:
-            #txt = MARKMIN(questiontext[0:maxlen] + '...')
             txt = questiontext[0:maxlen] + '...'
     else:
         if len(questiontext) < maxlen:
@@ -267,7 +247,6 @@ def disp_author(userid):
     if userid is None:
         return ''
     else:
-        user = db.auth_user(userid)
         return '%(first_name)s %(last_name)s' % userid
 
 
@@ -294,7 +273,7 @@ def score_challenge(questid, successful, level):
     """
 
     unpchallenges = db((db.questchallenge.questionid == questid) &
-                               (db.questchallenge.status == 'In Progress')).select()
+                       (db.questchallenge.status == 'In Progress')).select()
 
     # should get the score based on the level of the question
     # and then figure out whether
@@ -397,7 +376,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
             # ancestor proces
             if parentlist:
                 parentlinks = db((db.questlink.targetid.belongs(parentlist)) &
-                                         (db.questlink.status == 'Active')).select()
+                                 (db.questlink.status == 'Active')).select()
                 if links and parentlinks:
                     links = links | parentlinks
                 elif parentlinks:
@@ -411,7 +390,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                     parentlist = [y.id for y in parentquests]
                     if getsibs:
                         sibquery = db.questlink.sourceid.belongs(parentlist) & (
-                                    db.questlink.status == 'Active')
+                                db.questlink.status == 'Active')
                         siblinks = db(sibquery).select()
                         if siblinks:
                             links = links | siblinks
@@ -448,7 +427,7 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             # childquery = db.questlink.sourceid.belongs(childlist)
 
     questlist = [y.id for y in quests]
-    #print('links', links)
+    # print('links', links)
     if links:
         linklist = links
         links = [(y.sourceid, y.targetid) for y in links]
@@ -544,7 +523,8 @@ def get_col_headers(startdate):
 def getformat(headerdate, recurrence='daily'):
     return calendar.day_name[headerdate.weekday()][:2] + ' ' + str(headerdate.day)
 
-def get_recurr_class(taskdate,complete=False):
+
+def get_recurr_class(taskdate, complete=False):
     today = datetime.date.today()
     if complete:
         return "taskgreen"
@@ -553,14 +533,15 @@ def get_recurr_class(taskdate,complete=False):
     else:
         return "taskred"
 
+
 def get_recurr_cell(id, startdatetime, enddatetime, colheaders, j, complete):
     startdate = datetime.date(startdatetime.year, startdatetime.month, startdatetime.day)
     enddate = datetime.date(enddatetime.year, enddatetime.month, enddatetime.day)
-    if (startdate <= colheaders[j][0] and enddate >= colheaders[j][0]):
+    if startdate <= colheaders[j][0] and enddate >= colheaders[j][0]:
         taskdt = colheaders[j][0] - startdate
-        if complete and len(complete) > taskdt.days  :
+        if complete and len(complete) > taskdt.days:
             print(taskdt.days)
-            print (complete)
+            print(complete)
             print('completed')
         if complete and len(complete) > taskdt.days and complete[taskdt.days]:
             taskdone = True
@@ -571,7 +552,7 @@ def get_recurr_cell(id, startdatetime, enddatetime, colheaders, j, complete):
             taskdone = False
             checktask = ''
         style = get_recurr_class(colheaders[j][0], taskdone)
-        cell_html = '<td style="text-align:center" class="' + style +'"> <input type = "checkbox" ' + checktask + '>  </td>'
+        cell_html = '<td style="text-align:center" class="' + style + '"> <input type = "checkbox" ' + checktask + '>  </td>'
     else:
         cell_html = '<td> </td>'
     return XML(cell_html)

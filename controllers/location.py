@@ -40,11 +40,9 @@ def locationgrid(path=None):
               db.locn.locn_shared]
 
     orderby = [db.locn.location_name]
-
     queries = [(db.locn.id > 0)]
 
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]
-
     # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
@@ -59,5 +57,4 @@ def locationgrid(path=None):
                 editable=URL('new_location/'),
                 deletable=URL('new_project/delete/'),
                 **GRID_DEFAULTS)
-
     return dict(grid=grid)

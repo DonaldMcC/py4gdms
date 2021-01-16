@@ -14,6 +14,3 @@
         }).then(onsuccess).catch(onerror);
     }
 
-$(document).ready(function() {
-      Q.flash({'message':'hello there', 'class':'info'});
-      });
