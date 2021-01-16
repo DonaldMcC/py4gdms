@@ -7,13 +7,13 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter
-
+from icecream import ic
 
 @action("view_project/<pid>", method=['GET', 'POST'])
 @action("view_project", method=['GET', 'POST'])
 @action.uses('view_project.html', session, db, auth.user)
 def view_project(pid='0'):
-    projectrow = db(db.evt.id == pid).select().first()
+    projectrow = db(db.project.id == pid).select().first()
     session.projid = pid if projectrow else 0
 
     actions = get_actions(status='In Progress', project=pid)
@@ -22,7 +22,9 @@ def view_project(pid='0'):
     res_actions = get_actions(status='Resolved', project=pid)
     res_questions = get_questions(status='Resolved', project=pid)
 
-    return dict(projectid=pid, actions=actions, questions=questions,
+    ic(projectrow)
+
+    return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled,
                 myconverter=myconverter)
