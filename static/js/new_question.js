@@ -37,6 +37,8 @@ $(document).ready(function(){
                  };
                  });
 
+
+
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact')
                 {$('#question_answer1').hide();
@@ -59,6 +61,9 @@ $(document).ready(function(){
                  $('#question_answertext').hide();
                  $("label[for='question_answertext']").hide();}
                 });
+
+                   $('#question_qtype').change();
+   $('#question_factopinion').change();
 });
 
 
