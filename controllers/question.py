@@ -34,10 +34,11 @@ def like(qid):
 
 
 @action("new_question/<qid>", method=['GET', 'POST'])
+@action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, auth.user)
-def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid'):
+def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -49,6 +50,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid')
 
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
+    db.question.qtype.default = qtype
 
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
@@ -101,7 +103,7 @@ def questiongrid(path=None):
     if 'qtype' in request.query:
         qtype = request.query.get('qtype')
     else:
-        qtype = None
+        qtype = 'quest'
 
     if qtype:
         queries = [db.question.qtype == qtype]
@@ -130,7 +132,7 @@ def questiongrid(path=None):
                       db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
-                create=URL('new_question/0'),
+                create=URL('new_question/0/'+qtype),
                 details=URL('view_question/'),
                 editable=URL('new_question/'),
                 deletable=True,
