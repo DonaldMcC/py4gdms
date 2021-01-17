@@ -6,8 +6,10 @@ from ..common import db, session,  auth, authenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
-from ..ndsfunctions import myconverter
+from ..ndsfunctions import myconverter, get_gantt_data
+from yatl.helpers import XML
 from icecream import ic
+
 
 @action("view_project/<pid>", method=['GET', 'POST'])
 @action("view_project", method=['GET', 'POST'])
@@ -24,10 +26,15 @@ def view_project(pid='0'):
 
     ic(projectrow)
 
+    if res_actions:
+        projxml = get_gantt_data(res_actions)
+    else:
+        projxml = "<project></project>"
+
     return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 get_class=get_class, get_disabled=get_disabled,
-                myconverter=myconverter)
+                myconverter=myconverter, project=XML(projxml))
 
 
 # @authenticated

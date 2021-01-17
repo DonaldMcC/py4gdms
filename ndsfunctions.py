@@ -36,22 +36,22 @@ def convrow(row, dependlist='', hasdepend=False):
     # pDepend is a list of taskst that this item depends upon
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
-    colorclass = gantt_colour(row.startdate, row.enddate, row.perccomplete)
-    if row.startdate == row.enddate:
+    colorclass = gantt_colour(row.question.startdate, row.question.enddate, row.question.perccomplete)
+    if row.question.startdate == row.question.enddate:
         milestone = 1
     else:
         milestone = 0
     plink = URL('submit', 'question_plan')
     projrow = '<task>'
-    projrow += convxml(row.id, 'pID')
-    projrow += convxml(row.questiontext, 'pName', True, False)
-    projrow += convxml(row.startdate, 'pStart')
-    projrow += convxml(row.enddate, 'pEnd')
+    projrow += convxml(row.question.id, 'pID')
+    projrow += convxml(row.question.questiontext, 'pName', True, False)
+    projrow += convxml(row.question.startdate, 'pStart')
+    projrow += convxml(row.question.enddate, 'pEnd')
     projrow += convxml(colorclass, 'pClass')
     projrow += convxml(plink, 'pLink')
     projrow += convxml(milestone, 'pMile')
-    projrow += convxml(row.responsible, 'pRes', True)
-    projrow += convxml(row.perccomplete, 'pComp')
+    projrow += convxml(row.question.responsible, 'pRes', True)
+    projrow += convxml(row.question.perccomplete, 'pComp')
     projrow += convxml('1', 'pOpen')
     projrow += convxml('', 'pParent')
 
@@ -62,7 +62,7 @@ def convrow(row, dependlist='', hasdepend=False):
 
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
-    projrow += convxml(row.notes, 'pNotes', True)
+    projrow += convxml(row.question.notes, 'pNotes', True)
     projrow += '</task>'
     return projrow
 
@@ -488,11 +488,11 @@ def getstrdepend(intlinks, id):
 
 def get_gantt_data(quests):
     projxml = "<project>"
-    questlist = [x.id for x in quests]
+    questlist = [x.question.id for x in quests]
     intlinks = getlinks(questlist)
 
     for i, row in enumerate(quests):
-        projxml += convrow(row, getstrdepend(intlinks, row.id), True)
+        projxml += convrow(row, getstrdepend(intlinks, row.question.id), True)
 
     projxml += '</project>'
     # print(projxml)

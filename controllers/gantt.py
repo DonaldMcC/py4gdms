@@ -22,33 +22,21 @@
     http://..../[app]/gantt.html
 
     """
-from builtins import range
-from ..ndsfunctions import getlinks, get_gantt_data
-from ..common import db, unauthenticated, authenticated, auth, session
-from py4web import action, request, Flash
-from yatl.helpers import XML
 
+from ..ndsfunctions import get_gantt_data
+from ..common import db, auth, session
+from py4web import action
+from yatl.helpers import XML
+from ..ndsqueries import get_actions
 
 @action("gantt", method=['GET', 'POST'])
 @action.uses('gantt.html', session, db, auth.user)
 def gantt():
-    # So issue now is sorting these with actions being demoted they should be sorted by parent and then
-    # demoted items in order of parent start date so thinking we will sort by event level and just filter
-    # the lower level later in the process
+    res_actions = get_actions(status='Resolved')
 
-    strquery = (db.question.qtype == 'action') & (db.question.status == 'Resolved')
-    orderstr = db.question.startdate
-    quests = db(strquery).select(orderby=orderstr)
-
-    questlist = [x.id for x in quests]
-    dependlist = [[] for x in range(len(questlist))]
-    intlinks = getlinks(questlist)
-    for x in intlinks:
-        dependlist[questlist.index(x.targetid)].append(x.sourceid)
-
-    if quests:
-        projxml = get_gantt_data(quests)
+    if res_actions:
+        projxml = get_gantt_data(res_actions)
     else:
         projxml = "<project></project>"
 
-    return dict(project=XML(projxml), quests=quests)
+    return dict(project=XML(projxml), quests=res_actions)

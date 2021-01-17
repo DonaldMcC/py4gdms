@@ -18,14 +18,13 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
 
 def get_actions(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
     query = make_query(qtype, status, event, eventstatus, project)
-    # TODO will request specific fields at some point and probably pass through datatable options eg search and so on
-    # forth
+
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
         actions = db(query).select(left=db.userquestion.on(db.eventmap.questid == db.userquestion.questionid),
                                orderby=[sortby], limitby=(x, y))
     else:
-        sortby = ~db.question.id
+        sortby = db.question.startdate if status=='Resolved' else ~db.question.id
         actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                orderby=[sortby], limitby=(x, y))
     return actions
