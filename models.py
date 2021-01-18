@@ -252,11 +252,10 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans ==
 
 try:
     from .settings import DEFAULT_RESOLUTION
-
     if DEFAULT_RESOLUTION:
         resmethod = db(db.resolve.resolve_name == DEFAULT_RESOLUTION).select(db.resolve.id).first().id
         db.question.resolvemethod.default = resmethod
-except (ImportError, ModuleNotFoundError):
+except (ImportError, ModuleNotFoundError, AttributeError):
     pass
 
 db.commit()
