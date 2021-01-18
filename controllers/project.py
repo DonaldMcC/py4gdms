@@ -8,7 +8,6 @@ from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_
 from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter, get_gantt_data
 from yatl.helpers import XML
-from icecream import ic
 
 
 @action("view_project/<pid>", method=['GET', 'POST'])
@@ -24,8 +23,6 @@ def view_project(pid='0'):
     res_actions = get_actions(status='Resolved', project=pid)
     res_questions = get_questions(status='Resolved', project=pid)
 
-    ic(projectrow)
-
     if res_actions:
         projxml = get_gantt_data(res_actions)
     else:
@@ -37,7 +34,6 @@ def view_project(pid='0'):
                 myconverter=myconverter, project=XML(projxml))
 
 
-# @authenticated
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
 @action.uses('new_project.html', session, db, auth.user)
@@ -66,11 +62,8 @@ def projectgrid(path=None):
               db.project.proj_owner]
 
     orderby = [db.project.proj_name]
-
     queries = [(db.project.id > 0)]
-
     search_queries = [['Search by Name', lambda value: db.project.name == value]]
-
     # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,

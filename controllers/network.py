@@ -133,71 +133,7 @@ def nodedelete():
     return responsetext
 
 
-def nodedemote():
-    # this is called via ajax when a node demotion request is received from an eventmap
-    # there are various situations to consider:
-    # if you are the event owner or the event is shared then you may demote any question that is
-    # linked to the event
-    # if the event is not shared and you are not the event owner then you cannot demote anything
-    # if the question is not event linked ie part of unspecified event then anyone can demote it
-    # Call needs to contain question being demoted the eventid and the question it is being
-    # inserted into
-
-    if len(request.args) < 2:
-        responsetext = 'not enough args incorrect call'
-    else:
-        sourcetext = request.args(0)
-        eventid = request.args(1, cast=int, default=0)
-
-        parenttext = request.args(2)
-        linktype = request.args(3, default='event')
-
-        if sourcetext.isdigit():
-            nodeid = int(sourcetext)
-        else:
-            sourcetext = sourcetext.replace("_", " ")  # This will do for now - other chars may be problem
-            sourcerecs = db(db.question.questiontext == sourcetext).select(
-                db.question.id, orderby=~db.question.createdate)
-            if sourcerecs:
-                nodeid = sourcerecs.first().id
-            else:
-                responsetext = 'Source node could not be found'
-                return responsetext
-
-        if parenttext.isdigit():
-            parentid = int(parenttext)
-            parent = db(db.question.id == parentid).select(
-                db.question.id, db.question.eventlevel, db.question.subquests).first()
-        else:
-            parenttext = parenttext.replace("_", " ")  # This will do for now - other chars may be problem
-            parentrecs = db(db.question.questiontext == sourcetext).select(
-                db.question.id, orderby=~db.question.createdate)
-            if parentrecs:
-                parent = parentrecs.fist()
-                parentid = parent.id
-            else:
-                responsetext = 'Parent node could not be found'
-                return responsetext
-
-        if auth.user_id is None:
-            responsetext = 'You must be logged in to demote nodes'
-        else:
-            quest = db(db.question.id == nodeid).select().first()
-            event = db(db.evt.id == eventid).select().first()
-            if (event.evt_owner == auth.user_id or event.evt_shared or event.evt_name == 'Unspecified') is True:
-                quest.update_record(masterquest=parentid, eventlevel=parent.eventlevel+1)
-                if parent.subquests:
-                    newsubs = parent.subquests
-                else:
-                    newsubs = list()
-                newsubs.append(nodeid)
-                parent.update_record(subquests=newsubs)
-                responsetext = 'Question demoted'
-            else:
-                responsetext = 'You are not event owner and event not shared - promotion not allowed'
-    return responsetext
-
-
+@authenticated()
 def ajaxquest():
     # this is called when a draft item is created on the graph
     # Only the item text will be received via ajax and the rest will
@@ -261,38 +197,6 @@ def graph():
                 eventrowid=eventrowid, redraw=redraw, eventowner='false')
 
 
-def network():
-    # may still limit options if from home screen - but basis is vieweventmapd3v4 and this is for home screen for now
-    eventid = request.args(0, cast=int, default=0)
-    redraw = 'false'
-
-    if not eventid:  # get the next upcoming event
-        datenow = datetime.datetime.utcnow()
-
-        query = (db.evt.enddatetime > datenow)
-        events = db(query).select(db.evt.id, orderby=[db.evt.startdatetime]).first()
-        if events:
-            eventid = events.id
-        else:
-            pass
-
-    eventrow = db(db.evt.id == eventid).select().first()
-    quests, nodes, links, resultstring = getd3graph('event', eventid, eventrow.status)
-
-    # set if moves on the diagram are written back - only owner for now
-    if auth.user and eventrow.evt_owner == auth.user.id:
-        editable = 'true'
-    else:
-        editable = 'false'
-
-    session.eventid = eventid
-    session.projid = eventrow.projid
-
-    return dict(resultstring=resultstring, eventrow=eventrow, eventid=eventid, eventmap=quests,
-                eventowner=editable, links=links, nodes=nodes, projid=eventrow.projid, eventrowid=eventrow.id,
-                redraw=redraw)
-
-
 @authenticated()
 def move():
     # This will allow moving the position of questions on an eventmap - but not on a general map at present
@@ -328,8 +232,3 @@ def move():
                 responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
     print(responsetext)
     return responsetext
-
-
-def no_questions():
-    txt = 'All done in view'
-    return dict(txt=txt)

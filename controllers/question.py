@@ -61,7 +61,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     if form.accepted:
         session.eventid = form.vars.eventid
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        db.question.insert(**form.vars)
+        db.question.update_or_insert(**form.vars)
         redirect(URL(sourceurl))
     return dict(form=form)
 
@@ -140,7 +140,6 @@ def questiongrid(path=None):
     return dict(grid=grid)
 
 
-@unauthenticated
 @action('datatables', method=['GET', 'POST'])
 @action.uses(session, db, auth, 'datatables.html')
 def datatables():
@@ -164,7 +163,6 @@ def datatables():
 
 
 # TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
-@unauthenticated
 @action('datatables_data', method=['GET', 'POST'])
 @action.uses(session, db, auth)
 def datatables_data():
@@ -238,7 +236,6 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
     return FormStyleBulma(table, vars, errors, readonly, deletable)
 
 
-@authenticated
 @action('wolfram_alpha_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def wolfram_alpha_lookup():
@@ -269,7 +266,6 @@ def wolfram_alpha_lookup():
     return answer
 
 
-@authenticated
 @action('wikipedia_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def wikipedia_lookup():
@@ -277,15 +273,11 @@ def wikipedia_lookup():
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
-
     qtext = request.json['questiontext']
     print(qtext)
     pages = wikipedia.search(qtext, results=3)
     resultpage = wikipedia.summary(pages[0])
-
-    # print(wikipedia.summary("Key (cryptography)"))
-
-    print(resultpage)
+    # print(resultpage)
 
     if resultpage:
         res = resultpage

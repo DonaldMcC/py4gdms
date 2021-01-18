@@ -1,4 +1,3 @@
-
 import datetime
 from py4web import action, redirect, URL
 from ..common import db, session, auth, authenticated, unauthenticated

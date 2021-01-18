@@ -22,13 +22,9 @@ def resolvegrid(path=None):
                          grid_class_style=GridClassStyle)
 
     fields = [db.resolve.resolve_name, db.resolve.responses, db.resolve.consensus, db.resolve.adminresolve]
-
     orderby = [db.resolve.resolve_name]
-
     queries = [(db.resolve.id > 0)]
-
     search_queries = [['Search by Name', lambda value: db.resolve.resolve_name == value]]
-
     # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,

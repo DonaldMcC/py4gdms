@@ -33,8 +33,7 @@
     http://..../[app]/about/getfile
 
     """
-
-from ..common import db, unauthenticated
+from ..common import db, unauthenticated, authenticated
 
 
 @unauthenticated()
@@ -62,7 +61,7 @@ def enhance():
     return dict(message="all done in the view")
 
 
-@unauthenticated()
+@authenticated()
 def download():
     downloads = db().select(db.download.ALL, orderby=db.download.title)
     return dict(downloads=downloads)

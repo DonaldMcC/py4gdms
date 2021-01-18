@@ -5,7 +5,8 @@ from ..ndsfunctions import score_question
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 
 
-@authenticated()
+@action('quickanswer', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
 def quickanswer():
     """
     This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
@@ -32,7 +33,8 @@ def quickanswer():
     return messagetxt
 
 
-@authenticated()
+@action('perccomplete', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
 def perccomplete():
     """
     This updates percent complete on resolved actions
@@ -69,7 +71,8 @@ def agree(qid):
     # db.item_like.insert(item_id=id)
 
 
-@authenticated()
+@action('index', method=['POST', 'GET'])
+@action.uses(session, db, auth, 'index.html')
 def index():
     # user = auth.get_user()
     # message = T("Hello {first_name}".format(**user) if user else "Hello")
