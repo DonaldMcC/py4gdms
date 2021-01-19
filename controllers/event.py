@@ -28,6 +28,8 @@ def flash_example_naive():
 def new_event(eid=0):
     db.evt.startdatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+    db.evt.enddatetime.default = (datetime.datetime.utcnow()
+                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     try:
         db.evt.projid.default = session.projid
     except AttributeError:

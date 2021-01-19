@@ -38,6 +38,7 @@ def view_project(pid='0'):
 @action("new_project", method=['GET', 'POST'])
 @action.uses('new_project.html', session, db, auth.user)
 def new_project(pid=0):
+    db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
     form = Form(db.project,
                 record=pid,
                 formstyle=FormStyleBulma)
