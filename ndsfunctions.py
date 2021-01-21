@@ -103,7 +103,6 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
 
     if gantt is False:
         colorclass = colorclass[1:]
-
     return colorclass
 
 
@@ -115,7 +114,6 @@ def score_question(questid, answer=0):
     c) thresholds are minimum number of answers and %age level eg 3 and 60% would take the answer that 2 peopel went
        for
     """
-
     quest = db(db.question.id == questid).select().first()
     resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
     print('Ihave' + str(questid))

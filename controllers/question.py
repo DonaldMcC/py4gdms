@@ -55,13 +55,11 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
-                dbio=False,
                 formstyle=FormStyleBulma)
 
     if form.accepted:
         session.eventid = form.vars.eventid
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        db.question.update_or_insert(**form.vars)
         redirect(URL(sourceurl))
     return dict(form=form)
 

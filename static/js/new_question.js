@@ -14,30 +14,23 @@ $(document).ready(function(){
     */
 
           $('#question_qtype').change(function(){
+                console.log('qtyp change triggered')
               if($('#question_qtype option:selected').text()=='issue' || $('#question_qtype option:selected').text()=='action' )
                  {$('#question_factopinion').parent().parent().hide();
                   $('#question_answer1').val('Approve');
-                  $('#question_answer1').hide();
-                  $("label[for='question_answer1']").hide();
-                  $('#question_answer2').show();
                   $('#question_answer2').val('Disapprove');
-                  $('#question_answer2').hide();
-                  $("label[for='question_answer2']").hide();
-                  $("label[for='question_answertext']").hide();
-                  $('#question_answertext').hide();};
+                  $('#question_answer1').parent().parent().hide();
+                  $('#question_answer2').parent().parent().hide();
+                  $('#question_answertext').parent().parent().hide();};
               if($('#question_qtype option:selected').text()=='quest'){
                   $('#question_factopinion').parent().parent().show();
                   $('#question_factopinion option:selected').text()=='Opinion';
-                  $('#question_answer1').show();
-                  $("label[for='question_answer1']").show();
-                  $('#question_answer2').show();
-                  $("label[for='question_answer2']").show();
-                  $('#question_answertext').hide();
-                  $("label[for='question_answertext']").hide();
-                 };
+                  $('#question_answer1').val('');
+                  $('#question_answer2').val('');
+                  $('#question_answer1').parent().parent().show();
+                  $('#question_answer2').parent().parent().show();
+                  $('#question_answertext').parent().parent().show();};
                  });
-
-
 
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact')
