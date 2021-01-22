@@ -18,8 +18,15 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
             return default + ' is-danger'
 
 
-def get_actions(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
-    query = make_query(qtype, status, event, eventstatus, project)
+def get_actions(qtype='action',
+                status=None,
+                x=0, y=10,
+                event=None,
+                eventstatus='Open',
+                project=None,
+                execstatus=None):
+
+    query = make_query(qtype, status, event, eventstatus, project, execstatus)
 
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
@@ -55,7 +62,13 @@ def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='O
     return issues
 
 
-def make_query(qtype='quest', status=None, event=None, eventstatus='Open', project=None):
+def make_query(qtype='quest',
+               status=None,
+               event=None,
+               eventstatus='Open',
+               project=None,
+               execstatus=None):
+
     if eventstatus == 'Archived':
         if qtype == 'quest':
             query = (db.eventmap.qtype == 'quest')
@@ -84,5 +97,9 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
             events = db(db.evt.projid == project).select(db.evt.id)
             eventlist = [row.id for row in events] if events else []
             query &= (db.question.eventid.belongs(eventlist))
-
+        if execstatus:
+            if execstatus == 'Incomplete':
+                query &= (db.question.execstatus != 'Completed')
+            else:
+                query &= (db.question.execstatus == 'Completed')
     return query

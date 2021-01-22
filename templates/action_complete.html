@@ -1,0 +1,59 @@
+[[import datetime]]
+[[if res_actions:]]
+<br>
+<h1 class="title is-4">Completed Actions</h1>
+<table id=comp_actions class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+                        <th width="60%">Action</th>
+                        <th width="10%">Due Date</th>
+                        <th width="10%">Resp</th>
+                        <th width="10%">% Complete</th>
+                        <th width="10%">Feedback</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for i,row in enumerate(comp_actions):]]
+<tr id="[[=row.question.id]]">
+<td>[[=row.question.questiontext]]
+    <div id='btns[[=str(row.question.id)]]'></div></td>
+<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
+    =row.question.enddate.date().strftime('%Y-%m-%d')
+    else:
+    ''
+    pass]]"> </td>
+<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
+    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
+    <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
+           VALUE="Approve">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           VALUE="Disapprove"></td>
+</tr>
+[[pass]]
+</tbody>
+</table>
+[[pass]]
+
+
+
+<script>
+$('#comp_actions').DataTable({responsive: true, paging: false, searching:false, info: false});
+$('#comp_actions').on('change', 'input', function () {
+    var row = $(this).closest('tr');
+        var perc = row.find("input[type='range']").val();
+        var resp = row.find("input[type='text']").val();
+        var due = row.find("input[type='date']").val();
+                console.log(due);
+    Q.ajax("POST", "[[=URL('perccomplete')]]", {
+            questid: row.attr('id'),
+            perccomplete: perc,
+            responsible: resp,
+            duedate: due
+        }).then(onsuccess).catch(onerror);
+
+});
+
+</script>
+[[pass]]

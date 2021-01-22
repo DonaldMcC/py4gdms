@@ -17,10 +17,14 @@ def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session.projid = pid if projectrow else 0
 
+    if pid:
+        events = db(db.evt.projid == pid).select(db.evt.id)
+
     actions = get_actions(status='In Progress', project=pid)
     questions = get_questions(status='In Progress', project=pid)
     issues = get_issues(project=pid)
-    res_actions = get_actions(status='Resolved', project=pid)
+    res_actions = get_actions(status='Resolved', project=pid, execstatus='Incomplete')
+    comp_actions = get_actions(status='Resolved', project=pid, execstatus='Completed')
     res_questions = get_questions(status='Resolved', project=pid)
 
     if res_actions:
@@ -30,6 +34,7 @@ def view_project(pid='0'):
 
     return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
+                comp_actions=comp_actions,
                 get_class=get_class, get_disabled=get_disabled,
                 myconverter=myconverter, project=XML(projxml))
 
