@@ -23,9 +23,6 @@ class TestRegisterPage (FunctionalTest):
     @data((USERS['USER1'], USERS['PASSWORD1']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
-
-
-
         # first_name = self.browser.find_element_by_name("first_name")
         first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
@@ -44,10 +41,6 @@ class TestRegisterPage (FunctionalTest):
         email.clear()
         email.send_keys(mailstring)
 
-        # username = self.browser.find_element_by_name("username")
-        # username.clear()
-        # username.send_keys(user)
-
         password = self.browser.find_element_by_name("password")
         password.clear()
         password.send_keys(passwd)
@@ -61,11 +54,14 @@ class TestRegisterPage (FunctionalTest):
 
         register_button = self.browser.find_element_by_css_selector("input[type=submit]")
 
-        time.sleep(10)
+        time.sleep(5)
         register_button.click()
         #self.browser.find_element_by_xpath(r"id('page-content')//input[@type='submit']").click()
+        time.sleep(5)
 
-        time.sleep(10)
-        resultstring = 'Welcome ' + user
+        self.url = ROOT + '/auth/login'
+        get_browser = self.browser.get(self.url)
+
+        resultstring = user + "@user.com"
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(resultstring, body.text)

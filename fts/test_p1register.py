@@ -16,18 +16,19 @@ class TestRegisterPage (FunctionalTest):
           (USERS['USER8'], USERS['PASSWORD8']), (USERS['USER9'], USERS['PASSWORD9']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
-
         first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("first_name"))
         first_name.clear()
         first_name.send_keys(user)
+
+        username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("username"))
+        username.clear()
+        username.send_keys(user)
 
         last_name = self.browser.find_element_by_name("last_name")
         last_name.clear()
         last_name.send_keys(user)
 
-        mailstring = user+'@user.com'
-        # if user == 'Testuser2':
-        #    mailstring = 'newglobalstrategy@gmail.com'
+        mailstring = user + '@user.com'
         email = self.browser.find_element_by_name("email")
         email.clear()
         email.send_keys(mailstring)
@@ -36,23 +37,17 @@ class TestRegisterPage (FunctionalTest):
         password.clear()
         password.send_keys(passwd)
 
-        verify_password = self.browser.find_element_by_name("password_two")
+        verify_password = self.browser.find_element_by_name("password_again")
         verify_password.clear()
         verify_password.send_keys(passwd)
 
-        data_consent = self.browser.find_element_by_name("data_consent")
-        data_consent.click()
+        #data_consent = self.browser.find_element_by_name("data_consent")
+        #data_consent.click()
 
-        time.sleep(1)
-
-        register_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        time.sleep(1)
+        register_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        time.sleep(2)
         register_button.click()
-        resultstring = 'Welcome ' + user
-        time.sleep(1)
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
-        self.assertIn(resultstring, body.text)
 
-        self.url = ROOT + '/default/user/logout'
+        self.url = ROOT + '/user/logout'
         get_browser = self.browser.get(self.url)
         time.sleep(1)
