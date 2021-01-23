@@ -92,11 +92,6 @@ def questiongrid(path=None):
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
 
-    fields = [db.question.qtype, db.question.questiontext,
-              db.question.status, db.evt.evt_name, db.project.proj_name]
-
-    orderby = [db.question.qtype, db.question.status, db.question.questiontext]
-
     # queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
     if 'qtype' in request.query:
         qtype = request.query.get('qtype')
@@ -122,10 +117,21 @@ def questiongrid(path=None):
 
     search = GridSearch(search_queries, queries)
 
+    if qtype == 'action':
+        headings = ['Text', 'Status', 'Execstatus', 'Event', 'Project']
+        fields = [db.question.questiontext, db.question.status, db.question.execstatus,
+                  db.evt.evt_name, db.project.proj_name]
+        orderby = [db.question.status, db.question.execstatus, db.question.questiontext]
+    else:
+        headings = ['Text', 'Answertext', 'Event', 'Project']
+        fields = [db.question.questiontext, db.question.answertext, db.question.status,
+                  db.evt.evt_name, db.project.proj_name]
+        orderby = [db.question.status, db.question.questiontext]
+
     grid = Grid(path,
                 search.query,
                 fields=fields,
-                headings=['Type', 'Text', 'Answertext', 'Event', 'Project'],
+                headings=headings,
                 left=[db.evt.on(db.question.eventid == db.evt.id),
                       db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
