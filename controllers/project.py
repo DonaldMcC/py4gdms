@@ -34,7 +34,7 @@ def view_project(pid='0'):
 
     return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
-                comp_actions=comp_actions,
+                comp_actions=comp_actions, events=events,
                 get_class=get_class, get_disabled=get_disabled,
                 myconverter=myconverter, project=XML(projxml))
 

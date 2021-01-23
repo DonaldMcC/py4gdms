@@ -75,8 +75,9 @@ def view_event(eid='0'):
     actions = get_actions(status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_questions(status='In Progress', event=eid, eventstatus=eventrow.status)
     issues = get_issues(event=eid, eventstatus=eventrow.status)
-    res_actions = get_actions(status='Resolved', event=eid, eventstatus=eventrow.status)
     res_questions = get_questions(status='Resolved', event=eid, eventstatus=eventrow.status)
+    res_actions = get_actions(status='Resolved', event=eid, execstatus='Incomplete')
+    comp_actions = get_actions(status='Resolved', event=eid, execstatus='Completed')
 
     eventlevel = 0
     parentquest = 0
@@ -94,6 +95,7 @@ def view_event(eid='0'):
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
+                comp_actions=comp_actions,
                 get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
                 resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
                 myconverter=myconverter)
