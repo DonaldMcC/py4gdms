@@ -13,7 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 class AddBasicAction (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/default/user/login'        
+        self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
 
         mailstring = USERS['USER3']+'@user.com'
@@ -29,7 +29,7 @@ class AddBasicAction (FunctionalTest):
         submit_button.click()
         time.sleep(1)    
 
-    @data(('/submit/new_question/action', 'Lets get this done'), ('/submit/new_question/issue', 'The world is under-achieving'))
+    @data(('/new_question/action', 'Lets get this done'), ('/new_question/issue', 'The world is under-achieving'))
     @unpack
     def test_question(self, urltxt, itemtext):
         self.url = ROOT + urltxt

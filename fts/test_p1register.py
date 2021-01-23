@@ -7,7 +7,7 @@ import time
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):      
-        self.url = ROOT + '/default/user/register'        
+        self.url = ROOT + '/auth/register'
         get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
@@ -48,6 +48,6 @@ class TestRegisterPage (FunctionalTest):
         time.sleep(2)
         register_button.click()
 
-        self.url = ROOT + '/user/logout'
+        self.url = ROOT + '/auth/logout'
         get_browser = self.browser.get(self.url)
         time.sleep(1)
