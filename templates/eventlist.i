@@ -1,14 +1,14 @@
 <div>
-<h1 class="title is-3">Event For This Project</h1>
+<h1 class="title is-3">Events For This Project</h1>
 [[if events:]]
 <table id='Events' class='table'>
 <tbody>
 <tr>
-<th width="10%">Name</th>
-<th width="60%">Description</th>
-<th width="10%">Start</th>
-<th width="10%">End</th>
-<th width="10%">Status</th>
+<th width="15%">Name</th>
+<th width="40%">Description</th>
+<th width="15%">Start</th>
+<th width="15%">End</th>
+<th width="15%">Status</th>
 </tr>
 [[for row in events:]]
 <tr>

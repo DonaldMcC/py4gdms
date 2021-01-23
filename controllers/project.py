@@ -18,7 +18,7 @@ def view_project(pid='0'):
     session.projid = pid if projectrow else 0
 
     if pid:
-        events = db(db.evt.projid == pid).select(db.evt.id)
+        events = db(db.evt.projid == pid).select(orderby=~db.evt.startdatetime)
 
     actions = get_actions(status='In Progress', project=pid)
     questions = get_questions(status='In Progress', project=pid)
