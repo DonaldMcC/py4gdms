@@ -22,16 +22,15 @@ class AnswerAction (FunctionalTest):
     @unpack
     def test_answer_issue(self, user, passwd, result):
         # This is a bit of a repeat of above with different url - but it might change otherwise will loop
-
-        mailstring = user + '@user.com'
-
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
-        email.send_keys(mailstring)
-
-        password = self.browser.find_element_by_name("password")
+        self.url = ROOT + '/auth/login'
+        get_browser = self.browser.get(self.url)
+        time.sleep(2)
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
+        email.send_keys(user)
+        password = self.browser.find_element_by_id("none_login_password")
         password.send_keys(passwd)
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
         

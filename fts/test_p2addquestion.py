@@ -34,8 +34,9 @@ class AddBasicQuestion (FunctionalTest):
     def test_question(self):
         time.sleep(2) # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
+        itemtext = "Selenium to be or not to be"
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id('question_questiontext'))
-        questiontext.send_keys("Selenium to be or not to be")
+        questiontext.send_keys(itemtext)
 
         # ans1 = self.browser.find_element_by_name('ans1')
         ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer1"))
@@ -50,7 +51,8 @@ class AddBasicQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
   
-        #welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
-        #self.assertIn('Details Submitted', welcome_message.text)
+        # Lookof for body in questiongrid
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        self.assertIn(itemtext, body.text)
 
         time.sleep(CACHETIME)

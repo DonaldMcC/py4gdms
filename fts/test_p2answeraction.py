@@ -23,21 +23,18 @@ class AnswerAction (FunctionalTest):
           (USERS['USER4'], USERS['PASSWORD4'], 'is Agreed'))
     @unpack
     def test_answer_action(self, user, passwd, result):
-        #username = self.browser.find_element_by_name("username")
-        #username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
-        #username.send_keys(user)
-        mailstring = user + '@user.com'
-
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
-        email.send_keys(mailstring)
-
-        password = self.browser.find_element_by_name("password")
+        self.url = ROOT + '/auth/login'
+        get_browser = self.browser.get(self.url)
+        time.sleep(2)
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
+        email.send_keys(user)
+        password = self.browser.find_element_by_id("none_login_password")
         password.send_keys(passwd)
-
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
         submit_button.click()
         time.sleep(1)
 
+        #TODO - look at answer question approach a bit more perhaps
         self.url = ROOT + '/answer/get_question/action'
         get_browser=self.browser.get(self.url)
 

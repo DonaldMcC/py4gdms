@@ -16,14 +16,12 @@ class AddBasicAction (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
         time.sleep(2)
-        mailstring = USERS['USER2']+'@user.com'
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
         email.send_keys(USERS['USER2'])
         password = self.browser.find_element_by_id("none_login_password")
         password.send_keys(USERS['PASSWORD2'])
         submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-
         submit_button.click()
         time.sleep(1)
 
@@ -41,6 +39,8 @@ class AddBasicAction (FunctionalTest):
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
-  
-        #welcome_message = self.browser.find_element_by_css_selector(".w2p_flash")
-        #self.assertIn('Details Submitted', welcome_message.text)
+
+        # Lookof for body in questiongrid
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        self.assertIn(itemtext, body.text)
+

@@ -22,16 +22,16 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER4'], USERS['PASSWORD4'], 'Well done'))
     @unpack
     def test_answer(self, user, passwd, result):
-        # username = self.browser.find_element_by_name("username")
-        mailstring = user + '@user.com'
+        self.url = ROOT + '/auth/login'
+        get_browser = self.browser.get(self.url)
+        time.sleep(2)
 
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name("email"))
-        email.send_keys(mailstring)
-
-        password = self.browser.find_element_by_name("password")
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
+        email.send_keys(user)
+        password = self.browser.find_element_by_id("none_login_password")
         password.send_keys(passwd)
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
         time.sleep(1)
 
