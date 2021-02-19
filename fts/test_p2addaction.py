@@ -36,7 +36,8 @@ class AddBasicAction (FunctionalTest):
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
         questiontext.send_keys(itemtext)
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
         submit_button.click()
         time.sleep(1)
 

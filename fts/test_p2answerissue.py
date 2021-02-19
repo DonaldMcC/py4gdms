@@ -57,7 +57,8 @@ class AnswerAction (FunctionalTest):
 
         # answer.send_keys("1")
 
-        submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        #submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
         submit_button.click()
         time.sleep(2)
 
