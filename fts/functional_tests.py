@@ -19,7 +19,7 @@ sys.path.append('./fts/lib')
 
 
 # ROOT = 'http://localhost:8080/gdms'
-ROOT = 'http://localhost:8000/py4gdms'
+ROOT = 'http://localhost:8000/py4test'
 # ROOT = 'http://localhost:8081/gdms'
 # ROOT = 'https://www.netdecisionmaking.com/gdmssql'
 
