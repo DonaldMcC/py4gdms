@@ -17,6 +17,7 @@ db.define_table('resolve',
                 Field('consensus', 'decimal(4,4)', default=60,
                       requires=IS_DECIMAL_IN_RANGE(50.01, 100, error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
+                Field('DefaultResolve', 'boolean', default=False),
                 Field('adminresolve', 'boolean', default=True,
                       label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
@@ -49,10 +50,9 @@ db.define_table('website_parameters',
                 Field('quests_per_page', 'integer', default=20, label=T('Questions Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
                 Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
-                      comment=T('Port of the mailserver (used to send email in forms)')),
-                Field('default_resolve_name', 'reference resolve', label='Default Resolve Name'))
-db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
+                      comment=T('Port of the mailserver (used to send email in forms)')))
 
+db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
@@ -110,7 +110,7 @@ db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
 db.define_table('evt',
                 Field('evt_name', label='Event Name'),
                 Field('locationid', 'reference locn', label='Location', required=True),
-                Field('projid', 'reference project', label='Project'),
+                Field('projid', 'reference project', label='Project', required=True),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),
@@ -150,7 +150,8 @@ db.define_table('question',
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method', requires = not_empty),
+                Field('resolvemethod', 'reference resolve', label='Resolution Method',
+                      required=True, requires = not_empty),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
@@ -175,8 +176,8 @@ db.define_table('question',
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
-db.question.resolvemethod.default = db(db.website_parameters.id > 0).select(
-    db.website_parameters.id).first().id or None
+#db.question.resolvemethod.default = db(db.website_parameters.id > 0).select(
+#    db.website_parameters.id).first().id or None
 # So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
 # is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation

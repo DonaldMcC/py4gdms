@@ -41,12 +41,10 @@ class AddBasicQuestion (FunctionalTest):
         # ans1 = self.browser.find_element_by_name('ans1')
         ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer1"))
         ans1.send_keys("be")
-        ans1.send_keys(Keys.RETURN)
 
         #ans2 = self.browser.find_element_by_name('ans2')
         ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer2"))
-        ans2.send_keys("be")
-        ans2.send_keys(Keys.RETURN)
+        ans2.send_keys("not to be")
 
         #ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_xpath("(//input[@id='question_answers'])[2]"))
         #ans2.send_keys("not to be")
