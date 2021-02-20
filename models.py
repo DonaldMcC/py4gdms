@@ -50,9 +50,9 @@ db.define_table('website_parameters',
                       comment=T('Port of the mailserver (used to send email in forms)')),
                 Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')),
-                Field('default_resolve_name', 'string', default='Standard', label='Default Resolve Name'))
+                Field('default_resolve_name', 'reference resolve', label='Default Resolve Name'))
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
-db.website_parameters.default_resolve_name.requires = IS_EMPTY_OR(IS_IN_DB(db, 'resolve.resolve_name'))
+
 
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
@@ -150,7 +150,7 @@ db.define_table('question',
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method'),
+                Field('resolvemethod', 'reference resolve', label='Resolution Method', requires = not_empty),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
@@ -175,6 +175,8 @@ db.define_table('question',
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
+db.question.resolvemethod.default = db(db.website_parameters.id > 0).select(
+    db.website_parameters.id).first().id or None
 # So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
 # is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
