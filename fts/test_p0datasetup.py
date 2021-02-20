@@ -37,24 +37,15 @@ class AnswerQuestion (FunctionalTest):
 
 
     def test_datasetup(self):
-        self.url = ROOT + '/new_project'
+        self.url = ROOT + '/datasetup'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
 
-        self.browser.execute_script('alert("hi")')
+        # self.browser.execute_script('alert("hi")')
         time.sleep(2)
-        alert = self.browser.switch_to_alert()
-        alert.accept()
-
-        #body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
-        #self.assertIn('Standard data has been added', body.text)
-
-
-    def test_addresolvemethods(self):
-        self.url = ROOT + '/new_question'
-        get_browser = self.browser.get(self.url)
-        time.sleep(1)
+        # alert = self.browser.switch_to_alert()
+        # alert.accept()
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
-        self.assertIn('Question', body.text)
+        self.assertIn('Setup has been completed successfully', body.text)
 

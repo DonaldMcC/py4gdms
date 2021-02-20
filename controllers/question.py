@@ -52,6 +52,16 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
 
+    try:
+        db.question.resolvemethod.default = session.resolvemethod
+    except AttributeError:
+        pass
+
+    try:
+        db.question.eventid.default = session.eventid
+    except AttributeError:
+        pass
+
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
@@ -59,6 +69,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
     if form.accepted:
         session.eventid = form.vars.eventid
+        session.resolvemethod = form.vars.resolvemethod
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
