@@ -59,8 +59,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
     if form.accepted:
         session.eventid = form.vars.eventid
-        sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl+'?qtype='+qtype
-        redirect(URL(sourceurl))
+        sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
 
