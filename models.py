@@ -17,7 +17,7 @@ db.define_table('resolve',
                 Field('consensus', 'decimal(4,4)', default=60,
                       requires=IS_DECIMAL_IN_RANGE(50.01, 100, error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
-                Field('DefaultResolve', 'boolean', default=False),
+                Field('Defaultresolve', 'boolean', default=False),
                 Field('adminresolve', 'boolean', default=True,
                       label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
@@ -150,8 +150,7 @@ db.define_table('question',
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method',
-                      required=True, requires = not_empty),
+                Field('resolvemethod', 'reference resolve', label='Resolution Method'),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
@@ -252,13 +251,5 @@ db.define_table('eventmap',
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
-
-try:
-    from .settings import DEFAULT_RESOLUTION
-    if DEFAULT_RESOLUTION:
-        resmethod = db(db.resolve.resolve_name == DEFAULT_RESOLUTION).select(db.resolve.id).first().id
-        db.question.resolvemethod.default = resmethod
-except (ImportError, ModuleNotFoundError, AttributeError):
-    pass
 
 db.commit()

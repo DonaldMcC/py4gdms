@@ -19,14 +19,20 @@ def datasetup():
                                description='The unspecified location is used as a default for all events that are not'
                                            'allocated a specific location')
 
+    if db(db.project.proj_name == "Unspecified").isempty():
+        projid = db.project.insert(proj_name="Unspecified",
+                               description='The unspecified project is used as a default for all project that are not'
+                                           'allocated a specific project')
+
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, evt_shared=True,
+        projid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, projid=projid, evt_shared=True,
                              startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
                              enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
     if db(db.resolve.resolve_name == "Standard").isempty():
-        resolveid = db.resolve.insert(resolve_name="Standard")
+        resolveid = db.resolve.insert(resolve_name="Standard", DefaultResovle=True)
 
     if db(db.resolve.resolve_name == "Single").isempty():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)

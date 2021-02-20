@@ -53,7 +53,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.qtype.default = qtype
 
     try:
-        db.question.resolvemethod.default = session.resolvemethod
+        db.question.resolvemethod.default = session.resolvemethod or db(db.resolve.Defaultresolve == True).select(
+            db.resolve.id).first().id or None
     except AttributeError:
         pass
 
