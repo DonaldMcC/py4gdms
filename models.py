@@ -51,7 +51,6 @@ db.define_table('website_parameters',
                       comment=T('Port of the mailserver (used to send email in forms)')),
                 Field('comments_per_page', 'integer', default=20, label=T('Comments Per Page'),
                       comment=T('Port of the mailserver (used to send email in forms)')))
-
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 
 # this was to support document download from site eg manuals setup instructions etc
@@ -64,8 +63,7 @@ db.define_table('download',
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
 db.define_table('locn',
-                Field('location_name', label='Location Name', requires=[not_empty,
-                                                                        IS_NOT_IN_DB(db, 'locn.location_name')]),
+                Field('location_name', label='Location Name', unique=True, notnull=True),
                 Field('address1', label='Address 1'),
                 Field('address2', label='Address 2'),
                 Field('address3', label='Address 3'),
@@ -83,12 +81,10 @@ db.define_table('locn',
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(location_name)s')
-
-db.locn.location_name.requires = IS_NOT_IN_DB(db, db.locn.location_name)
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
 
 db.define_table('project',
-                Field('proj_name', label='Project Name'),
+                Field('proj_name', label='Project Name', unique=True, notnull=True),
                 Field('proj_url', label='Project Website'),
                 Field('proj_status', 'string', label='Project Status', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
@@ -104,13 +100,11 @@ db.define_table('project',
                       label='Owner', default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
                 format='%(proj_name)s')
-db.project.proj_name.requires = IS_NOT_IN_DB(db, db.project.proj_name)
-
 
 db.define_table('evt',
-                Field('evt_name', label='Event Name'),
-                Field('locationid', 'reference locn', label='Location', required=True),
-                Field('projid', 'reference project', label='Project', required=True),
+                Field('evt_name', label='Event Name', unique=True, notnull=True),
+                Field('locationid', 'reference locn', label='Location'),
+                Field('projid',  'reference project',  label='Project', notnull=True),
                 Field('status', 'string', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),
@@ -125,8 +119,6 @@ db.define_table('evt',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 format='%(evt_name)s')
 
-db.evt.evt_name.requires = [not_empty, IS_NOT_IN_DB(db, 'evt.evt_name')]
-
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type',
@@ -136,7 +128,7 @@ db.define_table('question',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter',
-                      default=auth.user_id),
+                      default=auth.user_id, notnull=True),
                 Field('factopinion', 'string', default='Opinion',
                       requires=IS_IN_SET(['Fact', 'Opinion']), label='Fact or Opinion',
                       comment='Factual questions should be answered by either submitter or knowledge engines'),
@@ -150,7 +142,7 @@ db.define_table('question',
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method'),
+                Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
@@ -171,7 +163,6 @@ db.define_table('question',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
-
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
@@ -182,8 +173,8 @@ db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans ==
 # but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
 
 db.define_table('userquestion',
-                Field('questionid', db.question, writable=False),
-                Field('auth_userid', 'reference auth_user', writable=False, readable=False),
+                Field('questionid', db.question, writable=False, notnull=True),
+                Field('auth_userid', 'reference auth_user', writable=False, readable=False, notnull=True),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('urgency', 'integer', default=5,
@@ -223,8 +214,8 @@ db.define_table('questcomment',
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 db.define_table('eventmap',
-                Field('eventid', 'reference evt'),
-                Field('questid', 'reference question'),
+                Field('eventid', 'reference evt', notnull=True),
+                Field('questid', 'reference question', notnull=True),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
                 Field('qtype', 'string', writable=False, requires=IS_IN_SET(['quest', 'action', 'issue'])),

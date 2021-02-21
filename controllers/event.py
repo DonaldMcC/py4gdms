@@ -14,7 +14,7 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter
-
+from pydal.validators import *
 
 @action("flash_example")
 @action.uses("flash_example.html")
@@ -30,6 +30,7 @@ def new_event(eid=0):
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     db.evt.enddatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+
     try:
         db.evt.projid.default = session.projid
     except AttributeError:
