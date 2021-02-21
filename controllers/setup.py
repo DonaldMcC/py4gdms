@@ -32,7 +32,7 @@ def datasetup():
                              enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
     if db(db.resolve.resolve_name == "Standard").isempty():
-        resolveid = db.resolve.insert(resolve_name="Standard", DefaultResovle=True)
+        resolveid = db.resolve.insert(resolve_name="Standard", Defaultresolve=True)
 
     if db(db.resolve.resolve_name == "Single").isempty():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)
