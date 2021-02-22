@@ -53,15 +53,17 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.qtype.default = qtype
 
     try:
-        db.question.resolvemethod.default = session.resolvemethod or db(db.resolve.Defaultresolve == True).select(
-            db.resolve.id).first().id or None
+        db.question.resolvemethod.default = session.get('eventid',
+                                            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
     except AttributeError:
         pass
 
     try:
-        db.question.eventid.default = session.eventid
+        db.question.eventid.default = session.get('eventid',
+                                      db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id)
     except AttributeError:
         pass
+
 
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
