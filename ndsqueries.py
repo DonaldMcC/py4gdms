@@ -1,4 +1,4 @@
-from .common import db, auth
+from .common import db
 
 
 def get_disabled(ans, useranswer):
@@ -30,13 +30,11 @@ def get_actions(qtype='action',
 
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
-        actions = db(query).select(left=db.userquestion.on((db.eventmap.questid == db.userquestion.questionid) &
-                                                           (db.userquestion.auth_userid==auth.user_id)),
+        actions = db(query).select(left=db.userquestion.on(db.eventmap.questid == db.userquestion.questionid),
                                    orderby=[sortby], limitby=(x, y))
     else:
         sortby = db.question.startdate if status == 'Resolved' else ~db.question.id
-        actions = db(query).select(left=db.userquestion.on((db.question.id == db.userquestion.questionid) &
-                                                           (db.userquestion.auth_userid==auth.user_id)),
+        actions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                    orderby=[sortby], limitby=(x, y))
     return actions
 
@@ -44,12 +42,10 @@ def get_actions(qtype='action',
 def get_questions(qtype='quest', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
     query = make_query(qtype, status, event, eventstatus, project)
     if eventstatus == 'Archived':
-        questions = db(query).select(left=db.userquestion.on((db.eventmap.questid == db.userquestion.questionid) &
-                                                             (db.userquestion.auth_userid==auth.user_id)),
+        questions = db(query).select(left=db.userquestion.on(db.eventmap.questid == db.userquestion.questionid),
                                      orderby=~db.question.id, limitby=(x, y))
     else:
-        questions = db(query).select(left=db.userquestion.on((db.question.id == db.userquestion.questionid) &
-                                                             (db.userquestion.auth_userid==auth.user_id)),
+        questions = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                      orderby=~db.question.id, limitby=(x, y))
     return questions
 
@@ -58,12 +54,10 @@ def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='O
     query = make_query(qtype, status, event, eventstatus, project)
 
     if eventstatus == 'Archived':
-        issues = db(query).select(left=db.userquestion.on((db.eventmap.questid == db.userquestion.questionid) &
-                                                          (db.userquestion.auth_userid==auth.user_id)),
+        issues = db(query).select(left=db.userquestion.on(db.eventmap.questid == db.userquestion.questionid),
                                   orderby=~db.question.id, limitby=(x, y))
     else:
-        issues = db(query).select(left=db.userquestion.on((db.question.id == db.userquestion.questionid) &
-                                                          (db.userquestion.auth_userid==auth.user_id)),
+        issues = db(query).select(left=db.userquestion.on(db.question.id == db.userquestion.questionid),
                                   orderby=~db.question.id, limitby=(x, y))
     return issues
 
