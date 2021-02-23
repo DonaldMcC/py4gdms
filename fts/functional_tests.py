@@ -29,9 +29,9 @@ STARTSERVER = False
 
 # may update these later but possibly just have 3 options for now
 USERS={'USER1':'User1','PASSWORD1':'Testuser1',
-        'USER2':'User2','PASSWORD2':'Testuser2','USER3':'User3','PASSWORD3':'Testuser3','USER4':'Testuser4','PASSWORD4':'user4',
-       'USER5':'Testuser5','PASSWORD5':'user5','USER6':'Testuser6','PASSWORD6':'user6','USER7':'Testuser7','PASSWORD7':'user7',
-       'USER8':'Testuser8','PASSWORD8':'user8','USER9':'Testuser9','PASSWORD9':'user9'}
+        'USER2':'User2','PASSWORD2':'Testuser2','USER3':'User3','PASSWORD3':'Testuser3','USER4':'User4','PASSWORD4':'Testuser4',
+       'USER5':'User5','PASSWORD5':'Testuser5','USER6':'User6','PASSWORD6':'Testuser6','USER7':'User7','PASSWORD7':'Testuser7',
+       'USER8':'User8','PASSWORD8':'Testuser8','USER9':'User9','PASSWORD9':'Testuser9'}
 
 listusers = ['user2', 'user3', 'user4']
 questref =  'functest questref'
