@@ -11,6 +11,7 @@
                 </thead>
                     <tbody>
 [[for i,row in enumerate(actions):]]
+[[print(row.userquestion.answer)]]
 <tr>
 <td>[[=row.question.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>

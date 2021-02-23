@@ -64,7 +64,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     except AttributeError:
         pass
 
-
+    # default for this in models doesn't seem to work
+    db.question.auth_userid.default=auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
