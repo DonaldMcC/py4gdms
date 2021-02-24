@@ -17,8 +17,8 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'in progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Well done'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'progress'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
     def test_answer(self, user, passwd, result):
         self.url = ROOT + '/auth/login'
