@@ -41,7 +41,7 @@ class AnswerQuestion (FunctionalTest):
         #self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
         #answer issue
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(3) > .is-success").click()
+        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(4) > .is-success").click()
 
         time.sleep(1)
 
