@@ -30,9 +30,9 @@ def new_event(eid=0):
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     db.evt.enddatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
-
     try:
-        db.evt.projid.default = session.projid
+        db.evt.projid.default = session.get('projid',
+                                            db(db.project.name == 'Unspecified').select(db.project.id).first().id)
     except AttributeError:
         pass
     form = Form(db.evt,
@@ -40,7 +40,7 @@ def new_event(eid=0):
                 formstyle=FormStyleBulma)
 
     if form.accepted:
-        session.eventid = form.vars.id
+        session['eventid'] = form.vars.id
         redirect(URL('eventgrid'))
     return dict(form=form)
 
@@ -70,8 +70,8 @@ def create_next_event(eid, recurrence):
 def view_event(eid='0'):
     eventrow = db(db.evt.id == eid).select().first()
     if eventrow:
-        session.eventid = eid
-        session.projid = eventrow.projid
+        session['eventid'] = eid
+        session['projid'] = eventrow.projid
 
     actions = get_actions(status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_questions(status='In Progress', event=eid, eventstatus=eventrow.status)

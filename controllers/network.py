@@ -20,9 +20,8 @@
 
 import json
 from ..d3js2py import getd3graph
-import datetime
-from ..common import db, unauthenticated, authenticated, auth, session
-from py4web import action, request, Flash
+from ..common import db, authenticated, auth, session
+from py4web import request, redirect, URL
 
 
 @authenticated()
@@ -180,14 +179,10 @@ def graph():
     numlevels = request.args(0, cast=int, default=1)
     basequest = request.args(1, cast=int, default=0)
 
-    if session.networklist is False:
-        idlist = [basequest]
-    else:
-        idlist = session.networklist
+    idlist = session.get('networklist') if session.get('networklist') else [basequest]
 
     if not idlist:
-        pass
-        #redirect(URL('no_questions'))
+        redirect(URL('no_questions'))
 
     projid = 0
     eventrowid = 0

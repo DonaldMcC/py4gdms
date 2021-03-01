@@ -43,23 +43,18 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
 
-    try:
-        db.question.eventid.default = int(eid) if eid.isnumeric() else session.eventid
-    except AttributeError:
-        pass
-
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
 
     try:
-        db.question.resolvemethod.default = session.get('eventid',
+        db.question.resolvemethod.default = session.get('resolvemethod',
                                             db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
     except AttributeError:
         pass
 
     try:
-        db.question.eventid.default = session.get('eventid',
+        db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 else session.get('eventid',
                                       db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id)
     except AttributeError:
         pass
@@ -72,8 +67,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
                 formstyle=FormStyleBulma)
 
     if form.accepted:
-        session.eventid = form.vars.eventid
-        session.resolvemethod = form.vars.resolvemethod
+        session['eventid'] = form.vars['eventid']
+        session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
@@ -86,7 +81,6 @@ def view_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
-
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 readonly=True,
@@ -129,7 +123,6 @@ def questiongrid(path=None):
     search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
                       ['Search by Event', lambda val: db.evt.evt_name == val, eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
-
     search = GridSearch(search_queries, queries)
 
     if qtype == 'action':

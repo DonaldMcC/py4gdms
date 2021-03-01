@@ -15,7 +15,7 @@ from yatl.helpers import XML
 @action.uses('view_project.html', session, db, auth.user)
 def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
-    session.projid = pid if projectrow else 0
+    session['projid'] = pid if projectrow else 0
 
     if pid:
         events = db(db.evt.projid == pid).select(orderby=~db.evt.startdatetime)
@@ -48,9 +48,8 @@ def new_project(pid=0):
                 record=pid,
                 formstyle=FormStyleBulma)
     if form.accepted:
-        session.projid = form.vars.id
+        session['projid'] = form.vars.id
         redirect(URL('projectgrid'))
-
     return dict(form=form)
 
 

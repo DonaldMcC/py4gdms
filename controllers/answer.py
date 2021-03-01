@@ -58,11 +58,9 @@ def perccomplete():
         quest.execstatus = 'Completed'
     quest.update_record()
     db.commit()
-
     # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
     return()
-
 
 # make a "like" button factory
 @authenticated.callback()
