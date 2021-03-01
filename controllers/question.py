@@ -42,7 +42,6 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
-
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
