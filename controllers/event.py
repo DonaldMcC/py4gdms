@@ -45,8 +45,23 @@ def new_event(eid=0):
     return dict(form=form)
 
 
-def create_next_event(eid, recurrence):
-    # TODO - sort event recurrence - think warning on archive as before
+@action('create_next_event', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def create_next_event():
+    # TODO think there is a prev_event to action
+    # so expectation is that this is only called when event has no next event ie next_evt field is zero
+    # for now anyone can create the next event for a project - might restrict to project owner at some point
+    # unless shared project
+
+    eid = request.json['eid']
+    orig_rec = db(db.evt.id == eid).select().first()
+    orig_event = orig_rec.as_dict()
+
+    proj = db(db.project.id == orig_event['projid']).select().first()
+    if not (proj.proj_shared or proj.proj_owner == auth.user_id):
+        return 'You are not project owner and project not shared so not allowed to create events'
+
+    recurrence=orig_event['recurrence']
     if recurrence == 'Weekly':
         recurdays = 7
     elif recurrence == 'Bi-weekly':
@@ -57,11 +72,17 @@ def create_next_event(eid, recurrence):
         recurdays = 90
     else:
         recurdays = 1
-    startdatetime = datetime.datetime.utcnow()
-    enddatetime = startdatetime
-    startdatetime = startdatetime + datetime.timedelta(days=recurdays)
-    enddatetime = enddatetime + datetime.timedelta(days=recurdays)
-    return
+
+    orig_event['startdatetime']=orig_event['startdatetime'] + datetime.timedelta(days=recurdays)
+    orig_event['enddatetime']=orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
+    orig_event['evt_name'] = 'Next ' + orig_event['evt_name']
+    orig_event['id'] = None
+    new_event = db.evt.insert(**dict(orig_event))
+    orig_rec.update_record(next_evt=new_event)
+    db.commit()
+    messagetxt = 'Next Event Created'
+    return messagetxt
+
 
 
 @action("view_event/<eid>", method=['GET', 'POST'])

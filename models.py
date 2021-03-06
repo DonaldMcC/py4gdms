@@ -102,7 +102,7 @@ db.define_table('project',
                 format='%(proj_name)s')
 
 db.define_table('evt',
-                Field('evt_name', label='Event Name', unique=True, notnull=True),
+                Field('evt_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('projid',  'reference project',  label='Project', notnull=True),
                 Field('status', 'string', default='Open',

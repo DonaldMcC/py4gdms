@@ -15,3 +15,8 @@
         }).then(onsuccess).catch(onerror);
     }
 
+    function nextevent(eid, sourcebutton) {
+        Q.ajax("POST", "[[=URL('create_next_event')]]", {
+            eid: eid
+        }).then(onsuccess).catch(onerror);
+    }
