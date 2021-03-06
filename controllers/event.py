@@ -178,9 +178,9 @@ def archive():
         responsetext = 'Event moved to archived status'
         if not nexteventid:
             responsetext += ' WARNING: No follow-on event has been setup yet'
-        else:
-            responsetext = 'Only open events can be archived'
-            return responsetext
+    else:
+        return 'Only open events can be archived'
+
 
     event.update_record(status=status)
     query = db.question.eventid == eventid
@@ -215,14 +215,15 @@ def archive():
         for x in quests:
             if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or
                                     (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
-                updateid = nexteventid
+                x.update_record(eventid=nexteventid)
             else:
-                updateid = unspecid
-                x.update_record(eventid=updateid)
+                x.update_record(eventid=unspecid)
+
 
         query = db.eventmap.eventid == eventid
         eventquests = db(query).select()
         for row in eventquests:
             row.update_record(status='Archived')
+        db.commit()
 
     return responsetext
