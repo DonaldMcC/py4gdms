@@ -7,8 +7,8 @@
 						<th width="10%">Status</th>
                         <th width="40%">Question</th>
                         <th width="5%">F/O</th>
-                        <th width="20%">Answer(s)</th>
                         <th width="25%" class="min-tablet-p">Notes</th>
+                        <th width="20%">Answer(s)</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -18,13 +18,14 @@
 <td>[[=row.question.questiontext]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td>[[=row.question.factopinion]]</td>
+    <td>[[=row.question.notes]]</td>
 <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
-           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1')",
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",
            VALUE="[[=row.question.answer1]]">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
-           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2')",
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
            VALUE="[[=row.question.answer2]]"></td>
-    <td>[[=row.question.notes]]</td>
+
 </tr>
 [[pass]]
 </tbody>

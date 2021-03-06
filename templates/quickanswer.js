@@ -7,7 +7,8 @@
         alert('ERROR in call');
     };
 
-    function quickanswer(questid, answer) {
+    function quickanswer(questid, answer, sourcebutton) {
+        setTimeout(function(){sourcebutton.disabled=true;},0);
         Q.ajax("POST", "[[=URL('quickanswer')]]", {
             questid: questid,
             answer: answer

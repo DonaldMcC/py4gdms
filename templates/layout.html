@@ -67,16 +67,17 @@
       </nav>
     </header>
     <!-- beginning of HTML inserted by extending template -->
+     <!-- Flash normally here - moved to end as not auto closing-->
 
-      <div>
-        <!-- Flash alert messages, first optional one in data-alert -->
-        <flash-alerts class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
-      </div>
       <main class="padded">
         <!-- contect injected by extending page -->
         [[include]]
       </main>
 
+      <div>
+        <!-- Flash alert messages, first optional one in data-alert -->
+        <flash-alerts class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
+      </div>
     <!-- end of HTML inserted by extending template -->
     <footer class="black padded">
       <p>
