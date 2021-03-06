@@ -12,7 +12,7 @@ from functools import reduce
 
 from py4web import action, request, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
-from ..common import db, session, auth, authenticated, unauthenticated
+from ..common import db, session, auth, authenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
@@ -37,7 +37,7 @@ def like(qid):
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'new_question.html')
 def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -75,7 +75,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
 @action("view_question/<qid>", method=['GET', 'POST'])
 @action("view_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db, auth.user)
+@action.uses(session, db, auth.user,'new_question.html')
 def view_question(qid='0'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -87,6 +87,8 @@ def view_question(qid='0'):
                 formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('questiongrid'))
+    print(auth.user_id)
+    print(globals().get('user'))
     return dict(form=form)
 
 
@@ -152,7 +154,7 @@ def questiongrid(path=None):
 
 
 @action('datatables', method=['GET', 'POST'])
-@action.uses(session, db, auth, 'datatables.html')
+@action.uses(session, db, auth.user, 'datatables.html')
 def datatables():
     """
     display a page with a datatables.net grid on it
@@ -175,7 +177,7 @@ def datatables():
 
 # TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
 @action('datatables_data', method=['GET', 'POST'])
-@action.uses(session, db, auth)
+@action.uses(session, db, auth.user)
 def datatables_data():
     """
     datatables.net makes an ajax call to this method to get the data

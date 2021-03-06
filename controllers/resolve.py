@@ -5,7 +5,7 @@ from py4web.utils.grid import Grid, GridClassStyle
 
 
 @action("new_resolve", method=['GET', 'POST'])
-@action.uses('new_resolve.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'new_resolve.html')
 def new_resolve():
     form = Form(db.resolve)
     return dict(form=form)

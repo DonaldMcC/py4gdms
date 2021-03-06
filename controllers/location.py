@@ -15,7 +15,7 @@ from py4web.utils.grid import Grid, GridClassStyle
 
 @action("new_location/<lid>", method=['GET', 'POST'])
 @action("new_location", method=['GET', 'POST'])
-@action.uses('new_location.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'new_location.html')
 def new_location(lid=0):
     form = Form(db.locn,
                 record=lid,

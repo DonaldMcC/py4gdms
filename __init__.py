@@ -1,6 +1,12 @@
 # check compatibility
 import py4web
 assert py4web.check_compatible("0.1.20190709.1")
+from .common import db, session, auth
+
+from py4web.utils.auth import Auth
+auth = Auth(session, db)
+# (configure here)
+auth.enable()
 
 # by importing db you expose it to the _dashboard/dbadmin
 from .models import db

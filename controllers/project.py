@@ -12,7 +12,7 @@ from yatl.helpers import XML
 
 @action("view_project/<pid>", method=['GET', 'POST'])
 @action("view_project", method=['GET', 'POST'])
-@action.uses('view_project.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'view_project.html')
 def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session['projid'] = pid if projectrow else 0
@@ -41,7 +41,7 @@ def view_project(pid='0'):
 
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
-@action.uses('new_project.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'new_project.html')
 def new_project(pid=0):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
     form = Form(db.project,

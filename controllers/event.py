@@ -16,11 +16,6 @@ from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter
 from pydal.validators import *
 
-@action("flash_example")
-@action.uses("flash_example.html")
-def flash_example_naive():
-    return dict(flash={"message": "hello", "class": "error"})
-
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
@@ -84,10 +79,9 @@ def create_next_event():
     return messagetxt
 
 
-
 @action("view_event/<eid>", method=['GET', 'POST'])
 @action("view_event", method=['GET', 'POST'])
-@action.uses('view_event.html', session, db, auth.user)
+@action.uses(session, db, auth.user, 'view_event.html')
 def view_event(eid='0'):
     eventrow = db(db.evt.id == eid).select().first()
     if eventrow:
@@ -158,7 +152,8 @@ def eventgrid(path=None):
     return dict(grid=grid)
 
 
-@authenticated()
+@action('archive', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
 def archive():
     # This callable via a button from view_event
     # with all records in it and it will probably be restricted to project owner in due course-
