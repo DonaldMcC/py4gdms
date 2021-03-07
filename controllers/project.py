@@ -1,11 +1,10 @@
 
 import datetime
-from py4web import action, redirect, request, URL
+from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
-from ..common import db, session,  auth, authenticated
+from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
-from ..d3js2py import getlinks, getd3graph
 from ..ndsfunctions import myconverter, get_gantt_data
 from yatl.helpers import XML
 
@@ -16,10 +15,7 @@ from yatl.helpers import XML
 def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session['projid'] = pid if projectrow else 0
-
-    if pid:
-        events = db(db.evt.projid == pid).select(orderby=~db.evt.startdatetime)
-
+    events = db(db.evt.projid == pid).select(orderby=~db.evt.startdatetime)
     actions = get_actions(status='In Progress', project=pid)
     questions = get_questions(status='In Progress', project=pid)
     issues = get_issues(project=pid)

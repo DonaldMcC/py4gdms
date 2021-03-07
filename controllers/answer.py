@@ -1,6 +1,6 @@
 import datetime
 from ..common import db, unauthenticated, authenticated, auth, session
-from py4web import action, request, Flash
+from py4web import action, request
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 
@@ -24,7 +24,7 @@ def quickanswer():
         uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
         messagetxt = 'Answer recorded for item:' + str(questid)
         status = score_question(questid, answer)
-        messagetxt+=status
+        messagetxt += status
     elif uq:
         messagetxt = 'You already answered this one'
     else:
@@ -40,7 +40,7 @@ def perccomplete():
     This updates percent complete on resolved actions
     """
     questid = request.json['questid']
-    perccomplete = int(request.json['perccomplete'])
+    percentcomplete = int(request.json['perccomplete'])
     resp = request.json['responsible']
     duestr = request.json['duedate']
     quest = db(db.question.id == questid).select().first()
@@ -51,7 +51,7 @@ def perccomplete():
     except ValueError:
         pass
 
-    quest.perccomplete = perccomplete
+    quest.perccomplete = percentcomplete
     quest.responsible = resp
 
     if perccomplete == 100:
@@ -61,6 +61,7 @@ def perccomplete():
     # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
     return()
+
 
 # make a "like" button factory
 @authenticated.callback()

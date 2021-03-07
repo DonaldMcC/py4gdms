@@ -1,6 +1,5 @@
 import datetime
-from py4web import action, redirect, URL
-from ..common import db, session, auth, authenticated, unauthenticated
+from ..common import db, authenticated
 
 
 @authenticated()
@@ -21,8 +20,8 @@ def datasetup():
 
     if db(db.project.proj_name == "Unspecified").isempty():
         projid = db.project.insert(proj_name="Unspecified",
-                               description='The unspecified project is used as a default for all project that are not'
-                                           'allocated a specific project')
+                                   description='The unspecified project is used as a default for all events not '
+                                               'allocated a specific project')
 
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id

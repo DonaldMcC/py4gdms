@@ -9,12 +9,14 @@
 import datetime
 from py4web import action, redirect, request, URL
 from py4web.utils.form import Form, FormStyleBulma
-from ..common import db, session,  auth, authenticated
+from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
-from ..d3js2py import getlinks, getd3graph
+from ..d3js2py import getd3graph
 from ..ndsfunctions import myconverter
-from pydal.validators import *
+
+
+# from pydal.validators import *
 
 
 @action("new_event/<eid>", method=['GET', 'POST'])
@@ -24,7 +26,7 @@ def new_event(eid=0):
     db.evt.startdatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     db.evt.enddatetime.default = (datetime.datetime.utcnow()
-                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+                                  + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     try:
         db.evt.projid.default = session.get('projid',
                                             db(db.project.name == 'Unspecified').select(db.project.id).first().id)
@@ -56,7 +58,7 @@ def create_next_event():
     if not (proj.proj_shared or proj.proj_owner == auth.user_id):
         return 'You are not project owner and project not shared so not allowed to create events'
 
-    recurrence=orig_event['recurrence']
+    recurrence = orig_event['recurrence']
     if recurrence == 'Weekly':
         recurdays = 7
     elif recurrence == 'Bi-weekly':
@@ -68,12 +70,12 @@ def create_next_event():
     else:
         recurdays = 1
 
-    orig_event['startdatetime']=orig_event['startdatetime'] + datetime.timedelta(days=recurdays)
-    orig_event['enddatetime']=orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
+    orig_event['startdatetime'] = orig_event['startdatetime'] + datetime.timedelta(days=recurdays)
+    orig_event['enddatetime'] = orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
     orig_event['evt_name'] = 'Next ' + orig_event['evt_name']
     orig_event['id'] = None
-    new_event = db.evt.insert(**dict(orig_event))
-    orig_rec.update_record(next_evt=new_event)
+    new_evt = db.evt.insert(**dict(orig_event))
+    orig_rec.update_record(next_evt=new_evt)
     db.commit()
     messagetxt = 'Next Event Created'
     return messagetxt
@@ -101,7 +103,7 @@ def view_event(eid='0'):
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
 
-    #TODO finalise if events have owners or security
+    # TODO finalise if events have owners or security
     # if auth.user and eventrow.evt_owner == auth.user.id:
 
     if auth.user:
@@ -181,7 +183,6 @@ def archive():
     else:
         return 'Only open events can be archived'
 
-
     event.update_record(status=status)
     query = db.question.eventid == eventid
     quests = db(query).select()
@@ -193,16 +194,16 @@ def archive():
     if status == 'Archiving':
         for row in quests:
             recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
-                                                     eventid=eventid, questid=row.id,
-                                                     status='Archiving',
-                                                     xpos=row.xpos,
-                                                     ypos=row.ypos,
-                                                     questiontext=row.questiontext, answer1=row.answer1,
-                                                     answer2=row.answer2,
-                                                     qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-                                                     responsible=row.responsible,
-                                                     correctans=row.correctans, queststatus=row.status,
-                                                     notes=row.notes)
+                                                 eventid=eventid, questid=row.id,
+                                                 status='Archiving',
+                                                 xpos=row.xpos,
+                                                 ypos=row.ypos,
+                                                 questiontext=row.questiontext, answer1=row.answer1,
+                                                 answer2=row.answer2,
+                                                 qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                                 responsible=row.responsible,
+                                                 correctans=row.correctans, queststatus=row.status,
+                                                 notes=row.notes)
 
     if status == 'Archived':
         # So I think there will be a warning as a popup if no next event - if there is a next event
@@ -214,11 +215,10 @@ def archive():
         unspecid = unspecevent.id
         for x in quests:
             if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or
-                                    (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
+                                     (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
                 x.update_record(eventid=nexteventid)
             else:
                 x.update_record(eventid=unspecid)
-
 
         query = db.eventmap.eventid == eventid
         eventquests = db(query).select()

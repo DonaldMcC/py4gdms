@@ -47,7 +47,6 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.qtype.default = qtype
     db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
 
-
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
                                             db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)

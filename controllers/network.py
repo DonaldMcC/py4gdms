@@ -81,9 +81,9 @@ def linkrequest():
                         status = 'Deleted'
                     else:
                         status = 'Active'
-                        linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
+                    linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
                                                    status=status)
-                        responsetext = 'Deletion count updated'
+                    responsetext = 'Deletion count updated'
     return responsetext
 
 

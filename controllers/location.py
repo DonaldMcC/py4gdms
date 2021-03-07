@@ -40,7 +40,7 @@ def locationgrid(path=None):
               db.locn.locn_shared]
 
     orderby = [db.locn.location_name]
-    queries = [(db.locn.id > 0)]
+    # queries = [(db.locn.id > 0)]
 
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]
     # search = GridSearch(search_queries, queries)
