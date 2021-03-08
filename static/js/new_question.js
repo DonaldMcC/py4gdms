@@ -34,7 +34,9 @@ $(document).ready(function(){
 
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact')
-                {$('#question_answer1').hide();
+                {$('#question_answer1').val('Agree');
+                 $('#question_answer2').val('Challenge');
+                $('#question_answer1').hide();
                 $("label[for='question_answer1']").hide();
                  $('#question_answer2').hide();
                  $("label[for='question_answer2']").hide();
