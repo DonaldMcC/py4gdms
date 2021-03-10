@@ -52,13 +52,8 @@
 
     """
 
-import datetime
-from ..common import db, unauthenticated, authenticated, auth, session
+from ..common import db, auth, session
 from py4web import action, request, redirect, URL
-from ..ndsfunctions import score_question
-from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
-from time import strftime
-import json
 
 
 #For now not using this - everything is open
@@ -72,7 +67,6 @@ def can_view(status, qtype,  hasanswered, userid, owner):
     viewable = False
     message = ''
     reason = 'OK to view'
-
 
     if userid == owner:  # think always allow owners to view questions whether votes or not
         viewable = True
@@ -99,8 +93,6 @@ def viewquest(qid=0):
     # but the buttons at the bottom should be very similar
 
     # initialize variables as not used if action
-    viewtext = ''
-    votetext = ''
     numpass = 0
     uqanswered = False
     uqurg = 5
@@ -113,7 +105,7 @@ def viewquest(qid=0):
     uq = None
 
     if auth.user:
-        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
+        uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
         if uqs:
             uqanswered = True
             uq = uqs.first()
@@ -176,10 +168,8 @@ def plan():
         uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
         if uqs:
             uqanswered = True
-            uq = uqs.first()
 
-    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, quest.answer_group,
-                        quest.duedate, auth.user_id, quest.auth_userid)
+    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, auth.user_id, quest.auth_userid)
 
     if viewable[0] is False:
         redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))

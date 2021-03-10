@@ -148,7 +148,7 @@ def questiongrid(path=None):
                 orderby=orderby,
                 search_form=search.search_form,
                 create=URL('new_question/0/'+qtype),
-                details=URL('view_question/'),
+                details=URL('viewquest/'),
                 editable=URL('new_question/'),
                 deletable=True,
                 **GRID_DEFAULTS)
