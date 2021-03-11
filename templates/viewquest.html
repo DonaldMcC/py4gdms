@@ -1,42 +1,37 @@
 [[extend 'layout.html']]
 
-<h1>Question</h1>
+<h1 class="title">Question</h1>
 <p>[[=quest['questiontext'] ]]</p>
 
 [[if quest['status'] == 'Resolved':]]
-<p>Users have resolved that the correct answer is: </p>
-<p>[[=quest.correctanstext()]]</p>
+<p>Users have resolved that the correct answer is: [[=quest.correctanstext()]]</p>
 [[pass]]
 
-
-<h2>Notes</h2>
+<h2 class="subtitle">Notes</h2>
 <p>[[=quest['notes'] ]] </p>
 
 <div id="newchart">
-    <h2 class="text-center">Answer Analysis</h2>
+    <h2 class="subtitle">Answer Analysis</h2>
 </div>
 
-<p>This question has been answered times. [[=numpass]] users passed on this question.</p>
+<p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. </p>
+<h2 class="subtitle">Status</h2>
+<p>[[=viewtext]]
 
-[[if quest['status'] == 'Resolved':]]
+<INPUT TYPE=button  [[=get_disabled(1, uq.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
+           VALUE="[[=quest.answer1]]">
+    <INPUT TYPE=button  [[=get_disabled(2, uq.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
+           VALUE="[[=quest.answer2]]">
+</p>
 
-<p>[[=viewtext]] - if you think the answer is wrong you may wish to challenge </p>
-<h2>Challenge</h2>
-<p><INPUT TYPE=BUTTON class="btn btn-warning  btn-sm" onclick="ajax('[[=URL('viewquest','challenge',args=quest['id'])]]', ['challreason'], ':eval')" VALUE="Challenge"> Reason: <input type="text" name="challreason" value="Enter reason for challenge" onfocus="if($(this).val() == 'Enter reason for challenge') $(this).val('')" onblur="if($(this).val() == '') $(this).val('Enter reason for challenge')"></p>
-
-[[else:]]
-<h2>Status</h2>
-<p>[[=viewtext]]  You don't have the option to challenge or agree and disagree at present because there is no resolved answer. </p>
-
-[[pass]]
 [[pass]]
 
 <div id="target"></div>
 
-<h2>Urgency and importance</h2>
-
-[[if uqanswered:]]
-<p>Here is how you and other people have rated the urgency and importance of the question so far.</p>
+<h2 class="subtitle">Urgency and importance</h2>
+<p>[[=urgmessage]]</p>
 <table id='TabUrgency' class="table table-bordered table-condensed">
 				<thead>
 					<tr>
@@ -51,33 +46,15 @@
                         <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=quest['urgency'] ]]" step="1" disabled /></td>
                         <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=quest['importance'] ]]" step="1" disabled/></td>
                     </tr>
+                    [[if uqanswered:]]
                     <tr>
                         <th>You</th>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uqurg]]" step="1" disabled /></td>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uqimp]]" step="1" disabled/></td>
+                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uq.urgency]]" step="1"/></td>
+                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uq.importance]]" step="1"/></td>
                     </tr>
+                    [[pass]]
                     </tbody>
                 </table>
-
-[[else:]]
-<p>Here is how other people rated the urgency and importance of this question. </p>
-<table id='TabUrgency' class="table table-bordered table-condensed">
-				<thead>
-					<tr>
-						<th width="12%"></th>
-                        <th width="44%">Urgency</th>
-                        <th width="44%">Importance</th>
-                    </tr>
-                </thead>
-                    <tbody>
-                    <tr>
-                        <th>Overall</th>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="0"    max="10" value="[[=quest['urgency'] ]]" step="1" disabled /></td>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="0"    max="10" value="[[=quest['importance'] ]]" step="1" disabled/></td>
-                    </tr>
-                    </tbody>
-                </table>
-[[pass]]
 
 <script>
 /*var newans = =newansjson;*/

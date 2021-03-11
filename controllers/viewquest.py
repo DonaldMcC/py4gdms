@@ -54,6 +54,7 @@
 
 from ..common import db, auth, session
 from py4web import action, request, redirect, URL
+from ..ndsqueries import get_class, get_disabled
 
 
 #For now not using this - everything is open
@@ -95,9 +96,6 @@ def viewquest(qid=0):
     # initialize variables as not used if action
     numpass = 0
     uqanswered = False
-    uqurg = 5
-    uqimp = 5
-    uqans = 0
     newansjson = ''
 
     quests = db(db.question.id == qid).select() or redirect(URL('notshowing/' + 'NoQuestion'))
@@ -109,37 +107,30 @@ def viewquest(qid=0):
         if uqs:
             uqanswered = True
             uq = uqs.first()
-
-    # viewable = can_view(quest.status, quest.qtype, uqanswered, auth.user_id, quest.auth_userid)
-    # if viewable[0] is False:
-    #    redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
-
-    if uqanswered:
-        uqurg = uq.urgency
-        uqimp = uq.importance
-        uqans = uq.answer
+            urgmessage="Here is how you and other people have rated the urgency and importance of the question so far."
+        else:
+            uq=None
+            urgmessage = "Here is how other people rated the urgency and importance of this question."
 
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
         # Did the user answer the question
         if uqanswered:
-            if uqans == 0:
-                viewtext = 'You passed on this question but it has now been resolved.'
-            elif quest['correctans'] == uqans:
+            if quest['correctans'] == uq.answer:
                 viewtext = 'Well done - you helped resolve this question.'
             else:
                 viewtext = 'Your answer to this question disagrees with the resolved '
                 'correct answer - you may want to request a challenge.'
         else:
-            viewtext = "You didn't get to answer this question."
+            viewtext = "You haven't answered this question yet."
     elif quest['status'] == 'Rejected':
         viewtext = "This question has been rejected."
     else:
         # if not resolved can only say in progress and how many more answers are required
         # at present should only be here if
         # answered as we are not showing users unresolved and unanswered questions
-        viewtext = 'This question is in progress at level.'
+        viewtext = 'This question is in progress.'
         # That will do for now - display of challenges and probably numanswers remaining
         # and level can be added later
 
@@ -149,8 +140,8 @@ def viewquest(qid=0):
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
-    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uqurg=uqurg, uqimp=uqimp, numpass=numpass,
-                priorquests=priorquests, subsquests=subsquests)
+    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, numpass=numpass, urgmessage=urgmessage,
+                priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled)
 
 
 def plan():
