@@ -14,17 +14,22 @@
     <h2 class="subtitle">Answer Analysis</h2>
 </div>
 
+[[if quest.factopinion == 'Opinion':]]
 <p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. </p>
 <h2 class="subtitle">Status</h2>
 <p>[[=viewtext]]
+[[pass]]
 
-<INPUT TYPE=button  [[=get_disabled(1, uq.answer)]]
+<INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
            VALUE="[[=quest.answer1]]">
-    <INPUT TYPE=button  [[=get_disabled(2, uq.answer)]] title="Click to Answer"
+    <INPUT TYPE=button  [[=get_disabled(2, uq and uq.answer)]] title="Click to Answer"
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
            VALUE="[[=quest.answer2]]">
 </p>
+
+<p> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
+    and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </p>
 
 [[pass]]
 
@@ -64,3 +69,7 @@
 <script>
 [[include 'questiond3v4.js']]
 </script>
+
+ <script>
+ [[include 'quickanswer.js']]
+ </script>

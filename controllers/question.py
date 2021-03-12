@@ -25,6 +25,8 @@ try:
 except ImportError as error:
     wolfram = False
 import wikipedia
+import ddg3
+
 
 
 # make a "like" button factory
@@ -74,6 +76,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     return dict(form=form)
 
 
+#Below generally superceded by viewquest.py
 @action("view_question/<qid>", method=['GET', 'POST'])
 @action("view_question", method=['GET', 'POST'])
 @action.uses(session, db, auth.user,'new_question.html')
@@ -279,6 +282,7 @@ def wolfram_alpha_lookup():
     except AttributeError:
         answer = "No answer received"
     return answer
+
 
 
 @action('wikipedia_lookup', method=['POST', 'GET'])

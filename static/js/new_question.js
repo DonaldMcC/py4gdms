@@ -15,13 +15,19 @@ $(document).ready(function(){
 
           $('#question_qtype').change(function(){
                 console.log('qtyp change triggered')
-              if($('#question_qtype option:selected').text()=='issue' || $('#question_qtype option:selected').text()=='action' )
+              if($('#question_qtype option:selected').text()=='action' )
                  {$('#question_factopinion').parent().parent().hide();
                   $('#question_answer1').val('Approve');
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
                   $('#question_answer2').parent().parent().hide();
                   $('#question_answertext').parent().parent().hide();};
+               if($('#question_qtype option:selected').text()=='issue' )
+                 {$('#question_answer1').val('Approve');
+                  $('#question_answer2').val('Disapprove');
+                  $('#question_answer1').parent().parent().hide();
+                  $('#question_answer2').parent().parent().hide();
+                  $('#question_answertext').parent().parent().show();};
               if($('#question_qtype option:selected').text()=='quest'){
                   $('#question_factopinion').parent().parent().show();
                   $('#question_factopinion option:selected').text()=='Opinion';
@@ -43,10 +49,10 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
                  $('#question_status option:selected').text()=='Resolved'
-                 $('#question_buttons').append('<p></p><input type="BUTTON" id="wolflookup" ' +
-         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()"></p>');
-                 $('#question_buttons').append('<p></p><input type="BUTTON" id="wikiplookup" ' +
-         'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()"></p>');
+                 $('#question_buttons').append('<input type="BUTTON" id="wolflookup" ' +
+         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
+                 $('#question_buttons').append('<input type="BUTTON" id="wikiplookup" ' +
+         'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
 };
               if($('#question_factopinion option:selected').text()=='Opinion')
                 {$('#question_answer1').show();
