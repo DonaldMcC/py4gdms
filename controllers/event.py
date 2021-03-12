@@ -113,10 +113,9 @@ def view_event(eid='0'):
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
-                comp_actions=comp_actions,
-                get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes, links=links,
-                resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
-                myconverter=myconverter)
+                comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
+                links=links, resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
+                myconverter=myconverter, auth=auth)
 
 
 @action('eventgrid', method=['POST', 'GET'])
