@@ -15,12 +15,18 @@
 <tr>
 <td>[[=row.question.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
-    <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+
+    <td>[[if auth.user_id:]]
+        <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",
            VALUE="Approve">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
-           VALUE="Disapprove"></td>
+           VALUE="Disapprove">
+    [[else:]]
+        Login to feedback
+        [[pass]]
+    </td>
 </tr>
 [[pass]]
 </tbody>

@@ -79,4 +79,4 @@ def index(qtype=None):
     issues = get_issues(status='In Progress') if  (qtype == 'issues' or qtype == None) else None
     res_actions = get_actions(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
     return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
-                get_class=get_class, get_disabled=get_disabled)
+                get_class=get_class, get_disabled=get_disabled, auth=auth)
