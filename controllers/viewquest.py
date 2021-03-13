@@ -389,21 +389,21 @@ def urgency():
     # are required - next step is to attempt to get the view sorted and will
     # retrieve this as part of main index controller
 
-    qid = request.json['questid']
-    urg = request.json['urgency']
+    qid = int(request.json['questid'])
+    urg = int(request.json['urgency'])
     if auth.user is None:
         return 'You must be logged in to record urgency'
 
     questrows = db(db.question.id == qid).select()
     quest = questrows.first()
-    totratings = quest.totratings
+    totratings = quest.totratings or 0
 
     # find out if user has rated the question already
-    qcs = db((db.uqrating.auth_userid == auth.user.id) & (db.uqrating.questionid == qid)).select()
+    qcs = db((db.uqrating.auth_userid == auth.user_id) & (db.uqrating.questionid == qid)).select()
     qc = qcs.first() if qcs else None
 
     if not qc:
-        db.uqrating.insert(questionid=qid, auth_userid=auth.user.id, urgency=urg)
+        db.uqrating.insert(questionid=qid, auth_userid=auth.user_id, urgency=urg)
         responsetext = 'Your assessment has been recorded'
         totratings += 1
     else:
@@ -423,21 +423,21 @@ def importance():
     # are required - next step is to attempt to get the view sorted and will
     # retrieve this as part of main index controller
 
-    qid = request.json['questid']
-    imp = request.json['urgency']
+    qid = int(request.json['questid'])
+    imp = int(request.json['importance'])
     if auth.user is None:
         return 'You must be logged in to record urgency'
 
     questrows = db(db.question.id == qid).select()
     quest = questrows.first()
-    totratings = quest.totratings
+    totratings = quest.totratings or 0
 
     # find out if user has rated the question already
-    qcs = db((db.uqrating.auth_userid == auth.user.id) & (db.uqrating.questionid == qid)).select()
+    qcs = db((db.uqrating.auth_userid == auth.user_id) & (db.uqrating.questionid == qid)).select()
     qc = qcs.first() if qcs else None
 
     if not qc:
-        db.uqrating.insert(questionid=qid, auth_userid=auth.user.id, importance=imp)
+        db.uqrating.insert(questionid=qid, auth_userid=auth.user_id, importance=imp)
         responsetext = 'Your assessment has been recorded'
         totratings += 1
     else:
