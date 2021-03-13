@@ -140,6 +140,7 @@ db.define_table('question',
                 Field('correctans', 'integer', readable=False, writable=False, label='Correct Ans'),
                 Field('urgency', 'decimal(6,2)', default=5, readable=False, writable=False, label='Urgency'),
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
+                Field('totratings', 'integer', default=0, writable=False, label='Total numbers of ratings'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
                 Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
@@ -177,12 +178,18 @@ db.define_table('userquestion',
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, notnull=True),
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
+                Field('answerreason', 'text', label='Reasoning'),
+                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+
+db.define_table('uqrating',
+                Field('questionid', db.question, writable=False, notnull=True),
+                Field('auth_userid', 'reference auth_user', writable=False, readable=False, notnull=True),
                 Field('urgency', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
-                Field('answerreason', 'text', label='Reasoning'),
-                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+                Field('ratingdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+
 
 db.define_table('questlink',
                 Field('sourceid', 'reference question'),

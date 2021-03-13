@@ -47,16 +47,14 @@
                     <tbody>
                     <tr>
                         <th>Overall</th>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=quest['urgency'] ]]" step="1" disabled /></td>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=quest['importance'] ]]" step="1" disabled/></td>
+                        <td><input id="qurgslide" type = "range" name="qurgslider"  min="1"    max="11" value="[[=quest['urgency'] ]]" step="1" disabled /></td>
+                        <td><input id="qimpslide" type = "range" name="qimpslider"  min="1"    max="11" value="[[=quest['importance'] ]]" step="1" disabled/></td>
                     </tr>
-                    [[if uqanswered:]]
                     <tr>
                         <th>You</th>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uq.urgency]]" step="1"/></td>
-                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uq.importance]]" step="1"/></td>
+                        <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uqrated and uq.urgency or 5]]" step="1"/></td>
+                        <td><input id="impslide" type = "range" name="impslider"  min="1"    max="11" value="[[=uqrated and uq.importance or 5]]" step="1"/></td>
                     </tr>
-                    [[pass]]
                     </tbody>
                 </table>
 
@@ -66,9 +64,8 @@
 
 
 <script>
-[[include 'questiond3v4.js']]
+/*include 'questiond3v4.js'*/
 </script>
 
- <script>
- [[include 'quickanswer.js']]
- </script>
+
+

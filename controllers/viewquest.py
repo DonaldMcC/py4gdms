@@ -95,7 +95,7 @@ def viewquest(qid=0):
 
     # initialize variables as not used if action
     numpass = 0
-    uqanswered = False
+    uqrated = False
     newansjson = ''
 
     quests = db(db.question.id == qid).select() or redirect(URL('notshowing/' + 'NoQuestion'))
@@ -104,13 +104,17 @@ def viewquest(qid=0):
 
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
-        if uqs:
-            uqanswered = True
-            uq = uqs.first()
-            urgmessage="Here is how you and other people have rated the urgency and importance of the question so far."
+        uq = uqs.first() if uqs else None
+        uqanswered = True if uq else False
+
+        uqrates = db((db.uqrating.auth_userid == auth.user_id) & (db.uqrating.questionid == quest.id)).select()
+        ur = uqrates.first() if uqrates else None
+        uqrated = True if ur else False
+
+        if uqrated:
+            urgmessage="You and others people have rated urgency and importance below - you can update if required."
         else:
-            uq=None
-            urgmessage = "Here is how other people rated the urgency and importance of this question."
+            urgmessage = "Other people have rated urgency and importance below - you have yet to do so."
 
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
@@ -141,7 +145,8 @@ def viewquest(qid=0):
     subsquests = [row.targetid for row in subsquestrows]
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, numpass=numpass, urgmessage=urgmessage,
-                priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled)
+                priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
+                uqrated=uqrated)
 
 
 def plan():
@@ -376,66 +381,69 @@ def flagcomment():
     return responsetext
 
 
+@action('urgency', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
 def urgency():
-    # This allows users to record or update their assessment of the urgency and
+    # This allows users to record or update their assessment of the urgency or
     # importance of an action as this helps with prioritising the actions that
     # are required - next step is to attempt to get the view sorted and will
     # retrieve this as part of main index controller
 
-    if request.vars.urgslider2 is None:
-        urgslider = 5
-    else:
-        urgslider = int(request.vars.urgslider2)
-
-    if request.vars.impslider2 is None:
-
-        impslider = 5
-    else:
-        impslider = int(request.vars.impslider2)
-
-    chquestid = request.args[0]
+    qid = request.json['questid']
+    urg = request.json['urgency']
     if auth.user is None:
-        responsetext = 'You must be logged in to record urgency and importance'
+        return 'You must be logged in to record urgency'
+
+    questrows = db(db.question.id == qid).select()
+    quest = questrows.first()
+    totratings = quest.totratings
+
+    # find out if user has rated the question already
+    qcs = db((db.uqrating.auth_userid == auth.user.id) & (db.uqrating.questionid == qid)).select()
+    qc = qcs.first() if qcs else None
+
+    if not qc:
+        db.uqrating.insert(questionid=qid, auth_userid=auth.user.id, urgency=urg)
+        responsetext = 'Your assessment has been recorded'
+        totratings += 1
     else:
-        questrows = db(db.question.id == chquestid).select()
-        quest = questrows.first()
-        # qurgency = quest.urgency
-        # qimportance = quest.importance
+        qc.update_record(urgency=urg)
+        responsetext = 'Your assessment has been updated'
 
-        # find out if user has rated the question already
-        qcs = db((db.questurgency.auth_userid == auth.user.id) &
-                 (db.questurgency.questionid == chquestid)).select()
+    urgent = (((quest.urgency * totratings) + urg) / (totratings + 1))
+    db(db.question.id == qid).update(urgency=urgent, totratings=totratings)
+    return responsetext
 
-        qc = qcs.first()
 
-        if qc is None:
-            db.questurgency.insert(questionid=chquestid,
-                                   auth_userid=auth.user.id,
-                                   urgency=urgslider,
-                                   importance=impslider)
+@action('importance', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def importance():
+    # This allows users to record or update their assessment of the urgency or
+    # importance of an action as this helps with prioritising the actions that
+    # are required - next step is to attempt to get the view sorted and will
+    # retrieve this as part of main index controller
 
-            urgency = request.vars.urgslider2
-            responsetext = 'Your assessment has been recorded'
+    qid = request.json['questid']
+    imp = request.json['urgency']
+    if auth.user is None:
+        return 'You must be logged in to record urgency'
 
-        else:
-            qc.update_record(urgency=request.vars.urgslider2,
-                             importance=request.vars.impslider2)
-            responsetext = 'Your assessment has been updated'
+    questrows = db(db.question.id == qid).select()
+    quest = questrows.first()
+    totratings = quest.totratings
 
-        if quest.totratings == 0:
-            totratings = quest.totanswers()
-        else:
-            totratings = quest.totratings
+    # find out if user has rated the question already
+    qcs = db((db.uqrating.auth_userid == auth.user.id) & (db.uqrating.questionid == qid)).select()
+    qc = qcs.first() if qcs else None
 
-        urgent = (((quest.urgency * totratings) + urgslider) / (totratings + 1))
-        importance = (((quest.importance * totratings) + impslider) / (totratings + 1))
+    if not qc:
+        db.uqrating.insert(questionid=qid, auth_userid=auth.user.id, importance=imp)
+        responsetext = 'Your assessment has been recorded'
+        totratings += 1
+    else:
+        qc.update_record(importance=imp)
+        responsetext = 'Your assessment has been updated'
 
-        if qc is None:
-            totratings += 1
-        priority = urgent * importance  # perhaps a bit arbitary but will do for now
-
-        db(db.question.id == chquestid).update(urgency=urgent,
-                                               importance=importance, priority=priority, totratings=totratings)
-
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
-           + responsetext + '"); '
+    importance = (((quest.importance * totratings) + imp) / (totratings + 1))
+    db(db.question.id == qid).update(importance=importance, totratings=totratings)
+    return responsetext
