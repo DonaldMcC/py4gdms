@@ -1,15 +1,14 @@
+
 $(document).on('change', '#urgslide', function () {
-    console.log('I calld' + $(this).val())
     Q.ajax("POST", "[[=URL('urgency')]]", {
-            questid: '[[=quest['id'] ]]',
+            questid: questid,
             urgency: $(this).val()
         }).then(onsuccess).catch(onerror);
 });
 
 $(document).on('change', '#impslide', function () {
-    console.log('I cad' + $(this).val())
     Q.ajax("POST", "[[=URL('importance')]]", {
-            questid: '[[=quest['id'] ]]',
+            questid: questid,
             importance: $(this).val()
         }).then(onsuccess).catch(onerror);
 });
