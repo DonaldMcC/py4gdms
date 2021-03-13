@@ -60,7 +60,7 @@ def perccomplete():
     db.commit()
     # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
     # work without eval or similar
-    return()
+    return('Action updated to ' + str(percentcomplete))
 
 
 # make a "like" button factory
