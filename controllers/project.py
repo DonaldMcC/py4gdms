@@ -28,11 +28,10 @@ def view_project(pid='0'):
     else:
         projxml = "<project></project>"
 
-    return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions,
-                issues=issues, res_actions=res_actions, res_questions=res_questions,
-                comp_actions=comp_actions, events=events,
-                get_class=get_class, get_disabled=get_disabled,
-                myconverter=myconverter, project=XML(projxml))
+    return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions, issues=issues,
+                res_actions=res_actions, res_questions=res_questions, comp_actions=comp_actions, events=events,
+                get_class=get_class, get_disabled=get_disabled, myconverter=myconverter, project=XML(projxml),
+                auth=auth)
 
 
 @action("new_project/<pid>", method=['GET', 'POST'])
