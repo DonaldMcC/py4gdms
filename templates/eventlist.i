@@ -13,7 +13,7 @@
 </tr>
 [[for row in events:]]
 <tr>
-<th>[[=row.evt_name]]</th>
+<th>[[=A(row.evt_name,_href=URL('view_event/'+str(row.id)))]]</th>
 <td>[[=row.description]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td class="text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
@@ -25,3 +25,4 @@
 </table>
 [[pass]]
 </div>
+
