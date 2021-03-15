@@ -25,8 +25,6 @@ try:
 except ImportError as error:
     wolfram = False
 import wikipedia
-import ddg3
-
 
 
 # make a "like" button factory
