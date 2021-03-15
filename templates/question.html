@@ -14,7 +14,7 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=row.question.status]]</th>
+<th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)))]]</th>
 <td>[[=row.question.questiontext]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td>[[=row.question.factopinion]]</td>
