@@ -4,27 +4,27 @@
       <h2 class="subtitle">Register</h2>
     </center>
     <div v-if="use_username" class="field">
-      <input class="input" v-model="form.username" type="email" placeholder="username">
+      <input id="username" class="input" v-model="form.username" type="email" placeholder="username">
       <span v-if="errors.username">{{errors.username}}</span>
     </div>
     <div class="field">
-      <input class="input" v-model="form.email" type="email" placeholder="email">
+      <input id="email" class="input" v-model="form.email" type="email" placeholder="email">
       <span v-if="errors.email">{{errors.email}}</span>
     </div>
     <div class="field">
-      <input class="input" v-model="form.password" type="password" placeholder="password">
+      <input id="password" class="input" v-model="form.password" type="password" placeholder="password">
       <span v-if="errors.password">{{errors.password}}</span>
     </div>
-    <div class="field" v-bind:class="{'error':form.password2 && form.password!=form.password2}">
+    <div id="password2" class="field" v-bind:class="{'error':form.password2 && form.password!=form.password2}">
       <input class="input" v-model="form.password2" type="password" placeholder="password (again)">
       <span v-if="errors.password2">{{errors.password2}}</span>
     </div>
     <div class="field">
-      <input class="input" v-model="form.first_name" type="text" placeholder="first name">
+      <input id="firstname" class="input" v-model="form.first_name" type="text" placeholder="first name">
       <span v-if="errors.first_name">{{errors.first_name}}</span>
     </div>
     <div class="field">
-      <input class="input" v-model="form.last_name" type="text" placeholder="last name">
+      <input id="lastname" class="input" v-model="form.last_name" type="text" placeholder="last name">
       <span v-if="errors.last_name">{{errors.last_name}}</span>
     </div>
     <div class="field" v-for="field in fields" v-if="field._added">
@@ -39,7 +39,7 @@
       <span v-if="errors[field.name]">{{errors[field.name]}}</span>
     </div>
     <div class="control" style="text-align:center">
-      <button class="button is-link" v-on:click="submit_register()">Register</button>
+      <button id="submit" class="button is-link" v-on:click="submit_register()">Register</button>
       <button class="button" v-on:click="go('login')">Login</button>
       <button class="button" v-on:click="go('request_reset_password')">Lost Password</button>
     </div>
@@ -75,16 +75,16 @@
     </div>
     <div v-if="!plugins||plugins.indexOf('local')>=0">
       <div class="field">
-        <input v-if="use_username" class="input" v-model="form.email" type="email" placeholder="username or email">
+        <input id="signin" v-if="use_username" class="input" v-model="form.email" type="email" placeholder="username or email">
         <input v-if="!use_username" class="input" v-model="form.email" type="email" placeholder="email">
         <span v-if="errors.email">{{errors.email}}</span>
       </div>
       <div class="field">
-        <input class="input" v-model="form.password" type="password" placeholder="password">
+        <input id="signpass" class="input" v-model="form.password" type="password" placeholder="password">
         <span v-if="errors.password">{{errors.password}}</span>
       </div>
       <div class="control" style="text-align:center">
-        <button class="button is-link" v-on:click="submit_login()">Login</button>
+        <button id="login" class="button is-link" v-on:click="submit_login()">Login</button>
         <button class="button" v-on:click="go('register')">Register</button>
         <button class="button" v-on:click="go('request_reset_password')">Lost Password</button>
       </div>
