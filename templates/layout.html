@@ -101,5 +101,7 @@
  [[include 'viewquest.js']]
  </script>
 
+  [[if globals().get('flash'):]]<script>Q.flash([[=XML(flash)]]);</script>[[pass]]
+
   [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
 </html>

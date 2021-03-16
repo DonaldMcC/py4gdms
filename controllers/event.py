@@ -7,21 +7,21 @@
 # License Content: Creative Commons Attribution 3.0
 #
 import datetime
-from py4web import action, redirect, request, URL
+from py4web import action, redirect, request, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..d3js2py import getd3graph
 from ..ndsfunctions import myconverter
+from pydal.validators import *
 
-
+flash=Flash()
 # from pydal.validators import *
-
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
-@action.uses('new_event.html', session, db, auth.user)
+@action.uses(session, db, auth.user, flash, 'new_event.html')
 def new_event(eid=0):
     db.evt.startdatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
@@ -32,9 +32,23 @@ def new_event(eid=0):
                                             db(db.project.name == 'Unspecified').select(db.project.id).first().id)
     except AttributeError:
         pass
+
     form = Form(db.evt,
                 record=eid,
                 formstyle=FormStyleBulma)
+
+    db.evt.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)), 'project.id', '%(proj_name)s')
+
+    if eid:
+        proj = db(db.project.id == form.vars['projid']).select().first()
+        print(proj.proj_shared)
+        if (not proj.proj_shared) and proj.proj_owner!=auth.user_id:
+            flash.set("Not Editable by You", sanitize=True)
+            form.readonly=True
+
+
+    #if form.vars['evt_name']=='Unspecified':
+    #    form.deletable=False
 
     if form.accepted:
         session['eventid'] = form.vars.id
@@ -129,7 +143,7 @@ def eventgrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.evt.evt_name, db.locn.location_name, db.project.proj_name, db.evt.status, db.evt.startdatetime,
-              db.evt.enddatetime, db.evt.description, db.evt.evt_shared]
+              db.evt.enddatetime, db.evt.description]
 
     orderby = [db.evt.projid, db.evt.evt_name, db.evt.startdatetime]
     queries = [(db.evt.id > 0)]
@@ -142,7 +156,7 @@ def eventgrid(path=None):
                 fields=fields,
                 left=[db.locn.on(db.evt.locationid == db.locn.id),
                       db.project.on(db.evt.projid == db.project.id)],
-                headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description', 'Shared'],
+                headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_event'),

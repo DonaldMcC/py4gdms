@@ -39,6 +39,9 @@ def view_project(pid='0'):
 @action.uses(session, db, auth.user, 'new_project.html')
 def new_project(pid=0):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
+
+    # default for this in models doesn't seem to work
+    db.project.proj_owner.default=auth.user_id
     form = Form(db.project,
                 record=pid,
                 formstyle=FormStyleBulma)
