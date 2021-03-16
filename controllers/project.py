@@ -1,6 +1,6 @@
 
 import datetime
-from py4web import action, redirect, URL
+from py4web import action, redirect, URL, request
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
@@ -42,6 +42,7 @@ def new_project(pid=0):
     form = Form(db.project,
                 record=pid,
                 formstyle=FormStyleBulma)
+
     if form.accepted:
         session['projid'] = form.vars.id
         redirect(URL('projectgrid'))
