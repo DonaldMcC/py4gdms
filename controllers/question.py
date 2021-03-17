@@ -45,13 +45,24 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
-    db.question.eventid.requires = IS_IN_DB(db(db.evt.status == 'Open'), 'evt.id', '%(evt_name)s')
+    db.question.eventid.requires = IS_IN_DB(db((db.evt.status == 'Open') & (db.evt.projid == db.project.id) &
+                                               ((db.project.proj_owner == auth.user_id) |
+                                                (db.project.proj_shared == True))), 'evt.id', '%(evt_name)s')
+
 
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
                                             db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
     except AttributeError:
         pass
+
+
+    #if qid:
+    #    questid = db(db.question.id == qid).select().first()
+    #    if (not proj.proj_shared) and proj.proj_owner != auth.user_id:
+    #        flash.set("Not Editable by You", sanitize=True)
+    #        form.deletable = False
+    #        form.readonly = True
 
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 else session.get('eventid',
