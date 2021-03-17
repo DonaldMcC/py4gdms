@@ -10,13 +10,14 @@
 import json
 from functools import reduce
 
-from py4web import action, request, redirect, URL
+from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth, authenticated
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
+flash = Flash()
 
 wolfram = True
 try:
@@ -37,7 +38,7 @@ def like(qid):
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'new_question.html')
+@action.uses(session, db, auth.user, flash, 'new_question.html')
 def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -49,20 +50,11 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
                                                ((db.project.proj_owner == auth.user_id) |
                                                 (db.project.proj_shared == True))), 'evt.id', '%(evt_name)s')
 
-
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
                                             db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
     except AttributeError:
         pass
-
-
-    #if qid:
-    #    questid = db(db.question.id == qid).select().first()
-    #    if (not proj.proj_shared) and proj.proj_owner != auth.user_id:
-    #        flash.set("Not Editable by You", sanitize=True)
-    #        form.deletable = False
-    #        form.readonly = True
 
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 else session.get('eventid',
@@ -76,6 +68,16 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleBulma)
+
+    if qid:
+        questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
+                     (db.evt.projid == db.project.id)).select().first()
+        # You can edit quests on shared projects, your projects and always your questions
+        if ((not questrec.project.proj_shared) and questrec.project.proj_owner != auth.user_id and
+                questrec.question.auth_userid != auth.user_id):
+            flash.set("Not Editable by You", sanitize=True)
+            form.deletable = False
+            form.readonly = True
 
     if form.accepted:
         session['eventid'] = form.vars['eventid']
