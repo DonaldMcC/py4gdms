@@ -15,9 +15,8 @@ from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_
 from ..d3js2py import getd3graph
 from ..ndsfunctions import myconverter
 from pydal.validators import *
+flash = Flash()
 
-flash=Flash()
-# from pydal.validators import *
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
@@ -37,18 +36,19 @@ def new_event(eid=0):
                 record=eid,
                 formstyle=FormStyleBulma)
 
-    db.evt.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)), 'project.id', '%(proj_name)s')
+    db.evt.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
+                                      'project.id', '%(proj_name)s')
 
     if eid:
         proj = db(db.project.id == form.vars['projid']).select().first()
         print(proj.proj_shared)
         if (not proj.proj_shared) and proj.proj_owner!=auth.user_id:
             flash.set("Not Editable by You", sanitize=True)
-            form.readonly=True
+            form.deletable = False
+            form.readonly = True
 
-
-    #if form.vars['evt_name']=='Unspecified':
-    #    form.deletable=False
+    if form.vars.get('evt_name', '') == 'Unspecified':
+        form.deletable = False
 
     if form.accepted:
         session['eventid'] = form.vars.id

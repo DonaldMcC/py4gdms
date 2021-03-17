@@ -1,6 +1,6 @@
 
 import datetime
-from py4web import action, redirect, URL, request
+from py4web import action, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
@@ -41,7 +41,7 @@ def new_project(pid=0):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
 
     # default for this in models doesn't seem to work
-    db.project.proj_owner.default=auth.user_id
+    db.project.proj_owner.default = auth.user_id
     form = Form(db.project,
                 record=pid,
                 formstyle=FormStyleBulma)
