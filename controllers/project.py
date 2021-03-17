@@ -1,12 +1,13 @@
 
 import datetime
-from py4web import action, redirect, URL
+from py4web import action, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
 from ..ndsfunctions import myconverter, get_gantt_data
 from yatl.helpers import XML
+flash = Flash()
 
 
 @action("view_project/<pid>", method=['GET', 'POST'])
@@ -36,7 +37,7 @@ def view_project(pid='0'):
 
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'new_project.html')
+@action.uses(session, db, auth.user, flash, 'new_project.html')
 def new_project(pid=0):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
 
@@ -45,6 +46,14 @@ def new_project(pid=0):
     form = Form(db.project,
                 record=pid,
                 formstyle=FormStyleBulma)
+
+    if pid:
+        proj = db(db.project.id == pid).select().first()
+        if (not proj.proj_shared) and proj.proj_owner!=auth.user_id:
+            flash.set("Not Editable by You", sanitize=True)
+            print('flash set')
+            form.deletable = False
+            form.readonly = True
 
     if form.accepted:
         session['projid'] = form.vars.id
