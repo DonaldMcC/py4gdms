@@ -71,8 +71,7 @@ def projectgrid(path=None):
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
 
-    fields = [db.project.proj_name, db.project.proj_status, db.project.startdate, db.project.enddate,
-              db.project.proj_owner]
+    fields = [db.project.proj_name, db.project.proj_status, db.project.description,  db.project.proj_shared]
 
     orderby = [db.project.proj_name]
     queries = [(db.project.id > 0)]
@@ -82,7 +81,7 @@ def projectgrid(path=None):
     grid = Grid(path,
                 db.project,
                 fields=fields,
-                headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description', 'Shared'],
+                headings=['Name', 'Status', 'Description', 'Shared'],
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_project/0'),
