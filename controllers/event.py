@@ -42,7 +42,7 @@ def new_event(eid=0):
     if eid:
         proj = db(db.project.id == form.vars['projid']).select().first()
         print(proj.proj_shared)
-        if (not proj.proj_shared) and proj.proj_owner!=auth.user_id:
+        if (not proj.proj_shared) and proj.proj_owner != auth.user_id:
             flash.set("Not Editable by You", sanitize=True)
             form.deletable = False
             form.readonly = True

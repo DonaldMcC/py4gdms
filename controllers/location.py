@@ -8,7 +8,7 @@
 #
 
 from py4web import action, redirect, URL
-from py4web.utils.form import Form, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyle
 
@@ -19,7 +19,7 @@ from py4web.utils.grid import Grid, GridClassStyle
 def new_location(lid=0):
     form = Form(db.locn,
                 record=lid,
-                formstyle=FormStyleBootstrap4)
+                formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('locationgrid'))
     return dict(form=form)
@@ -32,7 +32,7 @@ def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBootstrap4,
+                         formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyle)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,

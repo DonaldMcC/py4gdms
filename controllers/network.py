@@ -38,19 +38,18 @@ def linkrequest():
     # with link - this should be OK
     # and wil style the links a bit based on this too
 
-
     sourceid = request.json['sourceid']
     targetid = request.json['targetid']
     linkaction = request.json['action']
 
     sourcerecs = db(db.question.questiontext == sourceid).select(
-                            db.question.id, orderby=~db.question.createdate)
+        db.question.id, orderby=~db.question.createdate)
 
     targetrecs = db(db.question.questiontext == targetid).select(
-                            db.question.id, orderby=~db.question.createdate)
+        db.question.id, orderby=~db.question.createdate)
 
     responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
-            # print responsetext
+    # print responsetext
     query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
 
     linkrows = db(query).select().first()
@@ -82,7 +81,7 @@ def linkrequest():
                     else:
                         status = 'Active'
                     linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
-                                                   status=status)
+                                           status=status)
                     responsetext = 'Deletion count updated'
     return responsetext
 
@@ -106,13 +105,12 @@ def nodedelete():
     else:
         sourcetext = nodestring.replace("_", " ")  # This will do for now - other chars may be problem
         sourcerecs = db(db.question.questiontext == sourcetext).select(
-                            db.question.id, orderby=~db.question.createdate)
+            db.question.id, orderby=~db.question.createdate)
         if sourcerecs:
             nodeid = sourcerecs.first().id
         else:
             responsetext = 'Target of link could not be found'
             return responsetext
-
 
     if eventid == 0:
         responsetext = 'No event set node deletion not possible'
@@ -124,11 +122,9 @@ def nodedelete():
             db(db.question.id == nodeid).delete()
             responsetext = 'Question deleted'
         else:
-            event = db(db.evt.id == eventid).select().first()
             responsetext = 'Question removed from event'
             unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first()
             db(db.question.id == nodeid).update(eventid=unspecevent.id)
-    print(responsetext)
     return responsetext
 
 
@@ -146,7 +142,7 @@ def ajaxquest():
         result = 'no variable passed so not creating item'
         results['result'] = result
         return json.dumps(results)
-    
+
     itemtext = request.vars['itemtext']
 
     if request.vars['eventid']:
@@ -161,7 +157,7 @@ def ajaxquest():
 
     serverid = db.question.insert(questiontext=itemtext, status='Draft', eventid=eventid)
     result = 'Item created'
- 
+
     results['serverid'] = serverid
     results['result'] = result
     results['id'] = request.vars['id']
@@ -199,8 +195,6 @@ def move():
     stdwidth = 1000
     stdheight = 1000
 
-    #print(request.json)
-
     questid = int(request.json['sourceid'])
     newxpos = int(request.json['sourceposx'])
     newypos = int(request.json['sourceposy'])
@@ -216,8 +210,8 @@ def move():
         responsetext = 'No event set - movements not saved'
     else:
         event = db((db.evt.id == questrec.eventid) & (db.evt.projid == db.project.id)).select().first()
-        #or event.project.proj_owner == auth.user_id)
-        if (event.project.proj_shared == True or event.project.proj_owner == auth.user_id) and event.evt.status == 'Open':
+        if (event.project.proj_shared == True or
+            event.project.proj_owner == auth.user_id) and event.evt.status == 'Open':
             questrec.update_record(xpos=newxpos, ypos=newypos)
             db.commit()
             responsetext = 'Element moved'
