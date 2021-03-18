@@ -17,7 +17,7 @@
 <td>[[=row.description]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td class="text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
-<td id="eventstatus">[[=row.status]] and [[=row.evt_shared and 'Shared' or 'Not Shared']]</td>
+<td id="eventstatus">[[=row.status]]</td>
 <td> [[if row.next_evt==0:]]
     <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=row.id]]',this)", VALUE="Next Event">
     [[pass]]</td>

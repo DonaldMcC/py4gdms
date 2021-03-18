@@ -26,7 +26,7 @@ def datasetup():
     if db(db.evt.evt_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         projid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, projid=projid, evt_shared=True,
+        evid = db.evt.insert(evt_name="Unspecified", locationid=locid, projid=projid,
                              startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
                              enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 

@@ -49,6 +49,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.eventid.requires = IS_IN_DB(db((db.evt.status == 'Open') & (db.evt.projid == db.project.id) &
                                                ((db.project.proj_owner == auth.user_id) |
                                                 (db.project.proj_shared == True))), 'evt.id', '%(evt_name)s')
+    qid = int(qid)
 
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
@@ -65,9 +66,14 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     # default for this in models doesn't seem to work
     db.question.auth_userid.default=auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
+    # TODO think want validation function so fact questions must be resolved and opinion questions cannot be - but draft
+    # questions I think are always OK but should not show except for user - maybe just chew on this for a night before
+    # I setup
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleBulma)
+
+
 
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &

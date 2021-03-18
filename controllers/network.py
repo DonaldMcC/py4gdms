@@ -199,7 +199,7 @@ def move():
     stdwidth = 1000
     stdheight = 1000
 
-    print(request.json)
+    #print(request.json)
 
     questid = int(request.json['sourceid'])
     newxpos = int(request.json['sourceposx'])
@@ -215,8 +215,9 @@ def move():
     elif questrec.eventid == 0:
         responsetext = 'No event set - movements not saved'
     else:
-        event = db(db.evt.id == questrec.eventid).select().first()
-        if (event.evt_shared or event.evt_owner == auth.user.id) and event.status == 'Open':
+        event = db((db.evt.id == questrec.eventid) & (db.evt.projid == db.project.id)).select().first()
+        #or event.project.proj_owner == auth.user_id)
+        if (event.project.proj_shared == True or event.project.proj_owner == auth.user_id) and event.evt.status == 'Open':
             questrec.update_record(xpos=newxpos, ypos=newypos)
             db.commit()
             responsetext = 'Element moved'
