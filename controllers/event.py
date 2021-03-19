@@ -116,11 +116,9 @@ def view_event(eid='0'):
     redraw = 'false'
 
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
+    projrow = db(db.project.id == eventrow.projid).select().first()
 
-    # TODO finalise if events have owners or security
-    # if auth.user and eventrow.evt_owner == auth.user.id:
-
-    if auth.user:
+    if projrow.proj_shared  or projrow.proj_owner == auth.user:
         editable = 'true'
     else:
         editable = 'false'
@@ -176,7 +174,6 @@ def archive():
     # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
-    # poss move to :eval on this for response.flash as done on quickanswer now
 
     eventid = int(request.json['eventid'])
     event = db(db.evt.id == eventid).select().first()
@@ -208,7 +205,7 @@ def archive():
         for row in quests:
             recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                                  eventid=eventid, questid=row.id,
-                                                 status='Archiving',
+                                                 status=row.status,
                                                  xpos=row.xpos,
                                                  ypos=row.ypos,
                                                  questiontext=row.questiontext, answer1=row.answer1,
@@ -232,11 +229,6 @@ def archive():
                 x.update_record(eventid=nexteventid)
             else:
                 x.update_record(eventid=unspecid)
-
-        query = db.eventmap.eventid == eventid
-        eventquests = db(query).select()
-        for row in eventquests:
-            row.update_record(status='Archived')
         db.commit()
 
     return responsetext
