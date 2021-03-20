@@ -38,9 +38,10 @@ def view_project(pid='0'):
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_project.html')
-def new_project(pid=0):
+def new_project(pid='0'):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
 
+    pid=int(pid)
     # default for this in models doesn't seem to work
     db.project.proj_owner.default = auth.user_id
     form = Form(db.project,

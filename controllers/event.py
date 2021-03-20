@@ -21,7 +21,7 @@ flash = Flash()
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_event.html')
-def new_event(eid=0):
+def new_event(eid='0'):
     db.evt.startdatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     db.evt.enddatetime.default = (datetime.datetime.utcnow()
@@ -32,6 +32,7 @@ def new_event(eid=0):
     except AttributeError:
         pass
 
+    eid = int(eid)
     form = Form(db.evt,
                 record=eid,
                 formstyle=FormStyleBulma)
