@@ -49,7 +49,7 @@ def new_project(pid=0):
 
     if pid:
         proj = db(db.project.id == pid).select().first()
-        if (not proj.proj_shared) and proj.proj_owner!=auth.user_id:
+        if (not proj.proj_shared) and proj.proj_owner != auth.user_id:
             flash.set("Not Editable by You", sanitize=True)
             print('flash set')
             form.deletable = False
@@ -74,7 +74,6 @@ def projectgrid(path=None):
     fields = [db.project.proj_name, db.project.proj_status, db.project.description,  db.project.proj_shared]
 
     orderby = [db.project.proj_name]
-    queries = [(db.project.id > 0)]
     search_queries = [['Search by Name', lambda value: db.project.name == value]]
     # search = GridSearch(search_queries, queries)
 

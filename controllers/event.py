@@ -59,12 +59,11 @@ def new_event(eid=0):
 @action('create_next_event', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def create_next_event():
-    # TODO think there is a prev_event to action
     # so expectation is that this is only called when event has no next event ie next_evt field is zero
     # for now anyone can create the next event for a project - might restrict to project owner at some point
     # unless shared project
 
-    eid = request.json['eid']
+    eid = int(request.json['eid'])
     orig_rec = db(db.evt.id == eid).select().first()
     orig_event = orig_rec.as_dict()
 
@@ -87,6 +86,7 @@ def create_next_event():
     orig_event['startdatetime'] = orig_event['startdatetime'] + datetime.timedelta(days=recurdays)
     orig_event['enddatetime'] = orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
     orig_event['evt_name'] = 'Next ' + orig_event['evt_name']
+    orig_event['prev_evt'] = eid
     orig_event['id'] = None
     new_evt = db.evt.insert(**dict(orig_event))
     orig_rec.update_record(next_evt=new_evt)
@@ -118,7 +118,7 @@ def view_event(eid='0'):
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
     projrow = db(db.project.id == eventrow.projid).select().first()
 
-    if projrow.proj_shared  or projrow.proj_owner == auth.user:
+    if projrow.proj_shared or projrow.proj_owner == auth.user:
         editable = 'true'
     else:
         editable = 'false'
@@ -144,7 +144,6 @@ def eventgrid(path=None):
               db.evt.enddatetime, db.evt.description]
 
     orderby = [db.evt.projid, db.evt.evt_name, db.evt.startdatetime]
-    queries = [(db.evt.id > 0)]
     search_queries = [['Search by Name', lambda value: db.evt.evt_name == value]]
 
     # search = GridSearch(search_queries, queries)
@@ -180,8 +179,6 @@ def archive():
     if not event:
         return 'No matching event found'
     nexteventid = event.next_evt
-    status = event.status
-    responsetext = ''
     if event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'

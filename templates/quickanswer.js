@@ -1,5 +1,5 @@
     var onsuccess = function(res) {
-    Q.flash({'message':'Answer noted:'+res.data, 'class':'info'})
+    Q.flash({'message':res.data, 'class':'info'})
     console.log('success');
     };
     var onerror = function(res) {

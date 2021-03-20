@@ -1,5 +1,5 @@
 import datetime
-from ..common import db, unauthenticated, authenticated, auth, session
+from ..common import db, authenticated, auth, session
 from py4web import action, request
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
@@ -58,9 +58,7 @@ def perccomplete():
         quest.execstatus = 'Completed'
     quest.update_record()
     db.commit()
-    # TODO - will probably look to return a flashbar of some sort in a bit - but std flash looks like wont
-    # work without eval or similar
-    return('Action updated to ' + str(percentcomplete))
+    return 'Action updated to ' + str(percentcomplete)
 
 
 # make a "like" button factory
@@ -76,7 +74,7 @@ def agree(qid):
 def index(qtype=None):
     actions = get_actions(status='In Progress') if (qtype == 'actions' or qtype == None) else None
     questions = get_questions(status='In Progress') if (qtype == 'questions' or qtype == None) else None
-    issues = get_issues(status='In Progress') if  (qtype == 'issues' or qtype == None) else None
+    issues = get_issues(status='In Progress') if (qtype == 'issues' or qtype == None) else None
     res_actions = get_actions(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
     return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled, auth=auth)

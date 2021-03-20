@@ -72,9 +72,6 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     form = Form(db.question,
                 record=qid,
                 formstyle=FormStyleBulma)
-
-
-
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
                      (db.evt.projid == db.project.id)).select().first()
@@ -90,27 +87,6 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
         session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
-    return dict(form=form)
-
-
-#Below generally superceded by viewquest.py
-@action("view_question/<qid>", method=['GET', 'POST'])
-@action("view_question", method=['GET', 'POST'])
-@action.uses(session, db, auth.user,'new_question.html')
-def view_question(qid='0'):
-    db.question.id.readable = False
-    db.question.id.writable = False
-    db.question.status.requires = IS_IN_SET(['Draft', 'In Progress'])
-
-    # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
-    form = Form(db.question,
-                readonly=True,
-                record=qid,
-                formstyle=FormStyleBulma)
-    if form.accepted:
-        redirect(URL('questiongrid'))
-    print(auth.user_id)
-    print(globals().get('user'))
     return dict(form=form)
 
 
@@ -197,7 +173,8 @@ def datatables():
     return dict(dt=dt)
 
 
-# TODO probably need to confirm final fields in datatable and grid and seem to lack a display_url
+# Need to confirm final fields in datatable and grid and seem to lack a display_url
+# Have left this in but not generally part of current solution py4web grid easier
 @action('datatables_data', method=['GET', 'POST'])
 @action.uses(session, db, auth.user)
 def datatables_data():

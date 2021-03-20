@@ -1,7 +1,7 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): http://github.com/DonaldMcC/gdms
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
 #
 # Demo Sites (Pythonanywhere)
 #   http://netdecisionmaking.com/nds/
@@ -42,16 +42,11 @@ def linkrequest():
     targetid = request.json['targetid']
     linkaction = request.json['action']
 
-    sourcerecs = db(db.question.questiontext == sourceid).select(
-        db.question.id, orderby=~db.question.createdate)
-
-    targetrecs = db(db.question.questiontext == targetid).select(
-        db.question.id, orderby=~db.question.createdate)
+    # sourcerecs = db(db.question.questiontext == sourceid).select(db.question.id, orderby=~db.question.createdate)
+    # targetrecs = db(db.question.questiontext == targetid).select(db.question.id, orderby=~db.question.createdate)
 
     responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
-    # print responsetext
     query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
-
     linkrows = db(query).select().first()
 
     if linkrows is None:

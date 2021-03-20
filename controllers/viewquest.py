@@ -1,7 +1,7 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): http://github.com/DonaldMcC/gdms
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
 #
 # Demo Sites (Pythonanywhere)
 #   http://netdecisionmaking.com/nds/
@@ -10,9 +10,7 @@
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
-# Also visit: www.web2py.com
-# or Groups: http://groups.google.com/group/web2py
-# For details on the web framework used for this development
+# Also visit: www.py4web.com
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
@@ -24,15 +22,13 @@
  and that is called via ajax from the view of the question detail
  The three functions are:
  index:  displays the question details
- comments: add comments
- useranswers: shows detail of the useranswers -
+ comments: add comments - not yet implemented in py4web
+ useranswers: shows detail of the useranswers - probably not going to be implemented as no reasons now included
  notshowing: explains why the question can't be displayed - actions should always be displayed
  challenge: allows submission of a challenge and return of whether this is allowed
  via ajax
- agree - ajax agreement or disagreement
  challenge - ajax submission to challenge
- flagcomment -
- urgency - ajax update urgency of item
+ urgency - ajax update urgency of item - this has moved to answer.py
 
  For actions not generally interested in user's views but would like these to be capable
  of prioritisation at any stage - need to see the date and will be some options to generate
@@ -41,15 +37,11 @@
 
     exposes:
     http://..../[app]/viewquest/index which has action, issue and question views
-    http://..../[app]/viewquest/end_vote  #  Ajax call
-    http://..../[app]/viewquest/useranswers
     http://..../[app]/viewquest/notshowing
     http://..../[app]/viewquest/comments
-    http://..../[app]/viewquest/challenge  #  Ajax call
-    http://..../[app]/viewquest/agree  #  Ajax call
     http://..../[app]/viewquest/flagcomment  #  Ajax call
     http://..../[app]/viewquest/urgency  #  Ajax call
-
+    http://..../[app]/viewquest/importance  #  Ajax call
     """
 
 from ..common import db, auth, session
@@ -80,7 +72,6 @@ def can_view(status, qtype,  hasanswered, userid, owner):
     return viewable, reason, message
 
 
-#TODO this is from web2py and not fully converted yet
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, 'viewquest.html')
@@ -94,9 +85,7 @@ def viewquest(qid=0):
     # but the buttons at the bottom should be very similar
 
     # initialize variables as not used if action
-    numpass = 0
     uqrated = False
-    newansjson = ''
 
     quests = db(db.question.id == qid).select() or redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
@@ -112,7 +101,7 @@ def viewquest(qid=0):
         uqrated = True if ur else False
 
         if uqrated:
-            urgmessage="You and others people have rated urgency and importance below - you can update if required."
+            urgmessage = "You and others people have rated urgency and importance below - you can update if required."
         else:
             urgmessage = "Other people have rated urgency and importance below - you have yet to do so."
 
@@ -144,43 +133,11 @@ def viewquest(qid=0):
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
-    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, numpass=numpass, urgmessage=urgmessage,
+    return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated)
 
-
-def plan():
-    # This will be a general view on planned actions - don't think interested in whether they answered
-    #  or not
-    uqanswered = False
-
-    quests = db(db.question.id == request.args(0, cast=int, default=0)).select() or \
-             redirect(URL('notshowing/' + 'NoQuestion'))
-    quest = quests.first()
-
-    # questtype = request.args(1, default='quest')  # This will remain as all for event flow and probably next item button
-
-    if auth.user:
-        uqs = db((db.userquestion.auth_userid == auth.user.id) & (db.userquestion.questionid == quest.id)).select()
-        if uqs:
-            uqanswered = True
-
-    viewable = can_view(quest.status, quest.resolvemethod, uqanswered, auth.user_id, quest.auth_userid)
-
-    if viewable[0] is False:
-        redirect(URL('viewquest', 'notshowing', args=(viewable[1], str(quest.id))))
-
-    priorquestrows = db(db.questlink.targetid == quest.id).select(db.questlink.sourceid)
-    subsquestrows = db(db.questlink.sourceid == quest.id).select(db.questlink.targetid)
-    priorquests = [row.sourceid for row in priorquestrows]
-    subsquests = [row.targetid for row in subsquestrows]
-
-    context = 'View'
-
-    return dict(quest=quest, context=context, uqanswered=uqanswered,
-                priorquests=priorquests, subsquests=subsquests)
-
-
+#TODO - think will add this in some manner at some point -but below is web2py version
 def comments():
     # This will be a general view on question comments it will require the
     # question id as an argument Logic will be to only display the comements if it
@@ -199,30 +156,6 @@ def comments():
         redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
 
     return dict(quest=quest)
-
-
-def useranswers():
-    # This displays all users answers to the question and challenges if any
-    # for now will probably display all challenges at the bottom of the page
-    # as assumption is there won't be too many of these
-    # looks like this also needs as_dict treatment
-
-    items_per_page = 8
-    questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
-
-    session.questid = questid
-    quest = db.question[questid] or redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
-    # this needs to become a function - duplicated code with viewquest
-    mastlstanswers = quest['answers']
-    mastlstnumanswers = quest['answercounts']
-
-    page = request.args(1, cast=int, default=0)
-    limitby = (page * items_per_page, (page + 1) * items_per_page + 1)
-
-    uqs = db(db.userquestion.questionid == questid).select(orderby=[~db.userquestion.uq_level], limitby=limitby)
-    challs = db(db.questchallenge.questionid == questid).select(orderby=[~db.questchallenge.challengedate])
-
-    return dict(quest=quest, uqs=uqs, page=page, items_per_page=items_per_page, challs=challs)
 
 
 def notshowing():
@@ -283,67 +216,6 @@ def challenge():
             responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'
     return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
                                                           ' $("#target").html("' + responsetext + '");'
-
-
-def agree():
-    # This allows users to record if they agree or disagree with resolve questions
-    # - whether or not they have answered them - only resolved questions can
-    # be agreed or disagreed with
-
-    chquestid = request.args[0]
-    agreeval = int(request.args[1])
-
-    # arg is 1 for agreement and 0 for disagreement and we will use this as latest status
-    # for the user and also as the reference for agreementcounts which may become a list int
-    # field and then increment the pointer
-
-    if auth.user is None:
-        responsetext = 'You must be logged in to record agreement or disagreement'
-    else:
-        quest = db(db.question.id == chquestid).select().first()
-        othcounts = quest.othercounts
-
-        # find out if user has previously agreeed the question -
-        # this will be a userchallenge record
-        qc = db((db.questagreement.auth_userid == auth.user.id) &
-                (db.questagreement.questionid == chquestid)).select().first()
-
-        if qc is None:
-            db.questagreement.insert(questionid=chquestid,
-                                     auth_userid=auth.user.id, agree=agreeval)
-            # Now also need to add 1 to the numagreement or disagreement figure
-            # It shouldn't be possible to challenge unless resolved
-
-            if agreeval == 1:
-                othcounts[3] += 1
-                responsetext = 'Agreement Recorded'
-            else:
-                othcounts[4] += 1
-                responsetext = 'Disagreement Recorded'
-        else:
-            if agreeval == qc.agree:
-                if agreeval == 1:
-                    responsetext = 'You have already registered agreement'
-                else:
-                    responsetext = 'You have already registered your disagreement'
-                    ' - you may be able to challenge'
-            else:
-                if agreeval == 1:
-                    responsetext = 'Your vote has been changed to agreement'
-                    othcounts[3] += 1
-                    othcounts[4] -= 1
-                else:
-                    responsetext = 'Your vote has been changed to disagreement'
-                    othcounts[3] -= 1
-                    othcounts[4] += 1
-                qc.update_record(agree=agreeval)
-
-        db(db.question.id == chquestid).update(othercounts=othcounts)
-
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp(); $("#target").html("' \
-           + responsetext + '"); $("#btns' + str(
-        chquestid) + ' .btn-success").addClass("disabled").removeClass("btn-success"); $("#btns' \
-           + str(chquestid) + ' .btn-danger").addClass("disabled").removeClass("btn-danger");'
 
 
 def flagcomment():
@@ -444,6 +316,6 @@ def importance():
         qc.update_record(importance=imp)
         responsetext = 'Your assessment has been updated'
 
-    importance = (((quest.importance * totratings) + imp) / (totratings + 1))
-    db(db.question.id == qid).update(importance=importance, totratings=totratings)
+    importnce = (((quest.importance * totratings) + imp) / (totratings + 1))
+    db(db.question.id == qid).update(importance=importnce, totratings=totratings)
     return responsetext

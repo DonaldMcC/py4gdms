@@ -1,7 +1,7 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): http://github.com/DonaldMcC/gdms
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
 #
 # Demo Sites (Pythonanywhere)
 #   http://netdecisionmaking.com/nds/
