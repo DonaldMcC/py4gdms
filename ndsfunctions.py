@@ -497,8 +497,6 @@ def get_gantt_data(quests):
     return XML(projxml)
 
 
-
-
 def get_col_headers(startdate):
     # Need to work out number of columns for recurrent tasks idea is that they are ordered but could be
     # mone daily, weekly, bi-weekly, monthly etc - think we will generate up to 14 buckets as a dictionary keyed

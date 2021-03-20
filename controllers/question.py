@@ -34,6 +34,14 @@ def like(qid):
     db.item_like.insert(item_id=qid)
 
 
+def check_status(form):
+    if form.vars['question_status'] == 'In Progress' and form.vars['question_factopinion'] == 'Fact':
+        form.errors['question_status'] = 'Fact questions must have status Resolved or Draft'
+
+    if form.vars['question_status'] == 'Resolved' and form.vars['question_factopinion'] == 'Opinion':
+        form.errors['question_status'] = 'Questions of opinion cannot be submitted as resolved'
+    return
+
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
@@ -66,11 +74,9 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     # default for this in models doesn't seem to work
     db.question.auth_userid.default=auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
-    # TODO think want validation function so fact questions must be resolved and opinion questions cannot be - but draft
-    # questions I think are always OK but should not show except for user - maybe just chew on this for a night before
-    # I setup
     form = Form(db.question,
                 record=qid,
+                validation=check_status,
                 formstyle=FormStyleBulma)
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
