@@ -1,4 +1,5 @@
-[[import simplejson]]
+[[try: import simplejson as json
+except ImportError: import json]]
     var inputmode = 'V';
     var newitems = false;
     var prevclass = 'graph-V'
@@ -58,8 +59,8 @@
         globalnode: []
   };
         var nodes = '';
-        var nodes = [[=XML(simplejson.dumps(nodes, default=myconverter))]];
-        var links = [[=XML(simplejson.dumps(links, default=myconverter))]];
+        var nodes = [[=XML(json.dumps(nodes, default=myconverter))]];
+        var links = [[=XML(json.dumps(links, default=myconverter))]];
         var edges = [];
 
         console.log(nodes);
