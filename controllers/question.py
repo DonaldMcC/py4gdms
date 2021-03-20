@@ -35,12 +35,13 @@ def like(qid):
 
 
 def check_status(form):
-    if form.vars['question_status'] == 'In Progress' and form.vars['question_factopinion'] == 'Fact':
-        form.errors['question_status'] = 'Fact questions must have status Resolved or Draft'
+    if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
+        form.errors['status'] = 'Fact questions must have status Resolved or Draft'
 
-    if form.vars['question_status'] == 'Resolved' and form.vars['question_factopinion'] == 'Opinion':
-        form.errors['question_status'] = 'Questions of opinion cannot be submitted as resolved'
+    if form.vars['status'] == 'Resolved' and form.vars['factopinion'] == 'Opinion':
+        form.errors['status'] = 'Questions of opinion cannot be submitted as resolved'
     return
+
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
