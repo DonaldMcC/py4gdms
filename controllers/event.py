@@ -11,7 +11,7 @@ from py4web import action, redirect, request, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
-from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
+from ..ndsqueries import get_class, get_disabled, get_items
 from ..d3js2py import getd3graph
 from ..ndsfunctions import myconverter
 from pydal.validators import *
@@ -105,12 +105,12 @@ def view_event(eid='0'):
         session['eventid'] = eid
         session['projid'] = eventrow.projid
 
-    actions = get_actions(status='In Progress', event=eid, eventstatus=eventrow.status)
-    questions = get_questions(status='In Progress', event=eid, eventstatus=eventrow.status)
-    issues = get_issues(event=eid, eventstatus=eventrow.status)
-    res_questions = get_questions(status='Resolved', event=eid, eventstatus=eventrow.status)
-    res_actions = get_actions(status='Resolved', event=eid, execstatus='Incomplete')
-    comp_actions = get_actions(status='Resolved', event=eid, execstatus='Completed')
+    actions = get_items(status='In Progress', event=eid, eventstatus=eventrow.status)
+    questions = get_items(status='In Progress', event=eid, eventstatus=eventrow.status)
+    issues = get_items(event=eid, eventstatus=eventrow.status)
+    res_questions = get_items(status='Resolved', event=eid, eventstatus=eventrow.status)
+    res_actions = get_items(status='Resolved', event=eid, execstatus='Incomplete')
+    comp_actions = get_items(status='Resolved', event=eid, execstatus='Completed')
 
     eventlevel = 0
     parentquest = 0
@@ -152,8 +152,7 @@ def eventgrid(path=None):
     grid = Grid(path,
                 db.evt,
                 fields=fields,
-                left=[db.locn.on(db.evt.locationid == db.locn.id),
-                      db.project.on(db.evt.projid == db.project.id)],
+                left=[db.locn.on(db.evt.locationid == db.locn.id), db.project.on(db.evt.projid == db.project.id)],
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,

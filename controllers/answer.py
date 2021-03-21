@@ -2,7 +2,7 @@ import datetime
 from ..common import db, authenticated, auth, session
 from py4web import action, request
 from ..ndsfunctions import score_question
-from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
+from ..ndsqueries import get_class, get_disabled, get_items
 
 
 @action('quickanswer', method=['POST', 'GET'])
@@ -72,9 +72,9 @@ def agree(qid):
 @action('index/<qtype>', method=['POST', 'GET'])
 @action.uses(session, db, auth, 'index.html')
 def index(qtype=None):
-    actions = get_actions(status='In Progress') if (qtype == 'actions' or qtype == None) else None
-    questions = get_questions(status='In Progress') if (qtype == 'questions' or qtype == None) else None
-    issues = get_issues(status='In Progress') if (qtype == 'issues' or qtype == None) else None
-    res_actions = get_actions(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
+    actions = get_items(qtype='action', status='In Progress') if (qtype == 'actions' or qtype == None) else None
+    questions = get_items(qtype='quest', status='In Progress') if (qtype == 'questions' or qtype == None) else None
+    issues = get_items(qtype='issue', status='In Progress') if (qtype == 'issues' or qtype == None) else None
+    res_actions = get_items(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
     return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled, auth=auth)

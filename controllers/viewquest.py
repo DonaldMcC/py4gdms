@@ -49,7 +49,7 @@ from py4web import action, request, redirect, URL
 from ..ndsqueries import get_class, get_disabled
 
 
-#For now not using this - everything is open
+# For now not using this - everything is open
 def can_view(status, qtype,  hasanswered, userid, owner):
     """Will be some doctests on this in due course and a table of condtions
     Basic rules are that for votes users can't see questions that they haven't answered
@@ -90,6 +90,9 @@ def viewquest(qid=0):
     quests = db(db.question.id == qid).select() or redirect(URL('notshowing/' + 'NoQuestion'))
     quest = quests.first()
     uq = None
+    ur = None
+    uqanswered = False
+    urgmessage = ''
 
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
@@ -137,7 +140,8 @@ def viewquest(qid=0):
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated)
 
-#TODO - think will add this in some manner at some point -but below is web2py version
+
+# TODO - think will add this in some manner at some point -but below is web2py version
 def comments():
     # This will be a general view on question comments it will require the
     # question id as an argument Logic will be to only display the comements if it
@@ -178,6 +182,7 @@ def notshowing():
     return dict(reason=reason, questid=questid, shortreason=shortreason)
 
 
+# not yet setup - below is w2p version
 def challenge():
     # This allows users to challenge resolved questions - whether or not they have answered them - users are not
     # allowed to challenge questions that are not currently in a state of resolved and this should be done by the

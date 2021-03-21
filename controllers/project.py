@@ -4,7 +4,7 @@ from py4web import action, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
-from ..ndsqueries import get_questions, get_issues, get_actions, get_class, get_disabled
+from ..ndsqueries import get_class, get_disabled, get_items
 from ..ndsfunctions import myconverter, get_gantt_data
 from yatl.helpers import XML
 flash = Flash()
@@ -17,12 +17,12 @@ def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session['projid'] = pid if projectrow else 0
     events = db(db.evt.projid == pid).select(orderby=~db.evt.startdatetime)
-    actions = get_actions(status='In Progress', project=pid)
-    questions = get_questions(status='In Progress', project=pid)
-    issues = get_issues(project=pid)
-    res_actions = get_actions(status='Resolved', project=pid, execstatus='Incomplete')
-    comp_actions = get_actions(status='Resolved', project=pid, execstatus='Completed')
-    res_questions = get_questions(status='Resolved', project=pid)
+    actions = get_items(qtype='action', status='In Progress', project=pid)
+    questions = get_items(qtype='question', status='In Progress', project=pid)
+    issues = get_items(qtype='issue', project=pid)
+    res_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Incomplete')
+    comp_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Completed')
+    res_questions = get_items(qtype='question', status='Resolved', project=pid)
 
     if res_actions:
         projxml = get_gantt_data(res_actions)
@@ -41,7 +41,7 @@ def view_project(pid='0'):
 def new_project(pid='0'):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
 
-    pid=int(pid)
+    pid = int(pid)
     # default for this in models doesn't seem to work
     db.project.proj_owner.default = auth.user_id
     form = Form(db.project,

@@ -8,6 +8,7 @@
 #
 
 import json
+import wikipedia
 from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
@@ -17,6 +18,7 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
+
 flash = Flash()
 
 wolfram = True
@@ -25,7 +27,6 @@ try:
     from ..settings_private import WA_ID
 except ImportError as error:
     wolfram = False
-import wikipedia
 
 
 # make a "like" button factory
@@ -62,18 +63,19 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
-                                            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
+                                                        db(db.resolve.Defaultresolve == True).select(
+                                                            db.resolve.id).first().id)
     except AttributeError:
         pass
 
     try:
-        db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 else session.get('eventid',
-                                      db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id)
+        db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 \
+            else session.get('eventid', db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id)
     except AttributeError:
         pass
 
     # default for this in models doesn't seem to work
-    db.question.auth_userid.default=auth.user_id
+    db.question.auth_userid.default = auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     form = Form(db.question,
                 record=qid,
@@ -81,7 +83,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
                 formstyle=FormStyleBulma)
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
-                     (db.evt.projid == db.project.id)).select().first()
+                      (db.evt.projid == db.project.id)).select().first()
         # You can edit quests on shared projects, your projects and always your questions
         if ((not questrec.project.proj_shared) and questrec.project.proj_owner != auth.user_id and
                 questrec.question.auth_userid != auth.user_id):
@@ -150,7 +152,7 @@ def questiongrid(path=None):
                       db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
-                create=URL('new_question/0/'+qtype),
+                create=URL('new_question/0/' + qtype),
                 details=URL('viewquest/'),
                 editable=URL('new_question/'),
                 deletable=True,
@@ -227,7 +229,7 @@ def datatables_data():
 @action('new_question/delete/<questid>', method=['GET', 'POST'])
 @action.uses(session, db, auth.user, 'grid.html')
 def new_question_delete(questid):
-    result = db(db.question.id == questid).delete()
+    db(db.question.id == questid).delete()
     redirect(URL('datatables'))
 
 
@@ -283,7 +285,6 @@ def wolfram_alpha_lookup():
     except AttributeError:
         answer = "No answer received"
     return answer
-
 
 
 @action('wikipedia_lookup', method=['POST', 'GET'])

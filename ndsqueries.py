@@ -8,64 +8,27 @@ def get_disabled(ans, useranswer):
 def get_class(qtype='quest', answer=1, framework='Bulma'):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
-    default = 'button is-small is-rounded '
-    if qtype == 'quest':
-        return default
-    else:
+    btnclass = 'button is-small is-rounded '
+    if qtype != 'quest':  # issue or action
         if answer == 1:
-            return default + ' is-success'
+            btnclass += ' is-success'
         else:
-            return default + ' is-danger'
+            btnclass += ' is-danger'
+    return btnclass
 
 
-def get_actions(qtype='action',
-                status=None,
-                x=0, y=10,
-                event=None,
-                eventstatus='Open',
-                project=None,
-                execstatus=None):
-
+# Think this can replace get actions get questions and get issues
+def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None, execstatus=None):
     query = make_query(qtype, status, event, eventstatus, project, execstatus)
     leftjoin = make_leftjoin(status)
-
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
-        actions = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
     else:
         sortby = db.question.startdate if status == 'Resolved' else ~db.question.id
-        actions = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
-    return actions
+    return db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
 
 
-def get_questions(qtype='quest', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
-    query = make_query(qtype, status, event, eventstatus, project)
-    leftjoin = make_leftjoin(status)
-    if eventstatus == 'Archived':
-        questions = db(query).select(left=leftjoin, orderby=~db.question.id, limitby=(x, y))
-    else:
-        questions = db(query).select(left=leftjoin, orderby=~db.question.id, limitby=(x, y))
-    return questions
-
-
-def get_issues(qtype='issue', status=None, x=0, y=10, event=None, eventstatus='Open', project=None):
-    query = make_query(qtype, status, event, eventstatus, project)
-    leftjoin = make_leftjoin(status)
-
-    if eventstatus == 'Archived':
-        issues = db(query).select(left=leftjoin, orderby=~db.question.id, limitby=(x, y))
-    else:
-        issues = db(query).select(left=leftjoin, orderby=~db.question.id, limitby=(x, y))
-    return issues
-
-
-def make_query(qtype='quest',
-               status=None,
-               event=None,
-               eventstatus='Open',
-               project=None,
-               execstatus=None):
-
+def make_query(qtype='quest', status=None, event=None, eventstatus='Open', project=None, execstatus=None):
     if eventstatus == 'Archived':
         if qtype == 'quest':
             query = (db.eventmap.qtype == 'quest')
@@ -105,8 +68,8 @@ def make_query(qtype='quest',
 def make_leftjoin(status):
     if status != 'Archived':
         leftjoin = db.userquestion.on((db.question.id == db.userquestion.questionid)
-                       & (db.userquestion.auth_userid == auth.user_id))
+                                        & (db.userquestion.auth_userid == auth.user_id))
     else:
         leftjoin = db.userquestion.on((db.eventmap.questid == db.userquestion.questionid)
-                       & (db.userquestion.auth_userid == auth.user_id))
+                                        & (db.userquestion.auth_userid == auth.user_id))
     return leftjoin

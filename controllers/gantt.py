@@ -26,13 +26,13 @@ from ..ndsfunctions import get_gantt_data
 from ..common import db, auth, session
 from py4web import action
 from yatl.helpers import XML
-from ..ndsqueries import get_actions
+from ..ndsqueries import get_items
 
 
 @action("gantt", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, 'gantt.html')
 def gantt():
-    res_actions = get_actions(status='Resolved')
+    res_actions = get_items(status='Resolved')
     if res_actions:
         projxml = get_gantt_data(res_actions)
     else:

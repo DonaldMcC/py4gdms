@@ -93,7 +93,7 @@ def nodedelete():
 
     nodestring = request.json['nodeid']
     eventid = request.json['eventid']
-    action = request.json['action']
+    # action = request.json['action']
 
     if nodestring.isdigit():
         nodeid = int(nodestring)
