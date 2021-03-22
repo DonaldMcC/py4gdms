@@ -18,13 +18,12 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
-
 flash = Flash()
 
-wolfram = True
 try:
     import wolframalpha
     from ..settings_private import WA_ID
+    wolfram = True
 except ImportError as error:
     wolfram = False
 
@@ -38,7 +37,6 @@ def like(qid):
 def check_status(form):
     if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
         form.errors['status'] = 'Fact questions must have status Resolved or Draft'
-
     if form.vars['status'] == 'Resolved' and form.vars['factopinion'] == 'Opinion':
         form.errors['status'] = 'Questions of opinion cannot be submitted as resolved'
     return
@@ -63,8 +61,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
-                                                        db(db.resolve.Defaultresolve == True).select(
-                                                            db.resolve.id).first().id)
+                            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
     except AttributeError:
         pass
 
@@ -77,10 +74,10 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     # default for this in models doesn't seem to work
     db.question.auth_userid.default = auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
-    form = Form(db.question,
-                record=qid,
-                validation=check_status,
-                formstyle=FormStyleBulma)
+    # form = Form(db.question, record=qid, validation=check_status, formstyle=FormStyleBulma)
+    # temporarily removing validation as that seems to mean submit button won't work on IOS
+    form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
+
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
                       (db.evt.projid == db.project.id)).select().first()
@@ -108,25 +105,14 @@ def questiongrid(path=None):
                          search_button_text='Filter',
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
-
     # queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
-    if 'qtype' in request.query:
-        qtype = request.query.get('qtype')
-    else:
-        qtype = 'quest'
-
-    if qtype:
-        queries = [db.question.qtype == qtype]
-    else:
-        queries = [db.question.id > 0]
-
+    qtype = request.query.get('qtype') if 'qtype' in request.query else None
+    queries = [db.question.qtype == qtype] if qtype else [db.question.id > 0]
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
-                                                                                   orderby=db.evt.evt_name,
-                                                                                   distinct=True)]))
+                                                            orderby=db.evt.evt_name, distinct=True)]))
 
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
-                                                                                       orderby=db.project.proj_name,
-                                                                                       distinct=True)]))
+                                                            orderby=db.project.proj_name, distinct=True)]))
 
     search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
                       ['Search by Event', lambda val: db.evt.evt_name == val, eventlist],
@@ -135,21 +121,20 @@ def questiongrid(path=None):
 
     if qtype == 'action':
         headings = ['Text', 'Status', 'Execstatus', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.status, db.question.execstatus,
-                  db.evt.evt_name, db.project.proj_name]
+        fields = [db.question.questiontext, db.question.status, db.question.execstatus, db.evt.evt_name,
+                  db.project.proj_name]
         orderby = [db.question.status, db.question.execstatus, db.question.questiontext]
     else:
         headings = ['Text', 'Answertext', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.answertext, db.question.status,
-                  db.evt.evt_name, db.project.proj_name]
+        fields = [db.question.questiontext, db.question.answertext, db.question.status, db.evt.evt_name,
+                  db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
 
     grid = Grid(path,
                 search.query,
                 fields=fields,
                 headings=headings,
-                left=[db.evt.on(db.question.eventid == db.evt.id),
-                      db.project.on(db.evt.projid == db.project.id)],
+                left=[db.evt.on(db.question.eventid == db.evt.id), db.project.on(db.evt.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
                 create=URL('new_question/0/' + qtype),
@@ -193,7 +178,6 @@ def datatables_data():
     """
     dtr = DataTablesRequest(dict(request.query.decode()))
     dtr.order(db, 'question')
-
     queries = [(db.question.id > 0)]
     # queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
     # if dtr.search_value and dtr.search_value != '':
@@ -267,7 +251,6 @@ def wolfram_alpha_lookup():
     if not wolfram:
         return 'Wolfram Alpha Client not installed'
     client = wolframalpha.Client(WA_ID)
-
     qtext = request.json['questiontext']
     res = client.query(qtext)
     try:
@@ -290,7 +273,7 @@ def wolfram_alpha_lookup():
 @action('wikipedia_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def wikipedia_lookup():
-    # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
