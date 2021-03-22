@@ -10,9 +10,7 @@ $(document).ready(function(){
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
     */
-
           $('#question_qtype').change(function(){
-                console.log('qtyp change triggered')
               if($('#question_qtype option:selected').text()=='action' )
                  {$('#question_factopinion').parent().parent().hide();
                   $('#question_answer1').val('Approve');
@@ -61,8 +59,8 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").hide();}
                 });
 
-                   $('#question_qtype').change();
-   $('#question_factopinion').change();
+                $('#question_qtype').change();
+                $('#question_factopinion').change();
 });
 
 
