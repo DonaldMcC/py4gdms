@@ -4,8 +4,6 @@ $(document).ready(function(){
    $('#question_responsible').parent().parent().hide();
    $('#question_perccomplete').parent().parent().hide();
    $('#question_execstatus').parent().parent().hide();
-   $('#question_startdate').parent().parent().hide();
-   $('#question_enddate').parent().parent().hide();
    $('#question_xpos').parent().parent().hide();
    $('#question_ypos').parent().parent().hide();
 
