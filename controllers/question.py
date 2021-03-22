@@ -106,8 +106,8 @@ def questiongrid(path=None):
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
     # queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
-    qtype = request.query.get('qtype') if 'qtype' in request.query else None
-    queries = [db.question.qtype == qtype] if qtype else [db.question.id > 0]
+    qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
+    queries = [db.question.qtype == qtype]
     eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
                                                             orderby=db.evt.evt_name, distinct=True)]))
 
