@@ -7,6 +7,7 @@
 <script>
 var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
 g.setShowTaskInfoLink(1);
+g.setEditable(1);
 var textstring = "[[=project]]"
 JSGantt.parseXMLString(textstring,g);
 g.Draw();
