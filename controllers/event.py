@@ -105,12 +105,12 @@ def view_event(eid='0'):
         session['eventid'] = eid
         session['projid'] = eventrow.projid
 
-    actions = get_items(status='In Progress', event=eid, eventstatus=eventrow.status)
-    questions = get_items(status='In Progress', event=eid, eventstatus=eventrow.status)
-    issues = get_items(event=eid, eventstatus=eventrow.status)
-    res_questions = get_items(status='Resolved', event=eid, eventstatus=eventrow.status)
-    res_actions = get_items(status='Resolved', event=eid, execstatus='Incomplete')
-    comp_actions = get_items(status='Resolved', event=eid, execstatus='Completed')
+    actions = get_items(qtype='action', status='In Progress', event=eid, eventstatus=eventrow.status)
+    questions = get_items(qtype='quest', status='In Progress', event=eid, eventstatus=eventrow.status)
+    issues = get_items(qtype='issue', event=eid, eventstatus=eventrow.status)
+    res_questions = get_items(qtype='quest',status='Resolved', event=eid, eventstatus=eventrow.status)
+    res_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Incomplete')
+    comp_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Completed')
 
     eventlevel = 0
     parentquest = 0

@@ -5,25 +5,6 @@
 title ="Toggle to turn on or off editing the Gantt chart" data-content="" VALUE="Edit"></h1>
 <div style="position:relative" class="gantt" id="GanttChartDIV"></div>
 
-<script>
-var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
-g.setShowTaskInfoLink(1);
-g.setEditable(0);
-var textstring = "[[=project]]"
-JSGantt.parseXMLString(textstring,g);
-g.Draw();
-
-function edit_click() {
-    console.log($('#key').val());
-    if ($('#key').val()=='Edit') {
-        g.setEditable(1);
-        $('#key').prop('value', 'Lock');
-        }
-    else {
-      $('#key').prop('value', 'Edit');
-    g.setEditable(0);
-    };
-
-    g.Draw();
-};
-</script>
+ <script>
+ [[include 'gantt.js']]
+ </script>
