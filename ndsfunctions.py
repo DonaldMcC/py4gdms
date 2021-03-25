@@ -271,7 +271,6 @@ def get_gantt_data(quests):
         projxml += convrow(row, getstrdepend(intlinks, row.question.id), True)
 
     projxml += '</project>'
-
     return XML(projxml)
 
 

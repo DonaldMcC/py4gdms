@@ -282,9 +282,5 @@ def wikipedia_lookup():
     pages = wikipedia.search(qtext, results=3)
     resultpage = wikipedia.summary(pages[0])
     # print(resultpage)
-
-    if resultpage:
-        res = resultpage
-    else:
-        res = 'No result found for this topic'
+    res = resultpage if resultpage else 'No result found for this topic'
     return res

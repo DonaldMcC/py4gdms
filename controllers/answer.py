@@ -29,7 +29,6 @@ def quickanswer():
         messagetxt = 'You already answered this one'
     else:
         messagetxt = 'Answer not recorded'
-
     return messagetxt
 
 

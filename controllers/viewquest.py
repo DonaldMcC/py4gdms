@@ -68,7 +68,6 @@ def can_view(status, qtype,  hasanswered, userid, owner):
         reason = 'NotAnswered'
     else:
         viewable = True
-
     return viewable, reason, message
 
 

@@ -215,5 +215,4 @@ def move():
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
                 responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
-    print(responsetext)
     return responsetext
