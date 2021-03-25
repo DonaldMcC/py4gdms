@@ -33,10 +33,7 @@ def new_event(eid='0'):
         pass
 
     eid = int(eid)
-    form = Form(db.evt,
-                record=eid,
-                formstyle=FormStyleBulma)
-
+    form = Form(db.evt, record=eid, formstyle=FormStyleBulma)
     db.evt.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
                                       'project.id', '%(proj_name)s')
 
@@ -114,20 +111,14 @@ def view_event(eid='0'):
 
     eventlevel = 0
     parentquest = 0
-    redraw = 'false'
-
     quests, nodes, links, resultstring = getd3graph('event', eid, eventrow.status, 1, eventlevel, parentquest)
     projrow = db(db.project.id == eventrow.projid).select().first()
-
-    if projrow.proj_shared or projrow.proj_owner == auth.user:
-        editable = 'true'
-    else:
-        editable = 'false'
+    editable = 'true' if projrow.proj_shared or projrow.proj_owner == auth.user else 'false'
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
-                links=links, resultstring=resultstring, redraw=redraw, eventowner=editable, projid=eventrow.projid,
+                links=links, resultstring=resultstring, redraw='false', eventowner=editable, projid=eventrow.projid,
                 myconverter=myconverter, auth=auth)
 
 
