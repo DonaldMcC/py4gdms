@@ -299,7 +299,6 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
         for x in intlinks:
             edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
             edges.append(edge)
-
     return quests, nodes, edges, resultstring
 
 
@@ -325,10 +324,8 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
     else:
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
-
         if links:
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
-
         for row in quests:
             nodepositions[row.id] = (
             ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)

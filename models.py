@@ -1,7 +1,6 @@
 """
 This file defines the database models
 """
-
 from .common import db, auth, T
 from py4web import Field
 from pydal.validators import *
@@ -18,8 +17,7 @@ db.define_table('resolve',
                       requires=IS_DECIMAL_IN_RANGE(50.01, 100, error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
                 Field('Defaultresolve', 'boolean', default=False),
-                Field('adminresolve', 'boolean', default=True,
-                      label='Allow event owners to resolve on behalf of group'),
+                Field('adminresolve', 'boolean', default=True,label='Allow event owners to resolve on behalf of group'),
                 format='%(resolve_name)s')
 
 db.define_table('website_parameters',
@@ -89,13 +87,11 @@ db.define_table('project',
                 Field('proj_status', 'string', label='Project Status', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
-                Field('startdate', 'date', label='Start Date',
-                      default=datetime.datetime.utcnow()),
+                Field('startdate', 'date', label='Start Date', default=datetime.datetime.utcnow()),
                 Field('enddate', 'date', label='End Date',
                       default=(datetime.datetime.utcnow() + datetime.timedelta(days=365))),
                 Field('description', 'text'),
-                Field('proj_shared', 'boolean', label='Shared Project',
-                      comment='Allows other users to link events'),
+                Field('proj_shared', 'boolean', label='Shared Project', comment='Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False,
                       label='Owner', default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
@@ -106,8 +102,7 @@ db.define_table('evt',
                 Field('evt_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('projid',  'reference project',  label='Project', notnull=True),
-                Field('status', 'string', default='Open',
-                      requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+                Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),
                 Field('enddatetime', 'datetime', label='End Date Time'),
                 Field('description', 'text'),
@@ -220,6 +215,7 @@ db.define_table('questcomment',
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
+
 db.define_table('eventmap',
                 Field('eventid', 'reference evt', notnull=True),
                 Field('questid', 'reference question', notnull=True),
@@ -246,6 +242,7 @@ db.define_table('eventmap',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected', 'Admin Resolved']),
                       comment='Select draft to defer for later editing'),
                 Field('notes', 'text', label='Notes'))
+
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))

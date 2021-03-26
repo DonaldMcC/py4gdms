@@ -92,6 +92,7 @@ def viewquest(qid=0):
     ur = None
     uqanswered = False
     urgmessage = ''
+    can_edit = False
 
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
@@ -101,11 +102,12 @@ def viewquest(qid=0):
         uqrates = db((db.uqrating.auth_userid == auth.user_id) & (db.uqrating.questionid == quest.id)).select()
         ur = uqrates.first() if uqrates else None
         uqrated = True if ur else False
-
         if uqrated:
             urgmessage = "You and others people have rated urgency and importance below - you can update if required."
         else:
             urgmessage = "Other people have rated urgency and importance below - you have yet to do so."
+        if auth.user_id == quest.auth_userid:  # owner can edit for now - may lock if answered
+            can_edit = True
 
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
@@ -137,7 +139,7 @@ def viewquest(qid=0):
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
-                uqrated=uqrated)
+                uqrated=uqrated, can_edit=can_edit)
 
 
 # TODO - think will add this in some manner at some point -but below is web2py version
