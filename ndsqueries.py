@@ -6,7 +6,7 @@ def check_liked(items):
     query &= db.item_like.item_id.belongs(items.as_dict().keys())
     liked_ids = [row.item_id for row in db(query).select()]
     for item in items:
-        item["liked"] = item.id in liked_ids
+        item["liked"] = item.id in liked_ids if liked_ids else False
     return
 
 
