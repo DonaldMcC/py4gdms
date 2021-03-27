@@ -16,6 +16,7 @@
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.question.id]]">
 <td>[[=row.question.questiontext]]<br>
+      [[=like.button('Like', _class=("clicked" if item.liked else ""))(id=row.question.id)]]
     <INPUT TYPE=BUTTON class="button is-small is-rounded" onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'" VALUE="Details"></p>
 
     <div id='btns[[=str(row.question.id)]]'></div></td>

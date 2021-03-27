@@ -247,4 +247,9 @@ db.define_table('eventmap',
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
+
+db.define_table("item_like",
+                Field("item_id", "reference question"),
+                auth.signature)
+
 db.commit()

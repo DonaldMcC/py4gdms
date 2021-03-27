@@ -28,12 +28,6 @@ except ImportError as error:
     wolfram = False
 
 
-# make a "like" button factory
-@authenticated.callback()
-def like(qid):
-    db.item_like.insert(item_id=qid)
-
-
 def check_status(form):
     if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
         form.errors['status'] = 'Fact questions must have status Resolved or Draft'
