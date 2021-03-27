@@ -64,12 +64,14 @@ def perccomplete():
 @authenticated.callback()
 def agree(qid):
     print(str(qid) + 'was called')
-    # db.item_like.insert(item_id=id)
 
 
 # make a "like" button factory
 @authenticated.callback()
 def like(id):
+    # TODO
+    # so think this needs to check for previous likes and if none create
+    # and update the numlike on the main question table??
     db.item_like.insert(item_id=id)
 
 

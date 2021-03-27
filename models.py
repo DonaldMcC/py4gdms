@@ -136,6 +136,8 @@ db.define_table('question',
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False, label='Importance'),
                 Field('totratings', 'integer', default=0, readable=False, writable=False,
                       label='Total numbers of ratings'),
+                Field('numlike', 'integer', default=0, readable=False, writable=False,
+                      label='Total numbers of likes'),
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
                 Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
@@ -206,8 +208,7 @@ db.define_table('questlink',
 
 db.define_table('questcomment',
                 Field('questionid', 'reference question', writable=False, readable=False),
-                Field('auth_userid', 'reference auth_user', writable=False, readable=False,
-                      default=auth.user_id),
+                Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('qc_comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
                       requires=IS_IN_SET(['OK', 'NOK'])),
@@ -247,9 +248,7 @@ db.define_table('eventmap',
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
-
 db.define_table("item_like",
                 Field("item_id", "reference question"),
                 auth.signature)
-
 db.commit()
