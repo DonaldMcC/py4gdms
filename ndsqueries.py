@@ -8,23 +8,21 @@ def get_disabled(ans, useranswer):
 def get_class(qtype='quest', answer=1, framework='Bulma'):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
-    btnclass = 'button is-small is-rounded '
     if qtype != 'quest':  # issue or action
-        if answer == 1:
-            btnclass += ' is-success'
-        else:
-            btnclass += ' is-danger'
+        btnclass = 'is-success' if answer == 1 else 'is-danger'
+    else:
+        btnclass = ''
+    btnclass += 'button is-small is-rounded '
     return btnclass
 
 
-# Think this can replace get actions get questions and get issues
 def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None, execstatus=None):
     query = make_query(qtype, status, event, eventstatus, project, execstatus)
     leftjoin = make_leftjoin(status)
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
     else:
-        sortby = db.question.startdate if status == 'Resolved' else ~db.question.id
+        sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     return db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
 
 
