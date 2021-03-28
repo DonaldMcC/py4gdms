@@ -5,14 +5,14 @@ from py4web import action, request
 # at present we may return all comments or page them
 
 
+@action('getcomments/<itemid>', method=['POST', 'GET'])
 @action('getcomments', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, "getcomments.load")
-def getcomments():
-    itemid = request.json['itemid']
-    table = request.json['table']
+def getcomments(itemid=1):
+    table = 'question'
     x = 0
     y = 50
-    query = (db.comment.parent_table == table) & (db.comment.parent_id == itemid)
+    query = (db.comment.parenttable == table) & (db.comment.parentid == itemid)
     sortby = db.comment.id
     comments = db(query).select(orderby=[sortby], limitby=(x, y))
     return dict(comments=comments)

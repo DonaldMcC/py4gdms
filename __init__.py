@@ -17,6 +17,7 @@ from .controllers import answer
 from .controllers import gantt
 from .controllers import network
 from .controllers import viewquest
+from .controllers import comments
 
 # optional parameters
 __version__ = "0.0.1"

@@ -212,7 +212,7 @@ db.define_table('comment',
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
-db.comments.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
+db.comment.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
 
 db.define_table('eventmap',
                 Field('eventid', 'reference event', notnull=True),
@@ -246,10 +246,10 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans ==
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
 # will also support likes against any item including comments
-db.define_table("item_like",
+db.define_table("itemlike",
                 Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question'),
-                Field('auth_userid', 'reference auth_user', default=auth.user_id),
+                Field('createdby', 'reference auth_user', default=auth.user_id),
                 Field('liketype', 'string', default='like'),
                 Field('likedate', 'datetime', default=datetime.datetime.utcnow()))
 

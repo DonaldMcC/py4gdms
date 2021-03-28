@@ -78,7 +78,7 @@ var questid = "[[=quest['id'] ]]";
     </div>
 
 <div>
-<ajax-component id="comments" url="[[=URL('getcomments.load')]]">
+<ajax-component id="comments" url="[[=URL('getcomments/'+str(quest['id']))]]">
     <p>Loading...</p>
 </ajax-component>
     <p>[[=commentform]]</p>
