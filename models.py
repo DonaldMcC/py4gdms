@@ -203,7 +203,7 @@ db.define_table('questlink',
 # below is being adapted to hold comments against any object
 db.define_table('comment',
                 Field('parentid', 'integer', writable=False, readable=False),
-                Field('parenttable', 'string', default='question', writable=False, reasable=False),
+                Field('parenttable', 'string', default='question', writable=False, readable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
@@ -245,7 +245,12 @@ db.define_table('eventmap',
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
+# will also support likes against any item including comments
 db.define_table("item_like",
-                Field("item_id", "reference question"),
-                auth.signature)
+                Field('parentid', 'integer'),
+                Field('parenttable', 'string', default='question'),
+                Field('auth_userid', 'reference auth_user', default=auth.user_id),
+                Field('liketype', 'string', default='like'),
+                Field('likedate', 'datetime', default=datetime.datetime.utcnow()))
+
 db.commit()
