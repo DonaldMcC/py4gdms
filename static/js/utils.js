@@ -251,7 +251,7 @@ Q.tags_input = function(elem, options) {
         item.dataset.value = x;
         item.dataset.selected = keys.indexOf(x)>=0;
         repl.appendChild(item);
-        item.onclick = function(evt){
+        item.onclick = function(event){
           if(item.dataset.selected=='false') keys.push(x); else keys = keys.filter(function(y){ return x!=y; });
           item.dataset.selected = keys.indexOf(x)>=0;          
           elem.value = JSON.stringify(keys);
@@ -264,7 +264,7 @@ Q.tags_input = function(elem, options) {
       inp.classList = elem.classList;
       inp.placeholder = options.placeholder;
       inp.setAttribute('list',  options.autocomplete_list);
-      inp.onchange = function(evt) {
+      inp.onchange = function(event) {
         inp.value.split(',').map(function(x){
 	  x = options.transform(x.trim());
 	  if (options.regex && !x.match(options.regex)) return;
@@ -293,7 +293,7 @@ Q.score_input = function(elem, reference) {
     reference = reference || 100;
     elem.style.backgroundPosition = 'center right';
     elem.style.backgroundRepeat = 'no-repeat';
-    elem.onkeyup = elem.onchange = function(evt) {
+    elem.onkeyup = elem.onchange = function(event) {
       var score = Q.score_password(elem.value.trim());
       var r = Math.round(255*Math.max(0,Math.min(2-2*score/reference,1)));
       var g = Math.round(255*Math.max(0,Math.min(2*score/reference,1)));

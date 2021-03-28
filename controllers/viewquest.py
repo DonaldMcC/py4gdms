@@ -46,6 +46,7 @@
 
 from ..common import db, auth, session
 from py4web import action, request, redirect, URL
+from py4web.utils.form import Form, FormStyleBulma
 from ..ndsqueries import get_class, get_disabled
 
 
@@ -137,9 +138,10 @@ def viewquest(qid=0):
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
+    commentform = Form(db.comments,  formstyle=FormStyleBulma)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
-                uqrated=uqrated, can_edit=can_edit)
+                uqrated=uqrated, can_edit=can_edit, commentform=commentform)
 
 
 # TODO - think will add this in some manner at some point -but below is web2py version

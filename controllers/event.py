@@ -22,19 +22,19 @@ flash = Flash()
 @action("new_event", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_event.html')
 def new_event(eid='0'):
-    db.evt.startdatetime.default = (datetime.datetime.utcnow()
+    db.event.startdatetime.default = (datetime.datetime.utcnow()
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
-    db.evt.enddatetime.default = (datetime.datetime.utcnow()
+    db.event.enddatetime.default = (datetime.datetime.utcnow()
                                   + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
     try:
-        db.evt.projid.default = session.get('projid',
+        db.event.projid.default = session.get('projid',
                                             db(db.project.name == 'Unspecified').select(db.project.id).first().id)
     except AttributeError:
         pass
 
     eid = int(eid)
-    form = Form(db.evt, record=eid, formstyle=FormStyleBulma)
-    db.evt.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
+    form = Form(db.event, record=eid, formstyle=FormStyleBulma)
+    db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
                                       'project.id', '%(proj_name)s')
 
     if eid:
@@ -45,7 +45,7 @@ def new_event(eid='0'):
             form.deletable = False
             form.readonly = True
 
-    if form.vars.get('evt_name', '') == 'Unspecified':
+    if form.vars.get('event_name', '') == 'Unspecified':
         form.deletable = False
 
     if form.accepted:
@@ -57,12 +57,12 @@ def new_event(eid='0'):
 @action('create_next_event', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def create_next_event():
-    # so expectation is that this is only called when event has no next event ie next_evt field is zero
+    # so expectation is that this is only called when event has no next event ie next_event field is zero
     # for now anyone can create the next event for a project - might restrict to project owner at some point
     # unless shared project
 
     eid = int(request.json['eid'])
-    orig_rec = db(db.evt.id == eid).select().first()
+    orig_rec = db(db.event.id == eid).select().first()
     orig_event = orig_rec.as_dict()
 
     proj = db(db.project.id == orig_event['projid']).select().first()
@@ -83,11 +83,11 @@ def create_next_event():
 
     orig_event['startdatetime'] = orig_event['startdatetime'] + datetime.timedelta(days=recurdays)
     orig_event['enddatetime'] = orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
-    orig_event['evt_name'] = 'Next ' + orig_event['evt_name']
-    orig_event['prev_evt'] = eid
+    orig_event['event_name'] = 'Next ' + orig_event['event_name']
+    orig_event['prev_event'] = eid
     orig_event['id'] = None
-    new_evt = db.evt.insert(**dict(orig_event))
-    orig_rec.update_record(next_evt=new_evt)
+    new_event = db.event.insert(**dict(orig_event))
+    orig_rec.update_record(next_event=new_event)
     db.commit()
     messagetxt = 'Next Event Created'
     return messagetxt
@@ -97,7 +97,7 @@ def create_next_event():
 @action("view_event", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, 'view_event.html')
 def view_event(eid='0'):
-    eventrow = db(db.evt.id == eid).select().first()
+    eventrow = db(db.event.id == eid).select().first()
     if eventrow:
         session['eventid'] = eid
         session['projid'] = eventrow.projid
@@ -132,18 +132,18 @@ def eventgrid(path=None):
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
 
-    fields = [db.evt.evt_name, db.locn.location_name, db.project.proj_name, db.evt.status, db.evt.startdatetime,
-              db.evt.enddatetime, db.evt.description]
+    fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,
+              db.event.enddatetime, db.event.description]
 
-    orderby = [db.evt.projid, db.evt.evt_name, db.evt.startdatetime]
-    search_queries = [['Search by Name', lambda value: db.evt.evt_name == value]]
+    orderby = [db.event.projid, db.event.event_name, db.event.startdatetime]
+    search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
     # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
-                db.evt,
+                db.event,
                 fields=fields,
-                left=[db.locn.on(db.evt.locationid == db.locn.id), db.project.on(db.evt.projid == db.project.id)],
+                left=[db.locn.on(db.event.locationid == db.locn.id), db.project.on(db.event.projid == db.project.id)],
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
@@ -166,10 +166,10 @@ def archive():
     # pop up on this before submission
 
     eventid = int(request.json['eventid'])
-    event = db(db.evt.id == eventid).select().first()
+    event = db(db.event.id == eventid).select().first()
     if not event:
         return 'No matching event found'
-    nexteventid = event.next_evt
+    nexteventid = event.next_event
     if event.status == 'Open':
         status = 'Archiving'
         responsetext = 'Event moved to archiving'
@@ -209,7 +209,7 @@ def archive():
         # down as completed - completed actions and disagreed issues will still go to unspecified event
         # the following event will now need to be sent to this
 
-        unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first()
+        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
         unspecid = unspecevent.id
         for x in quests:
             if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or

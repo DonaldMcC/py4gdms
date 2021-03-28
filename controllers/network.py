@@ -118,7 +118,7 @@ def nodedelete():
             responsetext = 'Question deleted'
         else:
             responsetext = 'Question removed from event'
-            unspecevent = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first()
+            unspecevent = db(db.event.event_name == 'Unspecified').select(db.evt.id).first()
             db(db.question.id == nodeid).update(eventid=unspecevent.id)
     return responsetext
 

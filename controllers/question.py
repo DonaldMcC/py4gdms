@@ -48,9 +48,9 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
-    db.question.eventid.requires = IS_IN_DB(db((db.evt.status == 'Open') & (db.evt.projid == db.project.id) &
+    db.question.eventid.requires = IS_IN_DB(db((db.event.status == 'Open') & (db.event.projid == db.project.id) &
                                                ((db.project.proj_owner == auth.user_id) |
-                                                (db.project.proj_shared == True))), 'evt.id', '%(evt_name)s')
+                                                (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
     qid = int(qid)
 
     try:
@@ -61,7 +61,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
 
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 \
-            else session.get('eventid', db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id)
+            else session.get('eventid', db(db.event.event_name == 'Unspecified').select(db.event.id).first().id)
     except AttributeError:
         pass
 
@@ -73,8 +73,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
 
     if qid:
-        questrec = db((db.question.id == qid) & (db.question.eventid == db.evt.id) &
-                      (db.evt.projid == db.project.id)).select().first()
+        questrec = db((db.question.id == qid) & (db.question.eventid == db.event.id) &
+                      (db.event.projid == db.project.id)).select().first()
         # You can edit quests on shared projects, your projects and always your questions
         if ((not questrec.project.proj_shared) and questrec.project.proj_owner != auth.user_id and
                 questrec.question.auth_userid != auth.user_id):
@@ -99,28 +99,28 @@ def questiongrid(path=None):
                          search_button_text='Filter',
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
-    # queries = [(db.evt.id == db.question.eventid) & (db.evt.projid == db.project.id)]
+    # queries = [(db.event.id == db.question.eventid) & (db.event.projid == db.project.id)]
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
     queries = [db.question.qtype == qtype]
-    eventlist = IS_NULL_OR(IS_IN_SET([x.evt_name for x in db(db.evt.id > 0).select(db.evt.evt_name,
-                                                            orderby=db.evt.evt_name, distinct=True)]))
+    eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
+                                                            orderby=db.event.event_name, distinct=True)]))
 
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
                                                             orderby=db.project.proj_name, distinct=True)]))
 
     search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
-                      ['Search by Event', lambda val: db.evt.evt_name == val, eventlist],
+                      ['Search by Event', lambda val: db.event.event_name == val, eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
     search = GridSearch(search_queries, queries)
 
     if qtype == 'action':
         headings = ['Text', 'Status', 'Execstatus', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.status, db.question.execstatus, db.evt.evt_name,
+        fields = [db.question.questiontext, db.question.status, db.question.execstatus, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.execstatus, db.question.questiontext]
     else:
         headings = ['Text', 'Answertext', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.answertext, db.question.status, db.evt.evt_name,
+        fields = [db.question.questiontext, db.question.answertext, db.question.status, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
 
@@ -128,7 +128,7 @@ def questiongrid(path=None):
                 search.query,
                 fields=fields,
                 headings=headings,
-                left=[db.evt.on(db.question.eventid == db.evt.id), db.project.on(db.evt.projid == db.project.id)],
+                left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
                 create=URL('new_question/0/' + qtype),
@@ -173,7 +173,7 @@ def datatables_data():
     dtr = DataTablesRequest(dict(request.query.decode()))
     dtr.order(db, 'question')
     queries = [(db.question.id > 0)]
-    # queries = [(db.question.eventid == db.evt.id) & (db.evt.projid == db.project.id)]
+    # queries = [(db.question.eventid == db.event.id) & (db.event.projid == db.project.id)]
     # if dtr.search_value and dtr.search_value != '':
     #    queries.append((db.question.questiontext.contains(dtr.search_value)) |
     #                  (db.question.responsible.contains(dtr.search_value)))

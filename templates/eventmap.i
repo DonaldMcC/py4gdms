@@ -22,7 +22,7 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
             set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues
              to the unspecified event but agreed issues, unresolved questions and actions which are not completed will
               roll-forward to the next event
-               [[if not eventrow.next_evt:]] WARNING: this event does not currently have a next event set.[[else:]]
+               [[if not eventrow.next_event:]] WARNING: this event does not currently have a next event set.[[else:]]
         which has been created for this project.[[pass]]
                    <button type="button" class="mode-close button is-small is-info is-rounded">Close</button>
                   <button type="button" class="button is-small is-warning is-rounded"

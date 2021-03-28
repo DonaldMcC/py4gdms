@@ -98,8 +98,8 @@ db.define_table('project',
                 format='%(proj_name)s')
 
 
-db.define_table('evt',
-                Field('evt_name', label='Event Name', unique=False, notnull=True),
+db.define_table('event',
+                Field('event_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location'),
                 Field('projid',  'reference project',  label='Project', notnull=True),
                 Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
@@ -107,11 +107,11 @@ db.define_table('evt',
                 Field('enddatetime', 'datetime', label='End Date Time'),
                 Field('description', 'text'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
-                Field('next_evt', 'integer', default=0, writable=False, readable=False, label='Next Event'),
-                Field('prev_evt', 'integer', default=0, writable=False, readable=False, label='Previous Event'),
+                Field('next_event', 'integer', default=0, writable=False, readable=False, label='Next Event'),
+                Field('prev_event', 'integer', default=0, writable=False, readable=False, label='Previous Event'),
                 Field('recurrence', 'string', default='None',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
-                format='%(evt_name)s')
+                format='%(event_name)s')
 
 
 db.define_table('question',
@@ -149,7 +149,7 @@ db.define_table('question',
                       default=(datetime.datetime.utcnow()), label='Date Action Starts'),
                 Field('enddate', 'datetime', readable=False, writable=False,
                       default=(datetime.datetime.utcnow()), label='Date Action Ends'),
-                Field('eventid', 'reference evt', label='Event'),
+                Field('eventid', 'reference event', label='Event'),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
@@ -200,25 +200,22 @@ db.define_table('questlink',
                 Field('lastaction', 'string', default='create'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
-# this holds comments for resolved questions
-# it may be extended to allow comments against unresolved but not yet
-# it will allow comments against actions that are proposed
-# which is now a new status on actions where preceding question is not resolved
-# and on follow-up questions
-
-db.define_table('questcomment',
-                Field('questionid', 'reference question', writable=False, readable=False),
+# below is being adapted to hold comments against any object
+db.define_table('comments',
+                Field('parentid', 'integer', writable=False, readable=False),
+                Field('parenttable', 'string', writable=False, reasable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
-                Field('qc_comment', 'text', requires=IS_NOT_EMPTY()),
+                Field('comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
                       requires=IS_IN_SET(['OK', 'NOK'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
+db.comments.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
 
 db.define_table('eventmap',
-                Field('eventid', 'reference evt', notnull=True),
+                Field('eventid', 'reference event', notnull=True),
                 Field('questid', 'reference question', notnull=True),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),

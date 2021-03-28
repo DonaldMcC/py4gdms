@@ -61,7 +61,7 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
         if event:
             query &= (db.question.eventid == event)
         if project:
-            events = db(db.evt.projid == project).select(db.evt.id)
+            events = db(db.event.projid == project).select(db.event.id)
             eventlist = [row.id for row in events] if events else []
             query &= (db.question.eventid.belongs(eventlist))
         if execstatus:

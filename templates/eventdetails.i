@@ -4,7 +4,7 @@
 <tbody>
 <tr>
 <th width="10%"></th>
-<th width="60%">[[=eventrow.evt_name]]</th>
+<th width="60%">[[=eventrow.event_name]]</th>
 <th width="15%" >Start</th>
 <th width="15%">End</th>
 </tr>
