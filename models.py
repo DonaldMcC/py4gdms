@@ -201,7 +201,7 @@ db.define_table('questlink',
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
 
 # below is being adapted to hold comments against any object
-db.define_table('comments',
+db.define_table('comment',
                 Field('parentid', 'integer', writable=False, readable=False),
                 Field('parenttable', 'string', default='question', writable=False, reasable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
