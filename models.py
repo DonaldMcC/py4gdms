@@ -203,7 +203,7 @@ db.define_table('questlink',
 # below is being adapted to hold comments against any object
 db.define_table('comments',
                 Field('parentid', 'integer', writable=False, readable=False),
-                Field('parenttable', 'string', writable=False, reasable=False),
+                Field('parenttable', 'string', default='question', writable=False, reasable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
