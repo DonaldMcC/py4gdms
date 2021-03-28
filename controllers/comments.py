@@ -6,7 +6,7 @@ from py4web import action, request
 
 
 @action('getcomments', method=['POST', 'GET'])
-@action.uses(session, db, auth.user)
+@action.uses(session, db, auth.user, "getcomments.load")
 def getcomments():
     itemid = request.json['itemid']
     table = request.json['table']
@@ -14,4 +14,5 @@ def getcomments():
     y = 50
     query = (db.comment.parent_table == table) & (db.comment.parent_id == itemid)
     sortby = db.comment.id
-    return db(query).select(orderby=[sortby], limitby=(x, y))
+    comments = db(query).select(orderby=[sortby], limitby=(x, y))
+    return dict(comments=comments)
