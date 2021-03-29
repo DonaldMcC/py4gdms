@@ -138,6 +138,9 @@ def viewquest(qid=0):
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
 
+    db.comment.auth_userid.default = auth.user_id
+    db.comment.parentid.default = quest['id']
+
     commentform = Form(db.comment,  formstyle=FormStyleBulma)
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
@@ -145,26 +148,6 @@ def viewquest(qid=0):
 
 
 # TODO - think will add this in some manner at some point -but below is web2py version
-def comments():
-    # This will be a general view on question comments it will require the
-    # question id as an argument Logic will be to only display the comements if it
-    # has been resolved
-    # This maintains the general privacy approach to questions that may be
-    # subject to answer eventually if resolved then there will be a view option
-    # this needs the as_dict() treatment as well but lets debug viewquest first
-    # and then do next - potentially this can be replaced with a plugin
-
-    questid = request.args(0, cast=int, default=0) or redirect(URL('default', 'index'))
-
-    session.questid = questid
-    quest = db.question[questid]
-
-    if quest is None:
-        redirect(URL('viewquest', 'notshowing/' + 'NoQuestion'))
-
-    return dict(quest=quest)
-
-
 def notshowing():
     questid = request.args(1)
     shortreason = request.args(0)

@@ -87,14 +87,13 @@ db.define_table('project',
                 Field('proj_status', 'string', label='Project Status', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
-                Field('startdate', 'date', label='Start Date', default=datetime.datetime.utcnow()),
-                Field('enddate', 'date', label='End Date',
-                      default=(datetime.datetime.utcnow() + datetime.timedelta(days=365))),
+                Field('startdate', 'date', label='Start Date', default=datetime.datetime.utcnow),
+                Field('enddate', 'date', label='End Date', default=(datetime.datetime.utcnow)),
                 Field('description', 'text'),
                 Field('proj_shared', 'boolean', label='Shared Project', comment='Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False,
                       label='Owner', default=auth.user_id),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 format='%(proj_name)s')
 
 
@@ -106,7 +105,7 @@ db.define_table('event',
                 Field('startdatetime', 'datetime', label='Start Date Time'),
                 Field('enddatetime', 'datetime', label='End Date Time'),
                 Field('description', 'text'),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 Field('next_event', 'integer', default=0, writable=False, readable=False, label='Next Event'),
                 Field('prev_event', 'integer', default=0, writable=False, readable=False, label='Previous Event'),
                 Field('recurrence', 'string', default='None',
@@ -141,14 +140,14 @@ db.define_table('question',
                 Field('priority', 'decimal(6,2)', readable=False, compute=lambda r: r['urgency'] * r['importance'],
                       writable=False, label='Priority'),
                 Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
-                Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow(),
+                Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow,
                       label='Date Submitted'),
                 Field('resolvedate', 'datetime', readable=False, writable=False, label='Date Resolved'),
                 Field('responsible', label='Responsible'),
                 Field('startdate', 'datetime', readable=False, writable=False,
-                      default=(datetime.datetime.utcnow()), label='Date Action Starts'),
+                      default=(datetime.datetime.utcnow), label='Date Action Starts'),
                 Field('enddate', 'datetime', readable=False, writable=False,
-                      default=(datetime.datetime.utcnow()), label='Date Action Ends'),
+                      default=(datetime.datetime.utcnow), label='Date Action Ends'),
                 Field('eventid', 'reference event', label='Event'),
                 Field('shared_editing', 'boolean', default=True, label='Shared Edit',
                       comment='Allow anyone to edit action status and dates'),
@@ -176,7 +175,7 @@ db.define_table('userquestion',
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('answerreason', 'text', label='Reasoning'),
-                Field('ansdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+                Field('ansdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
 db.define_table('uqrating',
                 Field('questionid', db.question, writable=False, notnull=True),
@@ -185,7 +184,7 @@ db.define_table('uqrating',
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
-                Field('ratingdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+                Field('ratingdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
 
 db.define_table('questlink',
@@ -198,19 +197,19 @@ db.define_table('questlink',
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Draft', 'Active', 'Rejected'])),
                 Field('lastdeleter', 'reference auth_user'),
                 Field('lastaction', 'string', default='create'),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
 # below is being adapted to hold comments against any object
 db.define_table('comment',
                 Field('parentid', 'integer', writable=False, readable=False),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
-                Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
+                Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('comment', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='OK', writable=False, readable=False,
                       requires=IS_IN_SET(['OK', 'NOK'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
-                Field('commentdate', 'datetime', default=datetime.datetime.utcnow(), writable=False, readable=False))
+                Field('commentdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
 db.comment.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
 
@@ -249,8 +248,8 @@ db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans ==
 db.define_table("itemlike",
                 Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question'),
-                Field('createdby', 'reference auth_user', default=auth.user_id),
+                Field('createdby', 'reference auth_user', default=auth.get_user().get("id")),
                 Field('liketype', 'string', default='like'),
-                Field('likedate', 'datetime', default=datetime.datetime.utcnow()))
+                Field('likedate', 'datetime', default=datetime.datetime.utcnow))
 
 db.commit()

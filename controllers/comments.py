@@ -5,6 +5,7 @@ from py4web import action, request
 # at present we may return all comments or page them
 
 
+# TODO - will need some sort of class based on users comments vs others comments
 @action('getcomments/<itemid>', method=['POST', 'GET'])
 @action('getcomments', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, "getcomments.load")

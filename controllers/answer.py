@@ -19,16 +19,12 @@ def quickanswer():
     questid = request.json['questid']
     answer = request.json['answer']
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
-
-    if not uq:
-        uqid = db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
-        messagetxt = 'Answer recorded for item:' + str(questid)
-        status = score_question(questid, answer)
-        messagetxt += status
-    elif uq:
-        messagetxt = 'You already answered this one'
-    else:
-        messagetxt = 'Answer not recorded'
+    if uq:
+        return 'You already answered this one'
+    db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
+    messagetxt = 'Answer recorded for item:' + str(questid)
+    status = score_question(questid, answer)
+    messagetxt += status
     return messagetxt
 
 
@@ -68,11 +64,12 @@ def agree(qid):
 
 # make a "like" button factory
 @authenticated.callback()
-def like(id):
+def like(id, table):
     # TODO
     # so think this needs to check for previous likes and if none create
-    # and update the numlike on the main question table??
-    db.item_like.insert(item_id=id)
+    # and update the numlike on the main question table and get auth_user included - but probably also disable button
+    # on initial like via js
+    db.itemlike.insert(parentid=id, parenttable=table)
 
 
 @action('index', method=['POST', 'GET'])
