@@ -13,7 +13,7 @@ from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
-from ..common import db, session, auth, authenticated
+from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch

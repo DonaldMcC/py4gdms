@@ -6,11 +6,12 @@ from py4web import action, request
 
 
 # TODO - will need some sort of class based on users comments vs others comments
+# this can be done all in template I think
+@action('getcomments/<itemid>/<table>', method=['POST', 'GET'])
 @action('getcomments/<itemid>', method=['POST', 'GET'])
 @action('getcomments', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, "getcomments.load")
-def getcomments(itemid=1):
-    table = 'question'
+def getcomments(itemid=1, table='question'):
     x = 0
     y = 50
     query = (db.comment.parenttable == table) & (db.comment.parentid == itemid)

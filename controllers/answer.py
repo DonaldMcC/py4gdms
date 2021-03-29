@@ -1,8 +1,9 @@
 import datetime
 from ..common import db, authenticated, auth, session
-from py4web import action, request
+from py4web import action, request, Flash
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items, check_liked
+flash = Flash()
 
 
 @action('quickanswer', method=['POST', 'GET'])
@@ -64,12 +65,19 @@ def agree(qid):
 
 # make a "like" button factory
 @authenticated.callback()
-def like(id, table):
-    # TODO
-    # so think this needs to check for previous likes and if none create
-    # and update the numlike on the main question table and get auth_user included - but probably also disable button
-    # on initial like via js
-    db.itemlike.insert(parentid=id, parenttable=table)
+@action.uses(flash)
+def like(itemid, table):
+    # TODO disable button or change to unlike on initial like via js and get the flash working via
+    # functions
+    alreadyliked = db((db.itemlike.parentid == itemid) &
+                      (db.itemlike.parenttable == table) &
+                      (db.itemlike.createdby == auth.user_id)).select()
+    if alreadyliked:
+        flash.set("You Already liked this one", sanitize=True)
+    else:
+        db.itemlike.insert(parentid=itemid, parenttable=table, createdby=auth.user_id)
+        flash.set("Like Recorded", sanitize=True)
+    return
 
 
 @action('index', method=['POST', 'GET'])

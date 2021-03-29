@@ -205,8 +205,8 @@ def move():
         responsetext = 'No event set - movements not saved'
     else:
         event = db((db.evt.id == questrec.eventid) & (db.evt.projid == db.project.id)).select().first()
-        if (event.project.proj_shared == True or
-            event.project.proj_owner == auth.user_id) and event.evt.status == 'Open':
+        if event.evt.status == 'Open' and (event.project.proj_shared == True or
+                                           event.project.proj_owner == auth.user_id):
             questrec.update_record(xpos=newxpos, ypos=newypos)
             db.commit()
             responsetext = 'Element moved'
