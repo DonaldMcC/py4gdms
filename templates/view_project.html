@@ -2,7 +2,6 @@
 [[load_graph=False]]
 
 [[include 'projdetails.i']]
-
 [[include 'eventlist.i']]
 
 [[include 'issue.html']]
@@ -12,6 +11,13 @@
 [[include 'action_resolved.html']]
 [[include 'gantt.i']]
 [[include 'action_complete.html']]
+
+<div>
+<ajax-component id="comments" url="[[=URL('getcomments/'+str(projectid)+'/project')]]">
+    <p>Loading...</p>
+</ajax-component>
+    <p>[[=commentform]]</p>
+    </div>
 
  <script>
  [[include 'quickanswer.js']]
