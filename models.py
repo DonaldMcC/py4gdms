@@ -99,7 +99,7 @@ db.define_table('project',
 
 db.define_table('event',
                 Field('event_name', label='Event Name', unique=False, notnull=True),
-                Field('locationid', 'reference locn', label='Location'),
+                Field('locationid', 'reference locn', label='Location', notnull=True),
                 Field('projid',  'reference project',  label='Project', notnull=True),
                 Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),

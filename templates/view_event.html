@@ -11,6 +11,13 @@
 
 [[include 'eventmap.i']]
 
+<div>
+<ajax-component id="comments" url="[[=URL('getcomments/'+str(eventid)+'/event')]]">
+    <p>Loading...</p>
+</ajax-component>
+    <p>[[=commentform]]</p>
+    </div>
+
  <script>
  [[include 'vieweventmapd3v4.js']]
  </script>

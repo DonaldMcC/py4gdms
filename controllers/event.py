@@ -13,6 +13,7 @@ from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..d3js2py import getd3graph
+from .answer import like, check_liked
 from ..ndsfunctions import myconverter
 from pydal.validators import *
 flash = Flash()
@@ -108,6 +109,7 @@ def view_event(eid='0'):
     res_questions = get_items(qtype='quest',status='Resolved', event=eid, eventstatus=eventrow.status)
     res_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Incomplete')
     comp_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Completed')
+    check_liked(res_actions)
 
     eventlevel = 0
     parentquest = 0
@@ -115,11 +117,16 @@ def view_event(eid='0'):
     projrow = db(db.project.id == eventrow.projid).select().first()
     editable = 'true' if projrow.proj_shared or projrow.proj_owner == auth.user else 'false'
 
+    db.comment.auth_userid.default = auth.user_id
+    db.comment.parenttable.default = 'event'
+    db.comment.parentid.default = eid
+    commentform = Form(db.comment,  formstyle=FormStyleBulma)
+
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
                 links=links, resultstring=resultstring, redraw='false', eventowner=editable, projid=eventrow.projid,
-                myconverter=myconverter, auth=auth)
+                myconverter=myconverter, auth=auth, like=like, commentform=commentform)
 
 
 @action('eventgrid', method=['POST', 'GET'])
