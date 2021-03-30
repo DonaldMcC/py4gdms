@@ -8,10 +8,10 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
     if qtype != 'quest':  # issue or action
-        btnclass = 'is-success' if answer == 1 else 'is-danger'
+        btnclass = 'is-success ' if answer == 1 else 'is-danger '
     else:
         btnclass = ''
-    btnclass += 'button is-small is-rounded '
+    btnclass += 'button is-small is-rounded'
     return btnclass
 
 
