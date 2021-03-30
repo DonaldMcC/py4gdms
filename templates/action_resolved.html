@@ -15,9 +15,9 @@
                     <tbody>
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.question.id]]">
-<td>[[=row.question.questiontext]]<br>
-      [[=like.button('Like', _class=("clicked" if row.liked else ""))(id=row.question.id,table='question')]]
-    <INPUT TYPE=BUTTON class="button is-small is-rounded" onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'" VALUE="Details"></p>
+<td>[[=row.question.questiontext]]
+      [[=like.button(_VALUE='Like', _TYPE="BUTTON", _class=("button is-small is-rounded is-clicked" if row.liked else "button is-small is-rounded is-info"))(id=row.question.id, table='question')]]
+    <INPUT TYPE=BUTTON class="button is-small is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"></p>
 
     <div id='btns[[=str(row.question.id)]]'></div></td>
 <td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:

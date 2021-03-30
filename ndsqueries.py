@@ -16,6 +16,7 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
 
 
 def check_liked(items, table='question'):
+    #TODO - below is probably cacheable or split into separate functions and only build like_ids once
     query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable==table)
     query &= db.itemlike.parentid.belongs(items.as_dict().keys())
     liked_ids = [row.parentid for row in db(query).select()]
@@ -41,7 +42,6 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
         if qtype == 'quest':
             query = (db.eventmap.qtype == 'quest')
         elif qtype == 'action':
-            # query = (db.question.qtype == 'action') & (db.question.execstatus != 'Completed')
             query = (db.eventmap.qtype == 'action')
         else:
             query = (db.eventmap.qtype == 'issue')
