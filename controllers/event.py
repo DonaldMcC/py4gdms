@@ -13,7 +13,7 @@ from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..d3js2py import getd3graph
-from .answer import like, check_liked
+from .answer import like
 from ..ndsfunctions import myconverter
 from pydal.validators import *
 flash = Flash()
@@ -109,7 +109,6 @@ def view_event(eid='0'):
     res_questions = get_items(qtype='quest',status='Resolved', event=eid, eventstatus=eventrow.status)
     res_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Incomplete')
     comp_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Completed')
-    check_liked(res_actions)
 
     eventlevel = 0
     parentquest = 0

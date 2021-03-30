@@ -6,7 +6,7 @@ from ..common import db, session,  auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..ndsfunctions import myconverter, get_gantt_data
-from .answer import like, check_liked
+from .answer import like
 from yatl.helpers import XML
 flash = Flash()
 
@@ -24,7 +24,6 @@ def view_project(pid='0'):
     res_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Incomplete')
     comp_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Completed')
     res_questions = get_items(qtype='question', status='Resolved', project=pid)
-    check_liked(res_actions)
 
     if res_actions:
         projxml = get_gantt_data(res_actions)

@@ -2,7 +2,7 @@ import datetime
 from ..common import db, authenticated, auth, session
 from py4web import action, request, Flash
 from ..ndsfunctions import score_question
-from ..ndsqueries import get_class, get_disabled, get_items, check_liked
+from ..ndsqueries import get_class, get_disabled, get_items
 flash = Flash()
 
 
@@ -88,7 +88,6 @@ def index(qtype=None):
     questions = get_items(qtype='quest', status='In Progress') if (qtype == 'questions' or qtype == None) else None
     issues = get_items(qtype='issue', status='In Progress') if (qtype == 'issues' or qtype == None) else None
     res_actions = get_items(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
-    check_liked(res_actions)
 
     return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
