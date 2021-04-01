@@ -1,22 +1,18 @@
 [[extend 'layout.html']]
-
-<h1 class="title">Question</h1>
+<h1 class="title is-2">[[=quest['qtype'].capitalize() ]]</h1>
 <p>[[=quest['questiontext'] ]]</p>
 
 [[if quest['status'] == 'Resolved':]]
 <p>Users have resolved that the correct answer is: [[=quest.correctanstext()]]</p>
 [[pass]]
 
-<h2 class="subtitle">Notes</h2>
-<p>[[=quest['notes'] ]] </p>
-
 <div id="newchart">
-    <h2 class="subtitle">Answer Analysis</h2>
+    <h2 class="title is-4">Answer Analysis</h2>
 </div>
 
 [[if quest.factopinion == 'Opinion':]]
 <p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. </p>
-<h2 class="subtitle">Status</h2>
+<h2 class="title  is-5">Status</h2>
 <p>[[=viewtext]]
 [[pass]]
 
