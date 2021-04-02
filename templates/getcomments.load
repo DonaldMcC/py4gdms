@@ -7,7 +7,7 @@
                 </thead>
                     <tbody>
 [[for i,row in enumerate(comments):]]
-<tr>
+<tr [[if row.auth_userid == auth.user_id:]] class="mycomment" [[pass]]>
 <td>[[=row.auth_userid.first_name]]
 [[=row.auth_userid.last_name]] on     [[=row.commentdate]]
  <blockquote>[[=row.comment]]</blockquote></td>

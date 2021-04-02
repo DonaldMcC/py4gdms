@@ -17,4 +17,4 @@ def getcomments(itemid=1, table='question'):
     query = (db.comment.parenttable == table) & (db.comment.parentid == itemid)
     sortby = db.comment.id
     comments = db(query).select(orderby=[sortby], limitby=(x, y))
-    return dict(comments=comments)
+    return dict(comments=comments, auth=auth)

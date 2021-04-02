@@ -7,7 +7,9 @@
   border: 2px;
 }
 
-
+.mycomment {
+    background-color: coral;
+}
 
 
 .graph-svg-component {
@@ -99,7 +101,7 @@ rect {
 }
 
 .conceptG text{
-    font-size: 20px
+    font-size: 20px;
     pointer-events: none;
 }
 

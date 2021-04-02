@@ -21,7 +21,7 @@ def check_liked(items, table='question'):
     query &= db.itemlike.parentid.belongs(items.as_dict().keys())
     liked_ids = [row.parentid for row in db(query).select()]
     for item in items:
-        item["liked"] = item.id in liked_ids if liked_ids else False
+        item["liked"] = item.question.id in liked_ids if liked_ids else False
     return
 
 
@@ -33,7 +33,8 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     else:
         sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
-    check_liked(items)
+    if items:
+        check_liked(items)
     return items
 
 
