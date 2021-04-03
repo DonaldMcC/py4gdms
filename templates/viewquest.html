@@ -2,19 +2,22 @@
 <h1 class="title is-2">[[=quest['qtype'].capitalize() ]]</h1>
 <p>[[=quest['questiontext'] ]]</p>
 
+<h2 class="title  is-5">Status</h2>
 [[if quest['status'] == 'Resolved':]]
-<p>Users have resolved that the correct answer is: [[=quest.correctanstext()]]</p>
+[[if quest['qtype'] == 'question':]]
+<p>Users have decided the correct answer is [[=quest.correctanstext()]]</p>
+[[else:]]
+<p>This [[=quest['qtype'] ]] is approved.</p>
 [[pass]]
+[[pass]]
+<p>[[=viewtext]]
 
 <div id="newchart">
-    <h2 class="title is-4">Answer Analysis</h2>
-</div>
-
+    <h2 class="title is-5">Answer Analysis</h2>
 [[if quest.factopinion == 'Opinion':]]
-<p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. </p>
-<h2 class="title  is-5">Status</h2>
-<p>[[=viewtext]]
+<p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons below.</p>
 [[pass]]
+    </div>
 
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
@@ -30,7 +33,7 @@
 
 <div id="target"></div>
 
-<h2 class="title is-3">Urgency and importance</h2>
+<h2 class="title is-5">Urgency and importance</h2>
 <p>[[=urgmessage]]</p>
 <table id='TabUrgency' class="table table-bordered table-condensed">
 				<thead>
@@ -54,24 +57,23 @@
                     </tbody>
                 </table>
 
+
+
 <script>
 var questid = "[[=quest['id'] ]]";
-/*var newans = =newansjson;*/
 </script>
 
-
-<script>
-/*include 'questiond3v4.js'*/
-</script>
 
 [[if can_edit:]]
 <div>
      <INPUT TYPE=BUTTON class="button is-small is-rounded" onClick="parent.location='[[=URL('new_question/'+str(quest['id']))]]'" VALUE="Edit"></p>
 </div>
 [[pass]]
+[[if quest['notes']:]]
 <div><h1 class="subtitle is-4">Notes</h1>
 <p>[[=quest['notes'] ]]</p>
     </div>
+[[pass]]
 
 <div>
 <ajax-component id="comments" url="[[=URL('getcomments/'+str(quest['id']))]]">
