@@ -5,9 +5,7 @@ from .common import db, auth, T
 from py4web import Field
 from pydal.validators import *
 import datetime
-
 not_empty = IS_NOT_EMPTY()
-# TODO setup auth extra fields again to extent still required
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
@@ -113,7 +111,7 @@ db.define_table('event',
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
-                Field('questiontext', 'text', label='Question Action Issue', requires=not_empty),
+                Field('questiontext', 'text', label='Item Details', requires=not_empty),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
@@ -154,11 +152,6 @@ db.define_table('question',
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
-#db.question.resolvemethod.default = db(db.website_parameters.id > 0).select(
-#    db.website_parameters.id).first().id or None
-# So thinking that we just support two answers for everything - and maybe Yes No is simple enough for everything that
-# is an action, issue or question (not of fact).  Questions of fact should generally be referred to knowledge engines
-# but probably want answertext as well - they are not generally ciruclated - as should be answered at creation
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False, notnull=True),
@@ -190,7 +183,6 @@ db.define_table('questlink',
                 Field('lastaction', 'string', default='create'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
-# below is being adapted to hold comments against any object
 db.define_table('comment',
                 Field('parentid', 'integer', writable=False, readable=False),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
@@ -235,7 +227,6 @@ db.define_table('eventmap',
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
-# will also support likes against any item including comments
 db.define_table("itemlike",
                 Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question'),
