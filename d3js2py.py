@@ -11,7 +11,7 @@
 # License Content: Creative Commons Attribution 3.0
 #
 # Also visit: www.web2py.com
-# or Groups: http://groups.google.com/group/web2py
+# or Groups: http://groups.google.com/group/py4web
 # For details on the web framework used for this development
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
@@ -61,7 +61,6 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
             edges.append(edge)
 
     resultstring = 'Success'
-
     return dict(nodes=nodes, edges=edges, resultstring=resultstring)
 
 
@@ -81,7 +80,6 @@ def getd3link(sourceid, targetid, createcount, deletecount):
     else:
         edge['dasharray'] = '5, 5'
         edge['linethickness'] = 3
-
     return edge
 
 
@@ -139,7 +137,6 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
     d3dict['qtype'] = qtype
     d3dict['status'] = status
     d3dict['priority'] = priority
-
     return d3dict
 
 
@@ -171,11 +168,11 @@ def colourclass(qtype, status, priority):
        generated in the diagram for consistency - however it will not be fully dynamic instead
        there will be 5 clasees for ranges from 25 to 100 priority and will just use qtype as 
        the class for type which will be joined by hyphen to the urgency 
-       >>> colourclass('quest','inprogress',100)
+       >>> colourclass('quest', 'inprogress', 100)
        'quest-vhigh'
-       >>> colourclass('quest','inprogress',40)
+       >>> colourclass('quest', 'inprogress', 40)
        'quest-low'
-       >>> colourclass('quest','inprogress',39)
+       >>> colourclass('quest', 'inprogress', 39)
        'quest-vlow'
        """
     if priority < 40:
@@ -189,21 +186,6 @@ def colourclass(qtype, status, priority):
     else:
         priorityclass = 'vhigh'
     return qtype + '-' + priorityclass
-
-
-def textcolour(qtype, status, priority):
-    """This returns a colour for the text on the question nodes on the network     
-    Aiming to get good contrast between background and text in due course
-    This is not currently being used
-    """
-    if qtype == 'action' and status == 'In Progress':
-        # is this ok
-        textcolourstring = 'white'
-    elif qtype == 'quest' and status == 'Resolved':
-        textcolourstring = 'white'
-    else:
-        textcolourstring = 'black'
-    return textcolourstring
 
 
 # plan is to set this up to go from a range of rgb at 0 to 100 priority and range is rgb(80,100,60) to 140,80,20 -
@@ -220,11 +202,10 @@ def priorityfunc(priority):
     scalesource = max(priority - 25.0, 0)
     factor = (220.0 - 100.0) / 75.0
     scaledvalue = scalesource * factor
-    colint = int(220 - scaledvalue)
-    return str(colint)
+    return str(int(220 - scaledvalue))
 
 
-def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
+def getevent(eventid, status="Open", orderby='id', parentquest=0):
     if orderby == 'Event':
         orderstr = db.question.xpos
     else:
@@ -235,13 +216,13 @@ def getevent(eventid, status="Open", orderby='id', eventlevel=0, parentquest=0):
             quests = db(db.eventmap.eventid == eventid).select(orderby=orderstr)
         else:
             quests = db((db.question.eventid == eventid) &
-                                (db.question.masterquest == parentquest)).select(orderby=orderstr)
+                        (db.question.masterquest == parentquest)).select(orderby=orderstr)
     else:
         if parentquest == 0:
             quests = db(db.question.eventid == eventid).select(orderby=orderstr)
         else:
             quests = db((db.question.eventid == eventid) &
-                                (db.question.masterquest == parentquest)).select(orderby=orderstr)
+                        (db.question.masterquest == parentquest)).select(orderby=orderstr)
 
     questlist = [x.id for x in quests]
     return quests, questlist
@@ -257,8 +238,7 @@ def getproject(projectid, status="Open", orderby='id'):
 def getlinks(questlist):
     intquery = (db.questlink.targetid.belongs(questlist)) & (db.questlink.status == 'Active') & (
         db.questlink.sourceid.belongs(questlist))
-    intlinks = db(intquery).select()
-    return intlinks
+    return db(intquery).select()
 
 
 def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentquest=0):
@@ -267,10 +247,11 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     links = []
     quests = None
     questlist = []
+    intlinks = None
 
     if queryids:
         if querytype == 'event':
-            quests, questlist = getevent(queryids, status, 'id', eventlevel, parentquest)
+            quests, questlist = getevent(queryids, status, 'id', parentquest)
         elif querytype == 'project':
             quests, questlist = getproject(queryids, status)
         else:  # ie querytype == 'search':
@@ -302,11 +283,6 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     return quests, nodes, edges, resultstring
 
 
-def _test():
-    import doctest
-    doctest.testmod()
-
-
 def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, status='Open'):
     # this should only need to use eventmap
     # now change to use quest
@@ -328,13 +304,17 @@ def geteventgraph(eventid, redraw=False, grwidth=720, grheight=520, radius=80, s
             linklist = [(x.sourceid, x.targetid, {'weight': 30}) for x in intlinks]
         for row in quests:
             nodepositions[row.id] = (
-            ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
+                ((row.xpos * grwidth) / stdwidth) + radius, ((row.ypos * grheight) / stdheight) + radius)
 
     return dict(questlist=questlist, linklist=linklist, quests=quests, links=intlinks, nodepositions=nodepositions,
                 resultstring=resultstring)
 
 
+def _test():
+    import doctest
+    doctest.testmod()
+
+
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run
     _test()
-
