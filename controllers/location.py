@@ -19,7 +19,6 @@ flash = Flash()
 def new_location(lid='0'):
     lid=int(lid)
     if lid:
-        #TODO - get flash working with redirect - seems it should but doesn't
         islocked = db(db.locn.id == lid).select('locked').first()
         if islocked.locked:
             flash.set("Locked records cannot be edited", sanitize=True)

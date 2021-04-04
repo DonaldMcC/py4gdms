@@ -1,5 +1,5 @@
 [[if comments:]]
-<table id=comments_table class='table table-bordered table-condensed'>
+<table id=comments_table class='table table-bordered table-condensed is-size-7'>
 				<thead>
 					<tr>
                         <th>Comments</th>

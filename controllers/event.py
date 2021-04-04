@@ -102,7 +102,7 @@ def create_next_event():
 
 @action("view_event/<eid>", method=['GET', 'POST'])
 @action("view_event", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'view_event.html')
+@action.uses(session, db, auth.user, flash, 'view_event.html')
 def view_event(eid='0'):
     eventrow = db(db.event.id == eid).select().first()
     if eventrow:

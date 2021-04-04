@@ -33,7 +33,7 @@ def quickanswer():
 @action.uses(session, db, auth.user)
 def perccomplete():
     """
-    This updates percent complete on resolved actions
+    This updates resolved actions only for responsible person, due date and % complete
     """
     questid = request.json['questid']
     percentcomplete = int(request.json['perccomplete'])
@@ -59,25 +59,22 @@ def perccomplete():
 
 # make a "like" button factory
 @authenticated.callback()
-def agree(qid):
-    print(str(qid) + 'was called')
-
-
-# make a "like" button factory
-@authenticated.callback()
 @action.uses(flash)
-def like(itemid, table):
+def like(itemid, table='question'):
     # TODO disable button or change to unlike on initial like via js and get the flash working via
-    # functions
-    alreadyliked = db((db.itemlike.parentid == itemid) &
-                      (db.itemlike.parenttable == table) &
+    alreadyliked = db((db.itemlike.parentid == itemid) & (db.itemlike.parenttable == table) &
                       (db.itemlike.createdby == auth.user_id)).select()
     if alreadyliked:
         flash.set("You Already liked this one", sanitize=True)
     else:
         db.itemlike.insert(parentid=itemid, parenttable=table, createdby=auth.user_id)
+        if table == 'question':
+            liked_item = db(db.question.id == itemid).select().first()
+            likecount = liked_item.numlike + 1
+            liked_item.update_record(numlike=likecount)
+            db.commit()
         flash.set("Like Recorded", sanitize=True)
-    return
+    return dict()
 
 
 @action('index', method=['POST', 'GET'])
@@ -89,5 +86,5 @@ def index(qtype=None):
     issues = get_items(qtype='issue', status='In Progress') if (qtype == 'issues' or qtype == None) else None
     res_actions = get_items(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
 
-    return dict(actions=actions, questions=questions, issues=issues, agree=agree, res_actions=res_actions,
+    return dict(actions=actions, questions=questions, issues=issues, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
