@@ -44,15 +44,15 @@ def view_project(pid='0'):
 @action("new_project", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_project.html')
 def new_project(pid='0'):
+    # default for this in models doesn't seem to work
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
     pid = int(pid)
-    # default for this in models doesn't seem to work
     if pid:
-        #TODO - get flash working with redirect - seems it should but doesn't
-        islocked = db(db.project.id == pid).select('locked').first()
-        if islocked.locked:
-            flash.set("Project records cannot be edited", sanitize=True)
-            print('got locked project')
+        # locked is mainly to protect the unspecified project from changes
+        islocked = db(db.project.id == pid).select().first()
+        if islocked.locked or (islocked.proj_owner != auth.user_id and not islocked.proj_shared):
+            flash.set("You can't edit this record", sanitize=True)
+            print('got locked project or not owner of unshared project')
             redirect(URL('projectgrid'))
     db.project.proj_owner.default = auth.user_id
     form = Form(db.project, record=pid, formstyle=FormStyleBulma)
@@ -73,7 +73,7 @@ def new_project(pid='0'):
 
 @action('projectgrid', method=['POST', 'GET'])
 @action('projectgrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, 'projectgrid.html')
+@action.uses(session, db, auth.user, flash, 'projectgrid.html')
 def projectgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,

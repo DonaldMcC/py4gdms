@@ -137,7 +137,7 @@ def view_event(eid='0'):
 
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, 'eventgrid.html')
+@action.uses(session, db, auth.user, flash, 'eventgrid.html')
 def eventgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
