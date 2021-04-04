@@ -1,6 +1,5 @@
 var g = new JSGantt.GanttChart(document.getElementById('GanttChartDIV'), 'day');
 
-
 function edit_click() {
     console.log($('#key').val());
     if ($('#key').val()=='Edit') {

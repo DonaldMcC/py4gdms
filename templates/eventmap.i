@@ -32,7 +32,6 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
   </div>
 </div>
 
-
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>

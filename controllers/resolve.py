@@ -1,5 +1,5 @@
 from py4web import action
-from py4web.utils.form import Form, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyle
 
@@ -18,7 +18,7 @@ def resolvegrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBootstrap4,
+                         formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyle)
 
     fields = [db.resolve.resolve_name, db.resolve.responses, db.resolve.consensus, db.resolve.adminresolve]
