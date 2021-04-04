@@ -16,9 +16,10 @@ def quickanswer():
     geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
     and retrieve them from the question
     """
-
     questid = request.json['questid']
     answer = request.json['answer']
+    print(questid)
+    print(answer)
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
     if uq:
         return 'You already answered this one'
