@@ -7,16 +7,24 @@
 # License Content: Creative Commons Attribution 3.0
 #
 
-from py4web import action, redirect, URL
+from py4web import action, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyle
-
+flash = Flash()
 
 @action("new_location/<lid>", method=['GET', 'POST'])
 @action("new_location", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, 'new_location.html')
-def new_location(lid=0):
+def new_location(lid='0'):
+    lid=int(lid)
+    if lid:
+        #TODO - get flash working with redirect - seems it should but doesn't
+        islocked = db(db.locn.id == lid).select('locked').first()
+        if islocked.locked:
+            flash.set("Locked records cannot be edited", sanitize=True)
+            print('got locked location')
+            redirect(URL('locationgrid'))
     form = Form(db.locn,
                 record=lid,
                 formstyle=FormStyleBulma)
@@ -36,8 +44,7 @@ def locationgrid(path=None):
                          grid_class_style=GridClassStyle)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,
-              db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description,
-              db.locn.locn_shared]
+              db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description]
 
     orderby = [db.locn.location_name]
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]

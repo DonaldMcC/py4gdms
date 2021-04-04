@@ -14,7 +14,7 @@ def datasetup():
                                      seo_meta_description='Platform for group decision making without meetings')
 
     if db(db.locn.location_name == "Unspecified").isempty():
-        locid = db.locn.insert(location_name="Unspecified", locn_shared=True,
+        locid = db.locn.insert(location_name="Unspecified", locked=True,
                                description='The unspecified location is used as a default for all events that are not'
                                            ' allocated a specific location')
 

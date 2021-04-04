@@ -74,6 +74,7 @@ db.define_table('locn',
                 Field('description', 'text'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('locked', 'boolean', readable=False, writable=False),
                 format='%(location_name)s')
 
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
