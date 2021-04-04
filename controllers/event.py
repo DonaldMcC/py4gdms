@@ -35,7 +35,6 @@ def new_event(eid='0'):
 
     eid = int(eid)
     if eid:
-        #TODO - get flash working with redirect - seems it should but doesn't
         islocked = db(db.event.id == eid).select('locked').first()
         if islocked.locked:
             flash.set("Locked Event cannot be edited", sanitize=True)
