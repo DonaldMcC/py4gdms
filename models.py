@@ -91,6 +91,7 @@ db.define_table('project',
                 Field('proj_shared', 'boolean', label='Shared Project', comment='Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False, default=auth.user_id),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('locked', 'boolean', readable=False, writable=False),
                 format='%(proj_name)s')
 
 
@@ -107,6 +108,7 @@ db.define_table('event',
                 Field('prev_event', 'integer', default=0, writable=False, readable=False),
                 Field('recurrence', 'string',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
+                Field('locked', 'boolean', readable=False, writable=False),
                 format='%(event_name)s')
 
 

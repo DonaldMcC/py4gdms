@@ -34,6 +34,13 @@ def new_event(eid='0'):
         pass
 
     eid = int(eid)
+    if eid:
+        #TODO - get flash working with redirect - seems it should but doesn't
+        islocked = db(db.event.id == eid).select('locked').first()
+        if islocked.locked:
+            flash.set("Locked Event cannot be edited", sanitize=True)
+            print('got locked event')
+            redirect(URL('eventgrid'))
     form = Form(db.event, record=eid, formstyle=FormStyleBulma)
     db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
                                       'project.id', '%(proj_name)s')

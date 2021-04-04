@@ -47,6 +47,13 @@ def new_project(pid='0'):
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
     pid = int(pid)
     # default for this in models doesn't seem to work
+    if pid:
+        #TODO - get flash working with redirect - seems it should but doesn't
+        islocked = db(db.project.id == pid).select('locked').first()
+        if islocked.locked:
+            flash.set("Project records cannot be edited", sanitize=True)
+            print('got locked project')
+            redirect(URL('projectgrid'))
     db.project.proj_owner.default = auth.user_id
     form = Form(db.project, record=pid, formstyle=FormStyleBulma)
 

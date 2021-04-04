@@ -1,5 +1,5 @@
 import datetime
-from ..common import db, authenticated
+from ..common import db, authenticated, auth
 
 
 @authenticated()
@@ -14,19 +14,19 @@ def datasetup():
                                      seo_meta_description='Platform for group decision making without meetings')
 
     if db(db.locn.location_name == "Unspecified").isempty():
-        locid = db.locn.insert(location_name="Unspecified", locked=True,
+        locid = db.locn.insert(location_name="Unspecified", locked=True, auth_userid = auth.user_id,
                                description='The unspecified location is used as a default for all events that are not'
                                            ' allocated a specific location')
 
     if db(db.project.proj_name == "Unspecified").isempty():
-        projid = db.project.insert(proj_name="Unspecified",
+        projid = db.project.insert(proj_name="Unspecified", locked=True, proj_owner=auth.userid,
                                    description='The unspecified project is used as a default for all events not '
                                                ' allocated a specific project')
 
     if db(db.event.event_name == "Unspecified").isempty():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         projid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
-        evid = db.event.insert(event_name="Unspecified", locationid=locid, projid=projid,
+        evid = db.event.insert(event_name="Unspecified", locationid=locid, projid=projid, locked=True,
                              startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
                              enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
