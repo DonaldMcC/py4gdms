@@ -70,17 +70,28 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
     # form = Form(db.question, record=qid, validation=check_status, formstyle=FormStyleBulma)
     # temporarily removing validation as that seems to mean submit button won't work on IOS
-    form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
-
     if qid:
         questrec = db((db.question.id == qid) & (db.question.eventid == db.event.id) &
                       (db.event.projid == db.project.id)).select().first()
+        answers = db(db.userquestion.questionid == qid).select()
+        if answers:
+            db.question.questiontext.writable = False
+            db.question.qtype.writable = False
+            db.question.status.writable = False
+            db.question.factopinion.writable = False
+            db.question.answer1.writable = False
+            db.question.answer2.writable = False
+
+    form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
+
+    if qid:
         # You can edit quests on shared projects, your projects and always your questions
         if ((not questrec.project.proj_shared) and questrec.project.proj_owner != auth.user_id and
                 questrec.question.auth_userid != auth.user_id):
             flash.set("Not Editable by You", sanitize=True)
             form.deletable = False
             form.readonly = True
+
 
     if form.accepted:
         session['eventid'] = form.vars['eventid']
