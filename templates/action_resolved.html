@@ -25,8 +25,10 @@
     ''
     pass]]"> </td>
 <td>
-    <input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
+    <input autocomplete="on" class="type-string form-control" name="question_responsible" type="text"
+           size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
+    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
+                value="[[=row.question.perccomplete]]" step="5"  /></td>
     <td>[[if auth.user_id:]]
         <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",

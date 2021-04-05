@@ -73,6 +73,15 @@ var questid = "[[=quest['id'] ]]";
     </div>
 [[pass]]
 
+[[if quest['qtype'] == 'action' and quest['status'] == 'Resolved':]]
+<div><h1 class="subtitle is-4">Execution Status</h1>
+<p>This action is reported as [[=(quest.perccomplete or 0)]] percent complete and [[=(quest.responsible or 'nobody')]] is responsible for
+    ensuring it gets completed.  The target for completion is [[if quest.enddate:
+=quest.enddate.date().strftime('%Y-%m-%d')
+    else:
+    ''
+    pass]]. </p>
+[[pass]]
 <div>
 <ajax-component id="comments" url="[[=URL('getcomments/'+str(quest['id']))]]">
     <p>Loading...</p>
