@@ -14,8 +14,10 @@ db.define_table('resolve',
                 Field('consensus', 'decimal(4,4)', default=60,
                       requires=IS_DECIMAL_IN_RANGE(50.01, 100, error_message='Must be in range 50.01 to 100'),
                       label='Percentage Agmt required to resolve'),
-                Field('Defaultresolve', 'boolean', default=False),
-                Field('adminresolve', 'boolean', label='Allow event owners to resolve on behalf of group'),
+                Field('Defaultresolve', 'boolean', label='Default Resolution Method', default=False),
+                Field('adminresolve', 'boolean', label='Allow event owners to resolve'),
+                Field('owner','reference auth_user', readable=False, writable=False, label='Submitter',
+                      default=auth.user_id),
                 format='%(resolve_name)s')
 
 db.define_table('website_parameters',

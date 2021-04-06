@@ -1,13 +1,22 @@
-from py4web import action
+from py4web import action, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyle
+flash = Flash()
 
-
+@action("new_resolve/<res_id>", method=['GET', 'POST'])
 @action("new_resolve", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'new_resolve.html')
-def new_resolve():
-    form = Form(db.resolve)
+@action.uses(session, db, auth.user, flash, 'new_resolve.html')
+def new_resolve(res_id='0'):
+    res_id = int(res_id)
+
+    form = Form(db.resolve, record=res_id, formstyle=FormStyleBulma)
+    if res_id:
+        res_rec = db(db.resolve.id == res_id).select().first()
+        if res_rec.owner != auth.user_id:
+            form.readonly = True
+            form.deletable = False
+            flash.set("Only owner can edit resolve methods")
     return dict(form=form)
 
 
@@ -35,7 +44,7 @@ def resolvegrid(path=None):
                 search_queries=search_queries,
                 create=True,
                 details=True,
-                editable=True,
+                editable=URL('new_resolve/'),
                 deletable=True,
                 **GRID_DEFAULTS)
 
