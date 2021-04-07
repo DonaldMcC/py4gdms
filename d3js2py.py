@@ -152,7 +152,7 @@ def colourcode(qtype, status, priority):
     >>> colourcode('action','inprogress',0)
     'rgb(255,255,220)'
     """
-    priority = float(priority)
+    priority = float(priority) if priority else 25.0
     if qtype == 'issue':  # graded blue
         colourstr = 'rgb(' + priorityfunc(priority) + ',' + priorityfunc(priority) + ',255)'
     elif qtype == 'quest':  # graded green
