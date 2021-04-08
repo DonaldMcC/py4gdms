@@ -22,7 +22,7 @@ describe('Signup users', function () {
       cy.get('#submit').click()
 
       // we should be redirected to /dashboard
-      cy.url().should('include', '/index')
+      cy.url().should('include', '/registered')
       cy.get('body').should('contain', 'Registered')
 
     })

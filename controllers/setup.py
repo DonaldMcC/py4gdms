@@ -19,7 +19,7 @@ def datasetup():
                                            ' allocated a specific location')
 
     if db(db.project.proj_name == "Unspecified").isempty():
-        projid = db.project.insert(proj_name="Unspecified", proj_shared=True, locked=True, proj_owner=auth.userid,
+        projid = db.project.insert(proj_name="Unspecified", proj_shared=True, locked=True, proj_owner=auth.user_id,
                                    description='The unspecified project is used as a default for all events not '
                                                ' allocated a specific project')
 
