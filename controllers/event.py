@@ -24,9 +24,9 @@ flash = Flash()
 @action.uses(session, db, auth.user, flash, 'new_event.html')
 def new_event(eid='0'):
     db.event.startdatetime.default = (datetime.datetime.utcnow()
-                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     db.event.enddatetime.default = (datetime.datetime.utcnow()
-                                  + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:%S")
+                                  + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     try:
         db.event.projid.default = session.get('projid',
                                             db(db.project.name == 'Unspecified').select(db.project.id).first().id)
