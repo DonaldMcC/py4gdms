@@ -31,7 +31,6 @@ describe('Signup users',  () => {
             cy.get('#login').click()
 
             cy.visit(action.url)
-            
 
         })
     })
