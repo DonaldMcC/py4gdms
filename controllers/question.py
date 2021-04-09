@@ -82,6 +82,7 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
             db.question.answer1.writable = False
             db.question.answer2.writable = False
 
+    db.question.priority.writable = False
     form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
 
     if qid:
