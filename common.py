@@ -12,6 +12,7 @@ from py4web.utils.downloader import downloader
 from py4web.utils.tags import Tags
 from py4web.utils.factories import ActionFactory
 from . import settings
+from pydal.validators import *
 
 # #######################################################
 # implement custom loggers form settings.LOGGERS
@@ -86,7 +87,16 @@ auth.param.allowed_actions = settings.ALLOWED_ACTIONS
 auth.param.login_expiration_time = 3600
 auth.param.password_complexity = {"entropy": 50}
 auth.param.block_previous_password_num = 3
+auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
+                                                         ' information to support operation of this site - it is not shared with 3rd parties',
+                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
+                            Field("status",'string', label='test'),
+                            Field('test','string',label='test2')]
 auth.define_tables()
+
+
+
+
 
 # #######################################################
 # Configure email sender for auth
