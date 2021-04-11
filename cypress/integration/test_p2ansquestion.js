@@ -2,22 +2,28 @@
 
 describe('Answer Actions',  () => {
     // we can use these values to log ind
-    const username = 'user2'
-    const password = 'Testuser2'
-
 
     const operations = [
         {
-            url: '/index/questions',
-            answer: 'Approve'
+            user: 'user1',
+            password: 'Testuser1',
+            url: '/index/actions',
+            answer: 'Approve',
+            result: 'Answer recorded'
         },
         {
-            url: '/index/questions',
-            answer: 'Approve'
+            user: 'user2',
+            password: 'Testuser2',
+            url: '/index/actions',
+            answer: 'Approve',
+            result: 'in progress'
         },
         {
-            url: '/index/questions',
-            answer: 'Approve'
+            user: 'user3',
+            password: 'Testuser3',
+            url: '/index/actions',
+            answer: 'Approve',
+            result: 'Resolved'
         }
     ]
 
@@ -27,15 +33,13 @@ describe('Answer Actions',  () => {
                 it('can visit /users', function () {
                     // or another protected page
                     cy.visit('/auth/login?next=../index')
-                    cy.get('#signin').type(username)
-                    cy.get('#signpass').type(password)
+                    cy.get('#signin').type(action.user)
+                    cy.get('#signpass').type(action.password)
                     cy.get('#login').click()
 
                     cy.visit(action.url)
-                   cy.get("td:nth-child(2) > .is-success").click()
-                    cy.get('body').should('contain', 'Answer recorded')
+                   cy.get("td:nth-child(2) > .is-success").first().click()
+                    cy.get('body').should('contain', action.result)
                 })
     })
 })
-
-
