@@ -54,12 +54,6 @@ class AnswerQuestion (FunctionalTest):
         category.send_keys("Strategy")
         self.browser.find_element_by_id("userquestion_changescope").click()
 
-        # activescope = self.browser.find_element_by_id("userquestion_activescope")
-        # activescope.select_by_visible_text("2 Continental")
-
-        # continent = self.browser.find_element_by_id("userquestion_continent")
-        # continent.select_by_visible_text("Africa (AF)")
-
         # self.browser.find_element_by_id("userquestion_answerreason").clear()
         self.browser.find_element_by_id("userquestion_answerreason").send_keys("the right answer selenium testing")
         # driver.find_element_by_css_selector("input.btn").click()
