@@ -118,7 +118,7 @@ def nodedelete():
             responsetext = 'Question deleted'
         else:
             responsetext = 'Question removed from event'
-            unspecevent = db(db.event.event_name == 'Unspecified').select(db.evt.id).first()
+            unspecevent = db(db.event.event_name == 'Unspecified').select(db.eventt.id).first()
             db(db.question.id == nodeid).update(eventid=unspecevent.id)
     return responsetext
 
@@ -143,7 +143,7 @@ def ajaxquest():
     if request.vars['eventid']:
         eventid = int(request.vars['eventid'])
     else:
-        eventid = db(db.evt.evt_name == 'Unspecified').select(db.evt.id).first().id
+        eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
 
     if auth.user is None:
         result = 'You must be logged in to create links'
@@ -204,8 +204,8 @@ def move():
     elif questrec.eventid == 0:
         responsetext = 'No event set - movements not saved'
     else:
-        event = db((db.evt.id == questrec.eventid) & (db.evt.projid == db.project.id)).select().first()
-        if event.evt.status == 'Open' and (event.project.proj_shared == True or
+        event = db((db.event.id == questrec.eventid) & (db.event.projid == db.project.id)).select().first()
+        if event.event.status == 'Open' and (event.project.proj_shared == True or
                                            event.project.proj_owner == auth.user_id):
             questrec.update_record(xpos=newxpos, ypos=newypos)
             db.commit()
@@ -214,5 +214,5 @@ def move():
             if event.status != 'Open':
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
-                responsetext = 'Move not saved - you must be owner of ' + event.evt_name + 'to save changes'
+                responsetext = 'Move not saved - you must be owner of ' + event.event_name + 'to save changes'
     return responsetext
