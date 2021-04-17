@@ -8,16 +8,25 @@ describe('Signup users',  () => {
 
     const operations = [
         {
-            url: '/new_question/0/action',
-            text: 'Lets get this done'
+            url: '/new_question/0/question',
+            text: 'To be or not to be',
+            ans1: 'be',
+            ans2: 'not to be',
+            resmethod: 'Standard'
         },
         {
             url: '/new_question/0/action',
-            text: 'The world is under-achieving'
+            text: 'Will questions work',
+            ans1: 'yes',
+            ans2: 'no',
+            resmethod: 'Single'
         },
         {
-            url: '/new_question/0/action',
-            text: 'Need actions working'
+            url: '/new_question/0/issue',
+            text: 'Will questions work',
+            ans1: 'yes',
+            ans2: 'no',
+            resmethod: 'Single'
         }
     ]
 

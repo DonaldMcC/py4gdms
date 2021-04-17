@@ -22,7 +22,6 @@ def new_location(lid='0'):
         islocked = db(db.locn.id == lid).select('locked').first()
         if islocked.locked:
             flash.set("Locked records cannot be edited", sanitize=True)
-            print('got locked location')
             redirect(URL('locationgrid'))
     form = Form(db.locn,
                 record=lid,

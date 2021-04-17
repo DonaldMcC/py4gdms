@@ -18,8 +18,6 @@ def quickanswer():
     """
     questid = request.json['questid']
     answer = request.json['answer']
-    print(questid)
-    print(answer)
     uq = db((db.userquestion.questionid == questid) & (db.userquestion.auth_userid == auth.user_id)).select()
     if uq:
         return 'You already answered this one'

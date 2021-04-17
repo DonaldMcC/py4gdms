@@ -52,7 +52,6 @@ def new_project(pid='0'):
         islocked = db(db.project.id == pid).select().first()
         if islocked.locked or (islocked.proj_owner != auth.user_id and not islocked.proj_shared):
             flash.set("You can't edit this record", sanitize=True)
-            print('got locked project or not owner of unshared project')
             redirect(URL('projectgrid'))
     db.project.proj_owner.default = auth.user_id
     form = Form(db.project, record=pid, formstyle=FormStyleBulma)

@@ -284,7 +284,6 @@ def wikipedia_lookup():
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
     qtext = request.json['questiontext']
-    print(qtext)
     pages = wikipedia.search(qtext, results=3)
     resultpage = wikipedia.summary(pages[0])
     # print(resultpage)

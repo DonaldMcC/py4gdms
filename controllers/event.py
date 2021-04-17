@@ -38,7 +38,6 @@ def new_event(eid='0'):
         islocked = db(db.event.id == eid).select('locked').first()
         if islocked.locked:
             flash.set("Locked Event cannot be edited", sanitize=True)
-            print('got locked event')
             redirect(URL('eventgrid'))
     form = Form(db.event, record=eid, formstyle=FormStyleBulma)
     db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
@@ -46,7 +45,6 @@ def new_event(eid='0'):
 
     if eid:
         proj = db(db.project.id == form.vars['projid']).select().first()
-        print(proj.proj_shared)
         if (not proj.proj_shared) and proj.proj_owner != auth.user_id:
             flash.set("Not Editable by You", sanitize=True)
             form.deletable = False

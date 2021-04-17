@@ -42,7 +42,6 @@ class AnswerQuestion (FunctionalTest):
 
         #answer issue
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .is-success").click()
-
         time.sleep(1)
 
         #body = self.browser.find_element_by_tag_name('body')
