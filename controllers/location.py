@@ -10,14 +10,15 @@
 from py4web import action, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyle
+from py4web.utils.grid import Grid, GridClassStyleBulma
 flash = Flash()
+
 
 @action("new_location/<lid>", method=['GET', 'POST'])
 @action("new_location", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_location.html')
 def new_location(lid='0'):
-    lid=int(lid)
+    lid = int(lid)
     if lid:
         islocked = db(db.locn.id == lid).select('locked').first()
         if islocked.locked:
@@ -39,10 +40,10 @@ def locationgrid(path=None):
                          include_action_button_text=True,
                          search_button_text='Filter',
                          formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyle)
+                         grid_class_style=GridClassStyleBulma)
 
-    fields = [db.locn.location_name, db.locn.address1, db.locn.address2, db.locn.address3,
-              db.locn.address4, db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description]
+    fields = [db.locn.location_name, db.locn.address1, db.locn.address2,
+              db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description]
 
     orderby = [db.locn.location_name]
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]
@@ -51,7 +52,7 @@ def locationgrid(path=None):
     grid = Grid(path,
                 db.locn,
                 fields=fields,
-                headings=['Name', 'Address1', 'Address2', 'Address3', 'Address4', 'Addrcode', 'Addrurl',
+                headings=['Name', 'Address1', 'Address2', 'Addrcode', 'Addrurl',
                           'Country', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
