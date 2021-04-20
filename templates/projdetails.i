@@ -18,7 +18,7 @@
 <th>Owner</th>
 <td>[[=projectrow.proj_owner.first_name+' '+projectrow.proj_owner.last_name]]</td>
 <td>Website</td>
-<td>[[=projectrow.proj_url]]</td>
+<td>[[=A(projectrow.proj_url, _href=projectrow.proj_url)]]</td>
 </tr>
 <tr>
 <th>Status: </th>

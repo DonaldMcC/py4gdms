@@ -96,6 +96,7 @@ db.define_table('project',
                 Field('locked', 'boolean', readable=False, writable=False),
                 format='%(proj_name)s')
 
+db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())
 
 db.define_table('event',
                 Field('event_name', label='Event Name', unique=False, notnull=True),
