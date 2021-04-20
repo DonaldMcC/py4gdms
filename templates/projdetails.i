@@ -1,5 +1,5 @@
 <div>
-<h1 class="title is-3">Project Details</h1>
+<h1 class="title is-5">Project Details</h1>
 <table id='TabAnswers' class='table'>
 <tbody>
 <tr>

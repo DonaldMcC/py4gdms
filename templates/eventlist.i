@@ -1,5 +1,5 @@
 <div>
-<h1 class="title is-3">Events For This Project</h1>
+<h1 class="title is-5">Events For This Project</h1>
 [[if events:]]
 <table id='Events' class='table'>
 <tbody>

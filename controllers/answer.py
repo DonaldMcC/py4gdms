@@ -22,7 +22,7 @@ def quickanswer():
     if uq:
         return 'You already answered this one'
     db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
-    messagetxt = 'Answer recorded for item:' + str(questid)
+    messagetxt = 'Answer recorded for item:' + str(questid) + ' '
     status = score_question(questid, answer)
     messagetxt += status
     return messagetxt
