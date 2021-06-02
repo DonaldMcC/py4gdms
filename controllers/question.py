@@ -131,7 +131,7 @@ def questiongrid(path=None):
                   db.project.proj_name]
         orderby = [db.question.status, db.question.execstatus, db.question.questiontext]
     else:
-        headings = ['Text', 'Answertext', 'Event', 'Project']
+        headings = ['Text', 'Answertext', 'Status', 'Event', 'Project']
         fields = [db.question.questiontext, db.question.answertext, db.question.status, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
