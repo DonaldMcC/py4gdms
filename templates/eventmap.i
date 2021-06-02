@@ -35,7 +35,6 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
 </div>
 <input type="hidden" name="fun" id="fun">
 </div>
-</p>
 <div id="target"></div>
 <div id="graph" class="graph-V">
 </div>

@@ -7,3 +7,15 @@
         [[=grid.render()]]
     [[pass]]
 </div>
+
+<script>
+    $(document).ready(function() {
+               if (window.screen.availWidth <= 1000) {
+                   $(".grid-col-locn\\.addrcode").hide();
+        }
+        if (window.screen.availWidth <= 422) {
+                   $(".grid-col-locn\\.address1").hide();
+                   $(".grid-col-locn\\.address2").hide();
+        }
+    });
+</script>
