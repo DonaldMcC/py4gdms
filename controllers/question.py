@@ -126,12 +126,17 @@ def questiongrid(path=None):
     search = GridSearch(search_queries, queries)
 
     if qtype == 'action':
-        headings = ['Text', 'Status', 'Execstatus', 'Event', 'Project']
+        headings = ['Action', 'Status', 'Execstatus', 'Event', 'Project']
         fields = [db.question.questiontext, db.question.status, db.question.execstatus, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.execstatus, db.question.questiontext]
+    elif qtype == 'issue':
+        headings = ['Issue', 'Status', 'Event', 'Project']
+        fields = [db.question.questiontext, db.question.status, db.event.event_name,
+                  db.project.proj_name]
+        orderby = [db.question.status, db.question.questiontext]
     else:
-        headings = ['Text', 'Answertext', 'Status', 'Event', 'Project']
+        headings = ['Question', 'Answer', 'Status', 'Event', 'Project']
         fields = [db.question.questiontext, db.question.answertext, db.question.status, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
