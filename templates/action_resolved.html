@@ -2,7 +2,7 @@
 [[if res_actions:]]
 <br>
 <h1 class="title is-5">Resolved Actions</h1>
-<table id=res_actions class='table issuetable2 table-bordered table-condensed'>
+<table id=res_actions class='table issuetable2 is-bordered is-striped is-narrow'>
 				<thead>
 					<tr>
                         <th width="52%">Action</th>
@@ -16,8 +16,8 @@
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.question.id]]">
 <td>[[=row.question.questiontext]]
-      [[=like.button('Like', _class=("is-small is-clicked" if row.liked else "is-small"))(itemid=row.question.id)]]
-    <button class="is-small"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'">Details</button>
+      [[=like.button('Like', _class=("button is-small is-success is-clicked" if row.liked else "button is-small is-success"))(itemid=row.question.id)]]
+    <button class="button is-small is-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'">Details</button>
     <div id='btns[[=str(row.question.id)]]'></div><sub>Like: [[=row.question.numlike]]</sub></td>
 <td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
 =row.question.enddate.date().strftime('%Y-%m-%d')
