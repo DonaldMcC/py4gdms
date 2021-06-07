@@ -211,7 +211,7 @@ def move():
             db.commit()
             responsetext = 'Element moved'
         else:
-            if event.status != 'Open':
+            if event.event.status != 'Open':
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
                 responsetext = 'Move not saved - you must be owner of ' + event.event_name + 'to save changes'
