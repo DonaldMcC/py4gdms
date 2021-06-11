@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
         self.url = ROOT + '/auth/register'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
 
     # def test_can_view_register_page(self):
     #    response_code = self.get_response_code(self.url)        
@@ -42,23 +42,20 @@ class TestRegisterPage (FunctionalTest):
         email.send_keys(mailstring)
 
         password = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("password"))
-        #password.clear()
+        password.clear()
         password.send_keys(passwd)
-        #"//div[@class='txt-bx']/following-sibling::p")
+
         verify_password = WebDriverWait(self, 10).until(
-            lambda self: self.browser.find_element_by_xpath("//div[@id='password2']/input[1]"))
-        #verify_password.clear()
-
+            lambda self: self.browser.find_element_by_xpath(r"//div[@id='password2']/input[1]"))
+        verify_password.clear()
         verify_password.send_keys(passwd)
-
-        #data_consent = self.browser.find_element_by_name("data_consent")
-        #data_consent.click()
+        # data_consent = self.browser.find_element_by_name("data_consent")
+        # data_consent.click()
 
         register_button = self.browser.find_element_by_id("submit")
 
         time.sleep(5)
         register_button.click()
-        #self.browser.find_element_by_xpath(r"id('page-content')//input[@type='submit']").click()
         time.sleep(5)
 
         self.url = ROOT + '/auth/login'

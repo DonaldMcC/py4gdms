@@ -22,7 +22,6 @@ class AddBasicAction (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-
     @data(('/new_project', 'P1Test', 'Phase 1 test project'), ('/new_project', 'P1Test2', 'Phase 1 test project2'))
     @unpack
     def test_question(self, urltxt, itemtext, itemdesc):
@@ -44,4 +43,3 @@ class AddBasicAction (FunctionalTest):
         # Lookof for body in questiongrid
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(itemtext, body.text)
-
