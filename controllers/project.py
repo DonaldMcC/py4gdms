@@ -43,10 +43,10 @@ def view_project(pid='0'):
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_project.html')
-def new_project(pid='0'):
+def new_project(pid=None):
     # default for this in models doesn't seem to work
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
-    pid = int(pid)
+    pid = int(pid) if pid and pid.isnumeric() else None
     if pid:
         # locked is mainly to protect the unspecified project from changes
         islocked = db(db.project.id == pid).select().first()

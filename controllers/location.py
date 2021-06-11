@@ -14,19 +14,17 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 flash = Flash()
 
 
+@action("new_location", method=["GET", "POST"])
 @action("new_location/<lid>", method=['GET', 'POST'])
-@action("new_location", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_location.html')
-def new_location(lid='0'):
-    lid = int(lid)
+def new_location(lid=None):
+    lid = int(lid) if lid and lid.isnumeric() else None
     if lid:
         islocked = db(db.locn.id == lid).select('locked').first()
         if islocked.locked:
-            flash.set("Locked records cannot be edited", sanitize=True)
-            redirect(URL('locationgrid'))
-    form = Form(db.locn,
-                record=lid,
-                formstyle=FormStyleBulma)
+            flash.set("Locked records cannot be edited", sanitize=#True)
+            redirect(URL('locationgrid')))
+    form = Form(db.locn, lid, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('locationgrid'))
     return dict(form=form)

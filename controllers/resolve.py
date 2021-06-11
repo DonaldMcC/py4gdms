@@ -7,8 +7,8 @@ flash = Flash()
 @action("new_resolve/<res_id>", method=['GET', 'POST'])
 @action("new_resolve", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_resolve.html')
-def new_resolve(res_id='0'):
-    res_id = int(res_id)
+def new_resolve(res_id=None):
+    res_id = int(res_id) if res_id and res_id.isnumeric() else None
 
     form = Form(db.resolve, record=res_id, formstyle=FormStyleBulma)
     if res_id:

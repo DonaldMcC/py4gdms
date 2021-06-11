@@ -41,7 +41,7 @@ def check_status(form):
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses(session, db, auth.user, flash, 'new_question.html')
-def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
+def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -51,8 +51,8 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
     db.question.eventid.requires = IS_IN_DB(db((db.event.status == 'Open') & (db.event.projid == db.project.id) &
                                                ((db.project.proj_owner == auth.user_id) |
                                                 (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
-    qid = int(qid)
 
+    qid = int(qid) if qid and qid.isnumeric() else None
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
                             db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
@@ -93,7 +93,6 @@ def new_question(qid='0', eid='0', xpos='0', ypos='0', sourceurl='questiongrid',
             form.deletable = False
             form.readonly = True
 
-
     if form.accepted:
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
@@ -115,7 +114,7 @@ def questiongrid(path=None):
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
     queries = [db.question.qtype == qtype]
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
-                                                            orderby=db.event.event_name, distinct=True)]))
+                                                                orderby=db.event.event_name, distinct=True)]))
 
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
                                                             orderby=db.project.proj_name, distinct=True)]))
