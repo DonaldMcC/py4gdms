@@ -1,6 +1,4 @@
 # These tests are all based on the tutorial at http://killer-web-development.com/
-# if registration is successful this may work but lets
-# try and get user logged in first
 
 from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
@@ -13,9 +11,8 @@ class AddBasicAction (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
         time.sleep(2)
-
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
         email.send_keys(USERS['USER2'])
         password = self.browser.find_element_by_id("none_login_password")
@@ -25,15 +22,18 @@ class AddBasicAction (FunctionalTest):
         time.sleep(1)
 
 
-    @data(('/new_project', 'Phase 1 test project'), ('/new_project', 'Phase 1 test project2'))
+    @data(('/new_project', 'P1Test', 'Phase 1 test project'), ('/new_project', 'P1Test2', 'Phase 1 test project2'))
     @unpack
-    def test_question(self, urltxt, itemtext):
+    def test_question(self, urltxt, itemtext, itemdesc):
         self.url = ROOT + urltxt
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('questiontext'))
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('proj_name'))
         questiontext.send_keys(itemtext)
+
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('description'))
+        questiontext.send_keys(itemdesc)
 
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
