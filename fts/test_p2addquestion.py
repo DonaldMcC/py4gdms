@@ -26,6 +26,8 @@ class AddBasicQuestion (FunctionalTest):
 
 
     def test_question(self):
+        self.url = ROOT + '/new_question/None/quest'
+        get_browser = self.browser.get(self.url)
         time.sleep(2) # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
         itemtext = "Selenium to be or not to be"
