@@ -13,39 +13,26 @@ class AnswerQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
-
-        mailstring = USERS['USER1']+'@user.com'
-        #email = self.browser.find_element_by_name("email")
-
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
-        email.send_keys(mailstring)
-
-        # username = self.browser.find_element_by_name("username")
-        # username = WebDriverWait(self, 10).until(lambda self : self.browser.find_element_by_name("username"))
-        # username.send_keys(USERS['USER1'])
-        password = self.browser.find_element_by_id("none_login_password")
-        password.send_keys(USERS['PASSWORD1'])    
-
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-        # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        submit_button.click()    
-        time.sleep(1)        
-
-        #self.url = ROOT + '/admin'
-        #get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
+        time.sleep(2)
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
+        email.send_keys(USERS['USER1'])
+        password = self.browser.find_element_by_id("signpass")
+        password.send_keys(USERS['PASSWORD1'])
+        #submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element_by_id("login")
+        submit_button.click()
+        time.sleep(1)
 
 
     def test_datasetup(self):
         self.url = ROOT + '/datasetup'
         get_browser=self.browser.get(self.url)
         time.sleep(1)
-
         # self.browser.execute_script('alert("hi")')
         time.sleep(2)
         # alert = self.browser.switch_to_alert()
         # alert.accept()
-
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn('Setup has been completed successfully', body.text)
 

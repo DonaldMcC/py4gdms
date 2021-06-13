@@ -63,4 +63,5 @@ class TestRegisterPage (FunctionalTest):
 
         resultstring = "Registered"
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        time.sleep(5)
         self.assertIn(resultstring, body.text)
