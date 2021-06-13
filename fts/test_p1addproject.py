@@ -7,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 
 @ddt
-class AddBasicAction (FunctionalTest):
+class AddProject (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/auth/login'
@@ -24,7 +24,7 @@ class AddBasicAction (FunctionalTest):
 
     @data(('/new_project', 'P1Test', 'Phase 1 test project'), ('/new_project', 'P1Test2', 'Phase 1 test project2'))
     @unpack
-    def test_question(self, urltxt, itemtext, itemdesc):
+    def test_project(self, urltxt, itemtext, itemdesc):
         self.url = ROOT + urltxt
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually

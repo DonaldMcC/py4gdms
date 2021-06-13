@@ -11,27 +11,23 @@ from selenium.webdriver.common.keys import Keys
 
 class AddBasicQuestion (FunctionalTest):
 
-    def setUp(self):     
+    def setUp(self):
         self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
         time.sleep(2)
-        mailstring = USERS['USER2']+'@user.com'
-
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(USERS['USER2'])
-        password = self.browser.find_element_by_id("none_login_password")
+        password = self.browser.find_element_by_id("signpass")
         password.send_keys(USERS['PASSWORD2'])
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-
+        #submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element_by_id("login")
         submit_button.click()
-        time.sleep(1)
-
-        self.url = ROOT + '/new_question/0/quest'
-        get_browser = self.browser.get(self.url)
         time.sleep(1)
 
 
     def test_question(self):
+        self.url = ROOT + '/new_question/None/quest'
+        get_browser = self.browser.get(self.url)
         time.sleep(2) # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
         itemtext = "Selenium to be or not to be"

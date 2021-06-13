@@ -22,16 +22,16 @@ class AddBasicQuestion (FunctionalTest):
           (USERS['USER5'], USERS['PASSWORD5'], 'User 5 Ph2 Quest', 'Yes', 'No', 'Single'))
     @unpack
     def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("none_username"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
-        password = self.browser.find_element_by_id("none_login_password")
+        password = self.browser.find_element_by_id("signpass")
         password.send_keys(passwd)
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-
+        # submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element_by_id("login")
         submit_button.click()
         time.sleep(1)
 
-        self.url = ROOT + '/new_question/0/quest'
+        self.url = ROOT + '/new_question/None/quest'
         get_browser = self.browser.get(self.url)
         time.sleep(1)
 
