@@ -9,12 +9,13 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
+
 @ddt
 class AddBasicQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'User 2 Ph2 Quest', 'Yes', 'No', 'Single'),
           (USERS['USER3'], USERS['PASSWORD3'], 'User 3 Ph2 Quest', 'Yes', 'No', 'Single'),
@@ -49,8 +50,8 @@ class AddBasicQuestion (FunctionalTest):
         ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer2"))
         ans2.send_keys(answer2)
 
-        resmethod = WebDriverWait(self, 10).until(lambda
-                                                      self: self.browser.find_element_by_id("question_resolvemethod"))
+        resmethod = WebDriverWait(self, 10).until(lambda self:
+                                                  self.browser.find_element_by_id("question_resolvemethod"))
         resmethod.send_keys(resolvemethod)
 
         submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
@@ -61,5 +62,6 @@ class AddBasicQuestion (FunctionalTest):
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(itemtext, body.text)
 
-        # TODO - Need to logout here
-        time.sleep(CACHETIME)
+        self.url = ROOT + '/default/user/logout'
+        self.browser.get(self.url)
+        # time.sleep(CACHETIME)

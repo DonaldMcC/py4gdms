@@ -48,8 +48,8 @@ class TestRegisterPage (FunctionalTest):
         register_button.click()
         time.sleep(5)
 
-        self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
+        # self.url = ROOT + '/auth/login'
+        # get_browser = self.browser.get(self.url)
 
         resultstring = "Registered"
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))

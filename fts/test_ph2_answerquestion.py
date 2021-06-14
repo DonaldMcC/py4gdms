@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 class AnswerQuestion (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/default/user/login'
+        self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'yes'),
