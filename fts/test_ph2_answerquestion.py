@@ -14,12 +14,12 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'in progress', 'yes'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'in progress', 'no'),
-          (USERS['USER4'], USERS['PASSWORD4'], '3', 'in progress', 'no'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'in progress', 'no'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'in progress', 'no'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Well done', 'no'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'In Progress', 'yes'),
+          (USERS['USER3'], USERS['PASSWORD3'], '2', 'In Progress', 'no'),
+          (USERS['USER4'], USERS['PASSWORD4'], '3', 'In Progress', 'no'),
+          (USERS['USER5'], USERS['PASSWORD5'], '2', 'In Progress', 'no'),
+          (USERS['USER6'], USERS['PASSWORD6'], '2', 'In Progress', 'no'),
+          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Resolved', 'no'))
     @unpack
     def test_answer(self, user, passwd, answer, result, owner):
         mailstring = user + '@user.com'
@@ -31,9 +31,6 @@ class AnswerQuestion (FunctionalTest):
         submit_button = self.browser.find_element_by_id("login")
         submit_button.click()
         time.sleep(1)
-
-
-
         self.url = ROOT + '/answer/get_question/quest'
         get_browser = self.browser.get(self.url)
         time.sleep(1)
@@ -63,7 +60,7 @@ class AnswerQuestion (FunctionalTest):
 
         submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(5)
 
         # update questref with the url for ph3 challenges - not classical but it works
         if owner == 'yes':

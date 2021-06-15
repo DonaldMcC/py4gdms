@@ -17,7 +17,7 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'in progress'),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'In Progress'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Well done'))
     @unpack
     def test_answer(self, user, passwd, result):
@@ -41,7 +41,7 @@ class AnswerQuestion (FunctionalTest):
 
         # answer issue
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .is-success").click()
-        time.sleep(1)
+        time.sleep(5)
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(result, body.text)
