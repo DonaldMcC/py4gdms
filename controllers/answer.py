@@ -78,8 +78,11 @@ def like(itemid, table='question'):
 
 @action('index', method=['POST', 'GET'])
 @action('index/<qtype>', method=['POST', 'GET'])
+@action('index/<qtype>/<qid>', method=['POST', 'GET'])
 @action.uses(session, db, auth, 'index.html')
-def index(qtype=None):
+def index(qtype=None, qid=None):
+    qid = int(qid) if qid and qid.isnumeric() else None
+
     actions = get_items(qtype='action', status='In Progress') if (qtype == 'actions' or qtype == None) else None
     questions = get_items(qtype='quest', status='In Progress') if (qtype == 'questions' or qtype == None) else None
     issues = get_items(qtype='issue', status='In Progress') if (qtype == 'issues' or qtype == None) else None

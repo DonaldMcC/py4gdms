@@ -7,6 +7,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
+# This needs rethought first may well want a means of list just a specific question id in the
+# answer.py and then we call it here - perhaps on assumption of incremental records first
+# seems to then give a much better means of calling these tests
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 

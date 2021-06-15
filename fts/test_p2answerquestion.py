@@ -17,7 +17,7 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'progress'),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'Progress'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
     def test_answer(self, user, passwd, result):
@@ -40,7 +40,7 @@ class AnswerQuestion (FunctionalTest):
         # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
         # answer issue
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(4) > .is-success").click()
+        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
 
         time.sleep(1)
 

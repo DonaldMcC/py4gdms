@@ -25,8 +25,9 @@ def check_liked(items, table='question'):
     return
 
 
-def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open', project=None, execstatus=None):
-    query = make_query(qtype, status, event, eventstatus, project, execstatus)
+def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open',
+              project=None, execstatus=None, qid=None):
+    query = make_query(qtype, status, event, eventstatus, project, execstatus, qid)
     leftjoin = make_leftjoin(status)
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
@@ -38,7 +39,7 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     return items
 
 
-def make_query(qtype='quest', status=None, event=None, eventstatus='Open', project=None, execstatus=None):
+def make_query(qtype='quest', status=None, event=None, eventstatus='Open', project=None, execstatus=None, qid=None):
     if eventstatus == 'Archived':
         if qtype == 'quest':
             query = (db.eventmap.qtype == 'quest')
@@ -50,6 +51,8 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
             query &= (db.eventmap.status == status)
         if event:
             query &= (db.eventmap.eventid == event)
+        if qid:
+            query &= (db.eventmap.questid == qid)
     else:
         if qtype == 'quest':
             query = (db.question.qtype == 'quest')
@@ -71,6 +74,8 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
                 query &= (db.question.execstatus != 'Completed')
             else:
                 query &= (db.question.execstatus == 'Completed')
+        if qid:
+            query &= (db.question.id == qid)
     return query
 
 
