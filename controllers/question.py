@@ -97,6 +97,7 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        flash.set("Item Created RecordID: ", sanitize=True)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
@@ -147,7 +148,7 @@ def questiongrid(path=None):
                 left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
-                create=URL('new_question/0/' + qtype),
+                create=URL('new_question/None/' + qtype),
                 details=URL('viewquest/'),
                 editable=URL('new_question/'),
                 deletable=True,
