@@ -7,8 +7,7 @@ from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME, questidlist
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
-
+questidlist = []
 
 @ddt
 class AddBasicQuestion (FunctionalTest):
@@ -17,10 +16,10 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'User 2 Ph2 Quest', 'Yes', 'No', 'Single'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'User 3 Ph2 Quest', 'Yes', 'No', 'Single'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'User 4 Ph2 Quest', 'Yes', 'No', 'Single'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'User 5 Ph2 Quest', 'Yes', 'No', 'Single'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'User 2 Ph2 Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'User 3 Ph2 Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'User 4 Ph2 Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'User 5 Ph2 Quest', 'Yes', 'No', 'Standard'))
     @unpack
     def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
