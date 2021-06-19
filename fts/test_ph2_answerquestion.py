@@ -1,4 +1,4 @@
-from functional_tests import FunctionalTest, ROOT, USERS, questref
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist
 import functional_tests
 import time
 from ddt import ddt, data, unpack
