@@ -1,9 +1,7 @@
 from functional_tests import FunctionalTest, ROOT, USERS, questidlist
-import functional_tests
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 # This now uses questidlist and that should allow access to single question
@@ -17,17 +15,19 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], '2', 'In Progress', 'yes'),
-          (USERS['USER3'], USERS['PASSWORD3'], '2', 'In Progress', 'no'),
-          (USERS['USER4'], USERS['PASSWORD4'], '3', 'In Progress', 'no'),
-          (USERS['USER5'], USERS['PASSWORD5'], '2', 'In Progress', 'no'),
-          (USERS['USER6'], USERS['PASSWORD6'], '2', 'In Progress', 'no'),
-          (USERS['USER7'], USERS['PASSWORD7'], '2', 'Resolved', 'no'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'In Progress', 'no'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'In Progress', 'no'),
+          (USERS['USER6'], USERS['PASSWORD6'], 'In Progress', 'no'),
+          (USERS['USER7'], USERS['PASSWORD7'], 'Resolved', 'no'))
     @unpack
-    def test_answer(self, user, passwd, result):
+    def test_answer(self, user, passwd, result, answer):
+        global questidlist
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
+        print(questidlist)
         qid = questidlist[0]
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
