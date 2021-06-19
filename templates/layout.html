@@ -77,7 +77,7 @@
 
       <div>
         <!-- Flash alert messages, first optional one in data-alert -->
-        <flash-alerts class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
+        <flash-alerts data="layout" class="padded" data-alert="[[=globals().get('flash','')]]"></flash-alerts>
       </div>
     <!-- end of HTML inserted by extending template -->
     <footer class="black padded">
@@ -101,6 +101,5 @@
  [[include 'quickanswer.js']]
  [[include 'viewquest.js']]
  </script>
-  [[if globals().get('flash'):]]<script>Q.flash([[=XML(flash)]]);</script>[[pass]]
   [[block page_scripts]]<!-- individual pages can add scripts here -->[[end]]
 </html>
