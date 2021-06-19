@@ -83,10 +83,13 @@ def like(itemid, table='question'):
 def index(qtype=None, qid=None):
     qid = int(qid) if qid and qid.isnumeric() else None
 
-    actions = get_items(qtype='action', status='In Progress') if (qtype == 'actions' or qtype == None) else None
-    questions = get_items(qtype='quest', status='In Progress') if (qtype == 'questions' or qtype == None) else None
-    issues = get_items(qtype='issue', status='In Progress') if (qtype == 'issues' or qtype == None) else None
-    res_actions = get_items(status='Resolved') if (qtype == 'resactions' or qtype == None) else None
+    actions = get_items(qtype='action', status='In Progress', qid=qid) if (
+            qtype == 'actions' or qtype == None) else None
+    questions = get_items(qtype='quest', status='In Progress', qid=qid) if (
+            qtype == 'questions' or qtype == None) else None
+    issues = get_items(qtype='issue', status='In Progress', qid=qid) if (
+            qtype == 'issues' or qtype == None) else None
+    res_actions = get_items(status='Resolved', qid=qid) if (qtype == 'resactions' or qtype == None) else None
 
     return dict(actions=actions, questions=questions, issues=issues, res_actions=res_actions,
                 get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
