@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,10 +17,11 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'In Progress'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded', questidlist[0]),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', questidlist[0]),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', questidlist[0]))
     @unpack
-    def test_answer(self, user, passwd, result):
+    def test_answer(self, user, passwd, result, qid):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
         time.sleep(2)
@@ -34,12 +35,9 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-        self.url = ROOT + '/index/actions'
+        self.url = ROOT + '/index/actions/'+str(qid)
         self.browser.get(self.url)
         time.sleep(1)
-        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-
-        # answer issue
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .is-success").click()
         time.sleep(5)
 

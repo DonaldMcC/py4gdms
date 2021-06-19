@@ -2,7 +2,7 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -42,3 +42,13 @@ class AddBasicAction (FunctionalTest):
         # Lookof for body in questiongrid
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(itemtext, body.text)
+
+        alertarea = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id('alertarea'))
+        self.assertIn("ID", alertarea.text)
+        recordpos = alertarea.text.find('RecordID')
+        if recordpos > 0:
+            recordstr = alertarea.text[recordpos+9:]
+            # print('recstr:'+recordstr)
+            recordval=int(recordstr) if recordstr.isnumeric() else 0
+            # print(recordval)
+            questidlist.append(recordval)

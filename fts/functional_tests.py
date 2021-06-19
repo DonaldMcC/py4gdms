@@ -38,7 +38,7 @@ questref =  'functest questref'
 votequest = 'tempvotetest'
 testconfig = ('standard')
 # testconfig = ('verify','local')
-
+questidlist=[]  #will store records of questions successfully stored - may need to add more details later
 
 class FunctionalTest(unittest.TestCase):
     @classmethod
