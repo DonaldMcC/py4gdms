@@ -17,14 +17,15 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded', questidlist[0]),
-          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', questidlist[0]),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', questidlist[0]))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
-    def test_answer(self, user, passwd, result, qid):
+    def test_answer(self, user, passwd, result):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
         time.sleep(2)
+        qid = questidlist[0]
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)

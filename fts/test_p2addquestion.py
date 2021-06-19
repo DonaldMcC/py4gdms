@@ -56,4 +56,5 @@ class AddBasicQuestion (FunctionalTest):
             recordval=int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
+        print(questidlist)
         time.sleep(CACHETIME)

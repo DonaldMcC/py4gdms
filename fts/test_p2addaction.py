@@ -6,6 +6,7 @@ from functional_tests import FunctionalTest, ROOT, USERS, questidlist
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+print(questidlist)
 
 
 @ddt
@@ -52,3 +53,4 @@ class AddBasicAction (FunctionalTest):
             recordval=int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
+            print(questidlist)

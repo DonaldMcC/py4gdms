@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,7 +17,8 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'), (USERS['USER3'], USERS['PASSWORD3'], 'Progress'),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
           (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
     def test_answer(self, user, passwd, result):
