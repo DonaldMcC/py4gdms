@@ -147,7 +147,7 @@ def questiongrid(path=None):
                 left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
                 orderby=orderby,
                 search_form=search.search_form,
-                create=URL('new_question/0/' + qtype),
+                create=URL('new_question/None/' + qtype),
                 details=URL('viewquest/'),
                 editable=URL('new_question/'),
                 deletable=True,

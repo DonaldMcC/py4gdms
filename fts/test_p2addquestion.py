@@ -34,11 +34,9 @@ class AddBasicQuestion (FunctionalTest):
                                                      self.browser.find_element_by_id('question_questiontext'))
         questiontext.send_keys(itemtext)
 
-        # ans1 = self.browser.find_element_by_name('ans1')
         ans1 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer1"))
         ans1.send_keys("be")
 
-        # ans2 = self.browser.find_element_by_name('ans2')
         ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("question_answer2"))
         ans2.send_keys("not to be")
 
