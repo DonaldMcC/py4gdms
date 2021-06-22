@@ -2,7 +2,7 @@
 # if registration is successful this may work but lets
 # try and get user logged in first
 
-from functional_tests import FunctionalTest, ROOT, USERS, questidlist
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist, questiddict
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -53,4 +53,5 @@ class AddBasicAction (FunctionalTest):
             recordval=int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
+            questiddict['p2action'] = recordval
             print(questidlist)

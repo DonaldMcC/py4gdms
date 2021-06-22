@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME, questidlist
+from functional_tests import FunctionalTest, ROOT, USERS, CACHETIME, questidlist, questiddict
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -56,5 +56,6 @@ class AddBasicQuestion (FunctionalTest):
             recordval=int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
+            questiddict['p2quest'] = recordval
         print(questidlist)
         time.sleep(CACHETIME)

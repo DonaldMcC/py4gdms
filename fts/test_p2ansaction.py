@@ -3,11 +3,10 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS, questidlist
+from functional_tests import FunctionalTest, ROOT, USERS, questidlist, questiddict
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
@@ -25,7 +24,7 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
         time.sleep(2)
-        qid = questidlist[0]
+        qid = questiddict.key('p2action')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
