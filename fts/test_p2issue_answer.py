@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS
+from functional_tests import FunctionalTest, ROOT, USERS, questiddict
 import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
@@ -25,6 +25,7 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
+        qid = questiddict.get('p2issue')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
@@ -35,7 +36,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-        self.url = ROOT + '/index/issues'
+        self.url = ROOT + '/index/issues/'+str(qid)
         get_browser = self.browser.get(self.url)
         time.sleep(1)
         # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()

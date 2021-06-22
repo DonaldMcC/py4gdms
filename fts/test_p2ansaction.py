@@ -24,7 +24,7 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
         time.sleep(2)
-        qid = questiddict.key('p2action')
+        qid = questiddict.get('p2action')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)

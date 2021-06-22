@@ -25,9 +25,10 @@ class AddBasicAction (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-    @data(('/new_question/None/action', 'Lets get this done'), ('/new_question/None/issue', 'The world is under-achieving'))
+    @data(('/new_question/None/action', 'Lets get this done', 'p2action'),
+          ('/new_question/None/issue', 'The world is under-achieving', 'p2issue'))
     @unpack
-    def test_question(self, urltxt, itemtext):
+    def test_question(self, urltxt, itemtext, itemkey):
         self.url = ROOT + urltxt
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
@@ -53,5 +54,5 @@ class AddBasicAction (FunctionalTest):
             recordval=int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
-            questiddict['p2action'] = recordval
+            questiddict[itemkey] = recordval
             print(questidlist)
