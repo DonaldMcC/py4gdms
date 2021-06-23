@@ -3,7 +3,7 @@
 # try and get user logged in first
 
 
-from functional_tests import FunctionalTest, ROOT, USERS, questidlist
+from functional_tests import FunctionalTest, ROOT, USERS, questiddict
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,8 +15,8 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'User 2 Ph2 Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'User 3 Ph2 Quest', 'Yes', 'No', 'Standard'),
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph2Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph2Quest', 'Yes', 'No', 'Standard'),
           (USERS['USER4'], USERS['PASSWORD4'], 'User 4 Ph2 Quest', 'Yes', 'No', 'Standard'),
           (USERS['USER5'], USERS['PASSWORD5'], 'User 5 Ph2 Quest', 'Yes', 'No', 'Standard'))
     @unpack
@@ -59,11 +59,8 @@ class AddBasicQuestion (FunctionalTest):
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos + 9:]
-            print('recstr:'+recordstr)
             recordval = int(recordstr) if recordstr.isnumeric() else 0
-            print(recordval)
-            questidlist.append(recordval)
-        print(questidlist)
+            questiddict[question] = recordval
         self.url = ROOT + '/auth/logout'
         self.browser.get(self.url)
         time.sleep(1)
