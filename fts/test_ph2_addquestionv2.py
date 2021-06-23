@@ -21,7 +21,7 @@ class AddBasicQuestion (FunctionalTest):
           (USERS['USER5'], USERS['PASSWORD5'], 'User 5 Ph2 Quest', 'Yes', 'No', 'Standard'))
     @unpack
     def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
-        global questidlist
+        global questiddict
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
         password = self.browser.find_element_by_id("signpass")

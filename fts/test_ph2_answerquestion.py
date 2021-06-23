@@ -17,17 +17,15 @@ class AnswerQuestion (FunctionalTest):
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph2Quest'),
           (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User2Ph2Quest'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'In Progress', 'no', 'User2Ph2Quest'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'Resolved', 'no', 'User2Ph2Quest'),
-          (USERS['USER6'], USERS['PASSWORD6'], 'In Progress', 'no', 'User3Ph2Quest'),
-          (USERS['USER7'], USERS['PASSWORD7'], 'Resolved', 'no', 'User3Ph2Quest'))
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User2Ph2Quest'),
+          (USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'no', 'User3Ph2Quest'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User3Ph2Quest'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User3Ph2Quest'))
     @unpack
     def test_answer(self, user, passwd, result, answer, question):
-        global questidlist
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        print(questidlist)
         qid = questiddict.get('p2quest')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
