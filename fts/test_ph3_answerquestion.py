@@ -15,18 +15,18 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         get_browser = self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph2Quest'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User2Ph2Quest'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User2Ph2Quest'),
-          (USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'no', 'User3Ph2Quest'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User3Ph2Quest'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User3Ph2Quest'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph3Quest'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User2Ph3Quest'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User2Ph3Quest'),
+          (USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'no', 'User3Ph3Quest'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User3Ph3Quest'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User3Ph3Quest'))
     @unpack
     def test_answer(self, user, passwd, result, answer, question):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        qid = questiddict.get('User2Ph2Quest')
+        qid = questiddict.get('User2Ph3Quest')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)

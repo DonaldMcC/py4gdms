@@ -15,10 +15,10 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'User4Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'User5Ph2Quest', 'Yes', 'No', 'Standard'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph3Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph3Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'User4Ph3Quest', 'Yes', 'No', 'Standard'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'User5Ph3Quest', 'Yes', 'No', 'Standard'))
     @unpack
     def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
         global questiddict
