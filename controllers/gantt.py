@@ -19,7 +19,7 @@
 
 """
     exposes:
-    http://..../[app]/gantt.html
+    https://..../[app]/gantt.html
 
     """
 from ..ndsfunctions import get_gantt_data

@@ -11,6 +11,7 @@ from py4web import action, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma
+
 flash = Flash()
 
 
@@ -22,8 +23,8 @@ def new_location(lid=None):
     if lid:
         islocked = db(db.locn.id == lid).select('locked').first()
         if islocked.locked:
-            flash.set("Locked records cannot be edited", sanitize=#True)
-            redirect(URL('locationgrid')))
+            flash.set("Locked records cannot be edited")
+            redirect(URL('locationgrid'))
     form = Form(db.locn, lid, formstyle=FormStyleBulma)
     if form.accepted:
         redirect(URL('locationgrid'))

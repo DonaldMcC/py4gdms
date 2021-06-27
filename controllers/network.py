@@ -12,10 +12,10 @@
 #
 """
     exposes:
-    http://..../[app]/network/linkrequest - ajax call to create links
-    http://..../[app]/network/ajaxquest - ajax call to create question with ajax
-    http://..../[app]/network/graph - main d3 interactive graph
-    http://..../[app]/network/no_questions - display if no questions
+    https://..../[app]/network/linkrequest - ajax call to create links
+    https://..../[app]/network/ajaxquest - ajax call to create question with ajax
+    https://..../[app]/network/graph - main d3 interactive graph
+    https://..../[app]/network/no_questions - display if no questions
 """
 
 import json
@@ -162,7 +162,7 @@ def ajaxquest():
 @authenticated()
 def graph():
     """This is new interactive graph using D3 still very much work in progress mainly based on
-    http://bl.ocks.org/cjrd/6863459
+    https://bl.ocks.org/cjrd/6863459
     but there have been a fair number of amendments to meet perceived needs"""
     #  This is currently loaded only by search but will probably also look to use this with newindex
 
@@ -206,7 +206,7 @@ def move():
     else:
         event = db((db.event.id == questrec.eventid) & (db.event.projid == db.project.id)).select().first()
         if event.event.status == 'Open' and (event.project.proj_shared == True or
-                                           event.project.proj_owner == auth.user_id):
+                                             event.project.proj_owner == auth.user_id):
             questrec.update_record(xpos=newxpos, ypos=newypos)
             db.commit()
             responsetext = 'Element moved'

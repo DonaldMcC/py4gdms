@@ -13,7 +13,7 @@ class AnswerQuestion (FunctionalTest):
 
     def setUp(self):
         self.url = ROOT + '/auth/login'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph2Quest'),
           (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User2Ph2Quest'),

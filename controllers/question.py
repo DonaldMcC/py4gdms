@@ -85,7 +85,7 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
     db.question.priority.writable = False
     form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
 
-    if qid:
+    if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
         if ((not questrec.project.proj_shared) and questrec.project.proj_owner != auth.user_id and
                 questrec.question.auth_userid != auth.user_id):

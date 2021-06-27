@@ -6,7 +6,6 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.alert import Alert
 
 
 class AnswerQuestion (FunctionalTest):

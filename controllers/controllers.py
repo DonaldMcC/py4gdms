@@ -23,14 +23,13 @@
 
 """
     exposes:
-    http://..../[app]/about/index
-    http://..../[app]/about/privacy
-    http://..../[app]/about/faq
-    http://..../[app]/about/present
-    http://..../[app]/about/enhance
-    http://..../[app]/about/stdmsg
-    http://..../[app]/about/download
-    http://..../[app]/about/getfile
+    http://..../[app]/about
+    http://..../[app]/privacy
+    http://..../[app]/faq
+    http://..../[app]/present
+    http://..../[app]/enhance
+    http://..../[app]/download
+    http://..../[app]/getfile
 
     """
 from ..common import db, unauthenticated, authenticated

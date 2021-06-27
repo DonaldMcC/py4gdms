@@ -8,7 +8,7 @@ import time
 class TestRegisterPage (FunctionalTest):
     def setUp(self):      
         self.url = ROOT + '/auth/register'
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
     @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
           (USERS['USER4'], USERS['PASSWORD4']), (USERS['USER5'], USERS['PASSWORD5']))
 

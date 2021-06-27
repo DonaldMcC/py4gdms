@@ -17,7 +17,7 @@ class AddBasicAction (FunctionalTest):
         email.send_keys(USERS['USER1'])
         password = self.browser.find_element_by_id("signpass")
         password.send_keys(USERS['PASSWORD1'])
-        #submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        # submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
         submit_button = self.browser.find_element_by_id("login")
         submit_button.click()
         time.sleep(1)
@@ -26,7 +26,7 @@ class AddBasicAction (FunctionalTest):
     @unpack
     def test_question(self, urltxt, itemtext, itemdesc):
         self.url = ROOT + urltxt
-        get_browser = self.browser.get(self.url)
+        self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('event_name'))

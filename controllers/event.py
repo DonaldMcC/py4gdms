@@ -201,7 +201,7 @@ def archive():
 
     if status == 'Archiving':
         for row in quests:
-            recid = db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
+            db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                                  eventid=eventid, questid=row.id,
                                                  status=row.status,
                                                  xpos=row.xpos,

@@ -7,14 +7,12 @@ import unittest
 import HTMLTestRunner
 import sys
 try:
-	from urllib2 import urlopen
+    from urllib2 import urlopen
 except ImportError:
-	from urllib.request import urlopen
+    from urllib.request import urlopen
 from selenium import webdriver
 import subprocess
 import sys
-import os.path
-
 sys.path.append('./fts/lib')
 
 
@@ -28,18 +26,19 @@ CACHETIME = 1
 STARTSERVER = False
 
 # may update these later but possibly just have 3 options for now
-USERS={'USER1':'User1','PASSWORD1':'Testuser1',
-        'USER2':'User2','PASSWORD2':'Testuser2','USER3':'User3','PASSWORD3':'Testuser3','USER4':'User4','PASSWORD4':'Testuser4',
-       'USER5':'User5','PASSWORD5':'Testuser5','USER6':'User6','PASSWORD6':'Testuser6','USER7':'User7','PASSWORD7':'Testuser7',
-       'USER8':'User8','PASSWORD8':'Testuser8','USER9':'User9','PASSWORD9':'Testuser9'}
+USERS = {'USER1': 'User1', 'PASSWORD1': 'Testuser1',
+        'USER2': 'User2', 'PASSWORD2': 'Testuser2', 'USER3': 'User3', 'PASSWORD3': 'Testuser3',
+        'USER4': 'User4', 'PASSWORD4': 'Testuser4', 'USER5': 'User5', 'PASSWORD5': 'Testuser5',
+        'USER6': 'User6', 'PASSWORD6': 'Testuser6', 'USER7': 'User7', 'PASSWORD7': 'Testuser7',
+        'USER8': 'User8', 'PASSWORD8': 'Testuser8', 'USER9': 'User9', 'PASSWORD9': 'Testuser9'}
 
 listusers = ['user2', 'user3', 'user4']
 questref =  'functest questref'
 votequest = 'tempvotetest'
-testconfig = ('standard')
-# testconfig = ('verify','local')
-questidlist=[]  #will store records of questions successfully stored - may need to add more details later
-questiddict={}
+testconfig = 'standard'
+questidlist = []  #will store records of questions successfully stored - may need to add more details later
+questiddict = {}
+
 
 class FunctionalTest(unittest.TestCase):
     @classmethod
@@ -51,12 +50,12 @@ class FunctionalTest(unittest.TestCase):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
 
-        #self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        #self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        self.browser = webdriver.Chrome('d:\python37\chromedriver.exe',chrome_options=chrome_options)
+        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
+        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
+        self.browser = webdriver.Chrome('d:\python37\chromedriver.exe', chrome_options=chrome_options)
         self.browser.maximize_window()
 
-        #self.browser = webdriver.Chrome()
+        # self.browser = webdriver.Chrome()
         self.browser.implicitly_wait(10)
 
     @classmethod    
@@ -79,13 +78,14 @@ class FunctionalTest(unittest.TestCase):
 
 def start_web2py_server():
     # noreload ensures single process
-    #print (os.path.curdir)
+    # print (os.path.curdir)
     return subprocess.Popen([
             'python', '../../web2py.py', 'runserver', '-a "passwd"', '-p 8001'
     ])
 
+
 def run_functional_tests(pattern=None):
-    print ('running tests')
+    print('running tests')
     if pattern is None:
         tests = unittest.defaultTestLoader.discover('fts')
     else:
