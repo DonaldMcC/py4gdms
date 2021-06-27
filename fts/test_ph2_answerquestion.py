@@ -26,7 +26,7 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        qid = questiddict.get('User2Ph2Quest')
+        qid = questiddict.get(question)
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
@@ -40,9 +40,10 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/index/questions/' + str(qid)
         get_browser = self.browser.get(self.url)
         time.sleep(1)
-        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
-
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
+        if answer == 'yes':
+            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
+        else:
+            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-warning").click()
 
         time.sleep(1)
 
