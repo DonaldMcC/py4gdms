@@ -20,6 +20,8 @@ from .controllers import gantt
 from .controllers import network
 from .controllers import viewquest
 from .controllers import comments
+from .controllers import gdmsapi
+
 
 print('init ran')
 # optional parameters
