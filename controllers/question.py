@@ -97,7 +97,7 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        flash.set("Item Created RecordID:" + str(form.vars.id), sanitize=True)
+        flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 

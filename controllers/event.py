@@ -54,7 +54,7 @@ def new_event(eid=None):
         form.deletable = False
 
     if form.accepted:
-        session['eventid'] = form.vars.id
+        session['eventid'] = form.vars['id']
         redirect(URL('eventgrid'))
     return dict(form=form)
 

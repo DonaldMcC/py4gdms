@@ -64,7 +64,7 @@ def new_project(pid=None):
             form.readonly = True
 
     if form.accepted:
-        session['projid'] = form.vars.id
+        session['projid'] = form.vars['id']
         redirect(URL('projectgrid'))
     return dict(form=form)
 
