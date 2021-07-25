@@ -119,7 +119,7 @@ def nodedelete():
         else:
             responsetext = 'Question removed from event'
             unspecevent = db(db.event.event_name == 'Unspecified').select(db.eventt.id).first()
-            db(db.question.id == nodeid).update(eventid=unspecevent.id)
+            db(db.question.id == nodeid).update(eventid=unspecevent['id'])
     return responsetext
 
 
@@ -143,7 +143,7 @@ def ajaxquest():
     if request.vars['eventid']:
         eventid = int(request.vars['eventid'])
     else:
-        eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first().id
+        eventid = db(db.event.event_name == 'Unspecified').select(db.event.id).first()['id']
 
     if auth.user is None:
         result = 'You must be logged in to create links'

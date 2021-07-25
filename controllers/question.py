@@ -55,13 +55,15 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
     qid = int(qid) if qid and qid.isnumeric() else None
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
-                            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first().id)
+            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id'])
     except AttributeError:
         pass
 
+
+
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 \
-            else session.get('eventid', db(db.event.event_name == 'Unspecified').select(db.event.id).first().id)
+            else session.get('eventid', db(db.event.event_name == 'Unspecified').select(db.event.id).first()['id'])
     except AttributeError:
         pass
 

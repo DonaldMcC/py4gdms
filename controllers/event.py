@@ -220,7 +220,7 @@ def archive():
         # the following event will now need to be sent to this
 
         unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
-        unspecid = unspecevent.id
+        unspecid = unspecevent['id']
         for x in quests:
             if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or
                                      (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
