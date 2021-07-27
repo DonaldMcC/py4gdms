@@ -203,7 +203,7 @@ input[type='color'], input[type='date'], input[type='datetime'], input[type='tim
   box-sizing: inherit;
   font-family: monospace;
   font-size: 1.2em;
-  padding: .5em 1.0em .5em;
+  padding: .1em 0.1em .1em;
   width: 100%;
 }
 
