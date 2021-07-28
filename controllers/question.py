@@ -59,8 +59,6 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
     except AttributeError:
         pass
 
-
-
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 \
             else session.get('eventid', db(db.event.event_name == 'Unspecified').select(db.event.id).first()['id'])
@@ -86,6 +84,10 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
 
     db.question.priority.writable = False
     form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
+    try:
+        print('eventid:'+str(form.vars['eventid']))
+    except KeyError:
+        pass
 
     if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
