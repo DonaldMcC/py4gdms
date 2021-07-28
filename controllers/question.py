@@ -48,9 +48,9 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
     db.question.xpos.default = int(xpos) if xpos.isnumeric() else 0
     db.question.ypos.default = int(ypos) if ypos.isnumeric() else 0
     db.question.qtype.default = qtype
-    #db.question.eventid.requires = IS_IN_DB(db((db.event.status == 'Open') & (db.event.projid == db.project.id) &
-    #                                           ((db.project.proj_owner == auth.user_id) |
-    #                                            (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
+    db.question.eventid.requires = IS_IN_DB(db((db.event.status == 'Open') & (db.event.projid == db.project.id) &
+                                               ((db.project.proj_owner == auth.user_id) |
+                                                (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
 
     qid = int(qid) if qid and qid.isnumeric() else None
     try:
