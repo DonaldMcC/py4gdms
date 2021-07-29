@@ -3,10 +3,10 @@
 <table id='TabAnswers' class='table'>
 <tbody>
 <tr>
-<th width="10%"></th>
-<th width="60%">[[=eventrow.event_name]]</th>
-<th width="15%" >Start</th>
-<th width="15%">End</th>
+<th></th>
+<th>[[=eventrow.event_name]]</th>
+<th>Start</th>
+<th>End</th>
 </tr>
 <tr class='is-selected'>
 <th>Description</th>

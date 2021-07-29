@@ -8,7 +8,7 @@
 <th width="15%" >Start</th>
 <th width="15%">End</th>
 </tr>
-<tr class='is-selected'>
+<tr>
 <th>Description</th>
 <td>[[=projectrow.description]]</td>
 <td class="text-center">[[=projectrow.startdate]]</td>

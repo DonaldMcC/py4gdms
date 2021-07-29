@@ -1,22 +1,23 @@
 <div>
+    <br>
 <h1 class="title is-5">Events For This Project</h1>
 [[if events:]]
 <table id='Events' class='table'>
 <tbody>
 <tr>
-<th width="15%">Name</th>
-<th width="30%">Description</th>
-<th width="15%">Start</th>
-<th width="15%">End</th>
-<th width="15%">Status</th>
-<th width="10%">Action</th>
+<th>Name</th>
+<th>Description</th>
+<th>Start</th>
+<th class="is-hidden-touch">End</th>
+<th>Status</th>
+<th>Action</th>
 </tr>
 [[for row in events:]]
 <tr>
 <th>[[=A(row.event_name, _href=URL('view_event/'+str(row.id)))]]</th>
 <td>[[=row.description]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
-<td class="text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
+<td class="is-hidden-touch text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td id="eventstatus">[[=row.status]]</td>
 <td> [[if row.next_event==0:]]
     <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=row.id]]',this)", VALUE="Next Event">
