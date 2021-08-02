@@ -1,6 +1,7 @@
 import datetime
 from ..common import db, authenticated, auth, session
 from py4web import action, request, Flash
+from yatl.helpers import TAG, XML
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items
 flash = Flash()
@@ -56,33 +57,32 @@ def perccomplete():
     return 'Action updated to ' + str(percentcomplete)
 
 
-# make a "like" button factory
-@authenticated.callback()
-@action.uses(flash)
+@action('like/<itemid>', method=['POST', 'GET'])
+@action.uses(session, db, auth)
 def like(itemid, table='question'):
-    # TODO disable button or change to unlike on initial like via js and get the flash working via
     alreadyliked = db((db.itemlike.parentid == itemid) & (db.itemlike.parenttable == table) &
                       (db.itemlike.createdby == auth.user_id)).select()
     if alreadyliked:
-        flash.set("You Already liked this one", sanitize=True)
+        newbutton = 'Like'
+        db((db.itemlike.parentid == itemid) & (db.itemlike.parenttable == table) &
+           (db.itemlike.createdby == auth.user_id)).delete()
     else:
         db.itemlike.insert(parentid=itemid, parenttable=table, createdby=auth.user_id)
-        if table == 'question':
-            liked_item = db(db.question.id == itemid).select().first()
-            likecount = liked_item.numlike + 1
-            liked_item.update_record(numlike=likecount)
-            db.commit()
-        flash.set("Like Recorded", sanitize=True)
-    return dict()
+        newbutton = 'Unlike'
+    if table == 'question':
+        liked_item = db(db.question.id == itemid).select().first()
+        likecount = liked_item.numlike - 1 if alreadyliked else liked_item.numlike + 1
+        liked_item.update_record(numlike=likecount)
+    db.commit()
+    return newbutton
 
 
 @action('index', method=['POST', 'GET'])
 @action('index/<qtype>', method=['POST', 'GET'])
 @action('index/<qtype>/<qid>', method=['POST', 'GET'])
-@action.uses(session, db, auth, 'index.html')
+@action.uses(flash, session, db, auth, 'index.html')
 def index(qtype=None, qid=None):
     qid = int(qid) if qid and qid.isnumeric() else None
-
     actions = get_items(qtype='action', status='In Progress', qid=qid) if (
             qtype == 'actions' or qtype == None) else None
     questions = get_items(qtype='quest', status='In Progress', qid=qid) if (
