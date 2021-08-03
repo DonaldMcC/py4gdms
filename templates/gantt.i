@@ -1,4 +1,5 @@
-<div>
+
+<div class="ganttdiv">
 <link rel="stylesheet" href="[[=URL('static','css/jsgantt.css')]]">
 <script src="[[=URL('static','js/jsgantt.js')]]"></script>
 

@@ -1,7 +1,11 @@
 /* change the background color */
 /* not yet needing this */
 
-
+div.ganttdiv {
+  max-width: 1500px;
+  margin: auto;
+  border: 3px solid #73AD21;
+}
 
 *, *:after, *:before {
   border: 2px;
