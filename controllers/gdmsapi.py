@@ -1,5 +1,5 @@
 # https://groups.google.com/g/py4web/c/3kGHOJp6DUo/m/fWc1PKmqAwAJ
-
+# above was main source for this - appears to work based on testing with Postman
 from py4web import action, request, abort, redirect, URL, HTTP
 from py4web.core import Fixture
 from yatl.helpers import A
@@ -10,7 +10,6 @@ import jwt
 from datetime import datetime, timedelta
 import json
 
-#TODO try implementing above to authenticate for API in some manner
 policy = Policy()
 policy.set('*', 'GET', authorize=True, allowed_patterns=['*'])
 policy.set('*', 'PUT', authorize=False)
