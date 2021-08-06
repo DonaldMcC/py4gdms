@@ -27,6 +27,8 @@ def new_event(eid=None):
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     db.event.enddatetime.default = (datetime.datetime.utcnow()
                                   + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
+    db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
+                                      'project.id', '%(proj_name)s')
     try:
         db.event.projid.default = session.get('projid',
                                             db(db.project.name == 'Unspecified').select(db.project.id).first().id)
@@ -35,13 +37,12 @@ def new_event(eid=None):
 
     eid = int(eid) if eid and eid.isnumeric() else None
     if eid:
-        islocked = db(db.event.id == eid).select('locked').first()
+        islocked = db(db.event.id == eid).select('locked','prev_event').first()
         if islocked.locked:
             flash.set("Locked Event cannot be edited", sanitize=True)
             redirect(URL('eventgrid'))
-    form = Form(db.event, record=eid, formstyle=FormStyleBulma)
-    db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
-                                      'project.id', '%(proj_name)s')
+    form = Form(db.event, record=eid, formazstyle=FormStyleBulma)
+    db.event.prev_event.requires = IS_EMPTY_OR(IS_IN_DB(db, 'event.id', '%(event_name)s'))
 
     if eid:
         proj = db(db.project.id == form.vars['projid']).select().first()
@@ -55,12 +56,21 @@ def new_event(eid=None):
 
     if form.accepted:
         session['eventid'] = form.vars['id']
+        # Now want to establish if prev_event has been set and if it has we need to select it and link it's next
+        # event to this one in order for archiving to work
+        # so either eid and changed prev_event or created new record with an event id then we need the prev_event
+        # and created event and update accordingly
+        # TODO decide if need to remove if we blank - probably less urgent but should be done
+        if not eid and form.vars['prev_event'] or (eid and form.vars['prev_event'] != islocked['prev_event']):
+            orig_rec = db(db.event.id == form.vars['prev_event']).select().first()
+            orig_rec.update_record(next_event=form.vars['id'])
+            db.commit()
         redirect(URL('eventgrid'))
     return dict(form=form)
 
 
 @action('create_next_event', method=['POST', 'GET'])
-@action.uses(session, db, auth.user)
+@action.uses(session, db, flash, auth.user)
 def create_next_event():
     # so expectation is that this is only called when event has no next event ie next_event field is zero
     # for now anyone can create the next event for a project - might restrict to project owner at some point
@@ -95,6 +105,7 @@ def create_next_event():
     orig_rec.update_record(next_event=new_event)
     db.commit()
     messagetxt = 'Next Event Created'
+    flash.set("Next Event Created", sanitize=True)
     return messagetxt
 
 
