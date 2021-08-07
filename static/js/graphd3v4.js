@@ -149,7 +149,7 @@
         //var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
         //var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
         var height = window.innerHeight;
-        var width = window.innerWidth;
+        var width = window.innerWidth - 70;
 
         //console.log( height);
         //console.log (width);
