@@ -50,7 +50,7 @@ def perccomplete():
     quest.perccomplete = percentcomplete
     quest.responsible = resp
 
-    if perccomplete == 100:
+    if percentcomplete == 100:
         quest.execstatus = 'Completed'
     quest.update_record()
     db.commit()
