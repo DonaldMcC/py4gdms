@@ -144,9 +144,9 @@ def view_event(eid='0'):
 
 
 @action('eventgrid', method=['POST', 'GET'])
-@action('eventgrid/<path:path>', method=['POST', 'GET'])
+@action('eventgrid/<status>', method=['POST', 'GET'])
 @action.uses(session, db, auth.user, flash, 'eventgrid.html')
-def eventgrid(path=None):
+def eventgrid(path=None, status='Open'):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -162,7 +162,7 @@ def eventgrid(path=None):
     # search = GridSearch(search_queries, queries)
 
     grid = Grid(path,
-                db.event,
+                db.event.status == status,
                 fields=fields,
                 left=[db.locn.on(db.event.locationid == db.locn.id), db.project.on(db.event.projid == db.project.id)],
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
