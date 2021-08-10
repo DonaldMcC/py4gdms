@@ -160,9 +160,13 @@ def eventgrid(path=None, status='Open'):
     search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
     # search = GridSearch(search_queries, queries)
+    if status != 'All':
+        query = db.event.status == status
+    else:
+        query = db.event.id > 0
 
     grid = Grid(path,
-                db.event.status == status,
+                query,
                 fields=fields,
                 left=[db.locn.on(db.event.locationid == db.locn.id), db.project.on(db.event.projid == db.project.id)],
                 headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
