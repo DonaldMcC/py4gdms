@@ -89,7 +89,9 @@ def index(qtype=None, qid=None):
             qtype == 'questions' or qtype == None) else None
     issues = get_items(qtype='issue', status='In Progress', qid=qid) if (
             qtype == 'issues' or qtype == None) else None
-    res_actions = get_items(status='Resolved', qid=qid) if (qtype == 'resactions' or qtype == None) else None
-
+    res_actions = get_items(status='Resolved', qid=qid, execstatus='Incomplete') if (
+            qtype == 'resactions' or qtype == None) else None
+    comp_actions = get_items(status='Resolved', qid=qid, execstatus='Completed') if (
+            qtype == 'resactions' or qtype == None) else None
     return dict(actions=actions, questions=questions, issues=issues, res_actions=res_actions,
-                get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
+                comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
