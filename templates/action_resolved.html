@@ -2,6 +2,7 @@
 [[if res_actions:]]
 <br>
 <h1 class="title is-5">Resolved Actions</h1>
+[[if eventrow.status=='Open':]]
 <table id=res_actions class='table issuetable2 is-bordered is-striped is-narrow'>
 				<thead>
 					<tr>
@@ -46,6 +47,53 @@
 [[pass]]
 </tbody>
 </table>
+[[pass]]
+[[else:]]
+<table id=res_actions class='table issuetable2 is-bordered is-striped is-narrow'>
+				<thead>
+					<tr>
+                        <th width="52%">Action</th>
+                        <th width="12%">Due Date</th>
+                        <th width="12%">Responsible</th>
+                        <th width="12%">% Complete</th>
+                        <th width="12%">Feedback</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for i,row in enumerate(res_actions):]]
+<tr id="[[=row.eventmap.questid]]">
+<td>[[=row.eventmap.questiontext]]
+   <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
+           hx-post="[[=URL('like/'+str(row.eventmap.questid))]]"
+           hx-swap="innerHTML">
+           [[=row.liked and 'UnLike' or 'Like']]</button>
+    <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
+    <div id='btns[[=str(row.eventmap.questid)]]'></div><sub>Likes: [[=row.eventmap.numlike]]</sub></td>
+<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
+=row.question.enddate.date().strftime('%Y-%m-%d')
+    else:
+    ''
+    pass]]"> </td>
+<td>
+    <input autocomplete="on" class="type-string form-control" name="eventmap_responsible" type="text"
+           size="16" value="[[=row.eventmap.responsible]]" style="width:80%;"></td>
+    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
+                value="[[=row.eventmap.perccomplete]]" step="5"  /></td>
+    <td>[[if auth.user_id:]]
+        <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
+           VALUE="Approve">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
+           VALUE="Disapprove">
+    [[else:]]
+        Login to feedback [[pass]]
+    </td>
+</tr>
+[[pass]]
+</tbody>
+</table>
+[[pass]]
 [[pass]]
 <script>
     [[include "action_res.js"]]

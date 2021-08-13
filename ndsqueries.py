@@ -15,27 +15,31 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
     return btnclass
 
 
-def check_liked(items, table='question'):
+def check_liked(items, eventstatus, table='question'):
     #TODO - below is probably cacheable or split into separate functions and only build like_ids once
     query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable==table)
     query &= db.itemlike.parentid.belongs(items.as_dict().keys())
     liked_ids = [row.parentid for row in db(query).select()]
     for item in items:
-        item["liked"] = item.question.id in liked_ids if liked_ids else False
+        if eventstatus == 'Archived':
+            item["liked"] = item.eventmap.questid in liked_ids if liked_ids else False
+        else:
+            item["liked"] = item.question.id in liked_ids if liked_ids else False
     return
 
 
 def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open',
               project=None, execstatus=None, qid=None):
     query = make_query(qtype, status, event, eventstatus, project, execstatus, qid)
-    leftjoin = make_leftjoin(status)
+    leftjoin = make_leftjoin(eventstatus)
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
     else:
         sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
+    print(qtype,status)
     if items:
-        check_liked(items)
+        check_liked(items, eventstatus)
     return items
 
 
@@ -79,8 +83,8 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
     return query
 
 
-def make_leftjoin(status):
-    if status != 'Archived':
+def make_leftjoin(eventstatus):
+    if eventstatus != 'Archived':
         leftjoin = db.userquestion.on((db.question.id == db.userquestion.questionid)
                                         & (db.userquestion.auth_userid == auth.user_id))
     else:

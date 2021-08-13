@@ -120,10 +120,12 @@ def view_event(eid='0'):
 
     actions = get_items(qtype='action', status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_items(qtype='quest', status='In Progress', event=eid, eventstatus=eventrow.status)
+    for row in questions:
+        print(row['eventmap.id'], row['eventmap.status'])
     issues = get_items(qtype='issue', event=eid, eventstatus=eventrow.status)
     res_questions = get_items(qtype='quest',status='Resolved', event=eid, eventstatus=eventrow.status)
-    res_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Incomplete')
-    comp_actions = get_items(qtype='action', status='Resolved', event=eid, execstatus='Completed')
+    res_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status, execstatus='Incomplete')
+    comp_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status, execstatus='Completed')
 
     eventlevel = 0
     parentquest = 0
@@ -135,6 +137,8 @@ def view_event(eid='0'):
     db.comment.parenttable.default = 'event'
     db.comment.parentid.default = eid
     commentform = Form(db.comment,  formstyle=FormStyleBulma)
+
+
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,

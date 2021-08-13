@@ -1,6 +1,7 @@
 [[if questions:]]
 <br>
 <h1 class="title is-5">Questions</h1>
+[[if eventrow.status=='Open':]]
 <table id=questions class='table issuetable2 is-bordered is-striped is-narrow'>
 				<thead>
 					<tr>
@@ -33,7 +34,40 @@
 [[pass]]
 </tbody>
 </table>
-
+[[else:]]
+<table id=questions class='table issuetable2 is-bordered is-striped is-narrow'>
+				<thead>
+					<tr>
+						<th>Status</th>
+                        <th>Question</th>
+                        <th>F/O</th>
+                        <th class="is-hidden-touch">Notes</th>
+                        <th>Answer(s)</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for row in questions:]]
+<tr>
+<th>[[=A(row.eventmap.status, _href=URL('viewquest/'+str(row.eventmap.questid)))]]</th>
+<td>[[=row.eventmap.questiontext]]
+<div id='btns[[=str(row.eventmap.questid)]]'></div></td>
+<td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
+    <td>[[=row.eventmap.notes]]</td>
+<td>[[if auth.user_id:]]
+    <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
+           VALUE="[[=row.eventmap.answer1]]">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
+           VALUE="[[=row.eventmap.answer2]]"></td>
+[[else:]]
+    Login to feedback
+    [[pass]]
+</tr>
+[[pass]]
+</tbody>
+</table>
+[[pass]]
 <script>
 $('#questions').DataTable({responsive: true, paging: false, searching:false, info: false});
 </script>

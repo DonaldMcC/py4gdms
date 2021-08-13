@@ -2,6 +2,7 @@
 [[if comp_actions:]]
 <br>
 <h1 class="title is-5">Completed Actions</h1>
+[[if eventrow.status=='Open':]]
 <table id=comp_actions class='table issuetable2 is-bordered is-striped is-narrow'>
 				<thead>
 					<tr>
@@ -34,6 +35,8 @@
 [[pass]]
 </tbody>
 </table>
+[[pass]]
+
 [[pass]]
 <script>
 [[include 'action_comp.js']]
