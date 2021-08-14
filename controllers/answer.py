@@ -56,7 +56,7 @@ def perccomplete():
         quest.execstatus = 'In Progress'
     else:
         quest.execstatus = 'Proposed'
-        
+
     quest.update_record()
     db.commit()
     return 'Action updated to ' + str(percentcomplete)

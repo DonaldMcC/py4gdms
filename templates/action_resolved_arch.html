@@ -22,15 +22,13 @@
            [[=row.liked and 'UnLike' or 'Like']]</button>
     <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
     <div id='btns[[=str(row.eventmap.questid)]]'></div><sub>Likes: [[=row.eventmap.numlike]]</sub></td>
-<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
-=row.question.enddate.date().strftime('%Y-%m-%d')
+<td>[[if row.eventmap.enddate:
+    =row.question.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
-    pass]]"> </td>
-<td>
-    <input autocomplete="on" class="type-string form-control" name="eventmap_responsible" type="text"
-           size="16" value="[[=row.eventmap.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
+    pass]]</td>
+<td>[[=row.eventmap.responsible]]</td>
+    <td> <input id="complete" type = "range" disabled title="Event is archived" name="compslider"  min="0"    max="100"
                 value="[[=row.eventmap.perccomplete]]" step="5"  /></td>
     <td>[[if auth.user_id:]]
         <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
@@ -50,4 +48,3 @@
 <script>
     [[include "action_res.js"]]
 </script>
-[[pass]]

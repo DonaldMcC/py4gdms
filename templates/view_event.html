@@ -33,7 +33,11 @@
  [[include 'quickanswer.js']]
  </script>
 
+[[if eventrow.status=='Open':]]
 [[include 'action_complete.html']]
+[[else:]]
+[[include 'action_complete_arch.html']]
+[[pass]]
 
 <script>
  document.querySelectorAll('.modal-button').forEach(function(el) {

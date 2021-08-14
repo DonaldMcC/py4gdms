@@ -16,7 +16,7 @@
 [[for i,row in enumerate(comp_actions):]]
 <tr id="[[=row.eventmap.questid]]">
 <td>[[=row.eventmap.questiontext]]
-    <div id='btns[[=str(row.question.id)]]'></div></td>
+    <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
     =row.eventmap.enddate.date().strftime('%Y-%m-%d')
     else:
@@ -40,4 +40,3 @@
 <script>
 [[include 'action_comp.js']]
 </script>
-[[pass]]
