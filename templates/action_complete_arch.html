@@ -17,13 +17,14 @@
 <tr id="[[=row.eventmap.questid]]">
 <td>[[=row.eventmap.questiontext]]
     <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
-<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
+<td>[[if row.eventmap.enddate:
     =row.eventmap.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
-    pass]]"> </td>
-<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.eventmap.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.eventmap.perccomplete]]" step="5"  /></td>
+    pass]] </td>
+<td>[[=row.eventmap.responsible]]</td>
+    <td> <input id="complete" type = "range" disabled title="Event is archived" name="compslider"  min="0"    max="100"
+                value="[[=row.eventmap.perccomplete]]" step="5"/></td>
     <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
            VALUE="Approve">
