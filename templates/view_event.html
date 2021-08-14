@@ -4,18 +4,20 @@
 [[include 'eventdetails.i']]
 
 [[include 'issue.html']]
-[[if eventrow.status=='Open':]]
+[[if eventrow['status']=='Open':]]
 [[include 'question.html']]
 [[include 'question_resolved.html']]
 [[include 'action.html']]
 [[include 'action_resolved.html']]
 [[else:]]
+[[print('Iam here')]]
 [[include 'question_arch.html']]
 [[include 'question_resolved_arch.html']]
 [[include 'action_arch.html']]
 [[include 'action_resolved_arch.html']]
 [[pass]]
 
+[[pass]]
 [[include 'eventmap.i']]
 
 <div>

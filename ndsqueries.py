@@ -37,7 +37,6 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     else:
         sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
-    print(qtype,status)
     if items:
         check_liked(items, eventstatus)
     return items

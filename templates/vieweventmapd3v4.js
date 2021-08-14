@@ -1,5 +1,4 @@
-[[try: import simplejson as json
-except ImportError: import json]]
+[[import json]]
     var inputmode = 'V';
     var newitems = false;
     var prevclass = 'graph-V'
