@@ -1,4 +1,3 @@
-
 $('#res_actions').DataTable({responsive: true, paging: false, searching:false, info: false});
 $('#res_actions').on('change', 'input', function () {
     var row = $(this).closest('tr');
@@ -12,6 +11,5 @@ $('#res_actions').on('change', 'input', function () {
             responsible: resp,
             duedate: due
         }).then(onsuccess).catch(onerror);
-
 });
 
