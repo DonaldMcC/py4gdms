@@ -14,30 +14,30 @@
                 </thead>
                     <tbody>
 [[for i,row in enumerate(res_actions):]]
-<tr id="[[=row.question.id]]">
-<td>[[=row.question.questiontext]]
+<tr id="[[=row.eventmap.questid]]">
+<td>[[=row.eventmap.questiontext]]
    <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
-           hx-post="[[=URL('like/'+str(row.question.id))]]"
+           hx-post="[[=URL('like/'+str(row.eventmap.questid))]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
-    <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
-    <div id='btns[[=str(row.question.id)]]'></div><sub>Likes: [[=row.question.numlike]]</sub></td>
-<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
+    <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
+    <div id='btns[[=str(row.eventmap.questid)]]'></div><sub>Likes: [[=row.eventmap.numlike]]</sub></td>
+<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
 =row.question.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
     pass]]"> </td>
 <td>
-    <input autocomplete="on" class="type-string form-control" name="question_responsible" type="text"
-           size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
+    <input autocomplete="on" class="type-string form-control" name="eventmap_responsible" type="text"
+           size="16" value="[[=row.eventmap.responsible]]" style="width:80%;"></td>
     <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
-                value="[[=row.question.perccomplete]]" step="5"  /></td>
+                value="[[=row.eventmap.perccomplete]]" step="5"  /></td>
     <td>[[if auth.user_id:]]
         <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
-           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
            VALUE="Approve">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
-           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
            VALUE="Disapprove">
     [[else:]]
         Login to feedback [[pass]]

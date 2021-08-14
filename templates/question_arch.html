@@ -14,18 +14,18 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)))]]</th>
-<td>[[=row.question.questiontext]]
-<div id='btns[[=str(row.question.id)]]'></div></td>
-<td class="has-text-centered">[[=row.question.factopinion]]</td>
-    <td>[[=row.question.notes]]</td>
+<th>[[=A(row.eventmap.status, _href=URL('viewquest/'+str(row.eventmap.questid)))]]</th>
+<td>[[=row.eventmap.questiontext]]
+<div id='btns[[=str(row.eventmap.questid)]]'></div></td>
+<td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
+    <td>[[=row.eventmap.notes]]</td>
 <td>[[if auth.user_id:]]
     <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
-           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",
-           VALUE="[[=row.question.answer1]]">
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
+           VALUE="[[=row.eventmap.answer1]]">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
-           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
-           VALUE="[[=row.question.answer2]]"></td>
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
+           VALUE="[[=row.eventmap.answer2]]"></td>
 [[else:]]
     Login to feedback
     [[pass]]
@@ -33,6 +33,7 @@
 [[pass]]
 </tbody>
 </table>
+[[pass]]
 <script>
 $('#questions').DataTable({responsive: true, paging: false, searching:false, info: false});
 </script>

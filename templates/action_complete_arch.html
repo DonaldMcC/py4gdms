@@ -14,26 +14,28 @@
                 </thead>
                     <tbody>
 [[for i,row in enumerate(comp_actions):]]
-<tr id="[[=row.question.id]]">
-<td>[[=row.question.questiontext]]
+<tr id="[[=row.eventmap.questid]]">
+<td>[[=row.eventmap.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
-<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
-    =row.question.enddate.date().strftime('%Y-%m-%d')
+<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.eventmap.enddate:
+    =row.eventmap.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
     pass]]"> </td>
-<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
+<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.eventmap.responsible]]" style="width:80%;"></td>
+    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.eventmap.perccomplete]]" step="5"  /></td>
     <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
-           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.question.id]]','1',this)",
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
            VALUE="Approve">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
-           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
            VALUE="Disapprove"></td>
 </tr>
 [[pass]]
 </tbody>
 </table>
+[[pass]]
+
 [[pass]]
 <script>
 [[include 'action_comp.js']]
