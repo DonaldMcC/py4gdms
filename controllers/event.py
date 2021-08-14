@@ -16,6 +16,7 @@ from ..d3js2py import getd3graph
 from .answer import like
 from ..ndsfunctions import myconverter
 from pydal.validators import *
+
 flash = Flash()
 
 
@@ -24,20 +25,20 @@ flash = Flash()
 @action.uses(session, db, auth.user, flash, 'new_event.html')
 def new_event(eid=None):
     db.event.startdatetime.default = (datetime.datetime.utcnow()
-                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
+                                      + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     db.event.enddatetime.default = (datetime.datetime.utcnow()
-                                  + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
+                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
-                                      'project.id', '%(proj_name)s')
+                                        'project.id', '%(proj_name)s')
     try:
         db.event.projid.default = session.get('projid',
-                                            db(db.project.name == 'Unspecified').select(db.project.id).first().id)
+                                              db(db.project.name == 'Unspecified').select(db.project.id).first().id)
     except AttributeError:
         pass
 
     eid = int(eid) if eid and eid.isnumeric() else None
     if eid:
-        islocked = db(db.event.id == eid).select('locked','prev_event').first()
+        islocked = db(db.event.id == eid).select('locked', 'prev_event').first()
         if islocked.locked:
             flash.set("Locked Event cannot be edited", sanitize=True)
             redirect(URL('eventgrid'))
@@ -120,12 +121,12 @@ def view_event(eid='0'):
 
     actions = get_items(qtype='action', status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_items(qtype='quest', status='In Progress', event=eid, eventstatus=eventrow.status)
-    for row in questions:
-        print(row['eventmap.id'], row['eventmap.status'])
     issues = get_items(qtype='issue', event=eid, eventstatus=eventrow.status)
-    res_questions = get_items(qtype='quest',status='Resolved', event=eid, eventstatus=eventrow.status)
-    res_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status, execstatus='Incomplete')
-    comp_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status, execstatus='Completed')
+    res_questions = get_items(qtype='quest', status='Resolved', event=eid, eventstatus=eventrow.status)
+    res_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status,
+                            execstatus='Incomplete')
+    comp_actions = get_items(qtype='action', status='Resolved', event=eid, eventstatus=eventrow.status,
+                             execstatus='Completed')
 
     eventlevel = 0
     parentquest = 0
@@ -136,9 +137,7 @@ def view_event(eid='0'):
     db.comment.auth_userid.default = auth.user_id
     db.comment.parenttable.default = 'event'
     db.comment.parentid.default = eid
-    commentform = Form(db.comment,  formstyle=FormStyleBulma)
-
-
+    commentform = Form(db.comment, formstyle=FormStyleBulma)
 
     return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
@@ -217,20 +216,20 @@ def archive():
     # so below runs through if archiving lets leave as is albeit expectation is this function
     # is only called once so would always be doing inserts - maybe rearchive is possible though
     # so fine for now
-
+    #TODO look at commmits on 13 and 14Aug 2021 for fields added to eventmap
     if status == 'Archiving':
         for row in quests:
             db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
-                                                 eventid=eventid, questid=row.id,
-                                                 status=row.status,
-                                                 xpos=row.xpos,
-                                                 ypos=row.ypos,
-                                                 questiontext=row.questiontext, answer1=row.answer1,
-                                                 answer2=row.answer2,
-                                                 qtype=row.qtype, urgency=row.urgency, importance=row.importance,
-                                                 responsible=row.responsible,
-                                                 correctans=row.correctans, queststatus=row.status,
-                                                 notes=row.notes)
+                                         eventid=eventid, questid=row.id,
+                                         status=row.status,
+                                         xpos=row.xpos,
+                                         ypos=row.ypos,
+                                         questiontext=row.questiontext, answer1=row.answer1,
+                                         answer2=row.answer2,
+                                         qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                         responsible=row.responsible,
+                                         correctans=row.correctans, queststatus=row.status,
+                                         notes=row.notes)
 
     if status == 'Archived':
         # So I think there will be a warning as a popup if no next event - if there is a next event
