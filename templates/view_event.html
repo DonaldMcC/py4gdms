@@ -1,9 +1,9 @@
 [[extend 'layout.html']]
 [[load_graph=True]]
-
 [[include 'eventdetails.i']]
 
 [[include 'issue.html']]
+
 [[if eventrow['status']=='Open':]]
 [[include 'question.html']]
 [[include 'question_resolved.html']]
@@ -16,7 +16,6 @@
 [[include 'action_resolved_arch.html']]
 [[pass]]
 
-[[pass]]
 [[include 'eventmap.i']]
 
 <div>
