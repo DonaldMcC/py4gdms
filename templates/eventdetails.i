@@ -23,8 +23,12 @@
 <tr>
 <th>Status: </th>
 <td id="eventstatus">[[=eventrow.status]]</td>
-<td></td>
-<td></td>
+<td>Next Event</td>
+<td> [[if eventrow.next_event==0:]]
+    <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
+    [[else:]]
+    [[=next_event_name]]
+    [[pass]]</td>
 </tr>
 </tbody>
 </table>
