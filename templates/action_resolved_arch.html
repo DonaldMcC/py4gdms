@@ -23,7 +23,7 @@
     <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
     <div id='btns[[=str(row.eventmap.questid)]]'></div><sub>Likes: [[=row.eventmap.numlike]]</sub></td>
 <td>[[if row.eventmap.enddate:
-    =row.question.enddate.date().strftime('%Y-%m-%d')
+    =row.eventmap.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
     pass]]</td>
