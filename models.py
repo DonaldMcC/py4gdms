@@ -235,6 +235,8 @@ db.define_table('eventmap',
                       comment='Select draft to defer for later editing'),
                 Field('perccomplete', 'integer', default=0, label='Percent Complete',
                       requires=IS_INT_IN_RANGE(0, 101, error_message='Must be between 0 and 100')),
+                Field('execstatus', 'string', label='Execution Status', default='Proposed',
+                      requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])),
                 Field('notes', 'text', label='Notes'))
 
 

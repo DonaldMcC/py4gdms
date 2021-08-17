@@ -228,11 +228,20 @@ def archive():
                                          status=row.status,
                                          xpos=row.xpos,
                                          ypos=row.ypos,
-                                         questiontext=row.questiontext, answer1=row.answer1,
+                                         questiontext=row.questiontext,
+                                         answer1=row.answer1,
                                          answer2=row.answer2,
-                                         qtype=row.qtype, urgency=row.urgency, importance=row.importance,
+                                         qtype=row.qtype,
+                                         urgency=row.urgency,
+                                         startdate=row.startdate,
+                                         enddate=row.enddate,
+                                         factopnion=row.factopinion,
+                                         perccomplete=row.perccomplete,
+                                         execstatus=row.execstatus,
+                                         importance=row.importance,
                                          responsible=row.responsible,
-                                         correctans=row.correctans, queststatus=row.status,
+                                         correctans=row.correctans,
+                                         queststatus=row.status,
                                          notes=row.notes)
 
     if status == 'Archived':
