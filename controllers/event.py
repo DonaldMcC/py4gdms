@@ -203,9 +203,6 @@ def archive():
         return 'No matching event found'
     nexteventid = event.next_event
     if event.status == 'Open':
-        status = 'Archiving'
-        responsetext = 'Event moved to archiving'
-    elif event.status == 'Archiving':
         status = 'Archived'
         responsetext = 'Event moved to archived status'
         if not nexteventid:
@@ -217,11 +214,10 @@ def archive():
     query = db.question.eventid == eventid
     quests = db(query).select()
 
-    # so below runs through if archiving lets leave as is albeit expectation is this function
-    # is only called once so would always be doing inserts - maybe rearchive is possible though
-    # so fine for now
-    #TODO look at commmits on 13 and 14Aug 2021 for fields added to eventmap
-    if status == 'Archiving':
+    if status == 'Archived':
+        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
+        unspecid = unspecevent['id']
+
         for row in quests:
             db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                          eventid=eventid, questid=row.id,
@@ -244,20 +240,11 @@ def archive():
                                          queststatus=row.status,
                                          notes=row.notes)
 
-    if status == 'Archived':
-        # So I think there will be a warning as a popup if no next event - if there is a next event
-        # then approach will be to roll all open issues and open questions and any actions which are not
-        # down as completed - completed actions and disagreed issues will still go to unspecified event
-        # the following event will now need to be sent to this
-
-        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
-        unspecid = unspecevent['id']
-        for x in quests:
-            if nexteventid != 0 and (x.status == 'In Progress' or (x.qtype == 'issue' and x.status == 'Agreed') or
-                                     (x.qtype == 'action' and x.status == 'Agreed' and x.execstatus != 'Completed')):
-                x.update_record(eventid=nexteventid)
+            if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
+                                     (row.qtype == 'action' and row.status == 'Agreed' and row.execstatus != 'Completed')):
+                row.update_record(eventid=nexteventid)
             else:
-                x.update_record(eventid=unspecid)
+                row.update_record(eventid=unspecid)
         db.commit()
 
     return responsetext
