@@ -27,8 +27,20 @@
 <td> [[if eventrow.next_event==0:]]
     <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
     [[else:]]
-    [[=next_event_name]]
+    [[=A(next_event_name, _href=URL('view_event/'+str(next_event_id)))]]</th>
     [[pass]]</td>
+</tr>
+<tr>
+<th>Create</th>
+<td><INPUT TYPE=button class="button is-small is-success is-rounded"
+           onClick="parent.location='[[=URL('new_question/None/issue')]]'"VALUE="New Issue">
+</td>
+    <td><INPUT TYPE=button class="button is-small is-success is-rounded"
+           onClick="parent.location='[[=URL('new_question/None/quest')]]'"VALUE="New Question">
+</td>
+    <td><INPUT TYPE=button class="button is-small is-success is-rounded"
+           onClick="parent.location='[[=URL('new_question/None/action')]]'"VALUE="New Action">
+</td>
 </tr>
 </tbody>
 </table>

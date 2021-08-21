@@ -116,12 +116,14 @@ def create_next_event():
 def view_event(eid='0'):
     eventrow = db(db.event.id == eid).select().first()
     next_event_name=''
+    next_event_id = None
     if eventrow:
         session['eventid'] = eid
         session['projid'] = eventrow.projid
         if eventrow.next_event:
             next_eventrow = db(db.event.id == eventrow.next_event).select().first()
             next_event_name = next_eventrow.event_name
+            next_event_id = next_eventrow.id
 
     actions = get_items(qtype='action', status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_items(qtype='quest', status='In Progress', event=eid, eventstatus=eventrow.status)
@@ -147,7 +149,8 @@ def view_event(eid='0'):
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
                 links=links, resultstring=resultstring, redraw='false', eventowner=editable, projid=eventrow.projid,
-                myconverter=myconverter, auth=auth, like=like, commentform=commentform, next_event_name=next_event_name)
+                myconverter=myconverter, auth=auth, like=like, commentform=commentform,
+                next_event_name=next_event_name, next_event_id=next_event_id)
 
 
 @action('eventgrid', method=['POST', 'GET'])
