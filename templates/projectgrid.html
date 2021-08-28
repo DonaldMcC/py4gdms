@@ -7,3 +7,18 @@
         [[=grid.render()]]
     [[pass]]
 </div>
+
+<script>
+    $(document).ready(function() {
+               if (window.screen.availWidth <= 1200) {
+                   $(".grid-col-project\\.proj_shared").hide();
+                   $(".grid-col-project_proj_shared").hide();
+        }
+        if (window.screen.availWidth <= 800) {
+                   $(".grid-col-project\\.proj_status").hide();
+                   $(".grid-col-project_proj_status").hide();
+                   $(".grid-col-project\\.proj_shared").hide();
+                   $(".grid-col-project_proj_shared").hide();
+        }
+    });
+</script>
