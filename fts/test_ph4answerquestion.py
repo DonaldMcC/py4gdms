@@ -16,15 +16,18 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'Answer recorded'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Answer recorded'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'Yes', 'Answer recorded'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'Yes', 'Answer recorded'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Yes', 'Resolved'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'No', 'Answer recorded'),
+          (USERS['USER6'], USERS['PASSWORD6'], 'No', 'Answer recorded'),
+          )
     @unpack
-    def test_answer(self, user, passwd, result):
+    def test_answer(self, user, passwd, answer, result):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        qid = questiddict.get('p2quest')
+        qid = questiddict.get('ph4quest')
 
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
         email.send_keys(user)
@@ -41,6 +44,8 @@ class AnswerQuestion (FunctionalTest):
         # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
+
+        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-danger").click()
 
         time.sleep(1)
 
