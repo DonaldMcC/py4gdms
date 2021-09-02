@@ -17,7 +17,7 @@ class AnswerQuestion (FunctionalTest):
         pass
 
     @data((USERS['USER5'], USERS['PASSWORD5'], 'No', 'Answer recorded'),
-          (USERS['USER6'], USERS['PASSWORD6'], 'No', 'In progress'),
+          (USERS['USER6'], USERS['PASSWORD6'], 'No', 'In Progress'),
           )
     @unpack
     def test_answer(self, user, passwd, answer, result):
