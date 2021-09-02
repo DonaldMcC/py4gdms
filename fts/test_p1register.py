@@ -10,7 +10,8 @@ class TestRegisterPage (FunctionalTest):
         self.url = ROOT + '/auth/register'
         self.browser.get(self.url)
     @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
-          (USERS['USER4'], USERS['PASSWORD4']), (USERS['USER5'], USERS['PASSWORD5']))
+          (USERS['USER4'], USERS['PASSWORD4']), (USERS['USER5'], USERS['PASSWORD5']),
+          (USERS['USER6'], USERS['PASSWORD6']))
 
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):

@@ -4,7 +4,7 @@
 
 <h2 class="title  is-5">Status</h2>
 [[if quest['status'] == 'Resolved':]]
-[[if quest['qtype'] == 'question':]]
+[[if quest['qtype'] == 'quest':]]
 <p>Users have decided the correct answer is [[=quest.correctanstext()]]</p>
 [[else:]]
 <p>This [[=quest['qtype'] ]] is approved.</p>
