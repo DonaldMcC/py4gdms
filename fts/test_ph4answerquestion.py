@@ -45,8 +45,6 @@ class AnswerQuestion (FunctionalTest):
 
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
 
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-danger").click()
-
         time.sleep(1)
 
         # body = self.browser.find_element_by_tag_name('body')
