@@ -79,7 +79,9 @@ def like(itemid, table='question'):
         likecount = liked_item.numlike - 1 if alreadyliked else liked_item.numlike + 1
         liked_item.update_record(numlike=likecount)
     db.commit()
-    return newbutton
+    numlikes='<div id="btns{}" hx-swap-oob="true"> <sub>Likes:{}</sub></div>'.format(itemid,likecount)
+    print(numlikes)
+    return numlikes + newbutton
 
 
 @action('index', method=['POST', 'GET'])
