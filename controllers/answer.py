@@ -1,7 +1,6 @@
 import datetime
-from ..common import db, authenticated, auth, session
+from ..common import db, auth, session
 from py4web import action, request, Flash
-from yatl.helpers import TAG, XML
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items
 flash = Flash()
@@ -67,6 +66,7 @@ def perccomplete():
 def like(itemid, table='question'):
     alreadyliked = db((db.itemlike.parentid == itemid) & (db.itemlike.parenttable == table) &
                       (db.itemlike.createdby == auth.user_id)).select()
+    numlikes = ''
     if alreadyliked:
         newbutton = 'Like'
         db((db.itemlike.parentid == itemid) & (db.itemlike.parenttable == table) &
@@ -78,9 +78,8 @@ def like(itemid, table='question'):
         liked_item = db(db.question.id == itemid).select().first()
         likecount = liked_item.numlike - 1 if alreadyliked else liked_item.numlike + 1
         liked_item.update_record(numlike=likecount)
+        numlikes = '<div id="btns{}" hx-swap-oob="true"> <sub>Likes:{}</sub></div>'.format(itemid, likecount)
     db.commit()
-    numlikes='<div id="btns{}" hx-swap-oob="true"> <sub>Likes:{}</sub></div>'.format(itemid,likecount)
-    print(numlikes)
     return numlikes + newbutton
 
 

@@ -53,9 +53,9 @@ def authenticate():
         query = db.auth_user.email == username
         user = db(query).select().first()
         if CRYPT()(password)[0] != user.password:
-            return (json.dumps({'error': 403, 'message': 'Authentication failed for: %s' % (username)}))
+            return json.dumps({'error': 403, 'message': 'Authentication failed for: %s' % (username)})
     except:
-        return (json.dumps({'error': 403, 'message': 'Authentication failed for %s: ' % (username)}))
+        return json.dumps({'error': 403, 'message': 'Authentication failed for %s: ' % (username)})
 
     data = {}
     data['username'] = username
@@ -65,8 +65,8 @@ def authenticate():
     data['exp'] = datetime.utcnow() + timedelta(seconds=1200)
     token = jwt.encode(data, 'secret', algorithm='HS256')
 
-    print (token)
-    return (json.dumps({'token': token}))
+    print(token)
+    return json.dumps({'token': token})
 
 
 @action('apisec/<tablename>/')
@@ -83,13 +83,13 @@ def apisec(tablename, rec_id=None):
                                        request.POST
                                        )
         except jwt.ExpiredSignatureError:
-            return (json.dumps({'error': 403, 'message': 'Token Expired'}))
+            return json.dumps({'error': 403, 'message': 'Token Expired'})
         except jwt.InvalidSignatureError:
-            return (json.dumps({'error': 403, 'message': 'JWT Signature failed!'}))
+            return json.dumps({'error': 403, 'message': 'JWT Signature failed!'})
         except:
-            return (json.dumps({'error': 403, 'message': 'User not found'}))
+            return json.dumps({'error': 403, 'message': 'User not found'})
     else:
-        return (json.dumps({'error': 403, 'message': 'Token required!'}))
+        return json.dumps({'error': 403, 'message': 'Token required!'})
 
 
 class JwtLogin(Fixture):

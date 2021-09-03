@@ -115,7 +115,7 @@ def create_next_event():
 @action.uses(session, db, auth.user, flash, 'view_event.html')
 def view_event(eid='0'):
     eventrow = db(db.event.id == eid).select().first()
-    next_event_name=''
+    next_event_name = ''
     next_event_id = None
     if eventrow:
         session['eventid'] = eid

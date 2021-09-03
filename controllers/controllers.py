@@ -21,17 +21,6 @@
 # This controller provides details about network decision making
 # and access to the FAQ
 
-"""
-    exposes:
-    http://..../[app]/about
-    http://..../[app]/privacy
-    http://..../[app]/faq
-    http://..../[app]/present
-    http://..../[app]/enhance
-    http://..../[app]/download
-    http://..../[app]/getfile
-
-    """
 from ..common import db, unauthenticated, authenticated
 
 
