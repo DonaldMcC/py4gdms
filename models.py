@@ -249,4 +249,13 @@ db.define_table("itemlike",
                 Field('liketype', 'string', default='like'),
                 Field('likedate', 'datetime', default=datetime.datetime.utcnow))
 
+db.define_table('email_runs',
+                Field('datecreate', 'datetime', default=datetime.datetime.utcnow, writable=False),
+                Field('daterun', 'datetime', writable=False),
+                Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
+                Field('datefrom', 'datetime'),
+                Field('dateto', 'datetime'),
+                Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
+                Field('error', 'text'))
+
 db.commit()
