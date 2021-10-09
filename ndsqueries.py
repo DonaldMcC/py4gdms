@@ -15,17 +15,11 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
     return btnclass
 
 
-def check_liked(items, eventstatus, table='question'):
-    #TODO - below is probably cacheable or split into separate functions and only build like_ids once
+def check_liked(itemid, eventstatus, table='question'):
     query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable==table)
-    query &= db.itemlike.parentid.belongs(items.as_dict().keys())
-    liked_ids = [row.parentid for row in db(query).select()]
-    for item in items:
-        if eventstatus == 'Archived':
-            item["liked"] = item.eventmap.questid in liked_ids if liked_ids else False
-        else:
-            item["liked"] = item.question.id in liked_ids if liked_ids else False
-    return items
+    query &= (db.itemlike.parentid == itemid)
+    liked = db(query).select()
+    return True if liked else False
 
 
 def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open',
@@ -37,7 +31,8 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     else:
         sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
-    items = check_liked(items, eventstatus) if items else None
+    for item in items:
+        item["liked"] = check_liked(item.question.id, eventstatus)
     return items
 
 
