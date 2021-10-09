@@ -25,7 +25,7 @@ def check_liked(items, eventstatus, table='question'):
             item["liked"] = item.eventmap.questid in liked_ids if liked_ids else False
         else:
             item["liked"] = item.question.id in liked_ids if liked_ids else False
-    return
+    return items
 
 
 def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open',
@@ -37,8 +37,7 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     else:
         sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
-    if items:
-        check_liked(items, eventstatus)
+    items = check_liked(items, eventstatus) if items else None
     return items
 
 
