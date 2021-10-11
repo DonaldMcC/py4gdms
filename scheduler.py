@@ -1,28 +1,52 @@
 # - Coding UTF8 -
 #
 # Networked Decision Making
-# Development Sites (source code): http://github.com/DonaldMcC/gdms
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
 #
-# Demo Sites (Pythonanywhere)
-#   http://netdecisionmaking.com/nds/
-#   http://netdecisionmaking.com/gdmsdemo/
+# Demo Site (Pythonanywhere)
+#   http://netdecisionmaking.com/py4gdms
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
-# Also visit: www.web2py.com
-# or Groups: http://groups.google.com/group/web2py
-# For details on the web framework used for this development
-#
-# With thanks to Guido, Massimo and many other that make this sort of thing
-# much easier than it used to be
+# This should send email summaries to users on an immediate, daily, weekly or monthly schedule if requested in their user profile
+# We will have a last run date against the user which gets updated when the email is sent unless a resend flag
+# included
+# If immediate users get emails on question submission, resolution etc - otherwise should also run daily
+# think we iterate through all users and just look at user and lastrun date versus todays date to get the list
+# of users due a notification - then we work out what we want to send them which should be a subfunction
+# which could still have the run type and we should be able to run the notification immediately with user
+# and runtype
 
-from ndsfunctions import score_question, resulthtml, truncquest, getrundates
 import datetime
-from ndspermt import get_exclude_groups
+from ndsfunctions import score_question, resulthtml, truncquest, getrundates
+from .common import settings, scheduler, db, Field
 
-from gluon.scheduler import Scheduler
-scheduler = Scheduler(db, heartbeat=15)
+
+def notify_email(user, notifytype):
+
+    return success or failure
+
+
+def get_users_notification(notifytype):
+    # notifytype can be immediate, daily, weekly or monthly
+    # so collect all users check last run parameter and call
+    # notify_email for each user with matching notifytype
+    # think intial call can always be immediate but that can also be called
+    # with daily/weekly/monthly
+    # think we can prequery this if no items since last run but if there are
+    # then lets run it
+
+    rows = db(db.auth.id == id).select(db.notifytype==notifytype)
+
+    for user in rows:
+        notify_email(user, notifytype)
+
+
+    return ''
+
+
+
 
 
 def activity(id=0, resend=False, period='Week', format='html', source='default'):
@@ -30,9 +54,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     # this needs to be run and on success rolls the run date forward for the next
     # period this just formats the message and formats for sending via email
 
-    db = current.db
-
-    if id > 0:
+    if id:
         rows = db(db.email_runs.id == id).select()
         # if record status not equal to planned then log not sending to console and lets go with
         # only resending by id number
@@ -40,12 +62,11 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         rows = db((db.email_runs.runperiod == period) & (db.email_runs.status == 'Planned')).select()
 
     if rows is None:
-        # print ('No matching parameter record found')
         return 'No matching parameter record found'
 
     parameters = rows.first()
-    params = current.db(current.db.website_parameters.id > 0).select().first()
-    
+    params = db(db.website_parameters.id > 0).select().first()
+
     if params:
         stripheader = params.website_url[7:]
     else:
@@ -88,12 +109,6 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         to = user.email
         # will change above to create allsubmitteds and then do a filter
 
-        exclude_groups = get_exclude_groups(user.id)
-        if exclude_groups:
-            submitted = allsubmitted.exclude(lambda r: r.answer_group not in exclude_groups)
-        else:
-            submitted = allsubmitted
-    
         message = '<html><body><h1> ' + periodtext + ' Activity Report</h1>'
 
         # should be able to make personal as well
@@ -187,7 +202,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         message += '<p>This report covers the period from %s to %s.</p>' % (str(startdate), str(enddate))
 
         # TODO this should move to module as may be repeated
-        params = current.db(current.db.website_parameters.id > 0).select().first()
+        params = db(db.website_parameters.id > 0).select().first()
         if params:
             stripheader = params.website_url[7:]
         else:

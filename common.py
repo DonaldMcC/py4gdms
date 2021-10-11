@@ -92,7 +92,10 @@ auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, lab
                                                          ' information to support operation of this site - it is not shared with 3rd parties',
                                    requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
                             Field("status",'string', label='test'),
-                            Field('test','string',label='test2')]
+                            Field('test','string',label='test2'),
+                            Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None'),
+                            Field('notifydate', 'datetime')]
+
 auth.define_tables()
 
 

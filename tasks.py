@@ -24,7 +24,7 @@ def my_task():
         db.rollback()
 
 
-# run my_task very 10 seconds
+# run my_task every 10 seconds
 scheduler.conf.beat_schedule = {
     "my_first_task": {
         "task": "apps.%s.tasks.my_task" % settings.APP_NAME,

@@ -1,7 +1,7 @@
 """
 This file defines the database models
 """
-from .common import db, auth, T
+from .common import db, T
 from py4web import Field
 from pydal.validators import *
 import datetime
@@ -87,7 +87,7 @@ db.define_table('project',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
                 Field('startdate', 'date', label='Start Date', default=datetime.datetime.utcnow),
-                Field('enddate', 'date', label='End Date', default=(datetime.datetime.utcnow)),
+                Field('enddate', 'date', label='End Date', default=datetime.datetime.utcnow),
                 Field('description', 'text'),
                 Field('proj_shared', 'boolean', default=True, label='Shared Project', comment='Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False),
