@@ -1,5 +1,29 @@
+# - Coding UTF8 -
+#
+# Networked Decision Making
+# A framework for groups to make decisions asynchronously as asynchronous communication has proved highly
+# successful and popular yet meetings persist for group decision making
+#
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
+#
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#
+# License Code: MIT
+# License Content: Creative Commons Attribution 3.0
+#
+# Also visit: www.py4web.com
+# or Groups: http://groups.google.com/group/py4web
+# For details on the web framework used for this development
+#
+# With thanks to Guido, Massimo and many other that make this sort of thing
+# much easier than it used to be
+
+# This controller provides the APIs for Networked decision making
 # https://groups.google.com/g/py4web/c/3kGHOJp6DUo/m/fWc1PKmqAwAJ
 # above was main source for this - appears to work based on testing with Postman
+
+
 from py4web import action, request, abort, redirect, URL, HTTP
 from py4web.core import Fixture
 from yatl.helpers import A

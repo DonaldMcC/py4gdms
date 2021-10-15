@@ -1,3 +1,26 @@
+# - Coding UTF8 -
+#
+# Networked Decision Making
+# A framework for groups to make decisions asynchronously as asynchronous communication has proved highly
+# successful and popular yet meetings persist for group decision making
+#
+# Development Sites (source code): http://github.com/DonaldMcC/py4gdms
+#
+# Demo Sites (Pythonanywhere)
+#   http://netdecisionmaking.com/nds/
+#
+# License Code: MIT
+# License Content: Creative Commons Attribution 3.0
+#
+# Also visit: www.py4web.com
+# or Groups: http://groups.google.com/group/py4web
+# For details on the web framework used for this development
+#
+# With thanks to Guido, Massimo and many other that make this sort of thing
+# much easier than it used to be
+
+# This controller provides the initial data setup routines
+
 import datetime
 from ..common import db, authenticated, auth
 
@@ -14,7 +37,7 @@ def datasetup():
                                      seo_meta_description='Platform for group decision making without meetings')
 
     if db(db.locn.location_name == "Unspecified").isempty():
-        locid = db.locn.insert(location_name="Unspecified", locked=True, auth_userid = auth.user_id,
+        locid = db.locn.insert(location_name="Unspecified", locked=True, auth_userid=auth.user_id,
                                description='The unspecified location is used as a default for all events that are not'
                                            ' allocated a specific location')
 
@@ -27,8 +50,8 @@ def datasetup():
         locid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         projid = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
         evid = db.event.insert(event_name="Unspecified", locationid=locid, projid=projid, locked=True,
-                             startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
-                             enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
+                               startdatetime=datetime.datetime.utcnow() - datetime.timedelta(days=10),
+                               enddatetime=datetime.datetime.utcnow() - datetime.timedelta(days=9))
 
     if db(db.resolve.resolve_name == "Standard").isempty():
         resolveid = db.resolve.insert(resolve_name="Standard", Defaultresolve=True)
