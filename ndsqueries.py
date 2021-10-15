@@ -1,5 +1,6 @@
 from .common import db, auth
 
+
 def get_disabled(ans, useranswer):
     return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
 
@@ -16,7 +17,7 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
 
 
 def check_liked(itemid, eventstatus, table='question'):
-    query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable==table)
+    query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable == table)
     query &= (db.itemlike.parentid == itemid)
     liked = db(query).select()
     return True if liked else False
@@ -29,7 +30,7 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
     if eventstatus == 'Archived':
         sortby = ~db.eventmap.id
     else:
-        sortby = db.question.priority|~db.question.id if status == 'Resolved' else ~db.question.id
+        sortby = db.question.priority | ~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
     for item in items:
         item["liked"] = check_liked(item.question.id, eventstatus)
@@ -79,8 +80,8 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
 def make_leftjoin(eventstatus):
     if eventstatus != 'Archived':
         leftjoin = db.userquestion.on((db.question.id == db.userquestion.questionid)
-                                        & (db.userquestion.auth_userid == auth.user_id))
+                                      & (db.userquestion.auth_userid == auth.user_id))
     else:
         leftjoin = db.userquestion.on((db.eventmap.questid == db.userquestion.questionid)
-                                        & (db.userquestion.auth_userid == auth.user_id))
+                                      & (db.userquestion.auth_userid == auth.user_id))
     return leftjoin

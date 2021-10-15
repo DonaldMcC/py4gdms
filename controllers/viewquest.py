@@ -40,40 +40,18 @@
  A separate comments function has now been created
 
     exposes:
-    http://..../[app]/viewquest/index which has action, issue and question views
-    http://..../[app]/viewquest/notshowing
-    http://..../[app]/viewquest/comments
-    http://..../[app]/viewquest/flagcomment  #  Ajax call
-    http://..../[app]/viewquest/urgency  #  Ajax call
-    http://..../[app]/viewquest/importance  #  Ajax call
+    https://..../[app]/viewquest/index which has action, issue and question views
+    https://..../[app]/viewquest/notshowing
+    https://..../[app]/viewquest/comments
+    https://..../[app]/viewquest/flagcomment  #  Ajax call
+    https://..../[app]/viewquest/urgency  #  Ajax call
+    https://..../[app]/viewquest/importance  #  Ajax call
     """
 
 from ..common import db, auth, session
 from py4web import action, request, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..ndsqueries import get_class, get_disabled
-
-
-# For now not using this - everything is open
-def can_view(status, qtype,  hasanswered, userid, owner):
-    """Will be some doctests on this in due course and a table of condtions
-    Basic rules are that for votes users can't see questions that they haven't answered
-    vote style questions can be seen after expiry and never before and users can never see
-    questions for groups they don't belong to.
-    """
-
-    viewable = False
-    message = ''
-    reason = 'OK to view'
-
-    if userid == owner:  # think always allow owners to view questions whether votes or not
-        viewable = True
-    elif (status == 'In Progress' or status == 'Draft') and hasanswered is False:
-        message = "You can't view this question as it's not resolved and you haven't answered it."
-        reason = 'NotAnswered'
-    else:
-        viewable = True
-    return viewable, reason, message
 
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
@@ -148,103 +126,6 @@ def viewquest(qid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform)
-
-
-# TODO - think will add this in some manner at some point -but below is web2py version
-def notshowing():
-    questid = request.args(1)
-    shortreason = request.args(0)
-
-    if shortreason == 'NotResolved':
-        reason = "This question is not yet resolved and you haven't answered it"
-    elif shortreason == 'NotAnswered':
-        reason = 'You have not answered this question'
-    elif shortreason == 'NotInGroup':
-        reason = 'You do not have permission to view this item'
-    elif shortreason == 'VoteInProg':
-        quest = db(db.question.id == questid).select(db.question.duedate).first()
-        reason = "Vote is still in progress so you can't see results. The vote concludes at " + str(quest.duedate)
-    elif shortreason == 'NoQuestion':
-        reason = 'This question does not exist'
-    else:
-        reason = 'Not Known'
-    return dict(reason=reason, questid=questid, shortreason=shortreason)
-
-
-# not yet setup - below is w2p version
-def challenge():
-    # This allows users to challenge resolved questions - whether or not they have answered them - users are not
-    # allowed to challenge questions that are not currently in a state of resolved and this should be done by the
-    # viewquestion function rather than the challenge ie option isn't available if question isn't resolved - actions
-    # are similar and would only be challenged once they are in a state of Agreed
-
-    chquestid = request.args[0]
-    if auth.user is None:
-        responsetext = 'You must be logged in to challenge a question'
-    else:
-        # find out if user has previously challenged the question - this will be a userchallenge record
-        qcs = db((db.questchallenge.auth_userid == auth.user.id) & (db.questchallenge.questionid == chquestid)).select()
-        qc = qcs.first()
-        if qc is None:
-            db.questchallenge.insert(questionid=chquestid, auth_userid=auth.user.id,
-                                     challengereason=request.vars.challreason)
-            # Now also need to add 1 to the numchallenges figure - I think this will reset when back to resolved and
-            # It shouldn't be possible to challenge unless resolved
-            questrows = db(db.question.id == chquestid).select()
-            quest = questrows.first()
-            numchallenges = quest.othercounts
-            numchallenges[1] += 1
-            newlevel = quest.question_level
-            status = quest.status
-            challenge = False
-            if numchallenges[1] >= 3:
-                numchallenges[2] += 1
-                newlevel = quest.question_level + 2
-                status = 'In Progress'
-                challenge = True
-            db(db.question.id == chquestid).update(status=status, question_level=newlevel, othercounts=numchallenges,
-                                                   challengedate=request.utcnow, urgency=quest.urgency,
-                                                   importance=quest.importance, challenge=challenge)
-            responsetext = 'Challenge accepted'
-        else:
-            responsetext = 'You have already challenged this question and only 1 challenge is allowed at present'
-    return 'jQuery(".w2p_flash").html("' + responsetext + '").slideDown().delay(1500).slideUp();' \
-                                                          ' $("#target").html("' + responsetext + '");'
-
-
-def flagcomment():
-    # This allows users to record if they think a comment is inappropriate
-    # if 3 separate users flag the comment then it is removed from display
-    # permanently for now
-
-    commentid = request.args[0]
-    requesttype = request.args[1]
-
-    if auth.user is None:
-        responsetext = 'You must be logged in to flage inappropriate comments'
-    else:
-        comment = db(db.questcomment.id == commentid).select().first()
-
-        if requesttype != 'admin':
-            # check if user has previously challenged the question -
-            # this will be an entry in the usersreject field
-
-            if comment.usersreject is not None and auth.user.id in comment.usersreject:
-                responsetext = 'You have already flagged this comment'
-            else:
-                responsetext = 'Rejection recorded'
-                comment.numreject += 1
-                if comment.usersreject is not None:
-                    comment.usersreject.append(auth.user.id)
-                else:
-                    comment.usersreject = [auth.user.id]
-                if comment.numreject > 2:
-                    comment.status = 'NOK'
-                comment.update_record()
-        else:
-            responsetext = 'Admin hide successful'
-            comment.update_record(status='NOK')
-    return responsetext
 
 
 @action('urgency', method=['POST', 'GET'])

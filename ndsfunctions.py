@@ -66,17 +66,7 @@ def convrow(row, dependlist='', hasdepend=False):
     return projrow
 
 
-def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
-    """
-    .gtaskyellow, Complete
-    .gtaskblue, Not started and before startdate
-    .gtaskred, Overdue and not complete
-    .gtaskgreen, Started and on track
-    .gtaskpurple, Started and behind schedule
-    .gtaskpink Later  
-    
-    ganntt is now a flag to allow coding of plan rows with same logic """
-
+def get_colour(startdate, enddate, percomplete):
     if startdate and enddate:
         now = datetime.datetime.now()
         dayselapsed = max(now - startdate, datetime.timedelta(days=0)).days
@@ -84,20 +74,30 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
         percelapsed = min((100 * dayselapsed) / daysduration, 100) if daysduration else 0
 
         if percomplete == 100:
-            colorclass = 'gtaskyellow'
+            return 'gtaskyellow'
         elif now < startdate:
-            colorclass = 'gtaskblue'
+            return 'gtaskblue'
         elif now > enddate:
-            colorclass = 'gtaskred'
+            return 'gtaskred'
         elif percelapsed > percomplete:
-            colorclass = 'gtaskpurple'
+            return 'gtaskpurple'
         else:
-            colorclass = 'gtaskgreen'
+            return 'gtaskgreen'
     else:
-        colorclass = 'gtaskpink'  # not sure ever worth returning as no bar without dates
+        return 'gtaskpink'  # not sure ever worth returning as no bar without dates
 
-    if gantt is False:
-        colorclass = colorclass[1:]
+
+def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
+    """
+    .gtaskyellow, Complete
+    .gtaskblue, Not started and before startdate
+    .gtaskred, Overdue and not complete
+    .gtaskgreen, Started and on track
+    .gtaskpurple, Started and behind schedule
+    .gtaskpink Later
+     gantt is a flag to allow coding of plan rows with same logic """
+    colorclass = get_colour(startdate, enddate, percomplete)
+    colorclass = colorclass if gantt else colorclass[1:]
     return colorclass
 
 
@@ -130,7 +130,6 @@ def score_question(questid, answer=0):
         else:
             quest.status = 'In Progress'
             quest.correctans = 0
-
     quest.update_record()
     db.commit()
     returnmsg = 'Item changed to status ' + quest.status if origstatus != quest.status else 'Item still ' + quest.status
@@ -163,13 +162,10 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         # in this case no need to get other questions
         intquery = (db.questlink.targetid.belongs(itemids)) & (db.questlink.status == 'Active') & (
             db.questlink.sourceid.belongs(itemids))
-
-        # intlinks = db(intquery).select(cache=(cache.ram, 120), cacheable=True)
         links = db(intquery).select()
     else:
         parentlist = itemids
         childlist = itemids
-
         links = None
         # just always have actlevels at 1 or more and see how that works
         # below just looks at parents and children - to get partners and siblings we could repeat the process
@@ -207,7 +203,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
                             query = db.question.id.belongs(mylist)
                             sibquests = db(query).select()
                             quests = quests | sibquests
-
                         # parentquery = db.questlink.targetid.belongs(parentlist)
                         # child process starts
             if childlist:
