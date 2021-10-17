@@ -95,12 +95,8 @@ auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, lab
                             Field('test','string',label='test2'),
                             Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None'),
                             Field('notifydate', 'datetime')]
-
 auth.define_tables()
-
-
-
-
+auth.fix_actions()
 
 # #######################################################
 # Configure email sender for auth

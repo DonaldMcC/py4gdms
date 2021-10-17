@@ -33,7 +33,7 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
-flash = Flash()
+flash = auth.flash
 
 try:
     import wolframalpha
@@ -66,7 +66,6 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
     db.question.eventid.requires = IS_IN_DB(db((db.event.status == 'Open') & (db.event.projid == db.project.id) &
                                                ((db.project.proj_owner == auth.user_id) |
                                                 (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
-
     qid = int(qid) if qid and qid.isnumeric() else None
     try:
         db.question.resolvemethod.default = session.get('resolvemethod',
@@ -119,7 +118,7 @@ def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid'
 
 @action('questiongrid', method=['POST', 'GET'])
 @action('questiongrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, 'questiongrid.html')
+@action.uses(session, db, flash, auth.user, 'questiongrid.html')
 def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
@@ -131,7 +130,6 @@ def questiongrid(path=None):
     queries = [db.question.qtype == qtype]
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
                                                                 orderby=db.event.event_name, distinct=True)]))
-
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
                                                             orderby=db.project.proj_name, distinct=True)]))
 

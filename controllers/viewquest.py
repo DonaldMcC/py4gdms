@@ -69,8 +69,8 @@ def viewquest(qid=0):
     # initialize variables as not used if action
     uqrated = False
 
-    quests = db(db.question.id == qid).select() or redirect(URL('notshowing/' + 'NoQuestion'))
-    quest = quests.first()
+    quests = db(db.question.id == qid).select()
+    quest = quests.first() if quests else redirect(URL('index'))
     uq = None
     ur = None
     uqanswered = False

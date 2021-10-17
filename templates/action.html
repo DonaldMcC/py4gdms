@@ -1,4 +1,4 @@
-[[if actions:]]
+[[if qactions:]]
 <br>
 <h1 class="title is-5">Actions in Progress</h1>
 <table id=actions class='table issuetable2 is-bordered is-striped is-narrow'>
@@ -9,7 +9,7 @@
                     </tr>
                 </thead>
                     <tbody>
-[[for i,row in enumerate(actions):]]
+[[for i,row in enumerate(qactions):]]
 <tr>
 <td>[[=row.question.questiontext]]
     <div id='btns[[=str(row.question.id)]]'></div></td>

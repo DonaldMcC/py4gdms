@@ -24,7 +24,7 @@
 
 import datetime
 from ..common import db, auth, session
-from py4web import action, request, Flash
+from py4web import action, request, Flash, redirect
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items
 flash = Flash()
@@ -113,7 +113,7 @@ def like(itemid, table='question'):
 @action.uses(flash, session, db, auth, 'index.html')
 def index(qtype=None, qid=None):
     qid = int(qid) if qid and qid.isnumeric() else None
-    actions = get_items(qtype='action', status='In Progress', qid=qid) if (
+    qactions = get_items(qtype='action', status='In Progress', qid=qid) if (
             qtype == 'actions' or qtype == None) else None
     questions = get_items(qtype='quest', status='In Progress', qid=qid) if (
             qtype == 'questions' or qtype == None) else None
@@ -123,5 +123,10 @@ def index(qtype=None, qid=None):
             qtype == 'resactions' or qtype == None) else None
     comp_actions = get_items(status='Resolved', qid=qid, execstatus='Completed') if (
             qtype == 'resactions' or qtype == None) else None
-    return dict(actions=actions, questions=questions, issues=issues, res_actions=res_actions,
+    actions = {"allowed_actions": auth.param.allowed_actions}
+    return dict(actions=actions, qactions=qactions, questions=questions, issues=issues, res_actions=res_actions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
+
+
+
+
