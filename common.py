@@ -76,6 +76,7 @@ elif settings.SESSION_TYPE == "database":
 
     session = Session(secret=settings.SESSION_SECRET_KEY, storage=DBStore(db))
 
+
 # #######################################################
 # Instantiate the object and actions that handle auth
 # #######################################################
