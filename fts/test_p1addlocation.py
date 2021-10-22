@@ -18,7 +18,8 @@ class AddBasicAction (FunctionalTest):
         password = self.browser.find_element_by_id("signpass")
         password.send_keys(USERS['PASSWORD1'])
         # submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-        submit_button = self.browser.find_element_by_id("login")
+        submit_button = self.browser.find_element_by_css_selector("//input[@type='submit']")
+        #submit_button = self.browser.find_element_by_id("login")
         submit_button.click()
         time.sleep(1)
 
