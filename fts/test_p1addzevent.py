@@ -13,12 +13,11 @@ class AddBasicAction (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("signin"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("no_table_username"))
         email.send_keys(USERS['USER1'])
-        password = self.browser.find_element_by_id("signpass")
+        password = self.browser.find_element_by_id("no_table_login_password")
         password.send_keys(USERS['PASSWORD1'])
-        # submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
-        submit_button = self.browser.find_element_by_id("login")
+        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
         submit_button.click()
         time.sleep(1)
 

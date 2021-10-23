@@ -23,20 +23,6 @@ class TestRegisterPage (FunctionalTest):
     @data((USERS['USER1'], USERS['PASSWORD1']))
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
-        #self.driver.find_element(By.ID, "auth_user_username").send_keys("user2")
-        #self.driver.find_element(By.ID, "auth_user_email").send_keys("user2@user2.com")
-        #self.driver.find_element(By.ID, "auth_user_password").send_keys("Testuser2")
-        #self.driver.find_element(By.ID, "no_table_password_again").send_keys("Testuser2")
-        #self.driver.find_element(By.ID, "auth_user_first_name").send_keys("User2")
-        #self.driver.find_element(By.ID, "auth_user_last_name").send_keys("User")
-        #self.driver.find_element(By.ID, "auth_user_status").send_keys("bla")
-        #self.driver.find_element(By.ID, "auth_user_test").send_keys("bla")
-        #self.driver.find_element(By.ID, "auth_user_notify").click()
-        #dropdown = self.driver.find_element(By.ID, "auth_user_notify")
-        #dropdown.find_element(By.XPATH, "//option[. = 'm']").click()
-        #self.driver.find_element(By.CSS_SELECTOR, "option:nth-child(2)").click()
-        #self.driver.find_element(By.CSS_SELECTOR, "div:nth-child(1) > input").click()
-        #self.driver.find_element(By.CSS_SELECTOR, ".close").click()
 
         username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("auth_user_username"))
         username.clear()
