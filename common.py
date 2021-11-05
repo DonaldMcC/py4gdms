@@ -96,7 +96,6 @@ auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
 #                            Field('test','string',label='test2'),
 #                            Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None'),
 #                            Field('notifydate', 'datetime')]
-
 auth.extra_auth_user_fields=[Field("status",'string', label='test'),
                             Field('test','string',label='test2'),
                             Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None')]
