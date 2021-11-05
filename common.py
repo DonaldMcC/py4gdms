@@ -94,7 +94,8 @@ auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, lab
                             Field("status",'string', label='test'),
                             Field('test','string',label='test2'),
                             Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None'),
-                            Field('notifydate', 'datetime')]
+                            Field('notifydate', 'datetime'),
+                            Field('next_notify_date', 'datetime')]
 auth.define_tables()
 auth.fix_actions()
 

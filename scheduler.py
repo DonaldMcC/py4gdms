@@ -40,13 +40,10 @@ def get_users_notification(notifytype):
     rows = db(db.auth.id == id).select(db.notifytype==notifytype)
 
     for user in rows:
-        notify_email(user, notifytype)
+        result = notify_email(user, notifytype)
 
 
     return ''
-
-
-
 
 
 def activity(id=0, resend=False, period='Week', format='html', source='default'):
@@ -108,7 +105,6 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
     for user in users:
         to = user.email
         # will change above to create allsubmitteds and then do a filter
-
         message = '<html><body><h1> ' + periodtext + ' Activity Report</h1>'
 
         # should be able to make personal as well
@@ -257,24 +253,6 @@ def runactivity():
     else:
         print('No scheduled emails this period')
     return result
-
-
-# this will schedule scoring if a vote type question is created
-# gets called from submit.py
-def schedule_vote_counting(resolvemethod, id, duedate):    
-    db = current.db
-    resmethod = db(db.resolve.resolve_name == resolvemethod).select().first()
-    method = resmethod.resolve_method
-    if method == 'Vote':
-        # scheduler.queue_task(score_question, args=[id], start_time=duedate, period=600)
-        scheduler.queue_task(score_question, start_time=duedate, pvars=dict(questid=id, endvote=True,anon_resolve=PARAMS.anon_resolve), period=600)
-        # scheduler.queue_task(score_complete_votes, period=600)
-        print('Task scheduled for ')
-        print(duedate)
-        return True
-
-    else:
-        return False
 
 
 def send_email(to, sender, subject, message):
