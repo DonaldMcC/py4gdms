@@ -92,16 +92,28 @@ auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
 #auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
 #                                                         ' information to support operation of this site - it is not shared with 3rd parties',
 #                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
-#                            Field("status",'string', label='test'),
-#                            Field('test','string',label='test2'),
-#                            Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None'),
-#                            Field('notifydate', 'datetime')]
-auth.extra_auth_user_fields=[Field("status",'string', label='test'),
-                            Field('test','string',label='test2'),
-                            Field('notify','string', requires=IS_IN_SET('None','Immediate','Daily', 'Weekly', 'Monthly'), default='None')]
+auth.extra_auth_user_fields=[Field('notify','string', label='Notification E-mail frequency',
+                                  requires=IS_IN_SET(['None','Immediate','Daily', 'Weekly', 'Monthly']), default='None'),
+                            Field('notifydate', 'datetime', readable=False, writable=False),
+                            Field('next_notify_date', 'datetime', readable=False, writable=False),
+                             #Field('data_consent', 'boolean', default=False,
+                             #      label='I consent to Net Decision Making holding minimal personal information to support operation of this site - it is not shared with 3rd parties',
+                             #requires=IS_NOT_EMPTY(), error_message='You must consent to register')
+                             ]
 
 auth.define_tables()
 auth.fix_actions()
+
+
+def create_profile_callback(field_values, user_id):
+    print(f"User registered: {user_id}")
+    print(field_values['notify'])
+    #TODO will call some sort of next notification function from here that may also update notifydate if successfully sent
+    #otherwise will just be initial population and based on current time
+    return
+
+
+db.auth_user._after_insert.append(create_profile_callback)
 
 # #######################################################
 # Configure email sender for auth
