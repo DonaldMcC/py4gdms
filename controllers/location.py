@@ -47,7 +47,7 @@ def new_location(lid=None):
 
 @action('locationgrid', method=['POST', 'GET'])
 @action('locationgrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, flash, 'locationgrid.html')
+@action.uses(session, db,  auth.user, flash, 'locationgrid.html')
 def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,

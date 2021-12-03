@@ -94,7 +94,7 @@ auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
 #                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
 auth.extra_auth_user_fields=[Field('notify','string', label='Notification E-mail frequency',
                                   requires=IS_IN_SET(['None','Immediate','Daily', 'Weekly', 'Monthly']), default='None'),
-                            Field('notifydate', 'datetime', readable=False, writable=False),
+                            Field('notify_date', 'datetime', readable=False, writable=False),
                             Field('next_notify_date', 'datetime', readable=False, writable=False),
                              #Field('data_consent', 'boolean', default=False,
                              #      label='I consent to Net Decision Making holding minimal personal information to support operation of this site - it is not shared with 3rd parties',
@@ -111,6 +111,11 @@ def create_profile_callback(field_values, user_id):
     #TODO will call some sort of next notification function from here that may also update notifydate if successfully sent
     #otherwise will just be initial population and based on current time
     return
+
+
+def get_next_notify_date(notify_date, frequency):
+
+    return get_next_notify_date
 
 
 db.auth_user._after_insert.append(create_profile_callback)
