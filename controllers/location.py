@@ -31,7 +31,7 @@ flash = Flash()
 
 @action("new_location", method=["GET", "POST"])
 @action("new_location/<lid>", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, flash, 'new_location.html')
+@action.uses(session, db, flash, auth.user,  'new_location.html')
 def new_location(lid=None):
     lid = int(lid) if lid and lid.isnumeric() else None
     if lid:
@@ -47,7 +47,7 @@ def new_location(lid=None):
 
 @action('locationgrid', method=['POST', 'GET'])
 @action('locationgrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db,  auth.user, flash, 'locationgrid.html')
+@action.uses(session, db, flash, auth.user,  'locationgrid.html')
 def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
