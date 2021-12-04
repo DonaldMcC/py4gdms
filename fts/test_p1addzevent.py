@@ -31,6 +31,12 @@ class AddBasicAction (FunctionalTest):
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('event_name'))
         questiontext.send_keys(itemtext)
 
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('locationid'))
+        questiontext.send_keys(itemtext)
+
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('projid'))
+        questiontext.send_keys(itemtext)
+
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('description'))
         questiontext.send_keys(itemdesc)
 
@@ -40,5 +46,6 @@ class AddBasicAction (FunctionalTest):
         time.sleep(1)
 
         # Lookof for body in questiongrid
+        # this is not great as shows up even if form not submitted
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
         self.assertIn(itemtext, body.text)
