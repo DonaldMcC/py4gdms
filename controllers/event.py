@@ -139,6 +139,8 @@ def view_event(eid='0'):
             next_eventrow = db(db.event.id == eventrow.next_event).select().first()
             next_event_name = next_eventrow.event_name
             next_event_id = next_eventrow.id
+    else:
+        redirect(URL('eventgrid'))
 
     actions = get_items(qtype='action', status='In Progress', event=eid, eventstatus=eventrow.status)
     questions = get_items(qtype='quest', status='In Progress', event=eid, eventstatus=eventrow.status)
@@ -160,7 +162,7 @@ def view_event(eid='0'):
     db.comment.parentid.default = eid
     commentform = Form(db.comment, formstyle=FormStyleBulma)
 
-    return dict(eventrow=eventrow, eventid=eid, actions=actions, questions=questions,
+    return dict(eventrow=eventrow, eventid=eid, qactions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
                 links=links, resultstring=resultstring, redraw='false', eventowner=editable, projid=eventrow.projid,

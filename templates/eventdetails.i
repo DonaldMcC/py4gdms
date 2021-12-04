@@ -25,7 +25,7 @@
 <td id="eventstatus">[[=eventrow.status]]</td>
 <td>Next Event</td>
 <td> [[if eventrow.next_event==0:]]
-    <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
+    <INPUT TYPE=button class="button is-small is-rounded" id="next_event" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
     [[else:]]
     [[=A(next_event_name, _href=URL('view_event/'+str(next_event_id)))]]</th>
     [[pass]]</td>

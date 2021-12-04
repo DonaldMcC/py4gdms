@@ -50,7 +50,7 @@ def check_status(form):
         form.errors['status'] = 'Questions of opinion cannot be submitted as resolved'
     return
 
-
+#http://127.0.0.1:8000/py4test/new_question/0/3/290/211/view_event
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
