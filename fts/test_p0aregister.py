@@ -52,8 +52,8 @@ class TestRegisterPage (FunctionalTest):
         # data_consent = self.browser.find_element_by_name("data_consent")
         # data_consent.click()
 
-        self.browser.find_element_by_id("auth_user_status").send_keys("bla")
-        self.browser.find_element_by_id("auth_user_test").send_keys("bla")
+        #self.browser.find_element_by_id("auth_user_status").send_keys("bla")
+        #self.browser.find_element_by_id("auth_user_test").send_keys("bla")
         #self.browser.find_element_by_id("auth_user_notify").click()
         #dropdown = self.browser.find_element_by_id("auth_user_notify")
         #dropdown.find_element_by_xpath("//option[. = 'm']").click()
