@@ -47,7 +47,6 @@ db = DAL(
 # #######################################################
 cache = Cache(size=1000)
 T = Translator(settings.T_FOLDER)
-flash = Flash()
 
 # #######################################################
 # pick the session type that suits you best
@@ -103,7 +102,7 @@ auth.extra_auth_user_fields=[Field('notify','string', label='Notification E-mail
 
 auth.define_tables()
 auth.fix_actions()
-
+flash = auth.flash
 
 def create_profile_callback(field_values, user_id):
     print(f"User registered: {user_id}")

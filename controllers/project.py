@@ -35,7 +35,7 @@ flash = Flash()
 
 @action("view_project/<pid>", method=['GET', 'POST'])
 @action("view_project", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'view_project.html')
+@action.uses(session, db, flash, auth.user, 'view_project.html')
 def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session['projid'] = pid if projectrow else 0
@@ -56,7 +56,7 @@ def view_project(pid='0'):
     db.comment.parenttable.default = 'project'
     db.comment.parentid.default = pid
     commentform = Form(db.comment,  formstyle=FormStyleBulma)
-    return dict(projectid=pid, projectrow=projectrow, actions=actions, questions=questions, issues=issues,
+    return dict(projectid=pid, projectrow=projectrow, qactions=actions, questions=questions, issues=issues,
                 res_actions=res_actions, res_questions=res_questions, comp_actions=comp_actions, events=events,
                 get_class=get_class, get_disabled=get_disabled, myconverter=myconverter, project=XML(projxml),
                 auth=auth, like=like, commentform=commentform)
