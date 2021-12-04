@@ -55,7 +55,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, flash, 'new_question.html')
+@action.uses(session, db, flash, auth.user, 'new_question.html')
 def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
     db.question.id.readable = False
     db.question.id.writable = False
