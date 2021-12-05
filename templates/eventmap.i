@@ -13,7 +13,7 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="A">Add</a>
 <a class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Delete</a>
 <a id="redraw-graph" class="button is-small is-outlined is-info is-rounded" data-toggle="fun" data-title="D">Redraw</a>
-<a class="button is-small is-outlined is-info is-rounded modal-button" data-target="#myModal" aria-haspopup="true">Archive</a>
+<a class="button is-small is-outlined is-info is-rounded modal-button" id="eventarchive" data-target="#myModal" aria-haspopup="true">Archive</a>
 </div>
 
 <div class="modal" id="myModal">
@@ -32,7 +32,8 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
        <footer class="modal-card-foot">
                              <button type="button" class="mode-close button is-small is-warning is-rounded" data-target="#myModal"
                   onclick="archive('[[=eventrow.id]]')">Save changes</button>
-                   <button type="button" class="mode-close button is-small is-info is-rounded" data-target="#myModal">Close</button>
+                   <button type="button" id="modal_archive"
+                           class="mode-close button is-small is-info is-rounded" data-target="#myModal">Close</button>
 
        </footer>
            </div>
