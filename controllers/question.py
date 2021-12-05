@@ -50,13 +50,13 @@ def check_status(form):
         form.errors['status'] = 'Questions of opinion cannot be submitted as resolved'
     return
 
-#http://127.0.0.1:8000/py4test/new_question/0/3/290/211/view_event
+
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
-@action("new_question/<qid>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
+@action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses(session, db, flash, auth.user, 'new_question.html')
-def new_question(qid=None, eid='0', xpos='0', ypos='0', sourceurl='questiongrid', qtype='quest'):
+def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
