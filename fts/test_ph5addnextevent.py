@@ -32,7 +32,6 @@ class AddBasicAction (FunctionalTest):
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button = self.browser.find_element_by_id("next_event")
         submit_button.click()
-        time.sleep(2)
 
         # Lookof for body in questiongrid
         # this is not great as shows up even if form not submitted

@@ -28,7 +28,7 @@ class AddBasicAction (FunctionalTest):
         self.browser.get(self.url)
         time.sleep(2)
 
-        archive_button = self.browser.find_element_by_id("event_archive")
+        archive_button = self.browser.find_element_by_id("eventarchive")
         archive_button.click()
 
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")

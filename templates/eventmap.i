@@ -30,9 +30,9 @@ title ="Issues: Blue<br>Questions: Green <br>Actions: Yellow<br>Colour depth: pr
         which has been created for this project.[[pass]]
             </section>
        <footer class="modal-card-foot">
-                             <button type="button" class="mode-close button is-small is-warning is-rounded" data-target="#myModal"
+                             <button type="button" id="modal_archive" class="mode-close button is-small is-warning is-rounded" data-target="#myModal"
                   onclick="archive('[[=eventrow.id]]')">Save changes</button>
-                   <button type="button" id="modal_archive"
+                   <button type="button"
                            class="mode-close button is-small is-info is-rounded" data-target="#myModal">Close</button>
 
        </footer>
