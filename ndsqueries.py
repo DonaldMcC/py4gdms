@@ -16,7 +16,11 @@ def get_class(qtype='quest', answer=1, framework='Bulma'):
     return btnclass
 
 
-def check_liked(itemid, eventstatus, table='question'):
+def check_liked(item, eventstatus, table='question'):
+    if eventstatus == 'Archived':
+        itemid = item.eventmap.questid
+    else:
+        itemid = item.question.id
     query = (db.itemlike.createdby == auth.user_id) & (db.itemlike.parenttable == table)
     query &= (db.itemlike.parentid == itemid)
     liked = db(query).select()
@@ -33,7 +37,7 @@ def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='O
         sortby = db.question.priority | ~db.question.id if status == 'Resolved' else ~db.question.id
     items = db(query).select(left=leftjoin, orderby=[sortby], limitby=(x, y))
     for item in items:
-        item["liked"] = check_liked(item.question.id, eventstatus)
+        item["liked"] = check_liked(item, eventstatus)
     return items
 
 
