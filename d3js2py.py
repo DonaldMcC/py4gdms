@@ -264,7 +264,7 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     if not questlist:
         resultstring = 'No Items found'
 
-    if querytype == 'event' or querytype == 'project':
+    if querytype in ('event', 'project'):
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
 
