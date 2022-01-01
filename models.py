@@ -7,6 +7,8 @@ from pydal.validators import *
 import datetime
 not_empty = IS_NOT_EMPTY()
 
+#TODO - update project with latest style approach to Bulma grids - read chapter 14
+
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
                       requires=[not_empty, IS_NOT_IN_DB(db, 'resolve.resolve_name')]),
@@ -93,6 +95,7 @@ db.define_table('project',
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 Field('locked', 'boolean', readable=False, writable=False),
+                Field('priority', 'decimal(6,2)', readable=False, writable=False, default=0),
                 format='%(proj_name)s')
 
 db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())

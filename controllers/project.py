@@ -102,7 +102,7 @@ def projectgrid(path=None):
                          grid_class_style=GridClassStyleBulma)
 
     fields = [db.project.proj_name, db.project.proj_status, db.project.description,  db.project.proj_shared]
-    orderby = [db.project.proj_name]
+    orderby = [~db.project.priority]
     search_queries = [['Search by Name', lambda value: db.project.name == value]]
     # search = GridSearch(search_queries, queries)
 
