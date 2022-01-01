@@ -1,0 +1,35 @@
+[[if issues:]]
+<h1 class="title is-5">Issues</h1>
+<table id=issues class='table issuetable2 table-bordered table-condensed'>
+				<thead>
+					<tr>
+						<th width="10%">Status</th>
+                        <th width="70%">Issue</th>
+                        <th width="20%">Answer</th>
+                    </tr>
+                </thead>
+                    <tbody>
+[[for row in issues:]]
+<tr>
+<th>[[=A(row.eventmap.status, _href=URL('viewquest/'+str(row.eventmap.id)))]]</th>
+<td>[[=row.eventmap.questiontext]]
+    <div id='btns[[=str(row.eventmap.id)]]'></div></td>
+<td>[[if auth.user_id:]]
+    <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
+           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.id]]','1',this)",
+           VALUE="Agree">
+    <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
+           class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.id]]','2',this)",
+           VALUE="Disagree">
+[[else:]]
+    Login to feedback
+    [[pass]]
+</td>
+</tr>
+[[pass]]
+</tbody>
+</table>
+[[pass]]
+<script>
+$('#issues').DataTable({responsive: true, paging: false, searching:false, info: false});
+</script>

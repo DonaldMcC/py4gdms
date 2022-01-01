@@ -7,7 +7,6 @@ from pydal.validators import *
 import datetime
 not_empty = IS_NOT_EMPTY()
 
-#TODO - update project with latest style approach to Bulma grids - read chapter 14
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
