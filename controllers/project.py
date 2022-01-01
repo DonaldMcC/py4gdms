@@ -109,7 +109,7 @@ def projectgrid(path=None):
     grid = Grid(path,
                 db.project,
                 fields=fields,
-                headings=['Name', 'Status', 'Description', 'Shared'],
+                headings=['Name', 'Status', 'Description', 'Shared', 'Priority'],
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_project/0'),

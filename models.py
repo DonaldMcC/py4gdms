@@ -94,7 +94,7 @@ db.define_table('project',
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 Field('locked', 'boolean', readable=False, writable=False),
-                Field('priority', 'decimal(6,2)', readable=False, writable=False, default=0),
+                Field('priority', 'decimal(6,2)', default=0),
                 format='%(proj_name)s')
 
 db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())
