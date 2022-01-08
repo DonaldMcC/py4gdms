@@ -117,8 +117,8 @@ def create_next_event():
     orig_event['event_name'] = 'Next ' + orig_event['event_name']
     orig_event['prev_event'] = eid
     orig_event['id'] = None
-    new_event = db.event.insert(**dict(orig_event))
-    orig_rec.update_record(next_event=new_event)
+    new_evt = db.event.insert(**dict(orig_event))
+    orig_rec.update_record(next_event=new_evt)
     db.commit()
     messagetxt = 'Next Event Created'
     flash.set("Next Event Created", sanitize=True)
@@ -183,7 +183,7 @@ def eventgrid(path=None, status='Open'):
     fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,
               db.event.enddatetime, db.event.description]
 
-    orderby = [db.event.projid, db.event.event_name, db.event.startdatetime]
+    orderby = [db.event.startdatetime]
     search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
     # search = GridSearch(search_queries, queries)
