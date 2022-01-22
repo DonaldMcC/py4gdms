@@ -11,10 +11,10 @@ try:
 except ImportError:
     from urllib.request import urlopen
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 import subprocess
 import sys
 sys.path.append('./fts/lib')
-
 
 # ROOT = 'http://localhost:8080/gdms'
 ROOT = 'http://localhost:8000/py4test'
@@ -49,10 +49,13 @@ class FunctionalTest(unittest.TestCase):
         # self.browser = webdriver.Firefox()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
+        ser = Service("d:\python37\chromedriver")
+        op = webdriver.ChromeOptions()
+        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
+        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
+        #self.browser = webdriver.Chrome('d:\python37\chromedriver.exe', chrome_options=chrome_options)
+        self.browser = webdriver.Chrome(service=ser, options=op)
 
-        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        self.browser = webdriver.Chrome('d:\python37\chromedriver.exe', chrome_options=chrome_options)
         self.browser.maximize_window()
 
         # self.browser = webdriver.Chrome()
