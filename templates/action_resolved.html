@@ -22,7 +22,7 @@
            [[=row.liked and 'UnLike' or 'Like']]</button>
     <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"><sub>Likes: [[=row.question.numlike]]</sub></div></td>
-<td><input class="form-control"  name="duedate" type="date" style="width:80%;" value="[[if row.question.enddate:
+<td><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
 =row.question.enddate.date().strftime('%Y-%m-%d')
     else:
     ''

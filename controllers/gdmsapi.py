@@ -69,8 +69,8 @@ def jwt_token_from_header():
 @action("authenticate", method=['POST'])
 def authenticate():
     username, password = request.json.get("email"), request.json.get("password")
-    print(username)
-    print(password)
+    #print(username)
+    #print(password)
 
     try:
         # authenticate against auth_user table
