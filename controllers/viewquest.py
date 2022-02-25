@@ -56,7 +56,7 @@ from ..ndsqueries import get_class, get_disabled
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, 'viewquest.html')
+@action.uses('viewquest.html', session, db, auth.user)
 def viewquest(qid=0):
     # This will be a general view on question details and it will require the
     # question id as an argument Logic will be to only display the question if it

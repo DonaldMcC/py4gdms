@@ -32,10 +32,9 @@ from py4web import action
 @action('getcomments/<itemid>/<table>', method=['POST', 'GET'])
 @action('getcomments/<itemid>', method=['POST', 'GET'])
 @action('getcomments', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, "getcomments.load")
+@action.uses("getcomments.load", session, db, auth.user)
 def getcomments(itemid=0, table='question'):
-    x = 0
-    y = 50
+    x, y = 0, 50
     query = (db.comment.parenttable == table) & (db.comment.parentid == itemid)
     comments = db(query).select(orderby=[db.comment.id], limitby=(x, y))
     return dict(comments=comments, auth=auth)

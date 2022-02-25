@@ -93,7 +93,7 @@ def new_project(pid=None):
 
 @action('projectgrid', method=['POST', 'GET'])
 @action('projectgrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, flash, auth.user,  'projectgrid.html')
+@action.uses('projectgrid.html', session, db, flash, auth.user)
 def projectgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,

@@ -37,7 +37,7 @@ flash = Flash()
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user,  'new_event.html')
+@action.uses('new_event.html', session, db, flash, auth.user)
 def new_event(eid=None):
     db.event.startdatetime.default = (datetime.datetime.utcnow()
                                       + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
@@ -127,7 +127,7 @@ def create_next_event():
 
 @action("view_event/<eid>", method=['GET', 'POST'])
 @action("view_event", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user, 'view_event.html')
+@action.uses('view_event.html', session, db, flash, auth.user)
 def view_event(eid='0'):
     eventrow = db(db.event.id == eid).select().first()
     next_event_name = ''
@@ -172,7 +172,7 @@ def view_event(eid='0'):
 
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<status>', method=['POST', 'GET'])
-@action.uses(session, db, flash, auth.user, 'eventgrid.html')
+@action.uses('eventgrid.html', session, db, flash, auth.user)
 def eventgrid(path=None, status='Open'):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,

@@ -30,7 +30,7 @@ flash = Flash()
 
 @action("new_resolve/<res_id>", method=['GET', 'POST'])
 @action("new_resolve", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, flash, 'new_resolve.html')
+@action.uses('new_resolve.html', session, db, auth.user, flash)
 def new_resolve(res_id=None):
     res_id = int(res_id) if res_id and res_id.isnumeric() else None
 
@@ -46,7 +46,7 @@ def new_resolve(res_id=None):
 
 @action('resolvegrid', method=['POST', 'GET'])
 @action('resolvegrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user, 'resolvegrid.html')
+@action.uses('resolvegrid.html', session, db, auth.user)
 def resolvegrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,

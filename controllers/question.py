@@ -55,7 +55,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user, 'new_question.html')
+@action.uses('new_question.html', session, db, flash, auth.user)
 def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid'):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -118,7 +118,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
 @action('questiongrid', method=['POST', 'GET'])
 @action('questiongrid/<path:path>', method=['POST', 'GET'])
-@action.uses(session, db, flash, auth.user, 'questiongrid.html')
+@action.uses('questiongrid.html', session, db, flash, auth.user)
 def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
@@ -170,7 +170,7 @@ def questiongrid(path=None):
 
 
 @action('datatables', method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'datatables.html')
+@action.uses('datatables.html', session, db, auth.user)
 def datatables():
     """
     display a page with a datatables.net grid on it
@@ -235,7 +235,7 @@ def datatables_data():
 
 
 @action('new_question/delete/<questid>', method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'grid.html')
+@action.uses('grid.html', session, db, auth.user)
 def new_question_delete(questid):
     db(db.question.id == questid).delete()
     redirect(URL('datatables'))

@@ -29,7 +29,7 @@ from ..ndsqueries import get_items
 
 
 @action("gantt", method=['GET', 'POST'])
-@action.uses(session, db, auth.user, 'gantt.html')
+@action.uses('gantt.html', session, db, auth.user)
 def gantt():
     res_actions = get_items(status='Resolved')
     if res_actions:

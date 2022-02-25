@@ -110,7 +110,7 @@ def like(itemid, table='question'):
 @action('index', method=['POST', 'GET'])
 @action('index/<qtype>', method=['POST', 'GET'])
 @action('index/<qtype>/<qid>', method=['POST', 'GET'])
-@action.uses(flash, session, db, auth, 'index.html')
+@action.uses('index.html', flash, session, db, auth)
 def index(qtype=None, qid=None):
     qid = int(qid) if qid and qid.isnumeric() else None
     qactions = get_items(qtype='action', status='In Progress', qid=qid) if (
@@ -126,7 +126,3 @@ def index(qtype=None, qid=None):
     actions = {"allowed_actions": auth.param.allowed_actions}
     return dict(actions=actions, qactions=qactions, questions=questions, issues=issues, res_actions=res_actions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
-
-
-
-
