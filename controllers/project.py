@@ -64,7 +64,7 @@ def view_project(pid='0'):
 
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user,  'new_project.html')
+@action.uses(session, db, flash, auth.user, 'new_project.html')
 def new_project(pid=None):
     # default for this in models doesn't seem to work
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")
@@ -112,7 +112,7 @@ def projectgrid(path=None):
                 headings=['Name', 'Status', 'Description', 'Shared', 'Priority'],
                 orderby=orderby,
                 search_queries=search_queries,
-                create=URL('new_project/0'),
+                create=URL('new_project/'),
                 details=URL('view_project/'),
                 editable=URL('new_project/'),
                 deletable=True,
