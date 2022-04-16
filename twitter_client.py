@@ -42,5 +42,5 @@ def publish(questiontext):
     print('I will publish')
     print(questiontext)
     #TODO think of error handling for this
-    #api.update_status(questiontext)
-    
+    result = api.update_status(questiontext)
+    return result
