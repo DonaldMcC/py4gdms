@@ -33,6 +33,7 @@ from py4web.utils.grid import Grid, GridClassStyleBulma
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from ..libs.utils import GridSearch
 from pydal.validators import *
+from twitter_client import publish
 flash = auth.flash
 
 try:
@@ -112,6 +113,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
+        if form.vars['social_media']:
+            publish(form.vars['questiontext'])
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
