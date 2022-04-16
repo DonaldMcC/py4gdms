@@ -24,6 +24,7 @@
 
 from ..common import db, unauthenticated, authenticated
 
+
 @unauthenticated()
 def about():
     return dict(message="all done in the view")

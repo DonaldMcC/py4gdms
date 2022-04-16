@@ -7,7 +7,7 @@
 # Development Sites (source code): http://github.com/DonaldMcC/py4gdms
 #
 # Demo Sites (Pythonanywhere)
-#   http://netdecisionmaking.com/nds/
+#   http://www.netdecisionmaking.com/
 #
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0

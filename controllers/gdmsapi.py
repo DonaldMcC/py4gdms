@@ -26,7 +26,6 @@
 
 from py4web import action, request, abort, redirect, URL, HTTP
 from py4web.core import Fixture
-from yatl.helpers import A
 from ..common import db, session, T, cache, auth, logger, authenticated, unauthenticated
 from pydal.restapi import RestAPI, Policy
 from pydal.validators import CRYPT

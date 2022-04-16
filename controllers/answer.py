@@ -23,10 +23,12 @@
 # and liking items
 
 import datetime
+
+from py4web import action, request, Flash
 from ..common import db, auth, session
-from py4web import action, request, Flash, redirect
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items
+
 flash = Flash()
 
 

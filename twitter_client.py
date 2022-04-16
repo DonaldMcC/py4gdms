@@ -3,7 +3,7 @@ import os
 import sys
 from tweepy import API
 from tweepy import OAuthHandler
-import settings
+from . import settings
 
 def get_twitter_auth():
     """Setup Twitter authentication.
