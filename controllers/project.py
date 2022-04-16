@@ -41,7 +41,7 @@ def view_project(pid='0'):
     session['projid'] = pid if projectrow else 0
     events = db(db.event.projid == pid).select(orderby=~db.event.startdatetime)
     actions = get_items(qtype='action', status='In Progress', project=pid)
-    questions = get_items(qtype='question', status='In Progress', project=pid)
+    questions = get_items(qtype='quest', status='In Progress', project=pid)
     issues = get_items(qtype='issue', project=pid)
     res_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Incomplete')
     comp_actions = get_items(qtype='action', status='Resolved', project=pid, execstatus='Completed')
