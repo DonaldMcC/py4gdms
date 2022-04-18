@@ -115,7 +115,9 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if form.vars['social_media']:
             pub_result = publish(form.vars['questiontext'])
-            print(pub_result)
+            print(pub_result.id)
+            #TODO - think will just update question.media_id with pub_result.id next
+            #THEN need to see if we can load that into iframe in some manner for alternative discussion approach
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
