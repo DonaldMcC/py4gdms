@@ -121,7 +121,6 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             quest.media_id=pub_result.id
             quest.update_record()
             db.commit()
-            #THEN need to see if we can load that into iframe in some manner for alternative discussion approach
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
