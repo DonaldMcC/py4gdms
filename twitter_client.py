@@ -39,8 +39,8 @@ def get_twitter_client():
 
 def publish(questiontext):
     api = get_twitter_client()
-    print('I will publish')
-    print(questiontext)
+    # print('I will publish')
+    # print(questiontext)
     #TODO think of error handling for this
     result = api.update_status(questiontext)
     return result

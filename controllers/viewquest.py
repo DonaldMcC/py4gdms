@@ -123,6 +123,9 @@ def viewquest(qid=0):
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
     commentform = Form(db.comment,  formstyle=FormStyleBulma)
+
+    #  url is https://twitter.com/newglobalstrat/status/1517593650473144323 where this is media_id
+    #  need to figure out iframe or how best to display
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform)
