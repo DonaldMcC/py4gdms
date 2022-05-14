@@ -116,6 +116,7 @@ def create_next_event():
     orig_event['enddatetime'] = orig_event['enddatetime'] + datetime.timedelta(days=recurdays)
     orig_event['event_name'] = 'Next ' + orig_event['event_name']
     orig_event['prev_event'] = eid
+    orig_event['status'] = 'Open'
     orig_event['id'] = None
     new_evt = db.event.insert(**dict(orig_event))
     orig_rec.update_record(next_event=new_evt)
