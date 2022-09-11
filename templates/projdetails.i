@@ -10,7 +10,7 @@
 </tr>
 <tr>
 <th>Description</th>
-<td>[[=projectrow.description]]</td>
+<td>[[=XML(markmin2html(projectrow.description))]]</td>
 <td class="text-center">[[=projectrow.startdate]]</td>
 <td class="text-center">[[=projectrow.enddate]]</td>
 </tr>
