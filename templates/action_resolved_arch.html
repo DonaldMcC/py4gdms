@@ -1,3 +1,5 @@
+[[from markmin import markmin2html]]
+[[from yatl.helpers import XML]]
 [[import datetime]]
 [[if res_actions:]]
 <br>
@@ -15,7 +17,7 @@
                     <tbody>
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.eventmap.questid]]">
-<td>[[=row.eventmap.questiontext]]
+<td>[[=XML(markmin2html(row.eventmap.questiontext))]]
    <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
            hx-post="[[=URL('like/'+str(row.eventmap.questid))]]"
            hx-swap="innerHTML">

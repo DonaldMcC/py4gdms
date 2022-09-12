@@ -11,7 +11,7 @@
                     <tbody>
 [[for i,row in enumerate(qactions):]]
 <tr>
-<td>[[=row.question.questiontext]]
+<td>[[=XML(markmin2html(row.question.questiontext))]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
     <td>[[if auth.user_id:]]
         <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]

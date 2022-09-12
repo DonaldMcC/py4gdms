@@ -15,7 +15,7 @@
 [[for row in events:]]
 <tr>
 <th>[[=A(row.event_name, _href=URL('view_event/'+str(row.id)))]]</th>
-<td>[[=row.description]]</td>
+<td>[[=XML(markmin2html(row.description))]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td class="is-hidden-touch text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td id="eventstatus">[[=row.status]]</td>

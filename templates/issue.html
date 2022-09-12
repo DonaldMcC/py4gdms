@@ -12,7 +12,7 @@
 [[for row in issues:]]
 <tr>
 <th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)))]]</th>
-<td>[[=row.question.questiontext]]
+<td>[[=XML(markmin2html(row.question.questiontext))]]
     <div id='btns[[=str(row.question.id)]]'></div></td>
 <td>[[if auth.user_id:]]
     <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]

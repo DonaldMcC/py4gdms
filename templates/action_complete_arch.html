@@ -15,7 +15,7 @@
                     <tbody>
 [[for i,row in enumerate(comp_actions):]]
 <tr id="[[=row.eventmap.questid]]">
-<td>[[=row.eventmap.questiontext]]
+<td>[[=XML(markmin2html(row.eventmap.questiontext))]]
     <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td>[[if row.eventmap.enddate:
     =row.eventmap.enddate.date().strftime('%Y-%m-%d')

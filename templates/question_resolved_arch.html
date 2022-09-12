@@ -13,7 +13,7 @@
                     <tbody>
 [[for row in res_questions:]]
 <tr>
-<td>[[=row.eventmap.questiontext]]
+<td>[[=XML(markmin2html(row.eventmap.questiontext))]]
 <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
 <td class="has-text-centered">[[=row.eventmap.answer1 if row.eventmap.correctans==1 else row.eventmap.answer2]]</td>

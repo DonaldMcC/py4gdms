@@ -1,3 +1,5 @@
+[[from markmin import markmin2html]]
+[[from yatl.helpers import XML]]
 [[if questions:]]
 <br>
 <h1 class="title is-5">Questions</h1>
@@ -15,7 +17,7 @@
 [[for row in questions:]]
 <tr>
 <th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)))]]</th>
-<td>[[=row.question.questiontext]]
+<td>[[=XML(markmin2html(row.question.questiontext))]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
     <td>[[=row.question.notes]]</td>

@@ -15,7 +15,7 @@
                     <tbody>
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.question.id]]">
-<td><div>[[=row.question.questiontext]]</div>
+<td><div>[[=XML(markmin2html(row.question.questiontext))]]</div>
     <div class="has-text-right"><sub class="has-text-left">[[=row.question.numlike]] Like[[='s ' if row.question.numlike >1 else ' ']]
    <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
            hx-post="[[=URL('like/'+str(row.question.id))]]"
