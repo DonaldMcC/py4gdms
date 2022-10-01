@@ -71,6 +71,8 @@ def viewquest(qid=0):
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
+    if quest.question_media:
+        (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
     uq = None
     ur = None
     uqanswered = False
@@ -128,7 +130,7 @@ def viewquest(qid=0):
     #  need to figure out iframe or how best to display
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
-                uqrated=uqrated, can_edit=can_edit, commentform=commentform)
+                uqrated=uqrated, can_edit=can_edit, commentform=commentform, filename=filename, fullname=fullname)
 
 
 @action('urgency', method=['POST', 'GET'])

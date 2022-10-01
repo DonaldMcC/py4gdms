@@ -1,8 +1,10 @@
 """
 This file defines the database models
 """
+from . import settings
 from .common import db, T
 from py4web import Field
+
 from pydal.validators import *
 import datetime
 not_empty = IS_NOT_EMPTY()
@@ -54,7 +56,7 @@ db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
                 Field('title'),
-                Field('download_file', 'upload'),
+                Field('download_file', 'upload', uploadfolder=settings.UPLOAD_FOLDER),
                 Field('description', 'text'),
                 Field('download_version', 'string', default='1'),
                 format='%(title)s')
@@ -119,7 +121,10 @@ db.define_table('event',
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
                 Field('questiontext', 'text', label='Item Details', requires=not_empty),
-                Field('question_media','upload'),
+                Field('question_media','upload', label='Upload video or other supporting content (optional)',
+                      uploadfolder=settings.UPLOAD_FOLDER, comment='mp4, mp3 and jpeg are currently supported'),
+                Field('question_url', 'string', label='Link To Supporting Content',
+                      comment='This will load in an iframe for users to review - content not copied'),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
@@ -159,6 +164,8 @@ db.define_table('question',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
+
+db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
 
