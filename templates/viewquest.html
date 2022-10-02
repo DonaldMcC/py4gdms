@@ -1,19 +1,29 @@
 [[from markmin import markmin2html]]
-[[from yatl.helpers import XML]]
+[[from py4web import URL]]
 [[extend 'layout.html']]
 <h1 class="title is-4">[[=quest['qtype'].capitalize() ]]</h1>
 <p>[[=quest['questiontext'] ]]</p>
 
-
-<p>[[=filename]] fullname: [[=fullname]] </p>
+[[sourcefile =URL(urlpath, scheme=True, use_appname=True)]]
+[[if filetype == 'video/mp4':]]
 <video width="320" height="240" controls>
-    <source src="http://127.0.0.1:8000/py4gdms/static/uploads/testvid.mp4" type="video/mp4">
+    <source src=[[=sourcefile]] type=filetype=[[=filetype]]>
     Your browser does not support the video tag.
 </video>
+[[pass]]
 
-<img src="http://127.0.0.1:8000/py4gdms/static/uploads/Ailsa.jpg" alt="Ailsa" width="320" height="240">
+[[if filetype == 'audio/mpeg':]]
+<audio controls>
+    <source src=[[=sourcefile]] type=filetype=[[=filetype]]>
+    Your browser does not support the audio tag.
+</audio>
+[[pass]]
 
-<p>[[quest['media_id'] ]]</p>
+[[if filetype == 'image':]]
+<img src=[[=sourcefile]] alt="Image not supported" width="320" height="240">
+[[pass]]
+
+<p>[[quest['media_id'] ]]  A link will go here with a caveat</p>
 <h2 class="title  is-5">Status</h2>
 [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
