@@ -1,9 +1,9 @@
 [[from markmin import markmin2html]]
 [[from py4web import URL]]
 [[extend 'layout.html']]
-<h1 class="title is-4">[[=quest['qtype'].capitalize() ]]</h1>
-<p>[[=quest['questiontext'] ]]</p>
+<p>[[=quest['qtype'].capitalize()]]: [[=quest['questiontext'] ]]</p>
 
+<div class="border box">
 [[sourcefile =URL(urlpath, scheme=True, use_appname=True)]]
 [[if filetype == 'video/mp4':]]
 <video width="320" height="240" controls>
@@ -22,17 +22,25 @@
 [[if filetype == 'image':]]
 <img src=[[=sourcefile]] alt="Image not supported" width="320" height="240">
 [[pass]]
+</div>
 
 <p>[[quest['media_id'] ]]  A link will go here with a caveat</p>
-<h2 class="title  is-5">Status</h2>
-[[if quest['status'] == 'Resolved':]]
+<table id='Status' class='table'>
+<tbody>
+<tr>
+<th class="title  is-5">Status:</th>
+<td class="has-text-left" >[[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
-<p>Users have decided the correct answer is [[=quest.correctanstext()]]</p>
+Users have decided the correct answer is [[=quest.correctanstext()]]
 [[else:]]
-<p>This [[=quest['qtype'] ]] is approved.</p>
+This [[=quest['qtype'] ]] is approved.
 [[pass]]
 [[pass]]
-<p>[[=viewtext]]
+[[=viewtext]]</td>
+</tr>
+</tbody>
+</table>
+
 
 <div id="newchart">
     <h2 class="title is-5">Answer Analysis</h2>
