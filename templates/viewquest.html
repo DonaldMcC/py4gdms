@@ -1,7 +1,9 @@
 [[from markmin import markmin2html]]
 [[from py4web import URL]]
 [[extend 'layout.html']]
-<p>[[=quest['qtype'].capitalize()]]: [[=quest['questiontext'] ]]</p>
+
+<h1  class=" title is-6 h_inline">[[=quest['qtype'].capitalize()]]:</h1> <p class="h_inline">[[=quest['questiontext'] ]]</p>
+
 
 <div class="border box">
 [[sourcefile =URL(urlpath, scheme=True, use_appname=True)]]
@@ -25,29 +27,24 @@
 </div>
 
 <p>[[quest['media_id'] ]]  A link will go here with a caveat</p>
-<table id='Status' class='table'>
-<tbody>
-<tr>
-<th class="title  is-5">Status:</th>
-<td class="has-text-left" >[[if quest['status'] == 'Resolved':]]
+
+<h2  class=" title is-6 h_inline">Status</h2> <p class="h_inline">
+    [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
 Users have decided the correct answer is [[=quest.correctanstext()]]
 [[else:]]
 This [[=quest['qtype'] ]] is approved.
 [[pass]]
 [[pass]]
-[[=viewtext]]</td>
-</tr>
-</tbody>
-</table>
+[[=viewtext]]</p>
 
-
+<p></p>
 <div id="newchart">
-    <h2 class="title is-5">Answer Analysis</h2>
+    <h2 class="title is-6 h_inline">Answer Analysis</h2>
 [[if quest.factopinion == 'Opinion':]]
-<p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons below.</p>
+<p class="h_inline">This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons</p>
 [[pass]]
-    </div>
+
 
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
@@ -55,7 +52,7 @@ This [[=quest['qtype'] ]] is approved.
     <INPUT TYPE=button  [[=get_disabled(2, uq and uq.answer)]] title="Click to Answer"
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
            VALUE="[[=quest.answer2]]">
-</p>
+    </div>
 
 <p> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
     and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </p>
@@ -63,8 +60,8 @@ This [[=quest['qtype'] ]] is approved.
 
 <div id="target"></div>
 
-<h2 class="title is-5">Urgency and importance</h2>
-<p>[[=urgmessage]]</p>
+<h2 class="title is-6 h_inline">Urgency and importance: </h2>
+<p class="h_inline">[[=urgmessage]]</p>
 <table id='TabUrgency' class="table table-bordered table-condensed">
 				<thead>
 					<tr>
@@ -125,3 +122,4 @@ var questid = "[[=quest['id'] ]]";
 
     </iframe>
     [[pass]]
+</div>
