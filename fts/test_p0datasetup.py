@@ -6,7 +6,7 @@
 from functional_tests import FunctionalTest, ROOT, USERS
 import time
 from selenium.webdriver.support.ui import WebDriverWait
-
+from selenium.webdriver.common.by import By
 
 class AnswerQuestion (FunctionalTest):
 
@@ -14,11 +14,11 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("no_table_email"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
-        password = self.browser.find_element_by_id("no_table_password")
+        password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD1'])
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element(By.CSS_SELECTOR,"input[type=submit]")
         submit_button.click()
         time.sleep(2)
 
@@ -30,5 +30,5 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(2)
         # alert = self.browser.switch_to_alert()
         # alert.accept()
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn('Setup has been completed successfully', body.text)

@@ -4,6 +4,7 @@ from functional_tests import FunctionalTest, ROOT, USERS
 from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 
 
 @ddt
@@ -13,11 +14,11 @@ class AddBasicAction (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("no_table_email"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
-        password = self.browser.find_element_by_id("no_table_password")
+        password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD1'])
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)
 
@@ -28,17 +29,17 @@ class AddBasicAction (FunctionalTest):
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('location_name'))
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'location_name'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_name('description'))
+        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'description'))
         questiontext.send_keys(itemdesc)
 
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)
 
         # Lookof for body in questiongrid
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)
