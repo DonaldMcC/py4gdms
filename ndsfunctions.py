@@ -34,7 +34,9 @@ def get_filetype(filename):
         return 'video/mp4'
     elif ext == '.mp3' or ext == '.wav':
         return 'audio/mpeg'
-    return 'not yet supported'
+    print(ext)
+    return None
+
 
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
