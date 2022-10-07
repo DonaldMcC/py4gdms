@@ -48,11 +48,13 @@
     https://..../[app]/viewquest/importance  #  Ajax call
     """
 
+import os
 from ..common import db, auth, session
+from yatl.helpers import XML
 from py4web import action, request, redirect, URL
 from py4web.utils.form import Form, FormStyleBulma
 from ..ndsqueries import get_class, get_disabled
-
+from ..ndsfunctions import get_filetype
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
@@ -68,9 +70,18 @@ def viewquest(qid=0):
 
     # initialize variables as not used if action
     uqrated = False
+    filename = ''
+    urlpath = ''
+    filetype = None
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
+    if quest.question_media:
+        (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
+        #urlpath = os.path.join('static', 'uploads', os.path.basename(fullname))
+        urlpath = r'static/uploads/' + os.path.basename(fullname)
+        filetype = get_filetype(filename)
+
     uq = None
     ur = None
     uqanswered = False
@@ -124,11 +135,10 @@ def viewquest(qid=0):
     db.comment.parentid.default = quest['id']
     commentform = Form(db.comment,  formstyle=FormStyleBulma)
 
-    #  url is https://twitter.com/newglobalstrat/status/1517593650473144323 where this is media_id
-    #  need to figure out iframe or how best to display
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
-                uqrated=uqrated, can_edit=can_edit, commentform=commentform)
+                uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
+                filename=filename, urlpath=urlpath)
 
 
 @action('urgency', method=['POST', 'GET'])

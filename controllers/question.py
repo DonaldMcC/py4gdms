@@ -26,12 +26,13 @@ import json
 import wikipedia
 from functools import reduce
 
+
 from py4web import action, request, redirect, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web.utils.grid import Grid, GridClassStyleBulma, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
-from ..libs.utils import GridSearch
+#from ..libs.utils import GridSearch
 from pydal.validators import *
 from ..twitter_client import publish
 flash = auth.flash
@@ -136,7 +137,7 @@ def questiongrid(path=None):
                          grid_class_style=GridClassStyleBulma)
     # queries = [(db.event.id == db.question.eventid) & (db.event.projid == db.project.id)]
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
-    queries = [db.question.qtype == qtype]
+    queries = db.question.qtype == qtype
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
                                                                 orderby=db.event.event_name, distinct=True)]))
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
@@ -145,7 +146,7 @@ def questiongrid(path=None):
     search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
                       ['Search by Event', lambda val: db.event.event_name == val, eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
-    search = GridSearch(search_queries, queries)
+
 
     if qtype == 'action':
         headings = ['Action', 'Status', 'Execstatus', 'Event', 'Project']
@@ -164,17 +165,18 @@ def questiongrid(path=None):
         orderby = [db.question.status, db.question.questiontext]
 
     grid = Grid(path,
-                search.query,
+                queries,
                 fields=fields,
                 headings=headings,
                 left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
+                search_queries=search_queries,
                 orderby=orderby,
-                search_form=search.search_form,
                 create=URL('new_question/None/' + qtype),
                 details=URL('viewquest/'),
                 editable=URL('new_question/'),
                 deletable=True,
                 **GRID_DEFAULTS)
+
     return dict(grid=grid)
 
 

@@ -17,10 +17,26 @@
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
 
+import os
 import datetime
 from yatl.helpers import XML
 from py4web import URL
 from .common import db
+
+def get_filetype(filename):
+    print(filename)
+    not_used, file_extension = os.path.splitext(filename)
+    ext = file_extension.lower()
+    print(ext)
+    if ext == '.jpg' or ext == '.jpeg':
+        return 'image'
+    elif ext == '.mp4':
+        return 'video/mp4'
+    elif ext == '.mp3' or ext == '.wav':
+        return 'audio/mpeg'
+    print(ext)
+    return None
+
 
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):
