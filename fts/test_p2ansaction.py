@@ -25,11 +25,11 @@ class AnswerQuestion (FunctionalTest):
         get_browser = self.browser.get(self.url)
         time.sleep(2)
         qid = questiddict.get('p2action')
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id("no_table_email"))
+        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(user)
-        password = self.browser.find_element_by_id("no_table_password")
+        password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(passwd)
-        submit_button = self.browser.find_element_by_css_selector("input[type=submit]")
+        submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)
 
@@ -39,7 +39,7 @@ class AnswerQuestion (FunctionalTest):
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .is-success").click()
         time.sleep(5)
 
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_tag_name('body'))
+        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 
         self.url = ROOT + '/auth/logout'
