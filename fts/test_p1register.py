@@ -35,7 +35,7 @@ class TestRegisterPage (FunctionalTest):
         email.clear()
         email.send_keys(mailstring)
 
-        password = WebDriverWait(self, 10).until(lambda self: self.browser.find_element_by_id(By.ID, "auth_user_password"))
+        password = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "auth_user_password"))
         password.clear()
         password.send_keys(passwd)
 
