@@ -1,27 +1,31 @@
 [[from markmin import markmin2html]]
 [[from yatl.helpers import XML]]
 [[extend 'layout.html']]
-<h1 class="title is-4">[[=quest['qtype'].capitalize() ]]</h1>
-<p>[[=quest['questiontext'] ]]</p>
 
+<h1  class=" title is-6 h_inline">[[=quest['qtype'].capitalize()]]:</h1>
+<p class="h_inline">[[=quest['questiontext'] ]]</p>
+[[include 'questmedia.i']]
 
-<p>[[quest['media_id'] ]]</p>
-<h2 class="title  is-5">Status</h2>
-[[if quest['status'] == 'Resolved':]]
+<h2  class=" title is-6 h_inline">Link: </h2><p class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
+    [[=quest['question_url'] ]]</a>  Link is external content and opens in a new tab</p>
+[[pass]]
+
+<div>
+<h2  class=" title is-6 h_inline">Status:</h2> <p class="h_inline">
+    [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
-<p>Users have decided the correct answer is [[=quest.correctanstext()]]</p>
+<p class="h_inline">Users have decided the correct answer is [[=quest.correctanstext()]]</p>
 [[else:]]
-<p>This [[=quest['qtype'] ]] is approved.</p>
+<p class="h_inline">This [[=quest['qtype'] ]] is approved.</p>
 [[pass]]
 [[pass]]
-<p>[[=viewtext]]
+<p class="h_inline">[[=viewtext]]
+</div>
 
 <div id="newchart">
-    <h2 class="title is-5">Answer Analysis</h2>
+    <h2 class="title is-6 h_inline">Answer Analysis</h2>
 [[if quest.factopinion == 'Opinion':]]
-<p>This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons below.</p>
-[[pass]]
-    </div>
+<p class="h_inline">This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
 
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
@@ -30,7 +34,8 @@
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
            VALUE="[[=quest.answer2]]">
 </p>
-
+    [[pass]]
+    </div>
 <p> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
     and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </p>
 [[pass]]
