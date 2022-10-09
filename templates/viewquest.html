@@ -27,6 +27,8 @@
 [[if quest.factopinion == 'Opinion':]]
 <p class="h_inline">This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
 
+
+
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
            VALUE="[[=quest.answer1]]">
