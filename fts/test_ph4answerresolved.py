@@ -16,6 +16,7 @@ class AnswerQuestion (FunctionalTest):
     def setUp(self):   
         pass
 
+    # This should allow user 5 to change answer - but maybe not doing so - to be further investigated
     @data((USERS['USER5'], USERS['PASSWORD5'], 'No', 'Answer recorded'),
           (USERS['USER6'], USERS['PASSWORD6'], 'No', 'In Progress'),
           )
@@ -36,14 +37,10 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/viewquest/'+str(qid)
         self.browser.get(self.url)
-        time.sleep(1)
-        # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
-        self.browser.find_element(By.CSS_SELECTOR, ".is-danger").click()
+        body = WebDriverWait(self, 10).until(lambda self:
+                                             self.browser.find_element(By.CSS_SELECTOR, ".is-danger").click())
 
-        time.sleep(1)
-
-        # body = self.browser.find_element_by_tag_name('body')
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 

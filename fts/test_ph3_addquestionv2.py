@@ -9,6 +9,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 
+
 @ddt
 class AddBasicQuestion (FunctionalTest):
 
@@ -27,7 +28,7 @@ class AddBasicQuestion (FunctionalTest):
         email.send_keys(user)
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(passwd)
-        submit_button = self.browser.find_element(By.CSSSELECTOR, "input[type=submit]")
+        submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)
 
