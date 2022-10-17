@@ -37,10 +37,25 @@ def get_twitter_client():
     client = API(auth)
     return client
 
-def publish(questiontext):
+def publish(questiontext, url=None, media=None):
     api = get_twitter_client()
-    # print('I will publish')
-    # print(questiontext)
+    #TODO - will only ever be one media ID for now but eventually could be a list perhaps
     #TODO think of error handling for this
     result = api.update_status(questiontext)
     return result
+
+"""
+    This seems to be simple example of updating with media - probalby have a look at url's too and 
+    see how they go together - seems urls just go into the text if required and then get auto shortened I think
+    
+    https: // stackoverflow.com / questions / 70891698 / how - to - post - a - tweet -
+    with-media - picture - using - twitter - api - v2 - and -tweepy - python
+
+    media = api.media_upload(filename="./assets/twitter-logo.png")
+    print("MEDIA: ", media)
+
+    tweet = api.update_status(status="Image upload", media_ids=
+    [media.media_id_string])
+    print("TWEET: ", tweet)
+    
+"""
