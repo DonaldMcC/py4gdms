@@ -117,7 +117,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         if form.vars['social_media']:
             questurl=URL('question/viewquest', str(form.vars['id']), scheme='https')
             pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
-            print(pub_result.id)
+            #print(pub_result.id)
             quest = db(db.question.id == form.vars['id']).select().first()
             quest.media_id=pub_result.id
             quest.update_record()
