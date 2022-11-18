@@ -53,7 +53,7 @@ def publish(questiontext, filename=None):
     if filename:
         media = api.media_upload(filename=filename)
         print("MEDIA: ", media)
-        media_ids = [media.media_id_string]        
+        media_ids = [media.media_id_string]
         #tweet = api.update_status(status="Image upload", media_ids=
         #[media.media_id_string])
 
