@@ -4,8 +4,10 @@
 
 <h1  class=" title is-6 h_inline">[[=quest['qtype'].capitalize()]]:</h1>
 <p class="h_inline">[[=quest['questiontext'] ]]</p>
-[[include 'questmedia.i']]
 
+[[include 'questmedia.i']]
+<br>
+[[if quest['question_url']: ]]
 <h2  class=" title is-6 h_inline">Link: </h2><p class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
     [[=quest['question_url'] ]]</a>  Link is external content and opens in a new tab</p>
 [[pass]]
