@@ -56,6 +56,7 @@ from py4web.utils.form import Form, FormStyleBulma
 from ..ndsqueries import get_class, get_disabled
 from ..ndsfunctions import get_filetype
 
+
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
 @action.uses('viewquest.html', session, db, auth.user)
@@ -78,7 +79,6 @@ def viewquest(qid=0):
     quest = quests.first() if quests else redirect(URL('index'))
     if quest.question_media:
         (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
-        #urlpath = os.path.join('static', 'uploads', os.path.basename(fullname))
         urlpath = r'static/uploads/' + os.path.basename(fullname)
         filetype = get_filetype(filename)
 

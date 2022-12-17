@@ -23,6 +23,7 @@ from yatl.helpers import XML
 from py4web import URL
 from .common import db
 
+
 def get_filetype(filename):
     print(filename)
     not_used, file_extension = os.path.splitext(filename)
@@ -36,7 +37,6 @@ def get_filetype(filename):
         return 'audio/mpeg'
     print(ext)
     return None
-
 
 
 def convxml(value, tag, sanitize=False, trunc=False, trunclength=40):

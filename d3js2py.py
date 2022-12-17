@@ -29,7 +29,7 @@ def getwraptext(textstring, answer, maxlength=200, qtype='quest'):
     questlength = answer and max((maxlength - len(answer)), 0) or maxlength
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     if answer and not (answer == 'Agree' or answer == 'Approve'):
-        txt = txt + 'A:' + answer
+        txt = ''.join([txt, ' A:', answer])
     return txt
 
 

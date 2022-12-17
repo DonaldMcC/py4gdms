@@ -9,7 +9,8 @@
 # License Code: MIT
 # License Content: Creative Commons Attribution 3.0
 #
-# This should send email summaries to users on an immediate, daily, weekly or monthly schedule if requested in their user profile
+# This should send email summaries to users on an immediate, daily, weekly or monthly schedule if requested in
+# their user profile
 # We will have a last run date against the user which gets updated when the email is sent unless a resend flag
 # included
 # If immediate users get emails on question submission, resolution etc - otherwise should also run daily
@@ -98,7 +99,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
         periodtext = 'Monthly'
         userquery = (db.auth_user.emailmonthly == True)
     else:
-        return('Invalid run period parameter - must be Day, Week or Month')
+        return 'Invalid run period parameter - must be Day, Week or Month'
 
     users = db(userquery).select()
     message = ''
@@ -219,9 +220,9 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
             send_email(to, mail.settings.sender, subject, message)
         else:
             if debug:
-                print (subject, message)
+                print(subject, message)
                 send_email(to, mail.settings.sender, subject, message)
-    print (message)
+    print(message)
 
     return 'run successful'
 
