@@ -36,8 +36,8 @@ $(document).ready(function(){
 
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact')
-                {$('#question_answer1').val('Agree');
-                 $('#question_answer2').val('Challenge');
+                {$('#question_answer1').val('Yes');
+                 $('#question_answer2').val('No');
                 $('#question_answer1').hide();
                 $("label[for='question_answer1']").hide();
                  $('#question_answer2').hide();
@@ -45,9 +45,9 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
                  $('#question_status option:selected').text()=='Resolved'
-                 $('#question_buttons').append('<input type="BUTTON" id="wolflookup" ' +
+                 $('#buttons').append('<input type="BUTTON" id="wolflookup" ' +
          'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
-                 $('#question_buttons').append('<input type="BUTTON" id="wikiplookup" ' +
+                 $('#buttons').append('<input type="BUTTON" id="wikiplookup" ' +
          'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
 };
               if($('#question_factopinion option:selected').text()=='Opinion')

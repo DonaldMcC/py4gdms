@@ -1,8 +1,8 @@
 
-    var onsuccess = function(res) {
+    var qsuccess = function(res) {
     $("#question_notes").val(res.data);
     };
-    var onerror = function(res) {
+    var qerror = function(res) {
         alert('ERROR in call');
     };
 
@@ -14,7 +14,7 @@
 
     result= Q.ajax("POST", "[[=URL('wolfram_alpha_lookup')]]", {
             questiontext: qtext
-        }).then(onsuccess).catch(onerror);
+        }).then(qsuccess).catch(qerror);
 
 };
 
@@ -25,7 +25,7 @@
 
     result= Q.ajax("POST", "[[=URL('wikipedia_lookup')]]", {
             questiontext: qtext
-        }).then(onsuccess).catch(onerror);
+        }).then(qsuccess).catch(qerror);
 
 };
 

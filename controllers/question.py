@@ -279,7 +279,7 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
 @action('wolfram_alpha_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def wolfram_alpha_lookup():
-    # This should be a straightforward function called via Ajzx to lookup the answer to a question on wolfram alpha
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
     # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
     # general this will only be used for self answered questions - however it might be called for other things in due
     # course and we may amend to support different knowledge engines later as well
@@ -314,7 +314,10 @@ def wikipedia_lookup():
     # course and we may amend to support different knowledge engines later as well
     qtext = request.json['questiontext']
     pages = wikipedia.search(qtext, results=3)
-    resultpage = wikipedia.summary(pages[0])
+    try:
+        resultpage = wikipedia.summary(pages[0])
+    except wikipedia.exceptions.PageError:
+        resultpage=None
     # print(resultpage)
     res = resultpage if resultpage else 'No result found for this topic'
     return res
