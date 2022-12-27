@@ -28,4 +28,14 @@
         }).then(qsuccess).catch(qerror);
 
 };
+    
+        function openai_lookup() {
+    var qtext = $('#question_questiontext').val();
+    /^ Now we call via ajax and put returned value into notes */
+     $("#question_notes").val('Looking up answer on Open AI');
+
+    result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
+            questiontext: qtext
+        }).then(qsuccess).catch(qerror);
+};
 

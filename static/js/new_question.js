@@ -59,6 +59,17 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").hide();}
                 });
 
+          if($('#question_factopinion option:selected').text()=='AI_Opinion')
+                {$('#question_answer1').show();
+                $("label[for='question_answer1']").show();
+                 $('#question_answer2').show();
+                 $("label[for='question_answer2']").show();
+                 $('#question_answertext').hide();
+                 $("label[for='question_answertext']").hide();
+                 $('#buttons').append('<input type="BUTTON" id="openailookup" ' +
+         'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');}
+                });
+
                 $('#question_qtype').change();
                 $('#question_factopinion').change();
 });
