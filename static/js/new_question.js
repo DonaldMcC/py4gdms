@@ -57,7 +57,7 @@ $(document).ready(function(){
                  $("label[for='question_answer2']").show();
                  $('#question_answertext').hide();
                  $("label[for='question_answertext']").hide();}
-                });
+
 
           if($('#question_factopinion option:selected').text()=='AI_Opinion')
                 {$('#question_answer1').show();

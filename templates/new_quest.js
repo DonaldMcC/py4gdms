@@ -28,7 +28,7 @@
         }).then(qsuccess).catch(qerror);
 
 };
-    
+
         function openai_lookup() {
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */

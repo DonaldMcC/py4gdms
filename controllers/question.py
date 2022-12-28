@@ -26,23 +26,32 @@ import json
 import wikipedia
 from functools import reduce
 
-
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBulma, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
-#from ..libs.utils import GridSearch
+# from ..libs.utils import GridSearch
 from pydal.validators import *
 from ..twitter_client import publish
+
 flash = auth.flash
 
 try:
     import wolframalpha
     from ..settings_private import WA_ID
+
     wolfram = True
 except ImportError as error:
     wolfram = False
+
+try:
+    import openai
+    from ..settings_private import OPENAI_API_KEY
+    oai = True
+except ImportError as error:
+    oai = False
+
 
 
 def check_status(form):
@@ -69,9 +78,10 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
                                                ((db.project.proj_owner == auth.user_id) |
                                                 (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
     qid = int(qid) if qid and qid.isnumeric() else None
+    questrec = None
     try:
-        db.question.resolvemethod.default = session.get('resolvemethod',
-            db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id'])
+        db.question.resolvemethod.default = session.get('resolvemethod', db(db.resolve.Defaultresolve == True).select(
+                                                            db.resolve.id).first()['id'])
     except AttributeError:
         pass
 
@@ -99,7 +109,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             db.question.answer2.writable = False
 
     db.question.priority.writable = False
-    form = Form(db.question, record=qid,  formstyle=FormStyleBulma)
+    form = Form(db.question, record=qid, formstyle=FormStyleBulma)
 
     if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
@@ -115,11 +125,11 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if form.vars['social_media']:
-            questurl=URL('question/viewquest', str(form.vars['id']), scheme='https')
+            questurl = URL('question/viewquest', str(form.vars['id']), scheme='https')
             pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
-            #print(pub_result.id)
+            # print(pub_result.id)
             quest = db(db.question.id == form.vars['id']).select().first()
-            quest.media_id=pub_result.id
+            quest.media_id = pub_result.id
             quest.update_record()
             db.commit()
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
@@ -139,14 +149,15 @@ def questiongrid(path=None):
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
     queries = db.question.qtype == qtype
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
-                                                                orderby=db.event.event_name, distinct=True)]))
+                                                                                       orderby=db.event.event_name,
+                                                                                       distinct=True)]))
     projlist = IS_NULL_OR(IS_IN_SET([x.proj_name for x in db(db.project.id > 0).select(db.project.proj_name,
-                                                            orderby=db.project.proj_name, distinct=True)]))
+                                                                                       orderby=db.project.proj_name,
+                                                                                       distinct=True)]))
 
     search_queries = [['Search by Project', lambda val: db.project.proj_name == val, projlist],
                       ['Search by Event', lambda val: db.event.event_name == val, eventlist],
                       ['Search by Name', lambda val: db.question.questiontext.contains(val)]]
-
 
     if qtype == 'action':
         headings = ['Action', 'Status', 'Execstatus', 'Event', 'Project']
@@ -224,16 +235,16 @@ def datatables_data():
     filtered_count = db(query).count()
 
     DataTablesResponse(fields=[DataTablesField(name='DT_RowId', visible=False),
-                                    DataTablesField(name='qtype'),
-                                    DataTablesField(name='Status'),
-                                    DataTablesField(name='questiontext'),
-                                    DataTablesField(name='factopinion'),
-                                    DataTablesField(name='answer1')],
-                            data_url=URL('datatables_data'),
-                            create_url=URL('question/0'),
-                            edit_url=URL('question/record_id'),
-                            delete_url=URL('question/delete/record_id'),
-                            sort_sequence=[[1, 'asc']])
+                               DataTablesField(name='qtype'),
+                               DataTablesField(name='Status'),
+                               DataTablesField(name='questiontext'),
+                               DataTablesField(name='factopinion'),
+                               DataTablesField(name='answer1')],
+                       data_url=URL('datatables_data'),
+                       create_url=URL('question/0'),
+                       edit_url=URL('question/record_id'),
+                       delete_url=URL('question/delete/record_id'),
+                       sort_sequence=[[1, 'asc']])
 
     data = [dict(DT_RowId=z.id,
                  qtype=z.qtype,
@@ -317,7 +328,31 @@ def wikipedia_lookup():
     try:
         resultpage = wikipedia.summary(pages[0])
     except wikipedia.exceptions.PageError:
-        resultpage=None
+        resultpage = None
     # print(resultpage)
     res = resultpage if resultpage else 'No result found for this topic'
+    return res
+
+
+@action('openai_lookup', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def openai_lookup():
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
+    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
+    # general this will only be used for self answered questions - however it might be called for other things in due
+    # course and we may amend to support different knowledge engines later as well
+    qtext = request.json['questiontext']
+    print(qtext)
+    openai.api_key = OPENAI_API_KEY
+    #try:
+    resultpage = openai.Completion.create(
+            model="text-davinci-002",
+            prompt=qtext,
+            temperature=0.1,
+        )
+    #except:
+    #    resultpage = 'an error occurred'
+    print(resultpage)
+    result = 'I ran'
+    res = result if resultpage else 'No response'
     return res
