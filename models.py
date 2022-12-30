@@ -7,8 +7,8 @@ from py4web import Field
 
 from pydal.validators import *
 import datetime
-not_empty = IS_NOT_EMPTY()
 
+not_empty = IS_NOT_EMPTY()
 
 db.define_table('resolve',
                 Field('resolve_name', 'string', default='Standard', label='Name',
@@ -105,7 +105,7 @@ db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())
 db.define_table('event',
                 Field('event_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location', notnull=True),
-                Field('projid',  'reference project',  label='Project', notnull=True),
+                Field('projid', 'reference project', label='Project', notnull=True),
                 Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),
                 Field('enddatetime', 'datetime', label='End Date Time'),
@@ -118,19 +118,16 @@ db.define_table('event',
                 Field('locked', 'boolean', readable=False, writable=False),
                 format='%(event_name)s')
 
-
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
+                Field('eventid', 'reference event', label='Event'),
                 Field('questiontext', 'text', label='Item Details', requires=not_empty),
-                Field('question_media', 'upload', label='Upload video or other supporting content (optional)',
-                      uploadfolder=settings.UPLOAD_FOLDER, comment='mp4, mp3 and jpeg are currently supported'),
-                Field('question_url', 'string', label='Link To Supporting Content',
-                      comment='This will load in an iframe for users to review - content not copied'),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected']),
                       comment='Select draft to defer for later editing'),
+                Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter',
-                    notnull=True),
+                      notnull=True),
                 Field('factopinion', 'string', default='Opinion', requires=IS_IN_SET(['AI_Opinion', 'Fact', 'Opinion']),
                       label='Fact, Opinion or AI',
                       comment='Factual questions answered by either submitter or knowledge engines,'
@@ -147,30 +144,30 @@ db.define_table('question',
                 Field('numlike', 'integer', default=0, readable=False, writable=False),
                 Field('priority', compute=lambda r: r['urgency'] * r['importance'],
                       readable=False, writeable=False),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True),
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
                 Field('resolvedate', 'datetime', readable=False, writable=False),
                 Field('responsible', label='Responsible'),
+                Field('notes', 'text', label='Notes',
+                      comment='General notes about question - may also document answers from knowledge engines'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
                 Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
-                Field('eventid', 'reference event', label='Event'),
-                Field('shared_editing', 'boolean', default=True, label='Shared Edit', comment='Allow anyone to edit'),
+                Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
                 Field('social_media', 'boolean', label='Post to Twitter'),
                 Field('media_id', 'integer', readable=False, writable=False),
                 Field('perccomplete', 'integer', default=0, label='Percent Complete',
                       requires=IS_INT_IN_RANGE(0, 101, error_message='Must be between 0 and 100')),
-                Field('notes', 'text', label='Notes',
-                      comment='General notes about question - may also document answers from knowledge engines'),
+                Field('question_media', 'upload', label='Upload video or other supporting content (optional)',
+                      uploadfolder=settings.UPLOAD_FOLDER, comment='mp4, mp3 and jpeg are currently supported'),
+                Field('question_url', 'string', label='Link To Supporting Content',
+                      comment='This will load in an iframe for users to review - content not copied'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
-
 
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 db.question.correctanstext = Field.Lazy(lambda row: ((row.question.correctans == 1 and row.question.answer1) or
                                                      (row.question.correctans == 2 and row.question.answer2) or ''))
-
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False, notnull=True),
@@ -188,7 +185,6 @@ db.define_table('uqrating',
                 Field('importance', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('ratingdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
-
 
 db.define_table('questlink',
                 Field('sourceid', 'reference question'),
@@ -251,7 +247,6 @@ db.define_table('eventmap',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])),
                 Field('notes', 'text', label='Notes'))
-
 
 db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))

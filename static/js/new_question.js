@@ -45,9 +45,9 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
                  $('#question_status option:selected').text()=='Resolved'
-                 $('#buttons').append('<input type="BUTTON" id="wolflookup" ' +
+                 $('#question_factopinion').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
          'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
-                 $('#buttons').append('<input type="BUTTON" id="wikiplookup" ' +
+                 $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
          'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
 };
               if($('#question_factopinion option:selected').text()=='Opinion')
@@ -66,7 +66,7 @@ $(document).ready(function(){
                  $("label[for='question_answer2']").show();
                  $('#question_answertext').hide();
                  $("label[for='question_answertext']").hide();
-                 $('#buttons').append('<input type="BUTTON" id="openailookup" ' +
+                 $('#question_factopinion').parent().after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
          'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');}
                 });
 
