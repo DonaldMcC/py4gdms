@@ -345,12 +345,13 @@ def openai_lookup():
     print(qtext)
     openai.api_key = OPENAI_API_KEY
     #try:
-    resultjson = openai.Completion.create(
+    result = openai.Completion.create(
             model="text-davinci-002",
             max_tokens=100,
             prompt=qtext,
             temperature=0.1,
         )
-    result = resultjson["choices"][0]["text"]
-    res = result if result else 'No response'
+    resulttemp = result["choices"][0]["text"]
+    resulttext = resulttemp.strip('?').strip()
+    res = resulttext if resulttext else 'No response'
     return res
