@@ -138,8 +138,8 @@ def view_event(eid='0'):
         session['projid'] = eventrow.projid
         if eventrow.next_event:
             next_eventrow = db(db.event.id == eventrow.next_event).select().first()
-            next_event_name = next_eventrow.event_name
-            next_event_id = next_eventrow.id
+            next_event_name = next_eventrow.event_name if next_eventrow else ''
+            next_event_id = next_eventrow.id if next_eventrow else 0
     else:
         redirect(URL('eventgrid'))
 
