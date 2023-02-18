@@ -41,8 +41,8 @@ def linkrequest():
     # at present we are keeping limited audit trail on link requests - only last updater
     # and last action and the basic rule is that the last action cannot be repeated
     # we don't currently know if this function will also be used for deletions but
-    # currently it won't as there is no action in the args only the sourc and target links
-    # so action for now is to estblish if the link already exists and if not create it
+    # currently it won't as there is no action in the args only the source and target links
+    # so action for now is to establish if the link already exists and if not create it
     # if it exists the number of requests increases and last user and action are updated.
 
     # now proposing to have an action as arg 3 which could be delete or agree
