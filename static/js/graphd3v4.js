@@ -398,22 +398,34 @@ function redrawnodes() {
         edges.unshift(newEdge);
         var linksource = graphvars.mousedownnode.serverid.toString();
         var linkdest = d.serverid.toString();
-        if (linksource == '0') {
-            linksource = graphvars.mousedownnode.title;
-        }
-        if (linksource == '0') {
-            linksource = d.serverid.title;
-        }
-        requestLink(linksource, linkdest, 'create');
-        redrawlinks();
-        graphvars.mousedownnode.selected = false;
-        graphvars.mousedownnode = null;
+            if (linksource == '0') {
+                linksource = graphvars.mousedownnode.title;
             }
-            else { if (graphvars.mousedownnode)
-            {graphvars.mousedownnode.selected = true}
-        }
+            if (linksource == '0') {
+                linksource = d.serverid.title;
+            }
+            console.log("calling request link")
+            requestLink(linksource, linkdest, 'create');
+            redrawlinks();
+            graphvars.mousedownnode.selected = false;
+            graphvars.mousedownnode = null;
+            }
+        else {
+            if (graphvars.mousedownnode) {
+                //clicked on same node as previously
+                console.log("clicking same node")
+                {
+                    graphvars.mousedownnode.selected = true
+                }
+            }
+            else {
+            graphvars.mousedownnode = d;
+            graphvars.mousedownnode.selected = true;
+                }
+            }
         redrawnodes();
-            case 'M':
+        break;
+    case 'M':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
         //console.log("move node down into", d.serverid);
 
@@ -441,7 +453,7 @@ function redrawnodes() {
             redrawnodes();
         }
         break;
-            case 'D':
+   case 'D':
         var nodeid = d.serverid.toString();
         if (nodeid == '0') {
             nodeid = d.serverid.title;
