@@ -1,6 +1,7 @@
 <div>
+
 <h1 class="title is-5">Event Details</h1>
-<table id='EvtDetails' class='table'>
+<table id='EvtDetails' class='table fulltable'>
 <thead>
 <tr>
 <th>Event Name</th>
@@ -11,7 +12,7 @@
 </thead>
 <tbody>
 <tr class='is-selected'>
-<th>Description</th>
+    <th>Description</th>
 <td>[[=XML(markmin2html(eventrow.description))]]</td>
 <td class="text-center">[[=eventrow.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td class="text-center">[[=eventrow.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>

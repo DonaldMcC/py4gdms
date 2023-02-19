@@ -2696,6 +2696,7 @@ div.icon-text {
 .table {
   background-color: white;
   color: #363636;
+  table-layout: fixed;
 }
 
 .table td,
