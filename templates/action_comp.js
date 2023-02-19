@@ -1,4 +1,4 @@
-$('#comp_actions').DataTable({responsive: true, paging: false, searching:false, info: false});
+
 $('#comp_actions').on('change', 'input', function () {
     var row = $(this).closest('tr');
         var perc = row.find("input[type='range']").val();
