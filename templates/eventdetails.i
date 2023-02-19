@@ -1,7 +1,7 @@
 <div>
 
 <h1 class="title is-5">Event Details</h1>
-<table id='EvtDetails' class='table fulltable'>
+<table id='EvtDetails'>
 <thead>
 <tr>
 <th>Event Name</th>

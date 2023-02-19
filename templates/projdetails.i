@@ -1,9 +1,9 @@
 <div>
 <h1 class="title is-5">Project Details</h1>
-<table id='TabAnswers' class='table'>
+<table id='ProjDetails' class='table'>
 <tbody>
 <tr>
-<th></th>
+<th>Project Name</th>
 <th>[[=projectrow.proj_name]]</th>
 <th>Start</th>
 <th>End</th>
