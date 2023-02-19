@@ -57,6 +57,8 @@ def new_event(eid=None):
         if islocked.locked:
             flash.set("Locked Event cannot be edited", sanitize=True)
             redirect(URL('eventgrid'))
+    else:
+        islocked = None
     form = Form(db.event, record=eid, formazstyle=FormStyleBulma)
     db.event.prev_event.requires = IS_EMPTY_OR(IS_IN_DB(db, 'event.id', '%(event_name)s'))
 

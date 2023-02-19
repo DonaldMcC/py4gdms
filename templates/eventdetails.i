@@ -1,13 +1,15 @@
 <div>
 <h1 class="title is-5">Event Details</h1>
-<table id='TabAnswers' class='table'>
-<tbody>
+<table id='EvtDetails' class='table'>
+<thead>
 <tr>
 <th></th>
 <th>[[=eventrow.event_name]]</th>
 <th>Start</th>
 <th>End</th>
 </tr>
+</thead>
+<tbody>
 <tr class='is-selected'>
 <th>Description</th>
 <td>[[=XML(markmin2html(eventrow.description))]]</td>
