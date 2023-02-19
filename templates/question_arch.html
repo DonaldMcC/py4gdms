@@ -7,7 +7,7 @@
 						<th>Status</th>
                         <th>Question</th>
                         <th>F/O</th>
-                        <th class="is-hidden-touch">Notes</th>
+                        <th class="limit_max_width">Notes</th>
                         <th>Answer(s)</th>
                     </tr>
                 </thead>
@@ -18,7 +18,7 @@
 <td>[[=XML(markmin2html(row.eventmap.questiontext))]]
 <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
-    <td class="is-hidden-touch">[[=row.eventmap.notes]]</td>
+    <td class="limit_max_width">[[=row.eventmap.notes]]</td>
 <td>[[if auth.user_id:]]
     <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",

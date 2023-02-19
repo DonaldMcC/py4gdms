@@ -23,6 +23,9 @@ div.ganttdiv {
     background-color: rgba(150,230,255,.2);
 }
 
+.limit_max_width {
+    max-width: 500px;
+}
 
 .d3label {
      font-size: 14px;
