@@ -25,6 +25,7 @@ div.ganttdiv {
 
 .limit_max_width {
     max-width: 30em;
+    text-overflow: ellipsis;
 }
 
 .d3label {
