@@ -28,6 +28,11 @@ div.ganttdiv {
     text-overflow: ellipsis;
 }
 
+.min_width {
+    min-width: 5em;
+    text-overflow: ellipsis;
+}
+
 .d3label {
      font-size: 14px;
      font-weight: bold;

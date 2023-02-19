@@ -8,7 +8,7 @@
 					<tr>
 						<th>Status</th>
                         <th>Question</th>
-                        <th>F/O</th>
+                        <th class="min_width">F/O</th>
                         <th class="limit_max_width">Notes</th>
                         <th>Answers</th>
                     </tr>
@@ -19,7 +19,7 @@
 <th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)))]]</th>
 <td>[[=XML(markmin2html(row.question.questiontext))]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
-<td class="has-text-centered">[[=row.question.factopinion]]</td>
+<td class="min_width has-text-centered">[[=row.question.factopinion]]</td>
     <td class="limit_max_width">[[=XML(markmin2html(row.question.notes))]]</td>
 <td>[[if auth.user_id:]]
     <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
