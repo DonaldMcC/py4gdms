@@ -3,7 +3,7 @@
 <table id='EvtDetails' class='table'>
 <thead>
 <tr>
-<th></th>
+<th>Event Name</th>
 <th>[[=eventrow.event_name]]</th>
 <th>Start</th>
 <th>End</th>
