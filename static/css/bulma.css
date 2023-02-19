@@ -2704,7 +2704,7 @@ div.icon-text {
   border-width: 0 0 1px;
   padding: 0.5em 0.75em;
   vertical-align: top;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .table td.is-white,
