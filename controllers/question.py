@@ -34,6 +34,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 # from ..libs.utils import GridSearch
 from pydal.validators import *
 from ..twitter_client import publish
+from ..ndsfunctions import score_question
 
 flash = auth.flash
 
@@ -124,6 +125,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['resolvemethod'] = form.vars['resolvemethod']
         sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
+        if qid:
+            score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
         if form.vars['social_media']:
             questurl = URL('question/viewquest', str(form.vars['id']), scheme='https')
             pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
