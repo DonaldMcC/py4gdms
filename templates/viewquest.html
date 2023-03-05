@@ -77,7 +77,8 @@ var questid = "[[=quest['id'] ]]";
 
 [[if can_edit:]]
 <div>
-     <INPUT TYPE=BUTTON class="button is-small is-rounded" onClick="parent.location='[[=URL('new_question/'+str(quest['id']))]]'" VALUE="Edit"></p>
+     <INPUT TYPE=BUTTON class="button is-small is-rounded"
+            onClick="parent.location='[[=URL('new_question/'+str(quest['id'])+'/'+quest['qtype']+'/'+str(eventid)+'/0/0/view_event')]]'" VALUE="Edit"></p>
 </div>
 [[pass]]
 [[if quest['notes']:]]

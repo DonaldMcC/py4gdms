@@ -58,9 +58,10 @@ from ..ndsfunctions import get_filetype
 
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
+@action("viewquest/<qid>/<eid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
 @action.uses('viewquest.html', session, db, auth.user)
-def viewquest(qid=0):
+def viewquest(qid=0, eid=0):
     # This will be a general view on question details and it will require the
     # question id as an argument Logic will be to only display the question if it
     # has been submitted, resolved or answered/passed by the user
@@ -138,7 +139,7 @@ def viewquest(qid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath)
+                filename=filename, urlpath=urlpath, eventid=eid)
 
 
 @action('urgency', method=['POST', 'GET'])

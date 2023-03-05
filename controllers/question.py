@@ -54,7 +54,6 @@ except ImportError as error:
     oai = False
 
 
-
 def check_status(form):
     if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
         form.errors['status'] = 'Fact questions must have status Resolved or Draft'
@@ -65,6 +64,7 @@ def check_status(form):
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
+@action("new_question/<qid>/<qtype>/<eid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, flash, auth.user)
@@ -123,7 +123,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     if form.accepted:
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
-        sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        sourceurl = sourceurl + '/' + eid if eid else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
@@ -135,7 +136,10 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             quest.media_id = pub_result.id
             quest.update_record()
             db.commit()
-        redirect(URL(sourceurl, vars=dict(qtype=qtype)))
+        if eid:
+            redirect(URL(sourceurl))
+        else:
+            redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
 
