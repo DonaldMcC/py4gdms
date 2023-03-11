@@ -164,6 +164,20 @@ path.link.selected {
     stroke: rgb(229, 172, 247);
 }
 
+td, th {
+    min-width: 7em;
+}
+
+.ten {
+  width: 10%;
+  background: tomato;
+}
+
+.twenty {
+  width: 20%;
+  background: turquoise
+}
+
 .footer {
     position: absolute;
     bottom: 0;
