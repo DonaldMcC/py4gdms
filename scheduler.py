@@ -136,7 +136,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 <td>%s</td>
                 <td>%s</td>
 
-                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext, row.othercounts[3],
                             row.othercounts[3], row.resolvedate)
             message += " </tbody></table>"
         else:
@@ -190,7 +190,7 @@ def activity(id=0, resend=False, period='Week', format='html', source='default')
                 <td>%s</td>
                 <td>%s</td>
                 <td>%s</td>
-                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext(), row.othercounts[3],
+                </tr>""" % (itemurl, row.qtype, itemtext, row.correctanstext, row.othercounts[3],
                             row.othercounts[3], row.resolvedate)
             message += " </tbody></table>"
         else:
@@ -277,7 +277,7 @@ def send_email_resolved(questid):
 
     if owner.emailresolved:
         subject = 'Item resolved: ' + str(truncquest(quest.questiontext, 100, wrap=0, mark=False))
-        message = resulthtml(quest.questiontext, quest.correctanstext(), questid)
+        message = resulthtml(quest.questiontext, quest.correctanstext, questid)
         send_email(owner.email, mail.settings.sender, subject, message)
 
     return True

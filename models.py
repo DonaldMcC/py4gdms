@@ -138,8 +138,8 @@ db.define_table('question',
                 Field('numanswer1', 'integer', default=0, readable=False, writable=False),
                 Field('numanswer2', 'integer', default=0, readable=False, writable=False),
                 Field('correctans', 'integer', readable=False, writable=False),
-                Field.Virtual('correctanstext', lambda row: ((row.correctans == 1 and row.answer1) or
-                                                             (row.correctans == 2 and row.answer2) or '?')),
+                Field.Virtual('correctanstext', lambda row: (row['correctans'] == 1 and row['answer1'])
+                                                            or (row['correctans'] == 2 and row['answer2']) or '?'),
                 Field('urgency', 'decimal(6,2)', default=5, readable=False, writable=False),
                 Field('importance', 'decimal(6,2)', default=5, readable=False, writable=False),
                 Field('totratings', 'integer', default=0, readable=False, writable=False),
@@ -168,7 +168,8 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
-
+#lambda row: ((row['correctans'] == 1 and row['answer1']) or
+#                                                             (row['correctans'] == 2 and row['answer2']) or '?')),
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False, notnull=True),
@@ -249,7 +250,7 @@ db.define_table('eventmap',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])),
                 Field('notes', 'text', label='Notes'))
 
-db.eventmap.correctanstext = Field.Lazy(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
+db.eventmap.correctanstext = Field.Virtual(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                      (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
 db.define_table("itemlike",

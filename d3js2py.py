@@ -43,10 +43,10 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     for i, x in enumerate(quests):
         if eventstatus == 'Archived':  # For archived event quests from questmap table
             nodes.append(getd3dict(x.questid, i + 2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
+                                   x.questiontext, x.correctanstext, x.status, x.qtype, x.priority, x.answers))
         else:
             nodes.append(getd3dict(x.id, i + 2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext(), x.status, x.qtype, x.priority, x.answers))
+                                   x.questiontext, x.correctanstext, x.status, x.qtype, x.priority, x.answers))
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -223,7 +223,6 @@ def getevent(eventid, status="Open", orderby='id', parentquest=0):
         else:
             quests = db((db.question.eventid == eventid) &
                         (db.question.masterquest == parentquest)).select(orderby=orderstr)
-
     questlist = [x.id for x in quests]
     return quests, questlist
 
@@ -249,6 +248,7 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     questlist = []
     intlinks = None
 
+    print(querytype)
     if queryids:
         if querytype == 'event':
             quests, questlist = getevent(queryids, status, 'id', parentquest)
@@ -270,7 +270,9 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
 
     for i, x in enumerate(quests):
         dicty = x.as_dict()
-        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext(),
+        #TODO fully investigate why I need to repeat virtual field here think not part of joined query
+        correctanstext = (x.correctans == 1 and x.answer1) or (x.correctans == 2 and x.answer2) or '?'
+        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, correctanstext,
                           x.status, x.qtype, x.priority, x.answer1, x.answer2)
         nodes.append(merge_two_dicts(dicty, dictx))
 
