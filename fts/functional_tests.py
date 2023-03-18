@@ -49,7 +49,7 @@ class FunctionalTest(unittest.TestCase):
         # self.browser = webdriver.Firefox()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
-        ser = Service("d:\python37\chromedriver")
+        ser = Service("c:\python311\chromedriver")
         op = webdriver.ChromeOptions()
         # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
         # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
