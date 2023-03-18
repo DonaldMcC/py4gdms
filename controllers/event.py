@@ -174,9 +174,10 @@ def view_event(eid='0'):
 
 
 @action('eventgrid', method=['POST', 'GET'])
-@action('eventgrid/<status>', method=['POST', 'GET'])
+@action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('eventgrid.html', session, db, flash, auth.user)
 def eventgrid(path=None, status='Open'):
+    #TODO need to look at passing a variable into the grid seems like path is only argument now
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
