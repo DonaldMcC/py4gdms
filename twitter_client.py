@@ -57,7 +57,7 @@ def publish(questiontext, filename=None):
         #tweet = api.update_status(status="Image upload", media_ids=
         #[media.media_id_string])
     try:
-        result = api.update_status(questiontext, media_ids=media_ids)
+        result = api.update_status(questiontext, full_text=questiontext, media_ids=media_ids, tweet_mode="extended")
         print("TWEET: ", e)
     except tweepy.errors as e:
         print("Eror occurred: ", e)
