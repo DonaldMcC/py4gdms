@@ -173,10 +173,15 @@ def view_event(eid='0'):
                 next_event_name=next_event_name, next_event_id=next_event_id)
 
 
+@action('event_redirect/<status>', method=['POST', 'GET'])
+def event_redirect(status=None):
+    session['event_status'] = status
+    redirect(URL('eventgrid'))
+
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('eventgrid.html', session, db, flash, auth.user)
-def eventgrid(path=None, status='Open'):
+def eventgrid(path=None, status=session['event_status']):
     #TODO need to look at passing a variable into the grid seems like path is only argument now
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
