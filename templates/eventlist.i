@@ -3,7 +3,7 @@
 <h1 class="title is-5">Events For This Project</h1>
 [[if events:]]
 <table id='Events' class='table'>
-<tbody>
+<thead>
 <tr>
 <th>Name</th>
 <th>Description</th>
@@ -11,7 +11,9 @@
 <th class="is-hidden-touch">End</th>
 <th>Status</th>
 <th>Action</th>
+</thead>
 </tr>
+<tbody>
 [[for row in events:]]
 <tr>
 <th>[[=A(row.event_name, _href=URL('view_event/'+str(row.id)))]]</th>

@@ -355,7 +355,7 @@ def openai_lookup():
     qtext = request.json['questiontext']
     print(qtext)
     openai.api_key = OPENAI_API_KEY
-    #try:
+    # try:
     result = openai.Completion.create(
             model="text-davinci-002",
             max_tokens=100,

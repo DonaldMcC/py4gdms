@@ -179,17 +179,17 @@ def event_redirect(status=None):
     session['event_status'] = status
     redirect(URL('eventgrid'))
 
+
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('eventgrid.html', session, db, flash, auth.user)
 def eventgrid(path=None):
-    #TODO need to look at passing a variable into the grid seems like path is only argument now
+    # TODO need to look at passing a variable into the grid seems like path is only argument now
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
                          formstyle=FormStyleBulma,
                          grid_class_style=GridClassStyleBulma)
-
 
     fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,
               db.event.enddatetime, db.event.description]
@@ -197,7 +197,7 @@ def eventgrid(path=None):
     orderby = [db.event.startdatetime]
     search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
-    status = session.get('event_status','Open')
+    status = session.get('event_status', 'Open')
     # search = GridSearch(search_queries, queries)
     if status != 'All':
         query = db.event.status == status
@@ -273,7 +273,8 @@ def archive():
                                          notes=row.notes)
 
             if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
-                                     (row.qtype == 'action' and row.status == 'Agreed' and row.execstatus != 'Completed')):
+                                     (row.qtype == 'action' and row.status == 'Agreed'
+                                      and row.execstatus != 'Completed')):
                 row.update_record(eventid=nexteventid)
             else:
                 row.update_record(eventid=unspecid)
