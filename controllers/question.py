@@ -85,11 +85,15 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
                                                             db.resolve.id).first()['id'])
     except AttributeError:
         pass
+    except TypeError:
+        pass
 
     try:
         db.question.eventid.default = int(eid) if eid.isnumeric() and int(eid) > 0 \
             else session.get('eventid', db(db.event.event_name == 'Unspecified').select(db.event.id).first()['id'])
     except AttributeError:
+        pass
+    except TypeError:
         pass
 
     # default for this in models doesn't seem to work

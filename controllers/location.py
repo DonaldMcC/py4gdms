@@ -69,7 +69,7 @@ def locationgrid(path=None):
                           'Country', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
-                create=URL('new_location/0'),
+                create=URL('new_location/'),
                 details=True,
                 editable=URL('new_location/'),
                 deletable=URL('new_project/delete/'),
