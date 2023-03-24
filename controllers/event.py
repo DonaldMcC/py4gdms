@@ -197,7 +197,7 @@ def eventgrid(path=None):
     orderby = [db.event.startdatetime]
     search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
-    status = session['event_status']
+    status = session.get('event_status','Open')
     # search = GridSearch(search_queries, queries)
     if status != 'All':
         query = db.event.status == status
