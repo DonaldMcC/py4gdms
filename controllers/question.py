@@ -128,7 +128,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
         #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        sourceurl = sourceurl + '/' + eid if eid else sourceurl
+        sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
@@ -158,6 +158,7 @@ def questiongrid(path=None):
                          grid_class_style=GridClassStyleBulma)
     # queries = [(db.event.id == db.question.eventid) & (db.event.projid == db.project.id)]
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
+    print(qtype)
     queries = db.question.qtype == qtype
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
                                                                                        orderby=db.event.event_name,
