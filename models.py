@@ -62,6 +62,12 @@ db.define_table('download',
                 format='%(title)s')
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
+db.define_table('knowledge',
+                Field('source'),
+                Field('title'),
+                format='%(title)s')
+
+
 db.define_table('locn',
                 Field('location_name', label='Location Name', unique=True, notnull=True),
                 Field('address1', label='Address 1'),
