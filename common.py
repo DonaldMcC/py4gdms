@@ -92,12 +92,11 @@ auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
 #auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
 #                                                         ' information to support operation of this site - it is not shared with 3rd parties',
 #                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
-auth.extra_auth_user_fields=[Field('notify','string', label='Notification E-mail frequency',
-                                  requires=IS_IN_SET(['None','Immediate','Daily', 'Weekly', 'Monthly']), default='None'),
-                            Field('notify_date', 'datetime', readable=False, writable=False),
-                            Field('next_notify_date', 'datetime', readable=False, writable=False),
-                             #Field('data_consent', 'boolean', default=False,
-                             #      label='I consent to Net Decision Making holding minimal personal information to support operation of this site - it is not shared with 3rd parties',
+auth.extra_auth_user_fields=[Field('default_resolve', 'string', label='Default Resolve Method', default='None'),
+                             Field('default_AI','string', label='Default AI', default='None'),
+                             Field('data_consent', 'boolean', default=False,
+                                    label='I consent to Net Decision Making holding minimal personal information to'
+                                          ' support operation of this site - it is not shared with 3rd parties')
                              #requires=IS_NOT_EMPTY(), error_message='You must consent to register')
                              ]
 
