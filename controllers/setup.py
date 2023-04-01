@@ -57,4 +57,14 @@ def datasetup():
         resolveid = db.resolve.insert(resolve_name="Standard", Defaultresolve=True)
     if db(db.resolve.resolve_name == "Single").isempty():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)
+
+    if db(db.knowledge.source == "None").isempty():
+        kid = db.knowledge.insert(source="None", title="None")
+
+    if db(db.knowledge.source == "Wolfram").isempty():
+        kid = db.knowledge.insert(source="Wolfram", title="Wolfram Alpha")
+
+    if db(db.knowledge.source == "GPT3").isempty():
+        kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3")
+
     return locals()

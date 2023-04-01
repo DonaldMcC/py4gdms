@@ -99,6 +99,7 @@ auth.extra_auth_user_fields=[Field('default_resolve', 'string', label='Default R
                                           ' support operation of this site - it is not shared with 3rd parties')
                              #requires=IS_NOT_EMPTY(), error_message='You must consent to register')
                              ]
+# Think I will just populate these fields from session object if they are none
 
 auth.define_tables()
 auth.fix_actions()
