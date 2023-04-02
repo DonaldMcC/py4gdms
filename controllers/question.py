@@ -96,6 +96,15 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     except TypeError:
         pass
 
+    try:
+        db.question.chosenai.default = session.get('chosenai', db(db.knowledge.defaultknowledge == True).select(
+                                                    db.knowledge.id).first()['id'])
+    except AttributeError:
+        pass
+    except TypeError:
+        pass
+
+
     # default for this in models doesn't seem to work
     db.question.auth_userid.default = auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
@@ -127,6 +136,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     if form.accepted:
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
+        session['chosenai'] = form.vars['chosenai']
         #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
@@ -303,9 +313,7 @@ def FormStyleGrid(table, vars, errors, readonly, deletable):
 @action.uses(session, db, auth.user)
 def wolfram_alpha_lookup():
     # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
-    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
-    # general this will only be used for self answered questions - however it might be called for other things in due
-    # course and we may amend to support different knowledge engines later as well
+    # and then return the answer
     if not wolfram:
         return 'Wolfram Alpha Client not installed'
     client = wolframalpha.Client(WA_ID)
@@ -331,10 +339,8 @@ def wolfram_alpha_lookup():
 @action('wikipedia_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def wikipedia_lookup():
-    # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
-    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
-    # general this will only be used for self answered questions - however it might be called for other things in due
-    # course and we may amend to support different knowledge engines later as well
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on wikipedia
+    # and return the answer
     qtext = request.json['questiontext']
     pages = wikipedia.search(qtext, results=3)
     try:
@@ -349,10 +355,8 @@ def wikipedia_lookup():
 @action('openai_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def openai_lookup():
-    # This should be a straightforward function called via Ajax to lookup the answer to a question on wolfram alpha
-    # and then feed the answer back into the Notes section of the question being created - it is anticipated that in
-    # general this will only be used for self answered questions - however it might be called for other things in due
-    # course and we may amend to support different knowledge engines later as well
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on openai
+    # and then return the answer
     qtext = request.json['questiontext']
     print(qtext)
     openai.api_key = OPENAI_API_KEY

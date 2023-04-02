@@ -93,7 +93,7 @@ auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
 #                                                         ' information to support operation of this site - it is not shared with 3rd parties',
 #                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
 auth.extra_auth_user_fields=[Field('default_resolve', 'string', label='Default Resolve Method', default='None'),
-                             Field('default_AI','string', label='Default AI', default='None'),
+                             #Field('default_AI','string', label='Default AI', default='None'),
                              Field('data_consent', 'boolean', default=False,
                                     label='I consent to Net Decision Making holding minimal personal information to'
                                           ' support operation of this site - it is not shared with 3rd parties')

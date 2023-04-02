@@ -1,6 +1,6 @@
 
     var qsuccess = function(res) {
-    $("#question_notes").val(res.data);
+    $("#question_aianswer").val(res.data);
     };
     var qerror = function(res) {
         alert('ERROR in call');

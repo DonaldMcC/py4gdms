@@ -65,6 +65,7 @@ db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 db.define_table('knowledge',
                 Field('source'),
                 Field('title'),
+                Field('defaultknowledge', 'boolean', label='Default Knowledge Engine', default=False),
                 format='%(title)s')
 
 

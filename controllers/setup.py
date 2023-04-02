@@ -59,10 +59,13 @@ def datasetup():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)
 
     if db(db.knowledge.source == "None").isempty():
-        kid = db.knowledge.insert(source="None", title="None")
+        kid = db.knowledge.insert(source="None", title="None", defaultknowledge=True)
 
     if db(db.knowledge.source == "Wolfram").isempty():
         kid = db.knowledge.insert(source="Wolfram", title="Wolfram Alpha")
+
+    if db(db.knowledge.source == "Wikipedia").isempty():
+        kid = db.knowledge.insert(source="Wikipedia", title="Wikipedia")
 
     if db(db.knowledge.source == "GPT3").isempty():
         kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3")
