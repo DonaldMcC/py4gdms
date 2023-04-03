@@ -89,25 +89,23 @@ auth.param.login_expiration_time = 3600
 auth.param.password_complexity = {"entropy": 50}
 auth.param.block_previous_password_num = 3
 auth.param.default_login_enabled = settings.DEFAULT_LOGIN_ENABLED
-#auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
+# auth.extra_auth_user_fields=[Field('data_consent', 'boolean', default=False, label='I consent to Net Decision Making holding minimal personal'
 #                                                         ' information to support operation of this site - it is not shared with 3rd parties',
 #                                   requires=IS_NOT_EMPTY(), error_message='You must consent to register'),
-auth.extra_auth_user_fields=[Field('default_resolve', 'string', label='Default Resolve Method', default='None'),
-                             #Field('default_AI','string', label='Default AI', default='None'),
+auth.extra_auth_user_fields = [Field('default_resolve', 'string', label='Default Resolve Method', default='None'),
+                             #.Field('default_AI','string', label='Default AI', default='None'),
                              Field('data_consent', 'boolean', default=False,
                                     label='I consent to Net Decision Making holding minimal personal information to'
                                           ' support operation of this site - it is not shared with 3rd parties')
                              #requires=IS_NOT_EMPTY(), error_message='You must consent to register')
                              ]
 # Think I will just populate these fields from session object if they are none
-
 auth.define_tables()
 auth.fix_actions()
 flash = auth.flash
 
 def create_profile_callback(field_values, user_id):
     print(f"User registered: {user_id}")
-    print(field_values['notify'])
     #TODO will call some sort of next notification function from here that may also update notifydate if successfully sent
     #otherwise will just be initial population and based on current time
     return
