@@ -58,6 +58,8 @@ def datasetup():
     if db(db.resolve.resolve_name == "Single").isempty():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)
 
+    # These will require a degree of manual setup and the new_question js and new_quest js scripts at least will
+    # require tweaking if new engines are added
     if db(db.knowledge.source == "None").isempty():
         kid = db.knowledge.insert(source="None", title="None", defaultknowledge=True)
 

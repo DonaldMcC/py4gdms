@@ -10,8 +10,9 @@ $(document).ready(function(){
          'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
    $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
          'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
-   $('#wikiplookup').parent().after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
+   $('#wikiplookup').after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
          'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');
+   $('#question_aianswer').attr('readonly', true);
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');

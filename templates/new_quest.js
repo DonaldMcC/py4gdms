@@ -1,6 +1,8 @@
 
     var qsuccess = function(res) {
+    $('#question_aianswer').attr('readonly', false);
     $("#question_aianswer").val(res.data);
+    $('#question_aianswer').attr('readonly', true);
     };
     var qerror = function(res) {
         alert('ERROR in call');
