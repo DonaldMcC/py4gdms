@@ -6,6 +6,12 @@ $(document).ready(function(){
    $('#question_execstatus').parent().parent().hide();
    $('#question_xpos').parent().parent().hide();
    $('#question_ypos').parent().parent().hide();
+   $('#question_factopinion').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
+         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
+   $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
+         'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
+   $('#wikiplookup').parent().after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
+         'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
@@ -45,10 +51,6 @@ $(document).ready(function(){
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
                  $('#question_status option:selected').text()=='Resolved'
-                 $('#question_factopinion').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
-         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
-                 $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
-         'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
 };
               if($('#question_factopinion option:selected').text()=='Opinion')
                 {$('#question_answer1').show();
@@ -66,8 +68,7 @@ $(document).ready(function(){
                  $("label[for='question_answer2']").show();
                  $('#question_answertext').hide();
                  $("label[for='question_answertext']").hide();
-                 $('#question_factopinion').parent().after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
-         'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');}
+                 }
                 });
 
                 $('#question_qtype').change();
