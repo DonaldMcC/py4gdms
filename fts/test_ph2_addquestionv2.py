@@ -9,6 +9,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 
+
 @ddt
 class AddBasicQuestion (FunctionalTest):
 
@@ -35,7 +36,7 @@ class AddBasicQuestion (FunctionalTest):
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         questiontext = WebDriverWait(self, 10).until(lambda self:
-                                     self.browser.find_element(By.ID, 'question_questiontext'))
+                                                     self.browser.find_element(By.ID, 'question_questiontext'))
         questiontext.send_keys(question)
 
         # resmethod = WebDriverWait(self, 10).until(lambda self:

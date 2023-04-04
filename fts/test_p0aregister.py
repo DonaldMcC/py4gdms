@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 
 
-
 # element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
 @ddt
 class TestRegisterPage (FunctionalTest):
@@ -48,28 +47,29 @@ class TestRegisterPage (FunctionalTest):
         password.clear()
         password.send_keys(passwd)
 
-        password2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_password_again"))
+        password2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(
+            By.ID, "no_table_password_again"))
         password2.clear()
         password2.send_keys(passwd)
-        # data_consent = self.browser.find_element_by_name("data_consent")
-        # data_consent.click()
+        data_consent = self.browser.find_element_by_name("data_consent")
+        data_consent.click()
 
-        #self.browser.find_element_by_id("auth_user_status").send_keys("bla")
-        #self.browser.find_element_by_id("auth_user_test").send_keys("bla")
-        #self.browser.find_element_by_id("auth_user_notify").click()
-        #dropdown = self.browser.find_element_by_id("auth_user_notify")
-        #dropdown.find_element_by_xpath("//option[. = 'm']").click()
-        #self.browser.find_element_by.css_selector("option:nth-child(2)").click()
-        #self.browser.find_element_by.css_selector("div:nth-child(1) > input").click()
-        #self.browser.find_element_by.css_selector(".close").click()
+        # self.browser.find_element_by_id("auth_user_status").send_keys("bla")
+        # self.browser.find_element_by_id("auth_user_test").send_keys("bla")
+        # self.browser.find_element_by_id("auth_user_notify").click()
+        # dropdown = self.browser.find_element_by_id("auth_user_notify")
+        # dropdown.find_element_by_xpath("//option[. = 'm']").click()
+        # self.browser.find_element_by.css_selector("option:nth-child(2)").click()
+        # self.browser.find_element_by.css_selector("div:nth-child(1) > input").click()
+        # self.browser.find_element_by.css_selector(".close").click()
 
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
 
-        #register_button = self.browser.find_element_by_id("submit")
+        # register_button = self.browser.find_element_by_id("submit")
 
-        #time.sleep(5)
-        #register_button.click()
+        # time.sleep(5)
+        # register_button.click()
         time.sleep(1)
 
         resultstring = "registered"

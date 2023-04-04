@@ -53,7 +53,7 @@ class AddBasicQuestion (FunctionalTest):
         if recordpos > 0:
             recordstr = alertarea.text[recordpos+9:]
             # print('recstr:'+recordstr)
-            recordval=int(recordstr) if recordstr.isnumeric() else 0
+            recordval = int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
             questiddict['p2quest'] = recordval

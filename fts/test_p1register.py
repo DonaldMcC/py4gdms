@@ -10,10 +10,10 @@ class TestRegisterPage (FunctionalTest):
     def setUp(self):      
         self.url = ROOT + '/auth/register'
         self.browser.get(self.url)
+
     @data((USERS['USER2'], USERS['PASSWORD2']), (USERS['USER3'], USERS['PASSWORD3']),
           (USERS['USER4'], USERS['PASSWORD4']), (USERS['USER5'], USERS['PASSWORD5']),
           (USERS['USER6'], USERS['PASSWORD6']))
-
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
         # first_name = self.browser.find_element_by_name("first_name")
@@ -22,7 +22,8 @@ class TestRegisterPage (FunctionalTest):
         username.send_keys(user)
 
         # first_name = self.browser.find_element_by_name("first_name")
-        first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "auth_user_first_name"))
+        first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(
+            By.ID, "auth_user_first_name"))
         first_name.clear()
         first_name.send_keys(user)
 
@@ -44,8 +45,8 @@ class TestRegisterPage (FunctionalTest):
         password2.clear()
         password2.send_keys(passwd)
 
-        # data_consent = self.browser.find_element_by_name("data_consent")
-        # data_consent.click()
+        data_consent = self.browser.find_element_by_name("data_consent")
+        data_consent.click()
 
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()

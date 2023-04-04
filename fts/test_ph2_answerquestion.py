@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 # will need updated as I think answer selection is now not part of DDT but it
 # will need to become so in a bit
 
+
 @ddt
 class AnswerQuestion (FunctionalTest):
 
