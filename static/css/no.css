@@ -367,7 +367,15 @@ nav li:hover {
   background-color: #0074d9
 }
 
+nav li:hover_effect {
+  background-color: #0074d9
+}
+
 nav li:hover > a {
+  color: white
+}
+
+nav li:hover_effect > a {
   color: white
 }
 
