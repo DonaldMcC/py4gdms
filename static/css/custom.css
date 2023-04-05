@@ -227,8 +227,8 @@ td, th {
     border-color: yellow;
 }
 
-element:hover, element:active {
-    --webkit-tap-highlight-color: rgba(0,0,0,0);
+
+.hover {
     --webkit-user-select: none;
     --webkit-touch-callout: none;
 }
