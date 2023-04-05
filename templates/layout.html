@@ -41,14 +41,14 @@
           <a class="navbar-item" href="[[=URL('gantt')]]">Gantt</a>
         </div>
         <!-- Right menu ul/li -->
-        <ul class="hover">
+        <ul>
           [[if globals().get('user'):]]
-          <li >
+          <li class="hover">
             <a class="navbar-link is-primary">
               [[=globals().get('user',{}).get('email')]]
             </a>
             <ul>
-              <li><a href="[[=URL('auth/profile')]]">Edit Profile</a></li>
+              <li class="hover"><a href="[[=URL('auth/profile')]]">Edit Profile</a></li>
               [[if 'change_password' in globals().get('actions',{}).get('allowed_actions',{}):]]
                 <li><a href="[[=URL('auth/change_password')]]">Change Password</a></li>
               [[pass]]
@@ -56,11 +56,11 @@
             </ul>
           </li>
           [[else:]]
-          <li>
+          <li class="hover">
             Login
             <ul>
-              <li><a href="[[=URL('auth/register')]]">Sign up</a></li>
-              <li><a href="[[=URL('auth/login')]]">Log in</a></li>
+              <li class="hover"><a href="[[=URL('auth/register')]]">Sign up</a></li>
+              <li class="hover"><a href="[[=URL('auth/login')]]">Log in</a></li>
             </ul>
           </li>
           [[pass]]
