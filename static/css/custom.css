@@ -226,3 +226,8 @@ td, th {
     border-style: solid;
     border-color: yellow;
 }
+
+.hover {
+    --webkit-user-select: none;
+    --webkit-touch-callout: none;
+}
