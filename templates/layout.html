@@ -41,10 +41,10 @@
           <a class="navbar-item" href="[[=URL('gantt')]]">Gantt</a>
         </div>
         <!-- Right menu ul/li -->
-        <ul>
+        <ul class="hover">
           [[if globals().get('user'):]]
-          <li>
-            <a class="navbar-link is-primary hover">
+          <li >
+            <a class="navbar-link is-primary">
               [[=globals().get('user',{}).get('email')]]
             </a>
             <ul>
@@ -56,7 +56,7 @@
             </ul>
           </li>
           [[else:]]
-          <li class="hover">
+          <li>
             Login
             <ul>
               <li><a href="[[=URL('auth/register')]]">Sign up</a></li>
