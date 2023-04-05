@@ -360,6 +360,7 @@ def openai_lookup():
     qtext = request.json['questiontext']
     print(qtext)
     openai.api_key = OPENAI_API_KEY
+    resulttemp = 'No Reponse'
     try:
         result = openai.Completion.create(
             model="text-davinci-002",
@@ -367,10 +368,10 @@ def openai_lookup():
             prompt=qtext,
             temperature=0.1,
             )
+        resulttemp = result["choices"][0]["text"]
     except openai.error.RateLimitError:
-        result = "API quota exceed"
+        resulterror = "API quota exceed"
 
-    resulttemp = result["choices"][0]["text"]
     resulttext = resulttemp.strip('?').strip()
-    res = resulttext if resulttext else 'No response'
+    res = resulttext if resulttext else resulterror
     return res

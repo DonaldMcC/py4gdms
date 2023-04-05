@@ -13,7 +13,9 @@
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
      $("#question_notes").val('Looking up answer on Wolfram Alpha');
+     $("#question_chosenai option[value=2]").prop('selected', true);
 
+    //$("#question_chosenai")
     result= Q.ajax("POST", "[[=URL('wolfram_alpha_lookup')]]", {
             questiontext: qtext
         }).then(qsuccess).catch(qerror);
@@ -22,10 +24,11 @@
 
     function wikipedia_lookup() {
     var qtext = $('#question_questiontext').val();
-    /^ Now we call via ajax and put returned value into notes */
+    /* Now we call via ajax and put returned value into notes */
      $("#question_notes").val('Looking up answer on Wikipedia');
+     $("#question_chosenai option[value=4]").prop('selected', true);
 
-    result= Q.ajax("POST", "[[=URL('wikipedia_lookup')]]", {
+     result= Q.ajax("POST", "[[=URL('wikipedia_lookup')]]", {
             questiontext: qtext
         }).then(qsuccess).catch(qerror);
 
@@ -35,6 +38,7 @@
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
      $("#question_notes").val('Looking up answer on Open AI');
+     $("#question_chosenai option[value=3]").prop('selected', true);
 
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
             questiontext: qtext
