@@ -18,7 +18,6 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-
 # This controller includes the default index function and other functions for answering questions
 # and liking items
 
