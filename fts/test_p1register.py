@@ -45,7 +45,7 @@ class TestRegisterPage (FunctionalTest):
         password2.clear()
         password2.send_keys(passwd)
 
-        data_consent = self.browser.find_element_by_name("data_consent")
+        data_consent = self.browser.find_element(By.NAME, "data_consent")
         data_consent.click()
 
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")

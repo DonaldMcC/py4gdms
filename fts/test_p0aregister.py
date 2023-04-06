@@ -51,7 +51,7 @@ class TestRegisterPage (FunctionalTest):
             By.ID, "no_table_password_again"))
         password2.clear()
         password2.send_keys(passwd)
-        data_consent = self.browser.find_element_by_name("data_consent")
+        data_consent = self.browser.find_element(By.NAME, "data_consent")
         data_consent.click()
 
         # self.browser.find_element_by_id("auth_user_status").send_keys("bla")
