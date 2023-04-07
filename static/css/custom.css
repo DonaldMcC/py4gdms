@@ -1,6 +1,24 @@
 /* change the background color */
 /* not yet needing this */
 
+.section {
+    padding: 1rem 1.25rem;
+}
+
+ul li {
+    list-style: disc;
+    list-style-position: inside;
+}
+
+p {
+    padding-bottom: 1rem;
+}
+
+.grid-cell-type-date {
+    text-align: center !important;
+}
+
+
 div.ganttdiv {
   max-width: 1200px;
   margin: auto;
