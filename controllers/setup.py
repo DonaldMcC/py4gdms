@@ -57,6 +57,9 @@ def datasetup():
         resolveid = db.resolve.insert(resolve_name="Standard", Defaultresolve=True)
     if db(db.resolve.resolve_name == "Single").isempty():
         resolveid = db.resolve.insert(resolve_name="Single", responses=1)
+    if db(db.resolve.resolve_name == "Self").isempty():
+        resolveid = db.resolve.insert(resolve_name="Self", responses=1,
+                                      desc='Creator has resolved themselves or based on knowledge engine answers ')
 
     # These will require a degree of manual setup and the new_question js and new_quest js scripts at least will
     # require tweaking if new engines are added

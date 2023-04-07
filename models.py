@@ -20,6 +20,7 @@ db.define_table('resolve',
                 Field('Defaultresolve', 'boolean', label='Default Resolution Method', default=False),
                 Field('adminresolve', 'boolean', label='Allow event owners to resolve'),
                 Field('owner', 'reference auth_user', readable=False, writable=False, label='Submitter'),
+                Field('desc', 'text', label='Description'),
                 format='%(resolve_name)s')
 
 db.define_table('website_parameters',
