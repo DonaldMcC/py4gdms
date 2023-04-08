@@ -6,6 +6,9 @@ $(document).ready(function(){
    $('#question_execstatus').parent().parent().hide();
    $('#question_xpos').parent().parent().hide();
    $('#question_ypos').parent().parent().hide();
+   $('#question_correctans').parent().nextAll("p").first().hide();
+   $('#question_correctans').hide();
+   $("label[for='question_correctans']").hide();
    $('#question_chosenai').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
          'value="Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
    $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
@@ -22,6 +25,18 @@ $(document).ready(function(){
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
     */
+              $('#question_correctans').change(function(){
+                  console.log('correctans fired')
+                 if ($('#question_correctans').val())
+                 {
+                 $('#question_status option[value="Resolved"]').prop('selected', true);
+                 }
+                 else {
+                     $('#question_status option[value="In Progress"]').prop('selected', true);
+                 }
+
+              });
+
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='action' )
                  {//$('#question_factopinion').parent().parent().hide();
@@ -46,6 +61,7 @@ $(document).ready(function(){
                   $('#question_answertext').parent().parent().show();};
                  });
 
+
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact')
                 {$('#question_answer1').val('Yes');
@@ -56,8 +72,13 @@ $(document).ready(function(){
                  $("label[for='question_answer2']").hide();
                  $("label[for='question_answertext']").show();
                  $('#question_answertext').show();
-                 $('#question_status option:selected').text()=='Resolved'
-};
+                 $('#question_status option[value="Resolved"]').prop('selected', true);
+}
+              else {
+                  $('#question_status option[value="In Progress"]').prop('selected', true);
+              }
+
+
               if($('#question_factopinion option:selected').text()=='Opinion')
                 {$('#question_answer1').show();
                 $("label[for='question_answer1']").show();
