@@ -9,10 +9,11 @@ ul li {
     list-style: disc;
     list-style-position: inside;
 }
-
+/* removed as part of trying bs4 forms
 p {
     padding-bottom: 1rem;
 }
+*/
 
 .grid-cell-type-date {
     text-align: center !important;
@@ -253,4 +254,8 @@ td, th {
 
 .field:not(:last-child) {
   margin-bottom: 0rem;
+}
+
+.col-form-label {
+    text-align: right;
 }

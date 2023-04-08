@@ -9,7 +9,9 @@ $(document).ready(function(){
    $('#question_correctans').parent().nextAll("p").first().hide();
    $('#question_correctans').hide();
    $("label[for='question_correctans']").hide();
-   $('#question_chosenai').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
+   //$('#question_aianswer').parent().nextAll("label").first().
+    $('#question_aianswer').parent().parent().children().first()
+   $('#question_aianswer').parent().prepend('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
          'value="Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
    $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
          'value="Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');

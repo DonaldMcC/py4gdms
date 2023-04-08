@@ -27,14 +27,42 @@ import wikipedia
 from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma, FormStyleDefault
+from py4web.utils.form import Form, FormStyleBootstrap4, FormStyleDefault, FormStyleFactory
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyleBulma, GridClassStyle
+from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 # from ..libs.utils import GridSearch
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
+
+FormStyleBootstrap4inline = FormStyleFactory()
+#label_col_class = "col-sm-%d" % col_label_size
+#col_class = "col-sm-%d" % (12 - col_label_size)
+
+FormStyleBootstrap4inline.classes.update(
+    {
+        "outer": "form-group row",
+        "inner": "col-sm-9",
+        "label": "col-form-label col-sm-3",
+        "info": "form-text small text-center",
+        "error": "form-text text-danger py4web-validation-error invalid-feedback",
+        "submit": "btn btn-outline-info",
+        "input": "form-control",
+        "input[type=text]": "form-control",
+        "input[type=date]": "form-control",
+        "input[type=time]": "form-control",
+        "input[type=datetime-local]": "form-control",
+        "input[type=radio]": "form-check-input",
+        "input[type=checkbox]": "form-check-input",
+        "input[type=submit]": "btn btn-outline-info",
+        "input[type=password]": "form-control",
+        "input[type=file]": "form-control-file",
+        "select": "form-control",
+        "textarea": "form-control",
+    }
+)
+
 
 flash = auth.flash
 
@@ -123,7 +151,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             db.question.answer2.writable = False
 
     db.question.priority.writable = False
-    form = Form(db.question, record=qid, formstyle=FormStyleBulma)
+    form = Form(db.question, record=qid, formstyle=FormStyleBootstrap4inline)
 
     if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
@@ -164,8 +192,8 @@ def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyleBulma)
+                         formstyle=FormStyleBootstrap4inline,
+                         grid_class_style=GridClassStyleBootstrap5)
     # queries = [(db.event.id == db.question.eventid) & (db.event.projid == db.project.id)]
     qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
     print(qtype)
