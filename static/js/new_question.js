@@ -7,14 +7,17 @@ $(document).ready(function(){
    $('#question_xpos').parent().parent().hide();
    $('#question_ypos').parent().parent().hide();
    $('#question_chosenai').parent().after('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
-         'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
+         'value="Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
    $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
-         'value="Lookup Answer on Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
+         'value="Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
    $('#wikiplookup').after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
-         'value="Lookup Answer on OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');
+         'value="OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');
+   $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="undolookup" ' +
+         'value="Undo" class="btn btn-primary btn-xs btn-group-xs" onclick="undo_lookup()">');
+   $('#undolookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
+         'value="Clear" class="btn btn-primary btn-xs btn-group-xs" onclick="clear_lookup()">');
+
    $('#question_aianswer').attr('readonly', true);
-
-
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');

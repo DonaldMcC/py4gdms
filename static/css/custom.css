@@ -250,3 +250,7 @@ td, th {
     --webkit-user-select: none;
     --webkit-touch-callout: none;
 }
+
+.field:not(:last-child) {
+  margin-bottom: 0rem;
+}

@@ -8,6 +8,12 @@
         alert('ERROR in call');
     };
 
+    function clear_lookup() {
+        $('#question_aianswer').attr('readonly', false);
+    $("#question_aianswer").val('');
+    $('#question_aianswer').attr('readonly', true);
+    }
+
 
     function wolfram_alpha_lookup() {
     var qtext = $('#question_questiontext').val();
