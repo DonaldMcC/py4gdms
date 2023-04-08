@@ -137,7 +137,7 @@ db.define_table('question',
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False, label='Submitter',
                       notnull=True),
                 Field('factopinion', 'string', default='Opinion', requires=IS_IN_SET(['Fact', 'Opinion']),
-                      label='Fact, Opinion',
+                      label='Fact/Opinion',
                       comment='Factual questions answered by either submitter or knowledge engines,'
                               ' opinion requires options and lookup by AI before allowing answer entry'),
                 Field('answertext', 'text', label='Fact Answer'),
