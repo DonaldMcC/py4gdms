@@ -39,8 +39,6 @@ from ..ndsfunctions import score_question
 
 #change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
 FormStyleBootstrap4inline = FormStyleFactory()
-#label_col_class = "col-sm-%d" % col_label_size
-#col_class = "col-sm-%d" % (12 - col_label_size)
 
 FormStyleBootstrap4inline.classes.update(
     {
