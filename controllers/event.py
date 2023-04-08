@@ -23,9 +23,9 @@
 
 import datetime
 from py4web import action, redirect, request, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleFactory
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..d3js2py import getd3graph
 from .answer import like
@@ -33,6 +33,31 @@ from ..ndsfunctions import myconverter
 from pydal.validators import *
 
 flash = Flash()
+
+#change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
+FormStyleBootstrap4inline = FormStyleFactory()
+FormStyleBootstrap4inline.classes.update(
+    {
+        "outer": "form-group row",
+        "inner": "col-sm-9",
+        "label": "col-form-label col-sm-3",
+        "info": "form-text small text-center",
+        "error": "form-text text-danger py4web-validation-error invalid-feedback",
+        "submit": "btn btn-outline-info",
+        "input": "form-control",
+        "input[type=text]": "form-control",
+        "input[type=date]": "form-control",
+        "input[type=time]": "form-control",
+        "input[type=datetime-local]": "form-control",
+        "input[type=radio]": "form-check-input",
+        "input[type=checkbox]": "form-check-input",
+        "input[type=submit]": "btn btn-outline-info",
+        "input[type=password]": "form-control",
+        "input[type=file]": "form-control-file",
+        "select": "form-control",
+        "textarea": "form-control",
+    }
+)
 
 
 @action("new_event/<eid>", method=['GET', 'POST'])
@@ -59,7 +84,7 @@ def new_event(eid=None):
             redirect(URL('eventgrid'))
     else:
         islocked = None
-    form = Form(db.event, record=eid, formazstyle=FormStyleBulma)
+    form = Form(db.event, record=eid, formazstyle=FormStyleBootstrap4inline)
     db.event.prev_event.requires = IS_EMPTY_OR(IS_IN_DB(db, 'event.id', '%(event_name)s'))
 
     if eid:
@@ -163,7 +188,7 @@ def view_event(eid='0'):
     db.comment.auth_userid.default = auth.user_id
     db.comment.parenttable.default = 'event'
     db.comment.parentid.default = eid
-    commentform = Form(db.comment, formstyle=FormStyleBulma)
+    commentform = Form(db.comment, formstyle=FormStyleBootstrap4inline)
 
     return dict(eventrow=eventrow, eventid=eid, qactions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
@@ -188,8 +213,8 @@ def eventgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyleBulma)
+                         formstyle=FormStyleBootstrap4inline,
+                         grid_class_style=GridClassStyleBootstrap5)
 
     fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,
               db.event.enddatetime, db.event.description]

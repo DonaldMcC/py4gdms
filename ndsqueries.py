@@ -5,15 +5,35 @@ def get_disabled(ans, useranswer):
     return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
 
 
-def get_class(qtype='quest', answer=1, framework='Bulma'):
+def get_classBulma(qtype='quest', answer=1):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
+
     if qtype != 'quest':  # issue or action
         btnclass = 'is-success ' if answer == 1 else 'is-danger '
     else:
         btnclass = ''
     btnclass += 'button is-small is-rounded'
     return btnclass
+
+def get_classBootstrap(qtype='quest', answer=1):
+    # Function to return button classes - only supporting Bulma.css for now
+    # is-success and is-danger for agree disagree on issues and approve disapprove on actions
+    if qtype != 'quest':  # issue or action
+        btnclass = 'btn-success ' if answer == 1 else 'btn-danger '
+    else:
+        btnclass = ''
+    btnclass += 'btn btn-small'
+    return btnclass
+
+def get_class(qtype='quest', answer=1, framework='Bootstrap'):
+    # Function to return button classes - only supporting Bulma.css for now
+    # is-success and is-danger for agree disagree on issues and approve disapprove on actions
+    if framework=='Bulma':
+        return get_classBulma(qtype, answer)
+    else:
+        return get_classBootstrap(qtype, answer)
+
 
 
 def check_liked(item, eventstatus, table='question'):

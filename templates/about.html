@@ -1,25 +1,25 @@
-[[extend 'layout.html']]
-
-<h1 class="title 2">About Networked Decision Making</h1>
-<p>Networked Decision Making is software designed to support group decision making without meetings.
+[[extend 'layoutbs.html']]
+<div class="gx-5">
+<h1 class="h2">About Networked Decision Making</h1>
+<p class="text-wrap container-fluid">Networked Decision Making is software designed to support group decision making without meetings.
     Many tools make meetings work better but there are few tools available to eliminate meetings and support
     consensual group decision making.  Meetings have scalability, efficiency and equality issues.
     We have issues with this as it excludes people from decisions that impact their lives.
     An established asynchronous decision making system is a necessary step on the way to better lives.</p>
-<h2 class="title 3">Approach</h2>
+<h2 class="h3">Approach</h2>
 <div class="content">
-    <p>The approach is based on the simple idea that if 3 or more people independently agree the answer to a question
+    <p class="text-wrap container-fluid">The approach is based on the simple idea that if 3 or more people independently agree the answer to a question
         then they may well be correct and we should go with that answer until challenged or it becomes clear that they
         are wrong or their solution isn't working.  It focuses effort on prioritised areas of contention.</p>
 
-<p>At present the system supports the following items: </p>
+<p class="text-wrap container-fluid">At present the system supports the following items: </p>
 <ol>
-    <li>Issue Confirmation</li>
-    <li>Multiple Choice Questions</li>
-    <li>Action Approval</li>
+    <li class="px-3">Issue Confirmation</li>
+    <li class="px-3">Multiple Choice Questions</li>
+    <li class="px-3">Action Approval</li>
 </ol>
 
-<p>A key difference from the previous approach to this is that it is also aimed at individual use.  The vast majority of
+<p class="text-wrap container-fluid">A key difference from the previous approach to this is that it is also aimed at individual use.  The vast majority of
     decisions are personal and providing a platform that allows people to do this but also readily share and consult when
     appropriate is importatnt.  The platform allows users to propose actions that they think should be
     completed.  Issues, actions and questions can be linked into logical chains and visualised with questions of fact
@@ -30,49 +30,50 @@
     resemble a crowd-sourced global strategy.  Issues can also be prioritised and serve as a starting point of a series
     of linked questions and actions to address the issue.</p>
 
-<p>This version of the software can be used by small to medium sized groups of people to provide a decision trail
+<p class="text-wrap container-fluid">This version of the software can be used by small to medium sized groups of people to provide a decision trail
     on a specific subject or subjects and identify what they agree and disagree about. Topics of disagreement could well
     be the focus of meetings and further discussion using existing tools and methods.  While the demo systems are fully
     open to all at present py4web can restrict access to defined groups if desired.</p>
 </div>
-<h1 class="title 3">Standard Routing</h1>
-<p> The routing schemes in use are configurable with a basic model of n responses being required before evaluation and x% 
+<h1 class="h3">Standard Routing</h1>
+<p class="text-wrap container-fluid"> The routing schemes in use are configurable with a basic model of n responses being required before evaluation and x% 
     agreement required to resolve the issue.  Standard routing uses 3 and 100% as the value for n and x.  This method is 
     used for assigning questions and actions to solvers unless another method is chosen by the creator.  Questions that have n
     matching answers are classified as resolved – however even then it is possible for users to challenge the answer and
     if n challenges are received the question will be opened up again with a status of under challenge until it gets a
     further n people to agree when it will move back to resolved. </p>
-<p> Similarly actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are
+<p class="text-wrap container-fluid"> Similarly actions require 3 people to agree to them in order to move to a status of agreed or if 3 people disagree they are
     classed as disagreed.  Again it is possible to challenge an action that is agreed or disagreed.  The question
     resolution rules are configurable - three has just been chosen as a reasonable minimum to get started.</p>
 
-<p>All questions will be rejected as invalid or irrelevant if a majority of respondents at any level agree.
+<p class="text-wrap container-fluid">All questions will be rejected as invalid or irrelevant if a majority of respondents at any level agree.
     A high-level diagram of the flow for standard routing is shown below: </p>
 
-<p>
+<p class="text-wrap container-fluid">
 <img src="[[=URL('static','images/ndsdiagramv3.svg')]]" alt="network decision making diagram flow" width="800" height="600">
 </p>
 
-<h1 class="title 3">Privacy</h1>
-<p>Personal privacy is a key aspect of the system and at present it provides no information on who answered the question
+<h1 class="h3">Privacy</h1>
+<p class="text-wrap container-fluid">Personal privacy is a key aspect of the system and at present it provides no information on who answered the question
     correctly and incorrectly except to the person concerned and indeed the system currently captures the minimum amount
     of personal information to try and protect privacy as much as possible.  This may be amended in future versions
     however the focus is on getting the correct answer not on whose answer that was.  Users can enter their geographic
     locale and this can then be used to provide a degree of local decision making and filtering out of decisions
     relating to other continents, countries and areas.</p>
 
-<p>Additionally the initial answering of questions up to the point that they are resolved is kept entirely ‘blind’ with
+<p class="text-wrap container-fluid">Additionally the initial answering of questions up to the point that they are resolved is kept entirely ‘blind’ with
     no information on other people’s answers being visible. After a question is resolved then any reasons given for the
     answer are visible and these may help users to decide if they wish to challenge or not.  While we greatly appreciate
     the value of other peoples thoughts and ideas, we also appreciate the danger of being led by other peoples thinking.</p>
 
-<h1 class="title 3">FAQ's</h1>
+<h1 class="h3">FAQ's</h1>
 
-<p>These are available <a href="[[=URL('faq')]]"> here.</a></p>
+<p class="text-wrap container-fluid">These are available <a href="[[=URL('faq')]]"> here.</a></p>
 
-<h1 class="title 3">Find Out More and Contribute to a Better World</h1>
-<p>This is an open source software project and the source code and documentation on the project are freely available for
+<h1 class="h3">Find Out More and Contribute to a Better World</h1>
+<p class="text-wrap container-fluid">This is an open source software project and the source code and documentation on the project are freely available for
     use <a href="https://github.com/DonaldMcC/py4gdms"> here. </a>
     Contributions, problems and suggestions for improvement are all welcome.</p>
-<p>This setup and administration manual is currently under construction and will be published soon. </p>
+<p class="text-wrap container-fluid">This setup and administration manual is currently under construction and will be published soon. </p>
 
+</div>

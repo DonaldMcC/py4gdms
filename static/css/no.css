@@ -166,7 +166,7 @@ thead th {
 /****************************************************
  buttons
  ****************************************************/
-
+/* conflicting with bootstrap so removed for now
 [role="button"], button, input[type='button'], input[type='reset'], input[type='submit'] {
   background-color: #0074d9;
   border-radius: 5px;
@@ -189,7 +189,7 @@ thead th {
 [role="button"]:focus, [role="button"]:hover, button:focus, button:hover, input[type='button']:focus, input[type='button']:hover, input[type='reset']:focus, input[type='reset']:hover, input[type='submit']:focus, input[type='submit']:hover {
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-
+*/
 /****************************************************
  forms
  ****************************************************/

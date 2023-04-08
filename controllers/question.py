@@ -39,7 +39,6 @@ from ..ndsfunctions import score_question
 
 #change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
 FormStyleBootstrap4inline = FormStyleFactory()
-
 FormStyleBootstrap4inline.classes.update(
     {
         "outer": "form-group row",
@@ -62,6 +61,7 @@ FormStyleBootstrap4inline.classes.update(
         "textarea": "form-control",
     }
 )
+
 
 
 flash = auth.flash

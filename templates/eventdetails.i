@@ -1,9 +1,8 @@
 <div>
-
-<h1 class="title is-5">Event Details</h1>
-<table id='EvtDetails'>
+<h1 class="h5">Event Details</h1>
+<table id='EvtDetails' class="table">
 <thead>
-<tr>
+<tr class="table-primary">
 <th>Event Name</th>
 <th>[[=eventrow.event_name]]</th>
 <th>Start</th>
@@ -28,20 +27,20 @@
 <td id="eventstatus">[[=eventrow.status]]</td>
 <td>Next Event</td>
 <td> [[if eventrow.next_event==0:]]
-    <INPUT TYPE=button class="button is-small is-rounded" id="next_event" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
+    <INPUT TYPE=button class="btn btn-primary" id="next_event" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
     [[else:]]
     [[=A(next_event_name, _href=URL('view_event/'+str(next_event_id)))]]</th>
     [[pass]]</td>
 </tr>
 <tr>
 <th>Create</th>
-<td><INPUT TYPE=button class="button is-small is-success is-rounded"
+<td><INPUT TYPE=button class="btn btn-primary"
            onClick="parent.location='[[=URL('new_question/None/issue/'+str(eventid)+'/0/0/view_event')]]'" VALUE="New Issue">
 </td>
-    <td><INPUT TYPE=button class="button is-small is-success is-rounded"
+    <td><INPUT TYPE=button class="btn btn-success"
            onClick="parent.location='[[=URL('new_question/None/quest/'+str(eventid)+'/0/0/view_event')]]'" VALUE="New Question">
 </td>
-    <td><INPUT TYPE=button class="button is-small is-success is-rounded"
+    <td><INPUT TYPE=button class="btn btn-warning"
            onClick="parent.location='[[=URL('new_question/None/action/'+str(eventid)+'/0/0/view_event')]]'" VALUE="New Action">
 </td>
 </tr>
