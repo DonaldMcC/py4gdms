@@ -1,5 +1,4 @@
 <div>
-<h1 class="h5">Event Details</h1>
 <table id='EvtDetails' class="table">
 <thead>
 <tr class="table-primary">
@@ -33,7 +32,7 @@
     [[pass]]</td>
 </tr>
 <tr>
-<th>Create</th>
+<th></th>
 <td><INPUT TYPE=button class="btn btn-primary"
            onClick="parent.location='[[=URL('new_question/None/issue/'+str(eventid)+'/0/0/view_event')]]'" VALUE="New Issue">
 </td>
