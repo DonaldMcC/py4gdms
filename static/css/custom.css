@@ -5,15 +5,6 @@
     padding: 1rem 1.25rem;
 }
 
-ul li {
-    list-style: disc;
-    list-style-position: inside;
-}
-/* removed as part of trying bs4 forms
-p {
-    padding-bottom: 1rem;
-}
-*/
 
 .grid-cell-type-date {
     text-align: center !important;
@@ -36,7 +27,6 @@ div.ganttdiv {
 .mycomment {
     background-color: cornsilk;
 }
-
 
 .graph-svg-component {
     background-color: rgba(150,230,255,.2);
@@ -247,11 +237,6 @@ td, th {
 }
 
 
-.hover {
-    --webkit-user-select: none;
-    --webkit-touch-callout: none;
-}
-
 .field:not(:last-child) {
   margin-bottom: 0rem;
 }
@@ -259,3 +244,5 @@ td, th {
 .col-form-label {
     text-align: right;
 }
+
+

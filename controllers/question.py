@@ -28,7 +28,6 @@ from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
-from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
