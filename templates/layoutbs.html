@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <base href="[[=URL('static')]]/">
-    <link rel="stylesheet" href="css/no.css">
+    <!--link rel="stylesheet" href="css/no.css"-->
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/custom.css">
@@ -17,51 +17,64 @@
   <body>
     <header>
       <!-- Navigation bar -->
-      <nav class="black">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
         <!-- Logo -->
-        <a href="[[=URL('index')]]">
+        <a class="navbar-brand" href="[[=URL('index')]]">
           <b>Networked Decision Making</b>
         </a>
-        <!-- Do not touch this -->
-        <label for="hamburger">☰</label>
-        <input type="checkbox" id="hamburger">
-        [[block page_left_menu]][[end]]
-        <div class="navbar-start">
-          <a class="navbar-item" href="[[=URL('about')]]">About</a>
-          <a class="navbar-item" href="[[=URL('index')]]">Home</a>
-          <a class="navbar-item" href="[[=URL('locationgrid')]]">Location</a>
-          <a class="navbar-item" href="[[=URL('projectgrid')]]">Projects</a>
-          <a class="navbar-item" href="[[=URL('event_redirect/Open')]]">Events</a>
-          <a class="navbar-item" href="[[=URL('questiongrid/select/',vars=dict(qtype='issue'))]]">Issues</a>
-          <a class="navbar-item" href="[[=URL('questiongrid/select/',vars=dict(qtype='quest'))]]">Questions</a>
-          <a class="navbar-item" href="[[=URL('questiongrid/select/',vars=dict(qtype='action'))]]">Actions</a>
-          <a class="navbar-item" href="[[=URL('gantt')]]">Gantt</a>
-        </div>
-        <!-- Right menu ul/li -->
-        <ul>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="[[=URL('about')]]">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="[[=URL('index')]]">Home</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('locationgrid')]]">Location</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('projectgrid')]]">Projects</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('event_redirect/Open')]]">Events</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('questiongrid/select/',vars=dict(qtype='issue'))]]">Issues</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('questiongrid/select/',vars=dict(qtype='quest'))]]">Questions</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('questiongrid/select/',vars=dict(qtype='action'))]]">Actions</a>
+           </li>
+                  <li class="nav-item">
+          <a class="nav-link" href="[[=URL('gantt')]]">Gantt</a>
+           </li>
+          <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           [[if globals().get('user'):]]
-          <li class="hover">
-            <a class="navbar-link is-primary">
               [[=globals().get('user',{}).get('email')]]
             </a>
-            <ul>
-              <li><a href="[[=URL('auth/profile')]]">Edit Profile</a></li>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="[[=URL('auth/profile')]]">Edit Profile</a></li>
               [[if 'change_password' in globals().get('actions',{}).get('allowed_actions',{}):]]
-                <li><a href="[[=URL('auth/change_password')]]">Change Password</a></li>
+                <li><a class="dropdown-item" href="[[=URL('auth/change_password')]]">Change Password</a></li>
               [[pass]]
-              <li><a href="[[=URL('auth/logout')]]">Logout</a></li>
+              <li><a class="dropdown-item" href="[[=URL('auth/logout')]]">Logout</a></li>
             </ul>
-          </li>
           [[else:]]
-          <li class="hover">
             Login
             <ul>
-              <li><a href="[[=URL('auth/register')]]">Sign up</a></li>
-              <li><a href="[[=URL('auth/login')]]">Log in</a></li>
+              <li><a class="dropdown-item" href="[[=URL('auth/register')]]">Sign up</a></li>
+              <li><a class="dropdown-item" href="[[=URL('auth/login')]]">Log in</a></li>
             </ul>
-          </li>
           [[pass]]
+          </li>
         </ul>
+        </div>
+        </div>
       </nav>
     </header>
     <!-- beginning of HTML inserted by extending template -->

@@ -12,52 +12,36 @@ title ="Issues: Blue Questions: Green Actions: Yellow Colour depth: priority Res
 <a class="btn btn-sm btn-outline-info" data-toggle="fun" data-title="L">Link</a>
 <a class="btn btn-sm btn-outline-info" data-toggle="fun" data-title="A">Add</a>
 <a class="btn btn-sm btn-outline-info" data-toggle="fun" data-title="D">Delete</a>
-<a id="redraw-graph" class="btn btn-sm btn-outline-info" data-toggle="fun" data-title="R">Redraw</a>
-<a class="btn btn-sm btn-outline-info modal-button" id="eventarchive" data-target="#myModal" aria-haspopup="true">Archive</a>
+<a id="redraw-graph" class="btn btn-sm btn-outline-info" data-title="R">Redraw</a>
+<a class="btn btn-sm btn-outline-info" id="eventarchive" data-title="C" data-bs-toggle="modal" data-bs-target="#ArchiveModal">Archive</a>
 </div>
 
-<div class="modal" id="myModal">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-          <header class="modal-card-head">
-      <p class="modal-card-title">Archive Event</p>
-    </header>
-       <section class="modal-card-body">This set the archiving event to archived which permanently locks the outcome - make sure everything is
+<div class="modal fade" id="ArchiveModal" tabindex="-1">
+  <div class="modal-dialog"></div>
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title">Archive Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       <div class="modal-body">This set the archiving event to archived which permanently locks the outcome - make sure everything is
             set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues
              to the unspecified event but agreed issues, unresolved questions and actions which are not completed will
               roll-forward to the next event
                [[if not eventrow.next_event:]] WARNING: this event does not currently have a next event set.[[else:]]
         which has been created for this project.[[pass]]
-            </section>
-       <footer class="modal-card-foot">
-                             <button type="button" id="modal_archive" class="mode-close button is-small is-warning is-rounded" data-target="#myModal"
+            </div>
+       <div class="modal-footer">
+           <button type="button" id="modal_archive" class="btn btn-small btn-warning" data-bs-dismiss="modal"
                   onclick="archive('[[=eventrow.id]]')">Save changes</button>
-                   <button type="button"
-                           class="mode-close button is-small is-info is-rounded" data-target="#myModal">Close</button>
+                   <button type="button" class="btn btn-small btn-info" data-bs-dismiss="modal">Close</button>
 
-       </footer>
+       </div>
            </div>
   </div>
-
-
-    <div class="modal">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">Modal title</p>
-      <button class="delete" aria-label="close"></button>
-    </header>
-    <section class="modal-card-body">
-      <!-- Content ... -->
-    </section>
-    <footer class="modal-card-foot">
-      <button class="button is-success">Save changes</button>
-      <button class="button">Cancel</button>
-    </footer>
-  </div>
+</div>
 </div>
 
-</div>
+
+<div>
 <input type="hidden" name="fun" id="fun">
 </div>
 <div id="target"></div>
