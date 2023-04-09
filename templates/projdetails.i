@@ -1,7 +1,7 @@
 <div>
-<h1 class="title is-5">Project Details</h1>
-<table id='ProjDetails' class='table'>
-<tbody>
+<h1 class="title h5">Project Details</h1>
+<table id='ProjDetails' class='table table-bordered border-danger'>
+<tbody class='table-danger'>
 <tr>
 <th>Project Name</th>
 <th>[[=projectrow.proj_name]]</th>

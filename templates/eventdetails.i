@@ -1,7 +1,7 @@
 <div>
-<table id='EvtDetails' class="table">
+<table id='EvtDetails' class="table table-bordered border-info">
 <thead>
-<tr class="table-primary">
+<tr class="table-info">
 <th>Event Name</th>
 <th>[[=eventrow.event_name]]</th>
 <th>Start</th>

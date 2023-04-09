@@ -2,9 +2,8 @@
 [[from yatl.helpers import XML]]
 [[extend 'layoutbs.html']]
 
-<h1  class=" title is-6 h_inline">[[=quest['qtype'].capitalize()]]:</h1>
+<h1 class="title h6">[[=quest['qtype'].capitalize()]]:</h1>
 <p class="h_inline">[[=quest['questiontext'] ]]</p>
-
 [[include 'questmedia.i']]
 <br>
 [[if quest['question_url']: ]]
@@ -13,7 +12,7 @@
 [[pass]]
 
 <div>
-<h2  class=" title is-6 h_inline">Status:</h2> <p class="h_inline">
+<h2 class=" title h6 h_inline">Status:</h2> <p class="h_inline">
     [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
 <p class="h_inline">Users have decided the correct answer is [[=quest.correctanstext]]</p>
@@ -25,7 +24,7 @@
 </div>
 
 <div id="newchart">
-    <h2 class="title is-6 h_inline">Answer Analysis</h2>
+<h2 class="title h6 h_inline">Answer Analysis</h2>
 [[if quest.factopinion == 'Opinion':]]
 <p class="h_inline">This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
 
@@ -44,9 +43,9 @@
 
 <div id="target"></div>
 
-<h2 class="title is-5">Urgency and importance</h2>
+<h2 class="title h5">Urgency and importance</h2>
 <p>[[=urgmessage]]</p>
-<table id='TabUrgency' class="table table-bordered table-condensed">
+<table id='TabUrgency' class="table table-bordered">
 				<thead>
 					<tr>
 						<th width="20%"></th>
@@ -75,18 +74,18 @@ var questid = "[[=quest['id'] ]]";
 
 [[if can_edit:]]
 <div>
-     <INPUT TYPE=BUTTON class="button is-small is-rounded"
+  <INPUT TYPE=BUTTON class="btn btn-sm btn-primary"
             onClick="parent.location='[[=URL('new_question/'+str(quest['id'])+'/'+quest['qtype']+'/'+str(eventid)+'/0/0/view_event')]]'" VALUE="Edit"></p>
 </div>
 [[pass]]
 [[if quest['notes']:]]
-<div><h1 class="subtitle is-4">Notes</h1>
+<div><h1 class="subtitle h4">Notes</h1>
 <p>[[=quest['notes'] ]]</p>
     </div>
 [[pass]]
 
 [[if quest['qtype'] == 'action' and quest['status'] == 'Resolved':]]
-<div><h1 class="subtitle is-4">Execution Status</h1>
+<div><h1 class="subtitle h4">Execution Status</h1>
 <p>This action is reported as [[=(quest.perccomplete or 0)]] percent complete and [[=(quest.responsible or 'nobody')]] is responsible for
     ensuring it gets completed.  The target for completion is [[if quest.enddate:
 =quest.enddate.date().strftime('%Y-%m-%d')

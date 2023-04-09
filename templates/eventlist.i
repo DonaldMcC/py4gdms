@@ -2,8 +2,8 @@
     <br>
 <h1 class="title is-5">Events For This Project</h1>
 [[if events:]]
-<table id='Events' class='table'>
-<thead>
+<table id='Events' class='table table-bordered border-info'>
+<thead class='table-info'>
 <tr>
 <th>Name</th>
 <th>Description</th>
