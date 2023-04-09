@@ -27,7 +27,9 @@ import wikipedia
 from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
-from py4web.utils.form import Form, FormStyleBootstrap4, FormStyleDefault, FormStyleFactory
+from py4web.utils.form import Form, FormStyleBootstrap4
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
@@ -35,33 +37,6 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
-
-
-#change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
-FormStyleBootstrap4inline = FormStyleFactory()
-FormStyleBootstrap4inline.classes.update(
-    {
-        "outer": "form-group row",
-        "inner": "col-sm-9",
-        "label": "col-form-label col-sm-3",
-        "info": "form-text small text-center",
-        "error": "form-text text-danger py4web-validation-error invalid-feedback",
-        "submit": "btn btn-outline-info",
-        "input": "form-control",
-        "input[type=text]": "form-control",
-        "input[type=date]": "form-control",
-        "input[type=time]": "form-control",
-        "input[type=datetime-local]": "form-control",
-        "input[type=radio]": "form-check-input",
-        "input[type=checkbox]": "form-check-input",
-        "input[type=submit]": "btn btn-outline-info",
-        "input[type=password]": "form-control",
-        "input[type=file]": "form-control-file",
-        "select": "form-control",
-        "textarea": "form-control",
-    }
-)
-
 
 
 flash = auth.flash
@@ -311,30 +286,6 @@ def datatables_data():
 def new_question_delete(questid):
     db(db.question.id == questid).delete()
     redirect(URL('datatables'))
-
-
-def FormStyleGrid(table, vars, errors, readonly, deletable):
-    classes = {
-        "outer": "field",
-        "inner": "control",
-        "label": "label is-uppercase",
-        "info": "help",
-        "error": "help is-danger py4web-validation-error",
-        "submit": "button is-success",
-        "input": "input",
-        "input[type=text]": "input",
-        "input[type=date]": "input",
-        "input[type=time]": "input",
-        "input[type=datetime-local]": "input",
-        "input[type=radio]": "radio",
-        "input[type=checkbox]": "checkbox",
-        "input[type=submit]": "button",
-        "input[type=password]": "password",
-        "input[type=file]": "file",
-        "select": "control select",
-        "textarea": "textarea",
-    }
-    return FormStyleBulma(table, vars, errors, readonly, deletable)
 
 
 @action('wolfram_alpha_lookup', method=['POST', 'GET'])

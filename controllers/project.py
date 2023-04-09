@@ -23,9 +23,10 @@
 
 import datetime
 from py4web import action, redirect, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session,  auth
-from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..ndsfunctions import myconverter, get_gantt_data
 from .answer import like
@@ -56,7 +57,7 @@ def view_project(pid='0'):
     db.comment.auth_userid.default = auth.user_id
     db.comment.parenttable.default = 'project'
     db.comment.parentid.default = pid
-    commentform = Form(db.comment,  formstyle=FormStyleBulma)
+    commentform = Form(db.comment,  formstyle=FormStyleBootstrap4)
     return dict(projectid=pid, projectrow=projectrow, qactions=actions, questions=questions, issues=issues,
                 res_actions=res_actions, res_questions=res_questions, comp_actions=comp_actions, events=events,
                 get_class=get_class, get_disabled=get_disabled, myconverter=myconverter, project=XML(projxml),
@@ -77,7 +78,7 @@ def new_project(pid=None):
             flash.set("You can't edit this record", sanitize=True)
             redirect(URL('projectgrid'))
     db.project.proj_owner.default = auth.user_id
-    form = Form(db.project, record=pid, formstyle=FormStyleBulma)
+    form = Form(db.project, record=pid, formstyle=FormStyleBootstrap4inline)
 
     if pid:
         proj = db(db.project.id == pid).select().first()
@@ -99,8 +100,8 @@ def projectgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyleBulma)
+                         formstyle=FormStyleBootstrap4inline,
+                         grid_class_style=GridClassStyleBootstrap5)
 
     fields = [db.project.proj_name, db.project.proj_status, db.project.description,  db.project.proj_shared,
               db.project.priority]

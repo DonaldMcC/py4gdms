@@ -22,9 +22,10 @@
 # This controller provides functions for new location and location grid
 
 from py4web import action, redirect, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyleBulma
+from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 
 flash = Flash()
 
@@ -39,7 +40,7 @@ def new_location(lid=None):
         if islocked.locked:
             flash.set("Locked records cannot be edited")
             redirect(URL('locationgrid'))
-    form = Form(db.locn, lid, formstyle=FormStyleBulma)
+    form = Form(db.locn, lid, formstyle=FormStyleBootstrap4inline)
     if form.accepted:
         redirect(URL('locationgrid'))
     return dict(form=form)
@@ -52,8 +53,8 @@ def locationgrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
-                         grid_class_style=GridClassStyleBulma)
+                         formstyle=FormStyleBootstrap4inline,
+                         grid_class_style=GridClassStyleBootstrap5)
 
     fields = [db.locn.location_name, db.locn.address1, db.locn.address2,
               db.locn.addrcode, db.locn.addrurl, db.locn.country, db.locn.description]

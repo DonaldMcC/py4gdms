@@ -23,9 +23,10 @@
 
 
 from py4web import action, URL, Flash
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyle
+from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 flash = Flash()
 
 
@@ -35,7 +36,7 @@ flash = Flash()
 def new_resolve(res_id=None):
     res_id = int(res_id) if res_id and res_id.isnumeric() else None
 
-    form = Form(db.resolve, record=res_id, formstyle=FormStyleBulma)
+    form = Form(db.resolve, record=res_id, formstyle=FormStyleBootstrap4inline)
     if res_id:
         res_rec = db(db.resolve.id == res_id).select().first()
         if res_rec.owner != auth.user_id:
@@ -52,7 +53,7 @@ def resolvegrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBulma,
+                         formstyle=FormStyleBootstrap4inline,
                          grid_class_style=GridClassStyle)
 
     fields = [db.resolve.resolve_name, db.resolve.responses, db.resolve.consensus, db.resolve.adminresolve]

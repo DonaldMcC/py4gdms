@@ -23,7 +23,8 @@
 
 import datetime
 from py4web import action, redirect, request, URL, Flash
-from py4web.utils.form import Form, FormStyleFactory
+from py4web.utils.form import Form, FormStyleBootstrap4
+from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
@@ -33,32 +34,6 @@ from ..ndsfunctions import myconverter
 from pydal.validators import *
 
 flash = Flash()
-
-#change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
-FormStyleBootstrap4inline = FormStyleFactory()
-FormStyleBootstrap4inline.classes.update(
-    {
-        "outer": "form-group row",
-        "inner": "col-sm-9",
-        "label": "col-form-label col-sm-3",
-        "info": "form-text small text-center",
-        "error": "form-text text-danger py4web-validation-error invalid-feedback",
-        "submit": "btn btn-outline-info",
-        "input": "form-control",
-        "input[type=text]": "form-control",
-        "input[type=date]": "form-control",
-        "input[type=time]": "form-control",
-        "input[type=datetime-local]": "form-control",
-        "input[type=radio]": "form-check-input",
-        "input[type=checkbox]": "form-check-input",
-        "input[type=submit]": "btn btn-outline-info",
-        "input[type=password]": "form-control",
-        "input[type=file]": "form-control-file",
-        "select": "form-control",
-        "textarea": "form-control",
-    }
-)
-
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
