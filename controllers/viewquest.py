@@ -52,7 +52,7 @@ import os
 from ..common import db, auth, session
 from yatl.helpers import XML
 from py4web import action, request, redirect, URL
-from py4web.utils.form import Form, FormStyleBulma
+from py4web.utils.form import Form, FormStyleBootstrap4
 from ..ndsqueries import get_class, get_disabled
 from ..ndsfunctions import get_filetype
 
@@ -134,7 +134,7 @@ def viewquest(qid=0, eid=0):
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
-    commentform = Form(db.comment,  formstyle=FormStyleBulma)
+    commentform = Form(db.comment,  formstyle=FormStyleBootstrap)
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,

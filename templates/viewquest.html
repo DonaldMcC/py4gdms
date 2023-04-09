@@ -1,6 +1,7 @@
 [[from markmin import markmin2html]]
 [[from yatl.helpers import XML]]
 [[extend 'layoutbs.html']]
+<div class="container-fluid gx-5">
 
 <h1 class="title h6">[[=quest['qtype'].capitalize()]]:</h1>
 <p class="h_inline">[[=quest['questiontext'] ]]</p>
@@ -110,3 +111,4 @@ var questid = "[[=quest['id'] ]]";
   <script>
  [[include 'viewquest.js']]
  </script>
+ </div>
