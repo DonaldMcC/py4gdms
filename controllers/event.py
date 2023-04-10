@@ -59,7 +59,7 @@ def new_event(eid=None):
             redirect(URL('eventgrid'))
     else:
         islocked = None
-    form = Form(db.event, record=eid, formazstyle=FormStyleBootstrap4inline)
+    form = Form(db.event, record=eid, formstyle=FormStyleBootstrap4inline)
     db.event.prev_event.requires = IS_EMPTY_OR(IS_IN_DB(db, 'event.id', '%(event_name)s'))
 
     if eid:
