@@ -169,8 +169,8 @@ def questiongrid(path=None):
                          formstyle=FormStyleBootstrap4inline,
                          grid_class_style=GridClassStyleBootstrap5)
     # queries = [(db.event.id == db.question.eventid) & (db.event.projid == db.project.id)]
-    qtype = request.query.get('qtype') if 'qtype' in request.query else 'quest'
-    print(qtype)
+    qtype = request.query.get('qtype') if 'qtype' in request.query else session.get('qtype', 'quest')
+    session['qtype'] = qtype
     queries = db.question.qtype == qtype
     eventlist = IS_NULL_OR(IS_IN_SET([x.event_name for x in db(db.event.id > 0).select(db.event.event_name,
                                                                                        orderby=db.event.event_name,

@@ -41,7 +41,7 @@ $(document).ready(function(){
 
           $('#question_qtype').change(function(){
               if($('#question_qtype option:selected').text()=='action' )
-                 {//$('#question_factopinion').parent().parent().hide();
+                 {$('#question_factopinion').parent().parent().hide();
                   $('#question_answer1').val('Approve');
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
