@@ -8,7 +8,7 @@ FormStyleBootstrap4inline.classes.update(
         "inner": "col-sm-9",
         "label": "col-form-label col-sm-3",
         "info": "form-text small text-center",
-        "error": "form-text text-danger py4web-validation-error invalid-feedback",
+        "error": "form-text small text-center text-danger py4web-validation-error invalid-feedback",
         "submit": "btn btn-outline-info",
         "input": "form-control",
         "input[type=text]": "form-control",

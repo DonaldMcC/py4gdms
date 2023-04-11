@@ -8,21 +8,21 @@ $(document).ready(function(){
    $('#question_ypos').parent().parent().hide();
    $('#question_correctans').parent().nextAll("p").first().hide();
    $('#question_correctans').hide();
+   $('#question_correctanstext').parent().parent().hide();
    $("label[for='question_correctans']").hide();
    //$('#question_aianswer').parent().nextAll("label").first().
     $('#question_aianswer').parent().parent().children().first()
-   $('#question_aianswer').parent().prepend('&nbsp&nbsp<input type="BUTTON" id="wolflookup" ' +
-         'value="Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs" onclick="wolfram_alpha_lookup()">');
-   $('#wolflookup').after('<input type="BUTTON" id="wikiplookup" ' +
-         'value="Wikipedia" class="btn btn-primary btn-xs btn-group-xs" onclick="wikipedia_lookup()">');
+   $('#question_aianswer').parent().prepend('<div class="btn-group"><input type="BUTTON" id="wolflookup" ' +
+         'value="Wolfram Alpha" class="btn btn-primary" onclick="wolfram_alpha_lookup()">');
+   $('#wolflookup').after('&nbsp&nbsp<input type="BUTTON" id="wikiplookup" ' +
+         'value="Wikipedia" class="btn btn-primary btn-success" onclick="wikipedia_lookup()">');
    $('#wikiplookup').after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
-         'value="OpenAI" class="btn btn-primary btn-xs btn-group-xs" onclick="openai_lookup()">');
-   $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="undolookup" ' +
-         'value="Undo" class="btn btn-primary btn-xs btn-group-xs" onclick="undo_lookup()">');
-   $('#undolookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
-         'value="Clear" class="btn btn-primary btn-xs btn-group-xs" onclick="clear_lookup()">');
+         'value="OpenAI" class="btn btn-primary btn-info" onclick="openai_lookup()">');
+   $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
+         'value="Clear" class="btn btn-primary btn-danger" onclick="clear_lookup()"></div>');
 
    $('#question_aianswer').attr('readonly', true);
+   $('#question_chosenai').attr('readonly', true);
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');

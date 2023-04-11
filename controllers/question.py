@@ -70,7 +70,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, flash, auth.user)
-def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid'):
+def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select'):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -124,6 +124,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             db.question.answer1.writable = False
             db.question.answer2.writable = False
 
+    db.question.correctanstext.readable = False
     db.question.priority.writable = False
     form = Form(db.question, record=qid, formstyle=FormStyleBootstrap4inline)
 
@@ -141,7 +142,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['chosenai'] = form.vars['chosenai']
         #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
-        flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
+        # flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
         if form.vars['social_media']:
