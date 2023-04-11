@@ -79,6 +79,12 @@ var questid = "[[=quest['id'] ]]";
             onClick="parent.location='[[=URL('new_question/'+str(quest['id'])+'/'+quest['qtype']+'/'+str(eventid)+'/0/0/view_event')]]'" VALUE="Edit"></p>
 </div>
 [[pass]]
+[[if quest['aianswer':]]
+<div><h1 class="subtitle h4">Knowledge Engine Notes</h1>
+<p>[[=quest['aianswer'] ]]</p>
+    </div>
+[[pass]]
+
 [[if quest['notes']:]]
 <div><h1 class="subtitle h4">Notes</h1>
 <p>[[=quest['notes'] ]]</p>
