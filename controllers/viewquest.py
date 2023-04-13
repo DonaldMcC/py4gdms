@@ -137,10 +137,13 @@ def viewquest(qid=0, eid=0):
     commentform = Form(db.comment,
     formstyle=FormStyleBootstrap4)
 
+    #Now think it is first() that maybe kills the Virtual fields
+    correcttext = (quest['correctans'] == 1 and quest['answer1']) or (row['correctans'] == 2 and row['answer2']) or '?'
+
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, eventid=eid)
+                filename=filename, urlpath=urlpath, eventid=eid, correcttext=correcttext)
 
 
 @action('urgency', method=['POST', 'GET'])

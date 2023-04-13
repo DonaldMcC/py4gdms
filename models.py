@@ -157,8 +157,6 @@ db.define_table('question',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2])),
                       comment='If populated status moves to resolved'),
-                Field.Virtual('correctanstext', lambda row: (row['factopinion']=='Fact' and 'N/A') or (row['correctans'] == 1 and row['answer1'])
-                or (row['correctans'] == 2 and row['answer2']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Notes', comment='General user notes about question'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),

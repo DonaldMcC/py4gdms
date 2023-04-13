@@ -16,7 +16,7 @@
 <h2 class=" title h6 h_inline">Status:</h2> <p class="h_inline">
     [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
-<p class="h_inline">Users have decided the correct answer is [[=quest.correctanstext]]</p>
+<p class="h_inline">Users have decided the correct answer is [[=correcttext ]]</p>
 [[else:]]
 <p class="h_inline">This [[=quest['qtype'] ]] is approved.</p>
 [[pass]]
