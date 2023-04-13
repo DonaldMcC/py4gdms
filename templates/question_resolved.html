@@ -7,7 +7,7 @@
                         <th>Question</th>
                         <th>F/O</th>
                         <th>Resolved Answer</th>
-                        <th class="is-hidden-touch">Notes</th>
+                        <th class="is-hidden-touch">Knowledge</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -17,7 +17,7 @@
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
 <td class="has-text-centered">[[=row.question.answer1 if row.question.correctans==1 else row.question.answer2]]</td>
-    <td>[[=row.question.notes]]</td>
+    <td>[[=row.question.aianswer]]</td>
 </tr>
 [[pass]]
 </tbody>
