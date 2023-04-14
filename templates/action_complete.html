@@ -17,11 +17,11 @@
 <tr id="[[=row.question.id]]">
 <td>[[=XML(markmin2html(row.question.questiontext))]]
             <div class="has-text-right"><sub>[[=row.question.numlike]] Like[[='s  ' if row.question.numlike >1 else '  ']]
-                 <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
+                 <button class="btn btn-sml btn-info [[=row.liked and 'is-success' or '']]"
            hx-post="[[=URL('like/'+str(row.question.id))]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
-    <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
+    <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div></td>
 <td><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
     =row.question.enddate.date().strftime('%Y-%m-%d')

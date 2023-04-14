@@ -23,6 +23,7 @@
     [[else:]]
         Login to feedback
         [[pass]]
+        <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
     </td>
 </tr>
 [[pass]]

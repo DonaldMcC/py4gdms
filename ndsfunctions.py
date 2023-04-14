@@ -24,6 +24,10 @@ from py4web import URL
 from .common import db
 
 
+def qtypename(item):
+    return 'question' if item == 'quest' else item
+
+
 def get_filetype(filename):
     print(filename)
     not_used, file_extension = os.path.splitext(filename)
