@@ -82,9 +82,18 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
                                                 (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
     qid = int(qid) if qid and qid.isnumeric() else None
     questrec = None
+    print(auth.user_id)
+    userdefresolve = db(db.auth_user.id == auth.user_id).select(db.auth_user.default_resolve).first()['default_resolve']
     try:
-        db.question.resolvemethod.default = session.get('resolvemethod', db(db.resolve.Defaultresolve == True).select(
-                                                            db.resolve.id).first()['id'])
+        defaultresolve = db(db.resolve.resolve_name == userdefresolve).select(db.resolve.id).first()['id']
+    except AttributeError:
+        try:
+            defaultresolve = db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id']
+        except AttributError:
+            defaultresolve=1
+
+    try:
+        db.question.resolvemethod.default = session.get('resolvemethod', defaultresolve)
     except AttributeError:
         pass
     except TypeError:
