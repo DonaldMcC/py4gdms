@@ -1,8 +1,8 @@
 <div>
 <h1 class="title h5">Project Details</h1>
 <table id='ProjDetails' class='table table-bordered border-danger'>
-<tbody class='table-danger'>
-<tr>
+<tbody>
+<tr class='table-danger'>
 <th>Project Name</th>
 <th>[[=projectrow.proj_name]]</th>
 <th>Start</th>

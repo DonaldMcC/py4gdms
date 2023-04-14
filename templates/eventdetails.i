@@ -9,7 +9,7 @@
 </tr>
 </thead>
 <tbody>
-<tr class="table-info">
+<tr>
     <th>Description</th>
 <td>[[=XML(markmin2html(eventrow.description))]]</td>
 <td class="text-center">[[=eventrow.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
