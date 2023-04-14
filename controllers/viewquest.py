@@ -54,7 +54,7 @@ from yatl.helpers import XML
 from py4web import action, request, redirect, URL
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..ndsqueries import get_class, get_disabled
-from ..ndsfunctions import get_filetype
+from ..ndsfunctions import get_filetype, qtypename
 
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
@@ -83,6 +83,7 @@ def viewquest(qid=0, eid=0):
         urlpath = r'static/uploads/' + os.path.basename(fullname)
         filetype = get_filetype(filename)
 
+    qname = qtypename(quest.qtype)
     uq = None
     ur = None
     uqanswered = False
@@ -110,19 +111,19 @@ def viewquest(qid=0, eid=0):
         # Did the user answer the question
         if uqanswered:
             if quest['correctans'] == uq.answer:
-                viewtext = 'Well done - you helped resolve this question.'
+                viewtext = f'Well done - you helped resolve this {qtypename}'
             else:
-                viewtext = 'Your answer to this question disagrees with the resolved '
+                viewtext = f'Your answer to this {qtypename} disagrees with the resolved '
                 'correct answer - you may want to request a challenge.'
         else:
-            viewtext = "You haven't answered this question yet."
+            viewtext = f"You haven't answered this {qtypename} yet."
     elif quest['status'] == 'Rejected':
-        viewtext = "This question has been rejected."
+        viewtext = f"This {qtypename} has been rejected."
     else:
         # if not resolved can only say in progress and how many more answers are required
         # at present should only be here if
         # answered as we are not showing users unresolved and unanswered questions
-        viewtext = 'This question is in progress.'
+        viewtext = f'This {qtypename} is in progress.'
         # That will do for now - display of challenges and probably numanswers remaining
         # and level can be added later
 
