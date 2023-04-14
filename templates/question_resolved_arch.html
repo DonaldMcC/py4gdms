@@ -7,7 +7,7 @@
                         <th>Question</th>
                         <th>F/O</th>
                         <th>Resolved Answer</th>
-                        <th class="is-hidden-touch">Notes</th>
+                        <th class="d-block d-sm-none d-md-none">Notes</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -17,7 +17,7 @@
 <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
 <td class="has-text-centered">[[=row.eventmap.answer1 if row.eventmap.correctans==1 else row.eventmap.answer2]]</td>
-    <td>[[=row.eventmap.notes]]</td>
+    <td class="d-block d-sm-none d-md-none">[[=row.eventmap.notes]]</td>
 </tr>
 [[pass]]
 </tbody>

@@ -8,7 +8,7 @@
 [[include 'questmedia.i']]
 <br>
 [[if quest['question_url']: ]]
-<h2  class=" title is-6 h_inline">Link: </h2><p class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
+<h2  class="h6">Link: </h2><p class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
     [[=quest['question_url'] ]]</a>  Link is external content and opens in a new tab</p>
 [[pass]]
 
@@ -16,17 +16,18 @@
 <h2 class=" title h6 h_inline">Status:</h2> <p class="h_inline">
     [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
-<p class="h_inline">Users have decided the correct answer is [[=correcttext ]]</p>
+<p class="h_inline">[[=anstext]]</p>
 [[else:]]
 <p class="h_inline">This [[=quest['qtype'] ]] is approved.</p>
 [[pass]]
 [[pass]]
 <p class="h_inline">[[=viewtext]]
+    <p></p>
 </div>
-
+    [[if quest['factopinion'] == 'Opinion':]]
 <div id="newchart">
 <h2 class="title h6 h_inline">Answer Analysis</h2>
-[[if quest.factopinion == 'Opinion':]]
+
 <p class="h_inline">This question has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
 
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
@@ -36,11 +37,9 @@
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
            VALUE="[[=quest.answer2]]">
 </p>
-    [[pass]]
     </div>
 <p> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
     and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </p>
-[[pass]]
 
 <div id="target"></div>
 
@@ -68,6 +67,8 @@
                     </tbody>
                 </table>
 
+    [[pass]]
+    [[pass]]
 <script>
 var questid = "[[=quest['id'] ]]";
 /* above is used by viewquest.js for urgency and importance changes */

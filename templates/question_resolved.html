@@ -7,7 +7,7 @@
                         <th>Question</th>
                         <th>F/O</th>
                         <th>Resolved Answer</th>
-                        <th class="is-hidden-touch">Knowledge</th>
+                        <th class="d-block d-sm-none d-md-none">Knowledge</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -15,7 +15,7 @@
 <tr>
 <td>[[=XML(markmin2html(row.question.questiontext))]]
 <div class="has-text-right"><sub class="has-text-left">[[=row.question.numlike]] Like[[='s ' if row.question.numlike >1 else ' ']]
-   <button class="btn btn-sml btn-info [[=row.liked and 'is-success' or '']]"
+   <button class="btn btn-sml btn-info [[=row.liked and 'btn-success' or '']]"
            hx-post="[[=URL('like/'+str(row.question.id))]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
@@ -27,7 +27,7 @@
     else:
     =row.question.answer1 if row.question.correctans==1 else row.question.answer2
     pass ]]</td>
-    <td>[[=row.question.aianswer]]</td>
+    <td class="d-block d-sm-none d-md-none">[[=row.question.aianswer]]</td>
 </tr>
 [[pass]]
 </tbody>

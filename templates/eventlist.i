@@ -8,7 +8,7 @@
 <th>Name</th>
 <th>Description</th>
 <th>Start</th>
-<th class="is-hidden-touch">End</th>
+<th class="d-block d-sm-none d-md-none">End</th>
 <th>Status</th>
 <th>Action</th>
 </thead>
@@ -19,10 +19,10 @@
 <th>[[=A(row.event_name, _href=URL('view_event/'+str(row.id)))]]</th>
 <td>[[=XML(markmin2html(row.description))]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
-<td class="is-hidden-touch text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
+<td class="d-block d-sm-none d-md-none text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td id="eventstatus">[[=row.status]]</td>
 <td> [[if row.next_event==0:]]
-    <INPUT TYPE=button class="button is-small is-rounded" onclick="nextevent('[[=row.id]]',this)", VALUE="Next Event">
+    <INPUT TYPE=button class="btn btn-small" onclick="nextevent('[[=row.id]]',this)", VALUE="Next Event">
     [[pass]]</td>
 </tr>
 [[pass]]

@@ -3,8 +3,8 @@
 [[import datetime]]
 [[if res_actions:]]
 <br>
-<h1 class="title is-5">Resolved Actions</h1>
-<table id=res_actions class='table issuetable2 is-bordered is-striped is-narrow'>
+<h1 class="h5">Resolved Actions</h1>
+<table id=res_actions class='table issuetable2 table-bordered table-striped border-warning'>
 				<thead>
 					<tr>
                         <th width="52%">Action</th>
@@ -18,11 +18,11 @@
 [[for i,row in enumerate(res_actions):]]
 <tr id="[[=row.eventmap.questid]]">
 <td>[[=XML(markmin2html(row.eventmap.questiontext))]]
-   <button class="button is-small is-info is-rounded [[=row.liked and 'is-success' or '']]"
+   <button class="button btn-sml btn-info [[=row.liked and 'btn-success' or '']]"
            hx-post="[[=URL('like/'+str(row.eventmap.questid))]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
-    <INPUT TYPE=button class="button is-small is-info is-rounded"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
+    <INPUT TYPE=button class="btn btn-small btn-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.eventmap.questid))]]'"VALUE="Details"/>
     <div id='btns[[=str(row.eventmap.questid)]]'></div><sub>Likes: [[=row.eventmap.numlike]]</sub></td>
 <td>[[if row.eventmap.enddate:
     =row.eventmap.enddate.date().strftime('%Y-%m-%d')

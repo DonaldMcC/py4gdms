@@ -97,10 +97,10 @@ class DataTablesResponse:
                '    orderable: false, '
                '}' % (A(I(_class='fas fa-edit'),
                         _href=self.edit_url if self.edit_url else '#',
-                        _class='button is-small'),
+                        _class='btn btn-small'),
                       A(I(_class='fas fa-trash'),
                         _href=self.delete_url if self.delete_url else '#',
-                        _class='button is-small',
+                        _class='btn btn-small',
                         _message='Delete Record')))
         js += '], columnDefs: ['
         for index, field in enumerate(self.fields):

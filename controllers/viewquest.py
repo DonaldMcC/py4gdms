@@ -108,17 +108,26 @@ def viewquest(qid=0, eid=0):
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
+        # Now think it is first() that maybe kills the Virtual fields
+        if quest['factopinion'] == 'Fact':
+            correcttext=quest['answertext']
+            anstext = f'Submitter or knowledge engines claim the answer is:  {correcttext}'
+        else:
+            correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
+                quest['correctans'] == 2 and quest['answer2']) or '?'
+            anstext = f'Users have decided the correct answer is  {correcttext}'
+
         # Did the user answer the question
         if uqanswered:
             if quest['correctans'] == uq.answer:
-                viewtext = f'Well done - you helped resolve this {qtypename}'
+                viewtext = f'Well done - you helped resolve this {qname}'
             else:
-                viewtext = f'Your answer to this {qtypename} disagrees with the resolved '
+                viewtext = f'Your answer to this {qname} disagrees with the resolved '
                 'correct answer - you may want to request a challenge.'
         else:
-            viewtext = f"You haven't answered this {qtypename} yet."
+            viewtext = f"You haven't answered this {qname} yet."
     elif quest['status'] == 'Rejected':
-        viewtext = f"This {qtypename} has been rejected."
+        viewtext = f"This {qname} has been rejected."
     else:
         # if not resolved can only say in progress and how many more answers are required
         # at present should only be here if
@@ -138,14 +147,12 @@ def viewquest(qid=0, eid=0):
     commentform = Form(db.comment,
     formstyle=FormStyleBootstrap4)
 
-    #Now think it is first() that maybe kills the Virtual fields
-    correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
-            quest['correctans'] == 2 and quest['answer2']) or '?'
+
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, eventid=eid, correcttext=correcttext)
+                filename=filename, urlpath=urlpath, eventid=eid, anstext=anstext)
 
 
 @action('urgency', method=['POST', 'GET'])
