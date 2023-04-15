@@ -246,12 +246,11 @@ def archive():
     query = db.question.eventid == eventid
     quests = db(query).select()
 
-    if status == 'Archived':
-        unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
-        unspecid = unspecevent['id']
+    unspecevent = db(db.event.event_name == 'Unspecified').select(db.event.id).first()
+    unspecid = unspecevent['id']
 
-        for row in quests:
-            db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
+    for row in quests:
+        db.eventmap.update_or_insert((db.eventmap.eventid == eventid) & (db.eventmap.questid == row.id),
                                          eventid=eventid, questid=row.id,
                                          status=row.status,
                                          xpos=row.xpos,
@@ -272,12 +271,12 @@ def archive():
                                          queststatus=row.status,
                                          notes=row.notes)
 
-            if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
+        if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
                                      (row.qtype == 'action' and row.status == 'Agreed'
                                       and row.execstatus != 'Completed')):
-                row.update_record(eventid=nexteventid)
-            else:
-                row.update_record(eventid=unspecid)
+            row.update_record(eventid=nexteventid)
+        else:
+            row.update_record(eventid=unspecid)
         db.commit()
 
     return responsetext

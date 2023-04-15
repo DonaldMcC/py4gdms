@@ -23,7 +23,11 @@
 </tr>
 <tr>
 <th>Status: </th>
-<td id="eventstatus">[[=eventrow.status]]</td>
+<td id="eventstatus">[[=eventrow.status]]
+    [[if eventrow.status == 'Open':]]
+<a class="btn btn-sm btn-outline-info" id="eventarchive" data-title="C" data-bs-toggle="modal" data-bs-target="#ArchiveModal">Archive</a>
+[[pass]]
+</td>
 <td>Next Event</td>
 <td> [[if eventrow.next_event==0:]]
     <INPUT TYPE=button class="btn btn-primary" id="next_event" onclick="nextevent('[[=eventrow.id]]',this)", VALUE="Create Next Event">
@@ -45,4 +49,26 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="modal fade" id="ArchiveModal" tabindex="-1">
+  <div class="modal-dialog"></div>
+  <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title">Archive Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       <div class="modal-body">This set the archiving event to archived which permanently locks the outcome - make sure everything is
+            set before doing this as it cannot be undone. Archived status returns resolved questions and disagreed issues
+             to the unspecified event but agreed issues, unresolved questions and actions which are not completed will
+              roll-forward to the next event
+               [[if not eventrow.next_event:]] WARNING: this event does not currently have a next event set.[[else:]]
+        which has been created for this project.[[pass]]
+            </div>
+       <div class="modal-footer">
+           <button type="button" id="modal_archive" class="btn btn-small btn-warning" data-bs-dismiss="modal"
+                  onclick="archive('[[=eventrow.id]]')">Save changes</button>
+                   <button type="button" class="btn btn-small btn-info" data-bs-dismiss="modal">Close</button>
+
+       </div>
+           </div>
+  </div>
 </div>

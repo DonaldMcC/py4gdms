@@ -183,6 +183,7 @@
         };
 
        function archive(eventid, answer) {
+        $("#eventstatus").text('Archived');
         Q.ajax("POST", "[[=URL('archive')]]", {
             eventid: eventid
         }).then(onsuccess).catch(onerror);
