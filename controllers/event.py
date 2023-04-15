@@ -266,9 +266,11 @@ def archive():
                                          perccomplete=row.perccomplete,
                                          execstatus=row.execstatus,
                                          importance=row.importance,
+                                         chosenai=row.chosenai,
                                          responsible=row.responsible,
                                          correctans=row.correctans,
                                          queststatus=row.status,
+                                         aianswer=row.aianswer,
                                          notes=row.notes)
 
         if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
