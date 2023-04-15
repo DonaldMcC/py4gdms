@@ -16,6 +16,8 @@
     }
 
     function nextevent(eid, sourcebutton) {
+         $("#nextevent").prepend('Created ');
+         $("#next_event").prop('disabled', true);
         Q.ajax("POST", "[[=URL('create_next_event')]]", {
             eid: eid
         }).then(onsuccess).catch(onerror);

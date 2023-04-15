@@ -32,7 +32,7 @@ from ..ndsqueries import get_items
 @action.uses('gantt.html', session, db, auth.user)
 def gantt():
     # This will now operate at eventid level typically - full view not that useful
-    eid=session.get['eventid',None]
+    eid=session.get('eventid',None)
     res_actions = get_items(event=eid, status='Resolved')
     if res_actions:
         projxml = get_gantt_data(res_actions)
