@@ -3,7 +3,7 @@ import time
 from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.common.action_chains import ActionChains
 
 # element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
 @ddt
@@ -51,7 +51,11 @@ class TestRegisterPage (FunctionalTest):
             By.ID, "no_table_password_again"))
         password2.clear()
         password2.send_keys(passwd)
-        data_consent = self.browser.find_element(By.NAME, "data_consent")
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
+        data_consent = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(
+            By.ID, "auth_user_data_consent"))
+
         data_consent.click()
 
         # self.browser.find_element_by_id("auth_user_status").send_keys("bla")
