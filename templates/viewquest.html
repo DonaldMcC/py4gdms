@@ -81,7 +81,7 @@ var questid = "[[=quest['id'] ]]";
 </div>
 [[pass]]
 [[if quest['aianswer']:]]
-<div><h1 class="subtitle h4">Knowledge Engine Notes ([[=quest.chosenai.title]])</h1>
+<div><h1 class="subtitle h4">Knowledge Engine Notes ([[=quest.chosenai.title if quest.chosenai else None]])</h1>
 <p>[[=quest['aianswer'] ]]</p>
     </div>
 [[pass]]
