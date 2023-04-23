@@ -75,6 +75,8 @@ def viewquest(qid=0, eid=0):
     filename = ''
     urlpath = ''
     filetype = None
+    anstext=''
+    
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
