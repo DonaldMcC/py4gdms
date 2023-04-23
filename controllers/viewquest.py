@@ -133,7 +133,7 @@ def viewquest(qid=0, eid=0):
         # if not resolved can only say in progress and how many more answers are required
         # at present should only be here if
         # answered as we are not showing users unresolved and unanswered questions
-        viewtext = f'This {qtypename} is in progress.'
+        viewtext = f'This {qname} is in progress.'
         # That will do for now - display of challenges and probably numanswers remaining
         # and level can be added later
 
