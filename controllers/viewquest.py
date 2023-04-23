@@ -153,7 +153,8 @@ def viewquest(qid=0, eid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, eventid=eid, anstext=anstext)
+                filename=filename, urlpath=urlpath, eventid=eid, anstext=anstext,
+                qname=qname)
 
 
 @action('urgency', method=['POST', 'GET'])
