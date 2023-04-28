@@ -22,8 +22,8 @@ $(document).ready(function(){
          'value="Clear" class="btn btn-primary btn-danger" onclick="clear_lookup()"></div>');
 
    $('#question_aianswer').attr('readonly', true);
-   /*$('#question_chosenai').attr('readonly', true);
-*/
+   $('#question_chosenai').attr('readonly', true);
+
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
     */

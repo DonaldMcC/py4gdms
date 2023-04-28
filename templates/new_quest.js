@@ -40,7 +40,7 @@
     var qtext = $('#question_questiontext').val();
     /* Now we call via ajax and put returned value into notes */
          $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=4]").prop('selected', true);
+     $("#question_chosenai option[value=3]").prop('selected', true);
     $('#question_chosenai').attr('readonly', true);
 
      result= Q.ajax("POST", "[[=URL('wikipedia_lookup')]]", {
@@ -53,7 +53,7 @@
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
         $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=3]").prop('selected', true);
+     $("#question_chosenai option[value=4]").prop('selected', true);
     $('#question_chosenai').attr('readonly', true);
 
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
