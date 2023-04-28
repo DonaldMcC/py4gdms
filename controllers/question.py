@@ -86,10 +86,10 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     userdefresolve = db(db.auth_user.id == auth.user_id).select(db.auth_user.default_resolve).first()['default_resolve']
     try:
         defaultresolve = db(db.resolve.resolve_name == userdefresolve).select(db.resolve.id).first()['id']
-    except AttributeError:
+    except AttributeError, TypeError:
         try:
             defaultresolve = db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id']
-        except AttributError:
+        except AttributError, TypeError:
             defaultresolve=1
 
     try:
