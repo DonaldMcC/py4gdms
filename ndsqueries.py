@@ -47,7 +47,7 @@ def check_liked(item, eventstatus, table='question'):
     return True if liked else False
 
 
-def get_items(qtype='action', status=None, x=0, y=10, event=None, eventstatus='Open',
+def get_items(qtype='action', status=None, x=0, y=8, event=None, eventstatus='Open',
               project=None, execstatus=None, qid=None):
     query = make_query(qtype, status, event, eventstatus, project, execstatus, qid)
     leftjoin = make_leftjoin(eventstatus)
@@ -97,7 +97,7 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
             else:
                 query &= (db.question.execstatus == 'Completed')
         if qid:
-            query &= (db.question.id == qid)
+            query &= (db.question.id == qid) 
     return query
 
 
