@@ -250,7 +250,7 @@ td, th {
    display:none;
 }
 
-@media (min-width:768px) {
+@media (min-width:1024px) {
    .hide-small{
       display:block;
    }
