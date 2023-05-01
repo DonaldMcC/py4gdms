@@ -48,7 +48,7 @@ class AddBasicAction (FunctionalTest):
         self.assertIn(itemtext, body.text)
 
         alertarea = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, 'alertarea'))
-        self.assertIn("item", alertarea.text)
+        self.assertIn("ID", alertarea.text)
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos+9:]

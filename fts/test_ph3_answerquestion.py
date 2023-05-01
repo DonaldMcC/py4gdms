@@ -44,7 +44,7 @@ class AnswerQuestion (FunctionalTest):
         if answer == 'yes':
             self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-success").click()
         else:
-            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-danger").click()
+            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-danger").click()
 
         time.sleep(1)
 

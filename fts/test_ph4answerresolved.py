@@ -37,9 +37,9 @@ class AnswerQuestion (FunctionalTest):
 
         self.url = ROOT + '/viewquest/'+str(qid)
         self.browser.get(self.url)
-
+        time.sleep(1)
         body = WebDriverWait(self, 10).until(lambda self:
-                                             self.browser.find_element(By.CSS_SELECTOR, ".is-danger").click())
+                                             self.browser.find_element(By.CSS_SELECTOR, ".btn-danger").click())
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
