@@ -44,6 +44,8 @@ class TestRegisterPage (FunctionalTest):
             lambda self: self.browser.find_element(By.ID, "no_table_password_again"))
         password2.clear()
         password2.send_keys(passwd)
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
 
         data_consent = self.browser.find_element(By.NAME, "data_consent")
         data_consent.click()
