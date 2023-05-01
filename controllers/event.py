@@ -194,7 +194,7 @@ def eventgrid(path=None):
     fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,
               db.event.enddatetime, db.event.description]
 
-    orderby = [db.event.startdatetime]
+    orderby = [~db.event.startdatetime]
     search_queries = [['Search by Name', lambda value: db.event.event_name == value]]
 
     status = session.get('event_status', 'Open')
