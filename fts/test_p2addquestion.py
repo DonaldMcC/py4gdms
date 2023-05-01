@@ -39,6 +39,9 @@ class AddBasicQuestion (FunctionalTest):
         ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "question_answer2"))
         ans2.send_keys("not to be")
 
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
+
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)
@@ -48,7 +51,7 @@ class AddBasicQuestion (FunctionalTest):
         self.assertIn(itemtext, body.text)
 
         alertarea = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, 'alertarea'))
-        self.assertIn("ID", alertarea.text)
+        self.assertIn("item", alertarea.text)
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos+9:]

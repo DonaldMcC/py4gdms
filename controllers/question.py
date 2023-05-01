@@ -150,7 +150,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['resolvemethod'] = form.vars['resolvemethod']
         session['chosenai'] = form.vars['chosenai']
         #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
+        #sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
         # flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
@@ -162,10 +162,10 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             quest.media_id = pub_result.id
             quest.update_record()
             db.commit()
-        if eid:
-            redirect(URL(sourceurl))
-        else:
-            redirect(URL(sourceurl, vars=dict(qtype=qtype)))
+        #if eid:
+        #    redirect(URL(sourceurl))
+        #else:
+        redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
 

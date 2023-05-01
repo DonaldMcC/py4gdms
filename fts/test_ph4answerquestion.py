@@ -42,7 +42,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
         # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()
 
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .is-success").click()
+        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-success").click()
 
         time.sleep(1)
 

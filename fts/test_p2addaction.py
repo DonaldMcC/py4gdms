@@ -35,18 +35,20 @@ class AddBasicAction (FunctionalTest):
         # questiontext = self.browser.find_element_by_name('questiontext')
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'questiontext'))
         questiontext.send_keys(itemtext)
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
 
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(10)
 
         # Lookof for body in questiongrid
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)
 
         alertarea = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, 'alertarea'))
-        self.assertIn("ID", alertarea.text)
+        self.assertIn("item", alertarea.text)
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos+9:]

@@ -36,7 +36,7 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/index/actions/'+str(qid)
         self.browser.get(self.url)
         time.sleep(1)
-        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .is-success").click()
+        self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .btn-success").click()
         time.sleep(5)
 
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
