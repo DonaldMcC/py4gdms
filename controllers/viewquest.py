@@ -119,14 +119,14 @@ def viewquest(qid=0, eid=0):
                 quest['correctans'] == 2 and quest['answer2']) or '?'
             anstext = f'Users have decided the correct answer is  {correcttext}'
 
-        # Did the user answer the question
-        if uqanswered:
-            if quest['correctans'] == uq.answer:
-                viewtext = f'Well done - you helped with this {qname}'
+            # Did the user answer the question
+            if uqanswered:
+                if quest['correctans'] == uq.answer:
+                    viewtext = f'Well done - you helped with this {qname}'
+                else:
+                    viewtext = f'Your answer to this {qname} disagrees with the consensus.'
             else:
-                viewtext = f'Your answer to this {qname} disagrees with the consensus.'
-        else:
-            viewtext = f"You haven't answered this {qname} yet."
+                viewtext = f"You haven't answered this {qname} yet."
     elif quest['status'] == 'Rejected':
         viewtext = f"This {qname} has been rejected."
     else:
