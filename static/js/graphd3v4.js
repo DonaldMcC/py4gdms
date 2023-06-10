@@ -567,6 +567,14 @@ spliceLinksForNode = function(node) {
              notes = d.notes;
              notes = notes.substring(0,300);
         }
+        if (d.aianswer != null) {
+             notes = notes + '<br>AI:' + d.aianswer;
+             notes = notes.substring(0,300);
+        }
+
+        if (notes =='') {
+            notes='No notes or AI Answer';
+        }
 
         fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes +"</TD></TR>";
         fieldformat += "<TR><TD><B>Due Date</B></TD><TD>"+ d.duedate+"</TD><TD><B>"+" Responsible:"+"</B></TD><TD>"+ d.responsible+"</TD></TR>";

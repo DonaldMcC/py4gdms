@@ -16,7 +16,7 @@
     var tog = $(this).data('toggle');
     $('#'+tog).prop('value', sel);
     inputmode = sel;
-    console.log(inputmode);
+    //console.log(inputmode);
 
     $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
     $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
@@ -62,7 +62,7 @@
         var links = [[=XML(json.dumps(links, default=myconverter))]];
         var edges = [];
 
-        //console.log(nodes);
+        console.log(nodes);
 
         var itemUrl = '[[=URL('submit', 'new_questload.load')]]';
         var baselowerUrl = '[[=URL('event', 'vieweventmapd3.html')]]';

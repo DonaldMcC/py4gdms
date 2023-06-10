@@ -162,6 +162,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
             quest.media_id = pub_result.id
             quest.update_record()
             db.commit()
+        if eid:
+            sourceurl += r'/'+str(eid)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
