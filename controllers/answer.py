@@ -47,7 +47,7 @@ def quickanswer():
     if uq:
         return 'You already answered this one'
     db.userquestion.insert(questionid=questid, auth_userid=auth.user_id, answer=answer)
-    messagetxt = 'Answer recorded for item:' + str(questid) + ' '
+    messagetxt = f'Answer recorded for item: {questid} '
     status = score_question(questid, answer)
     messagetxt += status
     return messagetxt
@@ -83,7 +83,7 @@ def perccomplete():
 
     quest.update_record()
     db.commit()
-    return 'Action updated to ' + str(percentcomplete)
+    return f'Action updated to {percentcomplete}'
 
 
 @action('like/<itemid>', method=['POST', 'GET'])

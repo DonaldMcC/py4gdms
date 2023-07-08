@@ -56,7 +56,7 @@ def linkrequest():
     # sourcerecs = db(db.question.questiontext == sourceid).select(db.question.id, orderby=~db.question.createdate)
     # targetrecs = db(db.question.questiontext == targetid).select(db.question.id, orderby=~db.question.createdate)
 
-    responsetext = 'Item ' + str(sourceid) + ' linked with ' + str(targetid)
+    responsetext = f'Item {sourceid} linked with {targetid}'
     query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
     linkrows = db(query).select().first()
 
@@ -69,7 +69,7 @@ def linkrequest():
         # link exists
         if linkaction == 'create':
             if linkrows.createdby == auth.user_id:
-                responsetext = responsetext + ' ' + 'You updated last no change made'
+                responsetext += ' You updated last no change made'
             else:
                 agrcount = linkrows.createcount + 1
                 linkrows.update_record(createcount=agrcount)
@@ -79,7 +79,7 @@ def linkrequest():
                 responsetext = 'Link deleted'
             else:
                 if linkrows.lastdeleter == auth.user_id:
-                    responsetext = responsetext + ' ' + 'You deleted last no change made'
+                    responsetext += ' You deleted last no change made'
                 else:
                     delcount = linkrows.deletecount + 1
                     if delcount >= linkrows.createcount:
@@ -225,5 +225,5 @@ def move():
             if event.event.status != 'Open':
                 responsetext = 'Move not saved - event is archiving and map cannot be changed'
             else:
-                responsetext = 'Move not saved - you must be owner of ' + event.event_name + 'to save changes'
+                responsetext = f'Move not saved - you must be owner of {event.event_name} to save changes'
     return responsetext

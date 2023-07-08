@@ -152,7 +152,7 @@ def score_question(questid, answer=0):
             quest.correctans = 0
     quest.update_record()
     db.commit()
-    returnmsg = 'Item changed to status ' + quest.status if origstatus != quest.status else 'Item still ' + quest.status
+    returnmsg = f'Item changed to status {quest.status}' if origstatus != quest.status else f'Item still {quest.status}'
     return returnmsg
 
 
