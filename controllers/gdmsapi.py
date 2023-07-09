@@ -88,7 +88,7 @@ def authenticate():
     data['exp'] = datetime.utcnow() + timedelta(seconds=1200)
     token = jwt.encode(data, 'secret', algorithm='HS256')
 
-    print(token)
+    # print(token)
     return json.dumps({'token': token})
 
 

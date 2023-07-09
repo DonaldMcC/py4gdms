@@ -29,17 +29,17 @@ def qtypename(item):
 
 
 def get_filetype(filename):
-    print(filename)
+    # print(filename)
     not_used, file_extension = os.path.splitext(filename)
     ext = file_extension.lower()
-    print(ext)
+    # print(ext)
     if ext == '.jpg' or ext == '.jpeg':
         return 'image'
     elif ext == '.mp4':
         return 'video/mp4'
     elif ext == '.mp3' or ext == '.wav':
         return 'audio/mpeg'
-    print(ext)
+    # print(ext)
     return None
 
 

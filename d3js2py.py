@@ -249,7 +249,6 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
     questlist = []
     intlinks = None
 
-    print(querytype)
     if queryids:
         if querytype == 'event':
             quests, questlist = getevent(queryids, status, 'id', parentquest)

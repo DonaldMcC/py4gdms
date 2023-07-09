@@ -82,7 +82,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
                                                 (db.project.proj_shared == True))), 'event.id', '%(event_name)s')
     qid = int(qid) if qid and qid.isnumeric() else None
     questrec = None
-    print(auth.user_id)
+    # print(auth.user_id)
     userdefresolve = db(db.auth_user.id == auth.user_id).select(db.auth_user.default_resolve).first()['default_resolve']
     try:
         defaultresolve = db(db.resolve.resolve_name == userdefresolve).select(db.resolve.id).first()['id']
@@ -345,7 +345,7 @@ def openai_lookup():
     # This should be a straightforward function called via Ajax to lookup the answer to a question on openai
     # and then return the answer
     qtext = request.json['questiontext']
-    print(qtext)
+    # print(qtext)
     openai.api_key = OPENAI_API_KEY
     try:
         result = openai.Completion.create(

@@ -57,4 +57,4 @@ class AddBasicAction (FunctionalTest):
             # print(recordval)
             questidlist.append(recordval)
             questiddict[itemkey] = recordval
-            print(questidlist)
+            # print(questidlist)

@@ -60,5 +60,5 @@ class AddBasicQuestion (FunctionalTest):
             # print(recordval)
             questidlist.append(recordval)
             questiddict['p2quest'] = recordval
-        print(questidlist)
+        # print(questidlist)
         time.sleep(CACHETIME)
