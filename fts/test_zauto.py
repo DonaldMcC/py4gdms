@@ -7,7 +7,7 @@ from ddt import ddt, data, unpack
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-print(questidlist)
+# print(questidlist)
 
 
 @ddt

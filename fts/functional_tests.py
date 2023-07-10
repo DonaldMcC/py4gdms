@@ -27,16 +27,16 @@ STARTSERVER = False
 
 # may update these later but possibly just have 3 options for now
 USERS = {'USER1': 'User1', 'PASSWORD1': 'Testuser1',
-        'USER2': 'User2', 'PASSWORD2': 'Testuser2', 'USER3': 'User3', 'PASSWORD3': 'Testuser3',
-        'USER4': 'User4', 'PASSWORD4': 'Testuser4', 'USER5': 'User5', 'PASSWORD5': 'Testuser5',
-        'USER6': 'User6', 'PASSWORD6': 'Testuser6', 'USER7': 'User7', 'PASSWORD7': 'Testuser7',
-        'USER8': 'User8', 'PASSWORD8': 'Testuser8', 'USER9': 'User9', 'PASSWORD9': 'Testuser9'}
+         'USER2': 'User2', 'PASSWORD2': 'Testuser2', 'USER3': 'User3', 'PASSWORD3': 'Testuser3',
+         'USER4': 'User4', 'PASSWORD4': 'Testuser4', 'USER5': 'User5', 'PASSWORD5': 'Testuser5',
+         'USER6': 'User6', 'PASSWORD6': 'Testuser6', 'USER7': 'User7', 'PASSWORD7': 'Testuser7',
+         'USER8': 'User8', 'PASSWORD8': 'Testuser8', 'USER9': 'User9', 'PASSWORD9': 'Testuser9'}
 
 listusers = ['user2', 'user3', 'user4']
-questref =  'functest questref'
+questref = 'functest questref'
 votequest = 'tempvotetest'
 testconfig = 'standard'
-questidlist = []  #will store records of questions successfully stored - may need to add more details later
+questidlist = []  # will store records of questions successfully stored - may need to add more details later
 questiddict = {}
 
 
@@ -49,11 +49,8 @@ class FunctionalTest(unittest.TestCase):
         # self.browser = webdriver.Firefox()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--disable-extensions')
-        ser = Service("c:\python311\chromedriver")
+        ser = Service(r"c:\python311\chromedriver")
         op = webdriver.ChromeOptions()
-        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        # self.browser = webdriver.Chrome(r'/home/ubuntu/.virtualenvs/gdms/bin/chromedriver',chrome_options=chrome_options)
-        #self.browser = webdriver.Chrome('d:\python37\chromedriver.exe', chrome_options=chrome_options)
         self.browser = webdriver.Chrome(service=ser, options=op)
 
         self.browser.maximize_window()

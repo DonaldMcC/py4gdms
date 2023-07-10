@@ -4,8 +4,9 @@ from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-
 # element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
+
+
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
@@ -30,7 +31,8 @@ class TestRegisterPage (FunctionalTest):
         username.send_keys(user)
 
         # first_name = self.browser.find_element_by_name("first_name")
-        first_name = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "auth_user_first_name"))
+        first_name = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "auth_user_first_name"))
         first_name.clear()
         first_name.send_keys(user)
 
