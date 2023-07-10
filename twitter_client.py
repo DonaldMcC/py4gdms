@@ -50,6 +50,14 @@ def publish(questiontext, filename=None):
     # TODO - will only ever be one media ID for now but eventually could be a list perhaps
     # TODO think of error handling for this
     media_ids = None
+    if len(questiontext) > 140:
+        short_text = quetiontext[:137] + '...'
+    else:
+        short_text = questiontext
+    if len(questiontext) > 280:
+        long_text = quetiontext[:277] + '...'
+    else:
+        long_text = questiontext
 
     if filename:
         media = api.media_upload(filename=filename)
@@ -58,7 +66,7 @@ def publish(questiontext, filename=None):
         #tweet = api.update_status(status="Image upload", media_ids=
         #[media.media_id_string])
     try:
-        result = api.update_status(questiontext, full_text=questiontext, media_ids=media_ids, tweet_mode="extended")
+        result = api.update_status(short_text, full_text=long_text, media_ids=media_ids, tweet_mode="extended")
         print("TWEET: ", e)
     except tweepy.errors as e:
         print("Eror occurred: ", e)
