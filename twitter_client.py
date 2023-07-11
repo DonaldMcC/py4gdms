@@ -67,7 +67,7 @@ def publish(questiontext, filename=None):
         #[media.media_id_string])
     try:
         result = api.update_status(short_text, full_text=long_text, media_ids=media_ids, tweet_mode="extended")
-        print("TWEET: ", e)
+        print("TWEET: ", short_text)
     except tweepy.errors as e:
         print("Eror occurred: ", e)
         result = e
