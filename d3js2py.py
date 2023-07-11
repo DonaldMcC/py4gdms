@@ -275,7 +275,7 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
             correctanstext=x.answertext
         else:
             correctanstext = (x.correctans == 1 and x.answer1) or (x.correctans == 2 and x.answer2) or '?'
-        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, correctanstext,
+        dictx = getd3dict(x.id, i + 2, 0, 0, x.questiontext, x.correctanstext,
                           x.status, x.qtype, x.priority, x.answer1, x.answer2)
         nodes.append(merge_two_dicts(dicty, dictx))
 
