@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="css/custom.css">
     <script src="js/jquery.js"></script>
    <script src="https://unpkg.com/htmx.org@1.5.0"></script>
+      
+      		<script>
+			/**
+			 * If browser back button was used, flush cache
+			 * This ensures that user will always see an accurate, up-to-date view based on their state
+			 * https://stackoverflow.com/questions/8788802/prevent-safari-loading-from-cache-when-back-button-is-clicked
+			 */
+			(function () {
+				window.onpageshow = function(event) {
+					if (event.persisted) {
+						window.location.reload();
+					}
+				};
+			})();
+		</script>
 
     <style>.py4web-validation-error{margin-top:-16px; font-size:0.8em;color:red}</style>
     [[block page_head]]<!-- individual pages can customize header here -->[[end]]
