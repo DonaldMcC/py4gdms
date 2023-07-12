@@ -59,8 +59,6 @@ def publish(questiontext, filename=None):
         media = api.media_upload(filename=filename)
         print("MEDIA: ", media)
         media_ids = [media.media_id_string]
-        #tweet = api.update_status(status="Image upload", media_ids=
-        #[media.media_id_string])
     try:
         #seems was still on v1 endpoint now changed and simplified for now
         # result = api.create_tweet(text=short_text, full_text=long_text, media_ids=media_ids, tweet_mode="extended")
