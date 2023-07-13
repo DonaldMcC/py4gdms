@@ -1,9 +1,7 @@
 # Chap02/twitter_client.py
 import os
 import sys
-from tweepy import API
-from tweepy import OAuthHandler
-import tweepy
+from tweepy import API, Client, OAuthHandler
 from . import settings
 
 
@@ -46,7 +44,23 @@ def publish(questiontext, filename=None):
     # adding a second url if we have one in the question is confusing - think we ARE Ok to add a media ID
     # if we have content on the question and that probably does make for better experience on twitter -
     # so we go with this approach for now
-    api = get_twitter_client()
+
+    try:
+        consumer_key = settings.NDSPOST_API_KEY
+        consumer_secret = settings.NDSPOST_API_KEY_SECRET
+        access_token = settings.NDSPOST_ACCESS_TOKEN
+        access_secret = settings.NDSPOST_ACCESS_TOKEN_SECRET
+    except KeyError:
+        sys.stderr.write("TWITTER_* environment variables not set\n")
+        sys.exit(1)
+
+    client = tweepy.Client(consumer_key=consumer_key,
+                           consumer_secret=consumer_secret,
+                           access_token=access_token,
+                           access_token_secret=access_secret)
+
+
+    #api = get_twitter_client()
     # TODO - will only ever be one media ID for now but eventually could be a list perhaps
     # TODO think of error handling for this
     media_ids = None
@@ -60,9 +74,9 @@ def publish(questiontext, filename=None):
         print("MEDIA: ", media)
         media_ids = [media.media_id_string]
     try:
-        #seems was still on v1 endpoint now changed and simplified for now
+        # seems was still on v1 endpoint now changed and simplified for now
         # result = api.create_tweet(text=short_text, full_text=long_text, media_ids=media_ids, tweet_mode="extended")
-        result = api.create_tweet(text=long_text, media_ids=media_ids)
+        result = client.create_tweet(text=long_text, media_ids=media_ids)
         print("TWEET: ", long_text)
         print("RESULT:", result)
     except tweepy.TweepyException as e:

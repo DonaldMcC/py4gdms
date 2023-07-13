@@ -79,10 +79,10 @@ var questid = "[[=quest['id'] ]]";
 
     [[if can_edit:]]
   <INPUT TYPE=BUTTON class="btn btn-sm btn-primary mx-1"
-            onClick="parent.location='[[=URL('new_question/'+str(quest['id'])+'/'+quest['qtype']+'/'+str(eventid)+'/0/0/view_event')]]'" VALUE="Edit"></p>
+            onClick="parent.location='[[=URL(f"new_question/{quest['id']}/{quest['qtype']}/{quest['eventid']}/0/0/view_event")]]'" VALUE="Edit"></p>
 [[pass]]
  <INPUT TYPE=BUTTON class="btn btn-sm btn-info mx-1"
-            onClick="parent.location='[[=URL(f'view_event/{eventid}')]]'" VALUE="Back">
+            onClick="parent.location='[[=URL(f"view_event/{quest['eventid']}")]]'" VALUE="Event">
 </div>
 
 [[if quest['aianswer']:]]
@@ -108,7 +108,7 @@ var questid = "[[=quest['id'] ]]";
 [[pass]]
     </div>
 <div>
-<ajax-component id="comments" url="[[=URL('getcomments/'+str(quest['id']))]]">
+<ajax-component id="comments" url="[[=URL(f"getcomments/{quest['id']}")]]">
     <p>Loading...</p>
     </ajax-component>
     <p>[[=commentform]]</p>
