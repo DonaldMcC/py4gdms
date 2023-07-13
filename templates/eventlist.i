@@ -16,7 +16,7 @@
 <tbody>
 [[for row in events:]]
 <tr>
-<th>[[=A(row.event_name, _href=URL('view_event/'+str(row.id)))]]</th>
+<th>[[=A(row.event_name, _href=URL(f"view_event/{row.id}"))]]</th>
 <td>[[=XML(markmin2html(row.description))]]</td>
 <td class="text-center">[[=row.startdatetime.strftime('%a %d %b %Y %H:%M')]]</td>
 <td class="d-block d-sm-none d-md-none text-center">[[=row.enddatetime.strftime('%a %d %b %Y %H:%M')]]</td>

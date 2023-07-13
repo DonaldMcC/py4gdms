@@ -21,7 +21,7 @@
            hx-post="[[=URL(f"like/{row.question.id}")]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
-    <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
+    <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div></td>
 <td><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
     =row.question.enddate.date().strftime('%Y-%m-%d')

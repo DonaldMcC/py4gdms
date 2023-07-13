@@ -16,10 +16,10 @@
 <td>[[=XML(markmin2html(row.question.questiontext))]]
 <div class="has-text-right"><sub class="has-text-left">[[=row.question.numlike]] Like[[='s ' if row.question.numlike >1 else ' ']]
    <button class="btn btn-sml btn-info [[=row.liked and 'btn-success' or '']]"
-           hx-post="[[=URL('like/'+str(row.question.id))]]"
+           hx-post="[[=URL(f"like/{row.question.id}")]]"
            hx-swap="innerHTML">
            [[=row.liked and 'UnLike' or 'Like']]</button>
-    <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL('viewquest/'+str(row.question.id))]]'"VALUE="Details"/>
+    <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div</td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
 <td class="has-text-centered">[[if row.question.factopinion == 'Fact':

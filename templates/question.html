@@ -16,7 +16,7 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=A(row.question.status, _href=URL('viewquest/'+str(row.question.id)+'/'+str(row.question.eventid)))]]</th>
+<th>[[=A(row.question.status, _href=URL(f"viewquest/{row.question.id}/{row.question.eventid}"))]]</th>
 <td>[[=XML(markmin2html(row.question.questiontext))]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
 <td class="min_width has-text-centered">[[=row.question.factopinion]]</td>

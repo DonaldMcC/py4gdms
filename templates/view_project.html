@@ -15,7 +15,7 @@
 [[include 'action_complete.html']]
 
 <div>
-<ajax-component id="comments" url="[[=URL('getcomments/'+str(projectid)+'/project')]]">
+<ajax-component id="comments" url="[[=URL(f"getcomments/{projectid}/project")]]">
     <p>Loading...</p>
 </ajax-component>
     <p>[[=commentform]]</p>

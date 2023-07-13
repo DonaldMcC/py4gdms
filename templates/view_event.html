@@ -22,7 +22,7 @@
 [[include 'eventmap.i']]
 
 <div class="form-inline">
-<ajax-component id="comments" url="[[=URL('getcomments/'+str(eventid)+'/event')]]">
+<ajax-component id="comments" url="[[=URL(f"getcomments/{eventid}/event")]]">
     <p>Loading...</p>
 </ajax-component>
     <p>[[=commentform]]</p>

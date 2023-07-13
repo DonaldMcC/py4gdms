@@ -14,7 +14,7 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=A(row.eventmap.status, _href=URL('viewquest/'+str(row.eventmap.questid)))]]</th>
+<th>[[=A(row.eventmap.status, _href=URL(f"viewquest/{row.eventmap.questid}"))]]</th>
 <td>[[=XML(markmin2html(row.eventmap.questiontext))]]
 <div id='btns[[=str(row.eventmap.questid)]]'></div></td>
 <td class="has-text-centered">[[=row.eventmap.factopinion]]</td>
