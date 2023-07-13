@@ -74,12 +74,17 @@ var questid = "[[=quest['id'] ]]";
 /* above is used by viewquest.js for urgency and importance changes */
 </script>
 
-[[if can_edit:]]
-<div>
-  <INPUT TYPE=BUTTON class="btn btn-sm btn-primary"
+
+<div class="btn-toolbar ">
+
+    [[if can_edit:]]
+  <INPUT TYPE=BUTTON class="btn btn-sm btn-primary mx-1"
             onClick="parent.location='[[=URL('new_question/'+str(quest['id'])+'/'+quest['qtype']+'/'+str(eventid)+'/0/0/view_event')]]'" VALUE="Edit"></p>
-</div>
 [[pass]]
+ <INPUT TYPE=BUTTON class="btn btn-sm btn-info mx-1"
+            onClick="parent.location='[[=URL(f'view_event/{eventid}')]]'" VALUE="Back">
+</div>
+
 [[if quest['aianswer']:]]
 <div><h1 class="subtitle h4">Knowledge Engine Notes ([[=quest.chosenai.title if quest.chosenai else None]])</h1>
 <p>[[=quest['aianswer'] ]]</p>
