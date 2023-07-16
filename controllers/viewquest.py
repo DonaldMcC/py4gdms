@@ -81,6 +81,7 @@ def viewquest(qid=0, eid=0):
     uqanswered = False
     urgmessage = ''
     can_edit = False
+    chosenai = ''
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
@@ -109,6 +110,7 @@ def viewquest(qid=0, eid=0):
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
         if quest['factopinion'] == 'Fact':
+            chosenai = quest.chosenai.title
             anstext = f"Submitter or knowledge engines claim the answer is: {quest['answertext']}"
         else:
             correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
@@ -142,8 +144,7 @@ def viewquest(qid=0, eid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, anstext=anstext,
-                qname=qname)
+                filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai)
 
 
 @action('urgency', method=['POST', 'GET'])
