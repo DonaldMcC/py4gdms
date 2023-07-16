@@ -108,15 +108,12 @@ def viewquest(qid=0, eid=0):
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
-        # Now think it is first() that maybe kills the Virtual fields
         if quest['factopinion'] == 'Fact':
-            correcttext=quest['answertext']
-            anstext = f'Submitter or knowledge engines claim the answer is:  {correcttext}'
+            anstext = f"Submitter or knowledge engines claim the answer is: {quest['answertext']}"
         else:
             correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
                 quest['correctans'] == 2 and quest['answer2']) or '?'
             anstext = f'Users have decided the correct answer is  {correcttext}'
-
             # Did the user answer the question
             if uqanswered:
                 if quest['correctans'] == uq.answer:
@@ -128,9 +125,6 @@ def viewquest(qid=0, eid=0):
     elif quest['status'] == 'Rejected':
         viewtext = f"This {qname} has been rejected."
     else:
-        # if not resolved can only say in progress and how many more answers are required
-        # at present should only be here if
-        # answered as we are not showing users unresolved and unanswered questions
         viewtext = f'This {qname} is in progress.'
         # That will do for now - display of challenges and probably numanswers remaining
         # and level can be added later
