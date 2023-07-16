@@ -1,7 +1,7 @@
 # Chap02/twitter_client.py
 import os
 import sys
-from tweepy import API, Client, OAuthHandler
+from tweepy import API, Client, OAuthHandler, TweepyException
 from . import settings
 
 
@@ -54,24 +54,18 @@ def publish(questiontext, filename=None):
         sys.stderr.write("TWITTER_* environment variables not set\n")
         sys.exit(1)
 
-    client = tweepy.Client(consumer_key=consumer_key,
-                           consumer_secret=consumer_secret,
-                           access_token=access_token,
-                           access_token_secret=access_secret)
+    client = Client(consumer_key=consumer_key, consumer_secret=consumer_secret,
+                    access_token=access_token, access_token_secret=access_secret)
 
-
-    #api = get_twitter_client()
+    # api = get_twitter_client()
     # TODO - will only ever be one media ID for now but eventually could be a list perhaps
     # TODO think of error handling for this
     media_ids = None
-    if len(questiontext) > 280:
-        long_text = quetiontext[:277] + '...'
-    else:
-        long_text = questiontext
+    long_text = f"{quetiontext[:277]}..." if len(questiontext) > 280 else questiontext
 
     if filename:
         media = api.media_upload(filename=filename)
-        print("MEDIA: ", media)
+        # print("MEDIA: ", media)
         media_ids = [media.media_id_string]
     try:
         # seems was still on v1 endpoint now changed and simplified for now
@@ -79,7 +73,7 @@ def publish(questiontext, filename=None):
         result = client.create_tweet(text=long_text, media_ids=media_ids)
         print("TWEET: ", long_text)
         print("RESULT:", result)
-    except tweepy.TweepyException as e:
+    except TweepyException as e:
         print("Error occurred: ", e)
         result = e
     return result
@@ -88,7 +82,6 @@ def publish(questiontext, filename=None):
 """
     This seems to be simple example of updating with media - probalby have a look at url's too and 
     see how they go together - seems urls just go into the text if required and then get auto shortened I think
-    
     https: // stackoverflow.com / questions / 70891698 / how - to - post - a - tweet -
     with-media - picture - using - twitter - api - v2 - and -tweepy - python
 
@@ -98,5 +91,4 @@ def publish(questiontext, filename=None):
     tweet = api.update_status(status="Image upload", media_ids=
     [media.media_id_string])
     print("TWEET: ", tweet)
-    
 """

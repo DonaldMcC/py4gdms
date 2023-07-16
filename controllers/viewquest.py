@@ -143,8 +143,7 @@ def viewquest(qid=0, eid=0):
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
-    commentform = Form(db.comment,
-    formstyle=FormStyleBootstrap4)
+    commentform = Form(db.comment, formstyle=FormStyleBootstrap4)
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
