@@ -70,13 +70,17 @@ def viewquest(qid=0, eid=0):
     # However approach for actions is different - they can be viewed at any time
     # but the buttons at the bottom should be very similar
 
-    # initialize variables as not used if action
     uqrated = False
     filename = ''
     urlpath = ''
     filetype = None
     anstext=''
-    
+    viewtext = ''
+    uq = None
+    ur = None
+    uqanswered = False
+    urgmessage = ''
+    can_edit = False
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
@@ -84,13 +88,7 @@ def viewquest(qid=0, eid=0):
         (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
         urlpath = r'static/uploads/' + os.path.basename(fullname)
         filetype = get_filetype(filename)
-
     qname = qtypename(quest.qtype)
-    uq = None
-    ur = None
-    uqanswered = False
-    urgmessage = ''
-    can_edit = False
 
     if auth.user:
         uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
@@ -147,8 +145,6 @@ def viewquest(qid=0, eid=0):
     db.comment.parentid.default = quest['id']
     commentform = Form(db.comment,
     formstyle=FormStyleBootstrap4)
-
-
 
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
