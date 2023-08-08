@@ -26,7 +26,7 @@ from py4web import URL
 from .common import db
 
 
-def qtypename(item):
+def qtypename(item: string):
     return 'question' if item == 'quest' else item
 
 
@@ -123,7 +123,7 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
     return colorclass
 
 
-def score_question(questid, answer=0):
+def score_question(questid: int, answer:int = 0):
     """
     This routine is now called for all answers to questions but a couple of changes 
     a) only ever two answers to a question
