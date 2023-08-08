@@ -22,7 +22,6 @@
 # and liking items
 
 import datetime
-
 from py4web import action, request, Flash
 from ..common import db, auth, session
 from ..ndsfunctions import score_question
@@ -60,10 +59,10 @@ def perccomplete():
     This updates resolved actions only for responsible person, due date and % complete
     """
     questid = request.json['questid']
-    percentcomplete = int(request.json['perccomplete'])
-    resp = request.json['responsible']
-    duestr = request.json['duedate']
     quest = db(db.question.id == questid).select().first()
+    percentcomplete = int(request.json['perccomplete'])
+    quest.responsible = request.json['responsible']
+    duestr = request.json['duedate']
 
     try:
         duedate = datetime.datetime.strptime(duestr, "%Y-%m-%d")
@@ -72,14 +71,8 @@ def perccomplete():
         pass
 
     quest.perccomplete = percentcomplete
-    quest.responsible = resp
-
-    if percentcomplete == 100:
-        quest.execstatus = 'Completed'
-    elif percentcomplete > 0:
-        quest.execstatus = 'In Progress'
-    else:
-        quest.execstatus = 'Proposed'
+    quest.execstatus = 'Completed' if percentcomplete == 100 else quest.execstatus = 'In Progress' \
+        if percentcomplete > 0 else quest.execstatus = 'Proposed'
 
     quest.update_record()
     db.commit()
