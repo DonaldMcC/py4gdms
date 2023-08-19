@@ -30,6 +30,7 @@ def getwraptext(textstring, answer, maxlength=200, qtype='quest'):
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     # change 10 June 2023 if answer and not (answer == 'Agree' or answer == 'Approve'):
     if qtype=='quest':
+        answer = answer or 'No answer'
         txt = ''.join([txt, ' A:', answer])
     return txt
 

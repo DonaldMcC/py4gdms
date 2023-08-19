@@ -26,7 +26,7 @@ from py4web import URL
 from .common import db
 
 
-def qtypename(item: string):
+def qtypename(item: str):
     return 'question' if item == 'quest' else item
 
 
@@ -145,7 +145,7 @@ def score_question(questid: int, answer:int = 0):
                 (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
             quest.status = 'Resolved'
             quest.resolvedate = datetime.datetime.utcnow()
-            quest.correctans = 1 if quest.numanswer1 > quest.numanswer2 else quest.correctans = 2
+            quest.correctans = 1 if quest.numanswer1 > quest.numanswer2 else 2
         else:
             quest.status = 'In Progress'
             quest.correctans = 0
