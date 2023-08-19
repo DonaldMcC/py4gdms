@@ -36,6 +36,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
+from .network import request_link
 
 
 flash = auth.flash
@@ -68,9 +69,10 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
+@action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>/<sourceq>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, flash, auth.user)
-def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select'):
+def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select', sourceq=0):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -157,12 +159,14 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         if form.vars['social_media']:
             questurl = URL('question/viewquest', str(form.vars['id']), scheme='https')
             pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
-            # print(pub_result)
+            print(pub_result)
             quest = db(db.question.id == form.vars['id']).select().first()
             #TODO figure out if below line matters and if so how to get the id back
-            #quest.media_id = pub_result.id
+            quest.media_id = pub_result.id
             quest.update_record()
             db.commit()
+        if sourceq:
+            request_link(sourceq, form.vars['id'], 'create')
         if eid:
             sourceurl += r'/'+str(eid)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))

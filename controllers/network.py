@@ -35,6 +35,43 @@ from ..common import db, authenticated, auth, session
 from py4web import request, redirect, URL
 
 
+def request_link(source: int, target: int, action: str):
+    responsetext = f'Item {source} linked with {target}'
+    query = (db.questlink.sourceid == source) & (db.questlink.targetid == target)
+    linkrows = db(query).select().first()
+
+    if linkrows is None:
+        db.questlink.insert(sourceid=source, targetid=target)
+        # Now also need to add 1 to the numagreement or disagreement figure
+        # It shouldn't be possible to challenge unless resolved
+        responsetext += ' Link Created'
+    else:
+        # link exists
+        if action == 'create':
+            if linkrows.createdby == auth.user_id:
+                responsetext += ' You updated last no change made'
+            else:
+                agrcount = linkrows.createcount + 1
+                linkrows.update_record(createcount=agrcount)
+        elif action == 'delete':
+            if linkrows.createdby == auth.user_id and linkrows.createcount == 1:
+                db(db.questlink.id == linkrows.id).delete()
+                responsetext = 'Link deleted'
+            else:
+                if linkrows.lastdeleter == auth.user_id:
+                    responsetext += ' You deleted last no change made'
+                else:
+                    delcount = linkrows.deletecount + 1
+                    if delcount >= linkrows.createcount:
+                        status = 'Deleted'
+                    else:
+                        status = 'Active'
+                    linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
+                                           status=status)
+                    responsetext = 'Deletion count updated'
+    return responsetext
+
+
 @authenticated()
 def linkrequest():
     # this is called when a link is requested from the graph or event function
@@ -56,40 +93,7 @@ def linkrequest():
     # sourcerecs = db(db.question.questiontext == sourceid).select(db.question.id, orderby=~db.question.createdate)
     # targetrecs = db(db.question.questiontext == targetid).select(db.question.id, orderby=~db.question.createdate)
 
-    responsetext = f'Item {sourceid} linked with {targetid}'
-    query = (db.questlink.sourceid == sourceid) & (db.questlink.targetid == targetid)
-    linkrows = db(query).select().first()
-
-    if linkrows is None:
-        db.questlink.insert(sourceid=sourceid, targetid=targetid)
-        # Now also need to add 1 to the numagreement or disagreement figure
-        # It shouldn't be possible to challenge unless resolved
-        responsetext += ' Link Created'
-    else:
-        # link exists
-        if linkaction == 'create':
-            if linkrows.createdby == auth.user_id:
-                responsetext += ' You updated last no change made'
-            else:
-                agrcount = linkrows.createcount + 1
-                linkrows.update_record(createcount=agrcount)
-        elif linkaction == 'delete':
-            if linkrows.createdby == auth.user_id and linkrows.createcount == 1:
-                db(db.questlink.id == linkrows.id).delete()
-                responsetext = 'Link deleted'
-            else:
-                if linkrows.lastdeleter == auth.user_id:
-                    responsetext += ' You deleted last no change made'
-                else:
-                    delcount = linkrows.deletecount + 1
-                    if delcount >= linkrows.createcount:
-                        status = 'Deleted'
-                    else:
-                        status = 'Active'
-                    linkrows.update_record(lastaction='delete', deletecount=delcount, lastdeleter=auth.user_id,
-                                           status=status)
-                    responsetext = 'Deletion count updated'
-    return responsetext
+    return request_link(sourceid, targetid,  linkaction)
 
 
 @authenticated()
