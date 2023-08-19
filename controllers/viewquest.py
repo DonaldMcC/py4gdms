@@ -54,8 +54,8 @@ from yatl.helpers import XML
 from py4web import action, request, redirect, URL
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..ndsqueries import get_class, get_disabled
-from ..ndsfunctions import get_filetype, qtypename
-
+from ..ndsfunctions import get_filetype, qtypename, myconverter
+from ..d3js2py import getd3graph
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action("viewquest/<qid>/<eid>", method=['GET', 'POST'])
@@ -136,6 +136,9 @@ def viewquest(qid=0, eid=0):
     subsquestrows = db(db.questlink.sourceid == quest.id).select(db.questlink.targetid)
     priorquests = [row.sourceid for row in priorquestrows]
     subsquests = [row.targetid for row in subsquestrows]
+    eid = quest['eventid']
+    editable = 'false'  # don't think we can use this on items as could be cross project or event
+    quests, nodes, links, resultstring = getd3graph('quest', quest.id , 'Open', 1, 1, 0)
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
@@ -144,7 +147,9 @@ def viewquest(qid=0, eid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai)
+                filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai,
+                eventowner=editable, eventid=eid, projid = 0, nodes=nodes, links=links, redraw='false',
+                myconverter=myconverter)
 
 
 @action('urgency', method=['POST', 'GET'])

@@ -1,6 +1,7 @@
 [[from markmin import markmin2html]]
 [[from yatl.helpers import XML]]
 [[extend 'layoutbs.html']]
+[[load_graph=True]]
 <div class="container-fluid gx-5">
 
 <h1 class="title h6">[[=quest['qtype'].capitalize()]]:</h1>
@@ -64,11 +65,23 @@
                         <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uqrated and ur.urgency or 5]]" step="1"/></td>
                         <td><input id="impslide" type = "range" name="impslider"  min="1"    max="11" value="[[=uqrated and ur.importance or 5]]" step="1"/></td>
                     </tr>
+                    <tr>
+<td><INPUT TYPE=button class="btn btn-primary btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Issue">
+</td>
+    <td><INPUT TYPE=button class="btn btn-success btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/quest/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Question">
+</td>
+    <td><INPUT TYPE=button class="btn btn-warning btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/action/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Action">
+</td>
+</tr>
                     </tbody>
                 </table>
 
     [[pass]]
     [[pass]]
+
 <script>
 var questid = "[[=quest['id'] ]]";
 /* above is used by viewquest.js for urgency and importance changes */
@@ -107,9 +120,12 @@ var questid = "[[=quest['id'] ]]";
     ''
     pass]]. </p>
 [[pass]]
-    </div>
-        [[include 'quest_link_new.i']]
-    <div>
+[[include 'eventmap.i']]
+
+     <script>
+ [[include 'vieweventmapd3v4.js']]
+ </script>
+
 <ajax-component id="comments" url="[[=URL(f"getcomments/{quest['id']}")]]">
     <p>Loading...</p>
     </ajax-component>

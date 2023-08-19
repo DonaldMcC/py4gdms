@@ -57,7 +57,6 @@
         formaction: '',
         globalnode: []
   };
-        var nodes = '';
         var nodes = [[=XML(json.dumps(nodes, default=myconverter))]];
         var links = [[=XML(json.dumps(links, default=myconverter))]];
         var edges = [];

@@ -29,7 +29,7 @@ def getwraptext(textstring, answer, maxlength=200, qtype='quest'):
     questlength = answer and max((maxlength - len(answer)), 0) or maxlength
     txt = (len(textstring) < questlength) and textstring or (textstring[0:questlength] + '...')
     # change 10 June 2023 if answer and not (answer == 'Agree' or answer == 'Approve'):
-    if qtype=='quest':
+    if qtype == 'quest':
         answer = answer or 'No answer'
         txt = ''.join([txt, ' A:', answer])
     return txt
@@ -243,31 +243,29 @@ def getlinks(questlist):
 
 
 def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentquest=0):
-    resultstring = ''
     nodes = []
-    links = []
-    quests = None
-    questlist = []
-    intlinks = None
-
     if queryids:
         if querytype == 'event':
             quests, questlist = getevent(queryids, status, 'id', parentquest)
         elif querytype == 'project':
             quests, questlist = getproject(queryids, status)
-        else:  # ie querytype == 'search':
+        elif querytype == 'quest':
+            netgraph = creategraph([queryids], numlevels, intralinksonly=False)
+            quests = netgraph['quests']
+            questlist = netgraph['questlist']
+        else:  # ie querytype == 'search' - so think this was for a bunch of this supplied and not convince in use
             netgraph = creategraph(queryids, numlevels, intralinksonly=False)
             quests = netgraph['quests']
-            links = netgraph['links']
             questlist = netgraph['questlist']
-            intlinks = netgraph['linklist']
 
-    if not questlist:
-        resultstring = 'No Items found'
+    resultstring = 'No Items found' if not questlist else ''
 
     if querytype in ('event', 'project'):
         intlinks = getlinks(questlist)
         links = [x.sourceid for x in intlinks]
+    else:
+        links = netgraph['links']
+        intlinks = netgraph['linklist']
 
     for i, x in enumerate(quests):
         dicty = x.as_dict()
@@ -281,11 +279,11 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
         nodes.append(merge_two_dicts(dicty, dictx))
 
     edges = []
-
     if links:
         for x in intlinks:
             edge = getd3link(x['sourceid'], x['targetid'], x['createcount'], x['deletecount'])
             edges.append(edge)
+
     return quests, nodes, edges, resultstring
 
 
