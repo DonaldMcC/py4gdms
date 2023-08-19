@@ -32,8 +32,8 @@ from ..d3js2py import getd3graph
 from .answer import like
 from ..ndsfunctions import myconverter
 from pydal.validators import *
-
 flash = Flash()
+
 
 @action("new_event/<eid>", method=['GET', 'POST'])
 @action("new_event", method=['GET', 'POST'])
@@ -274,11 +274,10 @@ def archive():
                                          aianswer=row.aianswer,
                                          notes=row.notes)
 
-        if nexteventid != 0 and (row.status == 'In Progress' or (row.qtype == 'issue' and row.status == 'Agreed') or
-                                     (row.qtype == 'action' and row.status == 'Agreed'
-                                      and row.execstatus != 'Completed')):
+        if nexteventid != 0 and (row.status == 'In Progress'  or
+                                 (row.qtype == 'action' and row.execstatus != 'Completed')):
             row.update_record(eventid=nexteventid)
-        else:
+        else:  # only in progress items and actions not completed go forward to next event
             row.update_record(eventid=unspecid)
         db.commit()
 

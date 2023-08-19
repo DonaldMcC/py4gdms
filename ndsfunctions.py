@@ -16,6 +16,8 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
+#TODO add type hinting to this and doctests
+
 
 import os
 import datetime
@@ -24,7 +26,7 @@ from py4web import URL
 from .common import db
 
 
-def qtypename(item):
+def qtypename(item: string):
     return 'question' if item == 'quest' else item
 
 
@@ -121,7 +123,7 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
     return colorclass
 
 
-def score_question(questid, answer=0):
+def score_question(questid: int, answer:int = 0):
     """
     This routine is now called for all answers to questions but a couple of changes 
     a) only ever two answers to a question
@@ -143,10 +145,7 @@ def score_question(questid, answer=0):
                 (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
             quest.status = 'Resolved'
             quest.resolvedate = datetime.datetime.utcnow()
-            if quest.numanswer1 > quest.numanswer2:
-                quest.correctans = 1
-            else:
-                quest.correctans = 2
+            quest.correctans = 1 if quest.numanswer1 > quest.numanswer2 else quest.correctans = 2
         else:
             quest.status = 'In Progress'
             quest.correctans = 0
@@ -187,13 +186,8 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         parentlist = itemids
         childlist = itemids
         links = None
-        # just always have actlevels at 1 or more and see how that works
-        # below just looks at parents and children - to get partners and siblings we could repeat the process
-        # but that would extend to ancestors - so probably need to add as parameter to the query but conceptually
-        # this could be repeated n number of times in due course
-
-        # these may become parameters not sure
-        # change back to true once working
+        # TODO have another look at how this could produce different levels of links - was previously multi-range
+        # but now removed that
         getsibs = False
         getpartners = False
 
