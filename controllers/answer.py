@@ -71,8 +71,7 @@ def perccomplete():
         pass
 
     quest.perccomplete = percentcomplete
-    quest.execstatus = 'Completed' if percentcomplete == 100 else quest.execstatus = 'In Progress' \
-        if percentcomplete > 0 else quest.execstatus = 'Proposed'
+    quest.execstatus = 'Completed' if percentcomplete == 100 else 'In Progress' if percentcomplete > 0 else 'Proposed'
 
     quest.update_record()
     db.commit()
