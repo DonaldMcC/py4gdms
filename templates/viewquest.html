@@ -91,6 +91,7 @@ var questid = "[[=quest['id'] ]]";
     </div>
 [[pass]]
 
+
 [[if quest['notes']:]]
 <div><h1 class="subtitle h4">Notes</h1>
 <p>[[=quest['notes'] ]]</p>
@@ -107,7 +108,8 @@ var questid = "[[=quest['id'] ]]";
     pass]]. </p>
 [[pass]]
     </div>
-<div>
+        [[include 'quest_link_new.i']]
+    <div>
 <ajax-component id="comments" url="[[=URL(f"getcomments/{quest['id']}")]]">
     <p>Loading...</p>
     </ajax-component>
@@ -119,7 +121,6 @@ var questid = "[[=quest['id'] ]]";
             src="data:text/html;charset=utf-8,%3Cblockquote%20class%3D%22twitter-tweet%22%3E%3Cp%20lang%3D%22en%22%20dir%3D%22ltr%22%3ELet%26%2339%3Bs%20get%20an%20aligned%20structure%20for%20moving%20the%20world%20forward%20in%20a%20fairer%20manner%3C/p%3E%26mdash%3B%20Russ%20King%20%28@newglobalstrat%29%20%3Ca%20href%3D%22https%3A//twitter.com/newglobalstrat/status/1517593650473144323%3Fref_src%3Dtwsrc%255Etfw%22%3EApril%2022%2C%202022%3C/a%3E%3C/blockquote%3E%0A%3Cscript%20async%20src%3D%22https%3A//platform.twitter.com/widgets.js%22%20charset%3D%22utf-8%22%3E%3C/script%3E%0A">
     </iframe>
     [[pass]]
-
   <script>
  [[include 'viewquest.js']]
  </script>
