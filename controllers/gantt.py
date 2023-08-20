@@ -32,6 +32,8 @@ from ..ndsqueries import get_items
 @action.uses('gantt.html', session, db, auth.user)
 def gantt():
     # This will now operate at eventid level typically - full view not that useful
+    # TODO - make it clear what the event is and have this on the view at least as 
+    # simple improvement for now
     eid=session.get('eventid',None)
     eventrow = db(db.event.id == eid).select().first() if eid else None
     res_actions = get_items(event=eid, status='Resolved')
