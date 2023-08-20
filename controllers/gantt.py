@@ -33,9 +33,11 @@ from ..ndsqueries import get_items
 def gantt():
     # This will now operate at eventid level typically - full view not that useful
     eid=session.get('eventid',None)
+    eventrow = db(db.event.id == eid).select().first() if eid else None
     res_actions = get_items(event=eid, status='Resolved')
     if res_actions:
         projxml = get_gantt_data(res_actions)
     else:
         projxml = "<project></project>"
-    return dict(project=XML(projxml), quests=res_actions)
+    print(eventrow)
+    return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)

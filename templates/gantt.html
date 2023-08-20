@@ -1,4 +1,9 @@
 [[extend 'layoutbs.html']]
+[[if eventrow:]]
+<h4>Event: [[=eventrow['event_name'] ]]</h4>
+[[else:]]
+<h4>All Resolved Items</h4>
+[[pass]]
 [[include 'gantt.i']]
 
 

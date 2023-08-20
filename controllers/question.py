@@ -117,7 +117,6 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     except TypeError:
         pass
 
-
     # default for this in models doesn't seem to work
     db.question.auth_userid.default = auth.user_id
     # Note fieldlist creates error if you specify a record - so gone with javascript to customise form
@@ -151,20 +150,20 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
         session['chosenai'] = form.vars['chosenai']
-        #sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
-        #sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
+        # sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
+        # sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
-        if form.vars['social_media']:
+        if form.vars['social_media'] and not qid: # only want to publish new questions not edits
             questurl = URL('question/viewquest', str(form.vars['id']), scheme='https')
             pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
             print(pub_result)
             quest = db(db.question.id == form.vars['id']).select().first()
-            #TODO figure out if below line matters and if so how to get the id back
-            quest.media_id = pub_result.id
-            quest.update_record()
-            db.commit()
+            #TODO revisit below for v2 of API
+            # quest.media_id = pub_result.id
+            # quest.update_record()
+            # db.commit()
         if sourceq:
             request_link(sourceq, form.vars['id'], 'create')
         if eid:
@@ -225,7 +224,6 @@ def questiongrid(path=None):
                 editable=URL('new_question/'),
                 deletable=True,
                 **GRID_DEFAULTS)
-
     return dict(grid=grid)
 
 
