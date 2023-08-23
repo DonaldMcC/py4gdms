@@ -36,10 +36,12 @@ def gantt():
     # simple improvement for now
     eid=session.get('eventid',None)
     eventrow = db(db.event.id == eid).select().first() if eid else None
-    res_actions = get_items(event=eid, status='Resolved')
+    if eid:
+        res_actions = get_items(event=eid, status='Resolved')
+    else: # only incomplete actions as too many otherwise
+        res_actions = get_items(event=eid, status='Resolved', execstatus='In Progress')
     if res_actions:
         projxml = get_gantt_data(res_actions)
     else:
         projxml = "<project></project>"
-    print(eventrow)
     return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)
