@@ -28,20 +28,25 @@ from yatl.helpers import XML
 from ..ndsqueries import get_items
 
 
+@action("allgantt", method=['GET', 'POST'])
+@action.uses('gantt.html', session, db, auth.user)
+def allgantt():
+    eventrow = None
+    eid = None
+    res_actions = get_items(event=eid, status='Resolved', execstatus='Incomplete')
+    projxml = get_gantt_data(res_actions) if res_actions else "<project></project>"
+    return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)
+
+
 @action("gantt", method=['GET', 'POST'])
 @action.uses('gantt.html', session, db, auth.user)
 def gantt():
-    # This will now operate at eventid level typically - full view not that useful
-    # TODO - make it clear what the event is and have this on the view at least as 
-    # simple improvement for now
-    eid=session.get('eventid',None)
-    eventrow = db(db.event.id == eid).select().first() if eid else None
+    eid = session.get('eventid', None)
+    eventrow = None
     if eid:
+        eventrow = db(db.event.id == eid).select().first()
         res_actions = get_items(event=eid, status='Resolved')
-    else: # only incomplete actions as too many otherwise
+    else:  # only incomplete actions as too many otherwise
         res_actions = get_items(event=eid, status='Resolved', execstatus='Incomplete')
-    if res_actions:
-        projxml = get_gantt_data(res_actions)
-    else:
-        projxml = "<project></project>"
+    projxml = get_gantt_data(res_actions) if res_actions else "<project></project>"
     return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)
