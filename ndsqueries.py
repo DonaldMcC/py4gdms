@@ -93,7 +93,7 @@ def make_query(qtype='quest', status=None, event=None, eventstatus='Open', proje
             eventlist = [row.id for row in events] if events else []
             query &= (db.question.eventid.belongs(eventlist))
         if execstatus:
-            if execstatus == 'In Progress':
+            if execstatus == 'Incomplete':
                 query &= (db.question.execstatus != 'Completed')
             else:
                 query &= (db.question.execstatus == 'Completed')

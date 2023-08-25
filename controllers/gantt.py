@@ -39,7 +39,7 @@ def gantt():
     if eid:
         res_actions = get_items(event=eid, status='Resolved')
     else: # only incomplete actions as too many otherwise
-        res_actions = get_items(event=eid, status='Resolved', execstatus='In Progress')
+        res_actions = get_items(event=eid, status='Resolved', execstatus='Incomplete')
     if res_actions:
         projxml = get_gantt_data(res_actions)
     else:
