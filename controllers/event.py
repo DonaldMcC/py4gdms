@@ -165,7 +165,6 @@ def view_event(eid='0'):
     db.comment.parentid.default = eid
     commentform = Form(db.comment, formstyle=FormStyleBootstrap4inline)
 
-    # print(nodes)
     return dict(eventrow=eventrow, eventid=eid, qactions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
                 comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, quests=quests, nodes=nodes,
@@ -185,7 +184,6 @@ def event_redirect(status=None):
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('eventgrid.html', session, db, flash, auth.user)
 def eventgrid(path=None):
-    # TODO need to look at passing a variable into the grid seems like path is only argument now
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',

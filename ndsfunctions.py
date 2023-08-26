@@ -16,7 +16,6 @@
 #
 # With thanks to Guido, Massimo and many other that make this sort of thing
 # much easier than it used to be
-#TODO add type hinting to this and doctests
 
 
 import os
@@ -30,7 +29,7 @@ def qtypename(item: str):
     return 'question' if item == 'quest' else item
 
 
-def get_filetype(filename):
+def get_filetype(filename: str):
     # print(filename)
     not_used, file_extension = os.path.splitext(filename)
     ext = file_extension.lower()
@@ -41,7 +40,6 @@ def get_filetype(filename):
         return 'video/mp4'
     elif ext == '.mp3' or ext == '.wav':
         return 'audio/mpeg'
-    # print(ext)
     return None
 
 
@@ -123,7 +121,7 @@ def gantt_colour(startdate, enddate, percomplete=0, gantt=True):
     return colorclass
 
 
-def score_question(questid: int, answer:int = 0):
+def score_question(questid: int, answer: int = 0):
     """
     This routine is now called for all answers to questions but a couple of changes 
     a) only ever two answers to a question
@@ -163,6 +161,7 @@ def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
 
 
 def creategraph(itemids, numlevels=0, intralinksonly=True):
+    # Not currently now being used - getd3graph instead
     """
     :param itemids: list
     :param numlevels: int
@@ -186,8 +185,6 @@ def creategraph(itemids, numlevels=0, intralinksonly=True):
         parentlist = itemids
         childlist = itemids
         links = None
-        # TODO have another look at how this could produce different levels of links - was previously multi-range
-        # but now removed that
         getsibs = False
         getpartners = False
 

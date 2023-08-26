@@ -109,13 +109,10 @@ flash = auth.flash
 
 def create_profile_callback(field_values, user_id):
     print(f"User registered: {user_id}")
-    #TODO will call some sort of next notification function from here that may also update notifydate if successfully sent
-    #otherwise will just be initial population and based on current time
     return
 
 
 def get_next_notify_date(notify_date, frequency):
-
     return get_next_notify_date
 
 
