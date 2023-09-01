@@ -1,7 +1,11 @@
 # Chap02/twitter_client.py
 import os
 import sys
+import pprint
 from tweepy import API, Client, OAuthHandler, TweepyException
+from py4web import URL
+# below line less than ideal as then can't run this file without relative import no known parent issue
+# however can probably still just call tweet_test from some sort of test controller and keep going
 from . import settings
 
 
@@ -92,3 +96,9 @@ def publish(questiontext, filename=None):
     [media.media_id_string])
     print("TWEET: ", tweet)
 """
+
+def tweet_test():
+    questurl = URL('question/viewquest', str(1), scheme='https')
+    quest_text = 'This is a test tweet'
+    pub_result = publish(f'{questurl} {quest_text}')
+    pprint(pub_result)
