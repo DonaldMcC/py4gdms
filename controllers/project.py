@@ -66,7 +66,7 @@ def view_project(pid='0'):
 
 @action("new_project/<pid>", method=['GET', 'POST'])
 @action("new_project", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user, 'new_project.html')
+@action.uses('new_project.html', session, db, flash, auth.user, )
 def new_project(pid=None):
     # default for this in models doesn't seem to work
     db.project.startdate.default = (datetime.datetime.utcnow()).strftime("%Y-%m-%d")

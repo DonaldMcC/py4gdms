@@ -21,6 +21,7 @@ from .controllers import viewquest
 from .controllers import comments
 from .controllers import gdmsapi
 from .controllers import upgrade
+from .controllers import tweet
 
 
 # optional parameters

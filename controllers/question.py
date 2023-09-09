@@ -172,27 +172,6 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     return dict(form=form)
 
 
-# This is to support testing twitter API - but suppose it could extend
-@action("tweet_test", method=['GET', 'POST'])
-@action.uses('tweet_test.html', session, db, flash, auth.user)
-def tweeter():
-    # Aim to
-
-    form = Form(db.tweeter, record=0, formstyle=FormStyleBootstrap4inline)
-
-    if form.accepted:
-        tweeturl = URL('tweeter/viewtweet', str(form.vars['id']), scheme='https')
-        pub_result = publish('{} {}'.format(tweeturl, form.vars['tweet_text']))
-        print(pub_result)
-        quest = db(db.tweeter.id == form.vars['id']).select().first()
-        #TODO revisit below for v2 of API
-        # quest.media_id = pub_result.id
-        # quest.update_record()
-        # db.commit()
-        redirect(URL(sourceurl, vars=dict(qtype=qtype)))
-    return dict(form=form)
-
-
 @action('questiongrid', method=['POST', 'GET'])
 @action('questiongrid/<path:path>', method=['POST', 'GET'])
 @action.uses('questiongrid.html', session, db, flash, auth.user)

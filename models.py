@@ -69,7 +69,6 @@ db.define_table('knowledge',
                 Field('defaultknowledge', 'boolean', label='Default Knowledge Engine', default=False),
                 format='%(title)s')
 
-
 db.define_table('locn',
                 Field('location_name', label='Location Name', unique=True, notnull=True),
                 Field('address1', label='Address 1'),
@@ -157,7 +156,7 @@ db.define_table('question',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2])),
                       comment='If populated status moves to resolved'),
-                Field.Virtual('correctanstext', lambda row: (row['factopinion']=='Fact' and 'N/A')
+                Field.Virtual('correctanstext', lambda row: (row['factopinion'] == 'Fact' and 'N/A')
                                                             or (row['correctans'] == 1 and row['answer1'])
                                                             or (row['correctans'] == 2 and row['answer2']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
@@ -179,7 +178,18 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
-#lambda row: ((row['correctans'] == 1 and row['answer1']) or
+
+#Field('download_file', 'upload', uploadfolder=settings.UPLOAD_FOLDER)
+db.define_table('tweets',
+                Field('questiontext', 'text', label='Item Details', requires=not_empty),
+                Field('media_id', 'integer'),
+                Field('test_url')
+                )
+
+db.tweets.test_url.requires = IS_EMPTY_OR(IS_URL())
+
+
+# lambda row: ((row['correctans'] == 1 and row['answer1']) or
 #                                                             (row['correctans'] == 2 and row['answer2']) or '?')),
 
 db.define_table('userquestion',
@@ -265,7 +275,7 @@ db.define_table('eventmap',
                 Field('notes', 'text', label='Notes'))
 
 db.eventmap.correctanstext = Field.Virtual(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
-                                                     (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
+                                                        (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
 db.define_table("itemlike",
                 Field('parentid', 'integer'),
