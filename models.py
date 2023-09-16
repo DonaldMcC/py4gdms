@@ -181,11 +181,11 @@ db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
 
 db.define_table('tweets',
-                Field('parentid', 'integer', writable=False, readable=False),
+                Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('tweet_text', 'text', requires=IS_NOT_EMPTY()),
-                Field('status', 'string', default='REQUESTED',requires=IS_IN_SET(['REQUESTED', 'SENT', 'REJECTED'])),
+                Field('status', 'string', default='REQUESTED', requires=IS_IN_SET(['REQUESTED', 'SENT', 'REJECTED'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('tweetdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
                 Field('media_id', 'integer'),

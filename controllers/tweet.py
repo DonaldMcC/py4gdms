@@ -13,6 +13,7 @@ flash = Flash()
 
 # This is to support testing twitter API
 
+
 @action('tweeter', method=['GET', 'POST'])
 @action.uses('tweets.html', session, db, flash, auth.user)
 def tweeter():
@@ -33,7 +34,7 @@ def tweetgrid(path=None):
     pre_action_buttons = [
         lambda row: (
             GridActionButton(
-                url=URL("reorder"),
+                url=URL("tweet"),
                 text=f"Tweet {row.tweet_text}",
                 icon="fa-redo",
                 message=f"Do you want to tweet {row.tweet_text}?",
@@ -71,8 +72,8 @@ def tweetgrid(path=None):
 
 @action("tweet/<recid>", method=['GET', 'POST'])
 @action.uses('tweet.html', session, db, auth.user)
-def tweet(recdid=0):
-    #TODO probably want this to be signed URL to not have open tweet option
+def tweet(recid=0):
+    # TODO probably want this to be signed URL to not have open tweet option
     # this might be a scheduled routine but may need some sort of review first - which might be automated
     # with gpt or the like
 
@@ -89,10 +90,10 @@ def tweet(recdid=0):
     parent_rec = None
 
     if tweet_rec['parenttable'] and tweet_rec['parentid']:
-        if  tweet_rec['parenttable'] == 'question':
+        if tweet_rec['parenttable'] == 'question':
             parent_rec = db(db.question.id == tweet_rec['parentid']).select().first()
     if parent_rec:
-        #need to build
+        # need to build
         tweeturl = URL('viewquest', str(tweet_rec['parentid']), scheme='https')
     else:
         tweeturl = URL('index', scheme='https')
@@ -106,5 +107,5 @@ def tweet(recdid=0):
     #        # quest.media_id = pub_result.id
     #        # quest.update_record()
     #        # db.commit()
-
+    redirect(URL('tweetgrid'))
     return
