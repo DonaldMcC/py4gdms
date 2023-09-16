@@ -179,14 +179,20 @@ db.define_table('question',
 
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
-#Field('download_file', 'upload', uploadfolder=settings.UPLOAD_FOLDER)
+
 db.define_table('tweets',
-                Field('questiontext', 'text', label='Item Details', requires=not_empty),
+                Field('parentid', 'integer', writable=False, readable=False),
+                Field('parenttable', 'string', default='question', writable=False, readable=False),
+                Field('auth_userid', 'reference auth_user', writable=False, readable=False),
+                Field('tweet_text', 'text', requires=IS_NOT_EMPTY()),
+                Field('status', 'string', default='REQUESTED',requires=IS_IN_SET(['REQUESTED', 'SENT', 'REJECTED'])),
+                Field('numreject', 'integer', default=0, writable=False, readable=False),
+                Field('tweetdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
                 Field('media_id', 'integer'),
-                Field('test_url')
+                Field('tweet_url')
                 )
 
-db.tweets.test_url.requires = IS_EMPTY_OR(IS_URL())
+db.tweets.tweet_url.requires = IS_EMPTY_OR(IS_URL())
 
 
 # lambda row: ((row['correctans'] == 1 and row['answer1']) or

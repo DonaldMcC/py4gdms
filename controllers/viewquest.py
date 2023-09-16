@@ -57,6 +57,7 @@ from ..ndsqueries import get_class, get_disabled
 from ..ndsfunctions import get_filetype, qtypename, myconverter
 from ..d3js2py import getd3graph
 
+
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action("viewquest/<qid>/<eid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
