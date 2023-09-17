@@ -41,7 +41,7 @@ def tweetgrid(path=None):
                 append_id=True,
             )
         )
-        if True
+        if row.status == 'To Send'
         else None
     ]
     GRID_DEFAULTS = dict(rows_per_page=15,
@@ -62,13 +62,14 @@ def tweetgrid(path=None):
                 orderby=orderby,
                 pre_action_buttons=pre_action_buttons,
                 search_queries=search_queries,
-                create=URL('new_event'),
-                details=URL('view_event/'),
-                editable=URL('new_event/'),
                 deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 
+
+#create = URL('new_event'),
+#details = URL('view_event/'),
+#editable = URL('new_event/'),
 
 @action("tweet/<recid>", method=['GET', 'POST'])
 @action.uses('tweet.html', session, db, auth.user)
@@ -93,19 +94,26 @@ def tweet(recid=0):
         if tweet_rec['parenttable'] == 'question':
             parent_rec = db(db.question.id == tweet_rec['parentid']).select().first()
     if parent_rec:
-        # need to build
         tweeturl = URL('viewquest', str(tweet_rec['parentid']), scheme='https')
     else:
         tweeturl = URL('index', scheme='https')
 
     print(tweeturl)
-    #        pub_result = publish('{} {}'.format(tweeturl, form.vars['tweet_text']))
-    #        print(pub_result)
+    #TODO this will go in try except presently - but not sure what errors are likely yet
+    pub_result = publish('{} {}'.format(tweeturl, tweet_rec.tweet_text))
+    print(pub_result)
     #  So think we come back to this bit in a bit
     #        quest = db(db.tweeter.id == form.vars['id']).select().first()
     #        #TODO revisit below for v2 of APIeventgrid.htmleventgrid.html
-    #        # quest.media_id = pub_result.id
-    #        # quest.update_record()
-    #        # db.commit()
+    tweet_rec.media_id = pub_result.data['id']
+    tweet_rec.status = 'Sent'
+    # So these will end up as https://twitter.com/newglobalstrat/status/1703326031413641356
+    # ie always a prefix of status and then the media ID
+    tweet_rec.update_record()
+
+    if parent_rec:
+        parent_rec.media_id = pub_result.data['id']
+        parent_rec.update_record()
+    db.commit()
     redirect(URL('tweetgrid'))
     return
