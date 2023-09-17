@@ -183,15 +183,12 @@ db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 db.define_table('tweets',
                 Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
-                Field('auth_userid', 'reference auth_user', writable=False, readable=False),
                 Field('tweet_text', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='To Send', requires=IS_IN_SET(['To Send', 'Sent', 'Rejected'])),
-                Field('numreject', 'integer', default=0, writable=False, readable=False),
-                Field('tweetdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
+                Field('requestdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
+                Field('tweetdate', 'datetime',  writable=False),
                 Field('media_id', 'integer'),  # Note this is the twitter url that we get on the status post
                 )
-
-db.tweets.tweet_url.requires = IS_EMPTY_OR(IS_URL())
 
 # lambda row: ((row['correctans'] == 1 and row['answer1']) or
 #                                                             (row['correctans'] == 2 and row['answer2']) or '?')),

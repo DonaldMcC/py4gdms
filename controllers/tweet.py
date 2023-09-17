@@ -1,3 +1,5 @@
+
+import datetime
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
@@ -51,14 +53,15 @@ def tweetgrid(path=None):
                          grid_class_style=GridClassStyleBootstrap5)
 
     query = db.tweets.id > 0
-    fields = [db.tweets.status, db.tweets.tweet_text, db.tweets.tweet_url, db.tweets.tweetdate]
+
+    fields = [db.tweets.status, db.tweets.tweet_text, db.tweets.requestdate, db.tweets.media_id]
     orderby = [~db.tweets.id]
     search_queries = [['Search by Name', lambda value: db.tweets.id == value]]
 
     grid = Grid(path,
                 query,
                 fields=fields,
-                headings=['Status', 'Tweet', 'Url', 'Date'],
+                headings=['Status', 'Tweet', 'Date', 'Tweet ID'],
                 orderby=orderby,
                 pre_action_buttons=pre_action_buttons,
                 search_queries=search_queries,
@@ -107,6 +110,7 @@ def tweet(recid=0):
     #        #TODO revisit below for v2 of APIeventgrid.htmleventgrid.html
     tweet_rec.media_id = pub_result.data['id']
     tweet_rec.status = 'Sent'
+    tweet_rec.tweet_date = datetime.datetime.utcnow()
     # So these will end up as https://twitter.com/newglobalstrat/status/1703326031413641356
     # ie always a prefix of status and then the media ID
     tweet_rec.update_record()

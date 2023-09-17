@@ -156,14 +156,9 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
         if form.vars['social_media'] and not qid: # only want to publish new questions not edits
-            questurl = URL('question/viewquest', str(form.vars['id']), scheme='https')
-            pub_result = publish('{} {}'.format(questurl, form.vars['questiontext']))
-            print(pub_result)
-            quest = db(db.question.id == form.vars['id']).select().first()
-            #TODO revisit below for v2 of API
-            # quest.media_id = pub_result.id
-            # quest.update_record()
-            # db.commit()
+            # now just insert a record into
+            db.tweets.insert(parentid = qid, tweet_text = form.vars['questiontext'])
+
         if sourceq:
             request_link(sourceq, form.vars['id'], 'create')
         if eid:
