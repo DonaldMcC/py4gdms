@@ -2,6 +2,8 @@
 import os
 import sys
 import pprint
+
+import tweepy
 from tweepy import API, Client, OAuthHandler, TweepyException
 from py4web import URL
 # below line less than ideal as then can't run this file without relative import no known parent issue
@@ -43,6 +45,12 @@ def get_twitter_client():
     return client
 
 
+def get_twitter_conn_v1(api_key, api_secret, access_token, access_token_secret):
+    auth = tweepy.OAuth1UserHandler(api_key, api_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    return tweepy.API(auth)
+
+
 def publish(questiontext, filename=None):
     # The posting currently has a url to the question and the question text.  Tending to now think
     # adding a second url if we have one in the question is confusing - think we ARE Ok to add a media ID
@@ -68,6 +76,7 @@ def publish(questiontext, filename=None):
     long_text = f"{quetiontext[:277]}..." if len(questiontext) > 280 else questiontext
 
     if filename:
+        api = get_twitter_conn_v1(consumer_key, consumer_secret, access_token, access_secret)
         media = api.media_upload(filename=filename)
         # print("MEDIA: ", media)
         media_ids = [media.media_id_string]
