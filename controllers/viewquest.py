@@ -75,7 +75,7 @@ def viewquest(qid=0, eid=0):
     filename = ''
     urlpath = ''
     filetype = None
-    anstext=''
+    anstext = ''
     viewtext = ''
     uq = None
     ur = None
@@ -139,7 +139,7 @@ def viewquest(qid=0, eid=0):
     subsquests = [row.targetid for row in subsquestrows]
     eid = quest['eventid']
     editable = 'false'  # don't think we can use this on items as could be cross project or event
-    quests, nodes, links, resultstring = getd3graph('quest', quest.id , 'Open', 1, 1, 0)
+    quests, nodes, links, resultstring = getd3graph('quest', quest.id, 'Open', 1, 1, 0)
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
@@ -149,7 +149,7 @@ def viewquest(qid=0, eid=0):
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
                 filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai,
-                eventowner=editable, eventid=eid, projid = 0, nodes=nodes, links=links, redraw='false',
+                eventowner=editable, eventid=eid, projid=0, nodes=nodes, links=links, redraw='false',
                 myconverter=myconverter)
 
 

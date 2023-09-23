@@ -38,7 +38,6 @@ from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from .network import request_link
 
-
 flash = auth.flash
 
 try:
@@ -52,6 +51,7 @@ except ImportError as error:
 try:
     import openai
     from ..settings_private import OPENAI_API_KEY
+
     oai = True
 except ImportError as error:
     oai = False
@@ -92,7 +92,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         try:
             defaultresolve = db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id']
         except (AttributError, TypeError):
-            defaultresolve=1
+            defaultresolve = 1
 
     try:
         db.question.resolvemethod.default = session.get('resolvemethod', defaultresolve)
@@ -111,7 +111,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
     try:
         db.question.chosenai.default = session.get('chosenai', db(db.knowledge.defaultknowledge == True).select(
-                                                    db.knowledge.id).first()['id'])
+            db.knowledge.id).first()['id'])
     except AttributeError:
         pass
     except TypeError:
@@ -155,14 +155,14 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
         if qid:
             score_question(qid)  # Added to rescore question principally to allow changing to single resolution later
-        if form.vars['social_media'] and not qid: # only want to publish new questions not edits
+        if form.vars['social_media'] and not qid:  # only want to publish new questions not edits
             # now just insert a record into
-            db.tweets.insert(parentid = qid, tweet_text = form.vars['questiontext'])
+            db.tweets.insert(parentid=qid, tweet_text=form.vars['questiontext'])
 
         if sourceq:
             request_link(sourceq, form.vars['id'], 'create')
         if eid:
-            sourceurl += r'/'+str(eid)
+            sourceurl += r'/' + str(eid)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
@@ -202,7 +202,7 @@ def questiongrid(path=None):
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
     else:
-        headings = ['Question',  'Answer', 'Status', 'Event', 'Project']
+        headings = ['Question', 'Answer', 'Status', 'Event', 'Project']
         fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name,
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
@@ -351,7 +351,7 @@ def openai_lookup():
             max_tokens=100,
             prompt=qtext,
             temperature=0.1,
-            )
+        )
         resulttemp = result["choices"][0]["text"]
     except openai.error.RateLimitError:
         resulttemp = "API quota exceed"

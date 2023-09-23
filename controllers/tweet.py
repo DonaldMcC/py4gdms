@@ -70,10 +70,6 @@ def tweetgrid(path=None):
     return dict(grid=grid)
 
 
-#create = URL('new_event'),
-#details = URL('view_event/'),
-#editable = URL('new_event/'),
-
 @action("tweet/<recid>", method=['GET', 'POST'])
 @action.uses('tweet.html', session, db, auth.user)
 def tweet(recid=0):
@@ -102,7 +98,7 @@ def tweet(recid=0):
         tweeturl = URL('index', scheme='https')
 
     print(tweeturl)
-    #TODO this will go in try except presently - but not sure what errors are likely yet
+    # TODO this will go in try except presently - but not sure what errors are likely yet
     pub_result = publish('{} {}'.format(tweeturl, tweet_rec.tweet_text))
     print(pub_result)
     #  So think we come back to this bit in a bit

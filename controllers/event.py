@@ -272,7 +272,7 @@ def archive():
                                          aianswer=row.aianswer,
                                          notes=row.notes)
 
-        if nexteventid != 0 and (row.status == 'In Progress'  or
+        if nexteventid != 0 and (row.status == 'In Progress' or
                                  (row.qtype == 'action' and row.execstatus != 'Completed')):
             row.update_record(eventid=nexteventid)
         else:  # only in progress items and actions not completed go forward to next event
