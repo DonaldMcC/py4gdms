@@ -557,28 +557,30 @@ spliceLinksForNode = function(node) {
         //console.log(d.notes);
 
         if (d.qtype == 'quest') {
-                qtype='Question';
-        }
-        else if (d.qtype == 'issue') {
-                qtype='Issue';
+            qtype = 'Question';
+        } else if (d.qtype == 'issue') {
+            qtype = 'Issue';
         }
 
         if (d.notes != null) {
-             notes = d.notes;
-             notes = notes.substring(0,300);
+            notes = d.notes;
+            notes = notes.substring(0, 300);
         }
         if (d.aianswer != null) {
-             notes = notes + '<br>AI:' + d.aianswer;
-             notes = notes.substring(0,300);
+            notes = 'Notes:' + notes + '<br>AI answer:' + d.aianswer;
+            notes = notes.substring(0, 300);
         }
 
-        if (notes =='') {
-            notes='No notes or AI Answer';
+        if (notes == '') {
+            notes = 'No notes or AI Answer';
         }
 
-        fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes +"</TD></TR>";
-        fieldformat += "<TR><TD><B>Due Date</B></TD><TD>"+ d.duedate+"</TD><TD><B>"+" Responsible:"+"</B></TD><TD>"+ d.responsible+"</TD></TR>";
+        fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes + "</TD></TR>";
 
+        if (qtype == 'Action') {
+
+        fieldformat += "<TR><TD><B>Due Date</B></TD><TD>" + d.duedate + "</TD><TD><B>" + " Responsible:" + "</B></TD><TD>" + d.responsible + "</TD></TR>";
+        };
         
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
             //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
