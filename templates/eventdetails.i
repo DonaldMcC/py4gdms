@@ -1,5 +1,5 @@
 <div>
-<table id='EvtDetails' class="table table-bordered border-info">
+<table id='EvtDetails' class="table table-bordered border-info table-striped">
 <thead>
 <tr class="table-info">
 <th>Event Name</th>

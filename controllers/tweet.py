@@ -13,8 +13,6 @@ from ..ndsfunctions import score_question
 from .network import request_link
 flash = Flash()
 
-# This is to support testing twitter API
-
 
 @action('tweeter', method=['GET', 'POST'])
 @action.uses('tweets.html', session, db, flash, auth.user)

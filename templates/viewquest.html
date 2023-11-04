@@ -4,32 +4,34 @@
 [[load_graph=True]]
 <div class="container-fluid gx-5">
 
-<h1 class="title h6">[[=quest['qtype'].capitalize()]]:</h1>
-<p class="h_inline">[[=quest['questiontext'] ]]</p>
+<table id='TabSummary' class="table table-bordered"><thead>
+<tr><th>[[=quest['qtype'].capitalize()]]:</th>
+<th>[[=quest['questiontext'] ]]</th>
 [[include 'questmedia.i']]
-<br>
+</tr></thead>
+    <tbody>
 [[if quest['question_url']: ]]
-<h2  class="h6">Link: </h2><p class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
-    [[=quest['question_url'] ]]</a>  Link is external content and opens in a new tab</p>
+<tr><th>Link: </th><td class="h_inline"><a href=[[=quest['question_url'] ]] target="_blank">
+    [[=quest['question_url'] ]]</a>  Link is external content and opens in a new tab</td></tr>
 [[pass]]
 
-<div>
-<h2 class=" title h6 h_inline">Status:</h2> <p class="h_inline">
+
+<tr><th>Status:</th> <td>
     [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
-<p class="h_inline">[[=anstext]]</p>
+[[=anstext]]
 [[else:]]
-<p class="h_inline">This [[=quest['qtype'] ]] is approved.</p>
+This [[=quest['qtype'] ]] is approved.
 [[pass]]
 [[pass]]
-<p class="h_inline">[[=viewtext]]
-    <p></p>
-</div>
-    [[if quest['factopinion'] == 'Opinion':]]
-<div id="newchart">
-<h2 class="title h6 h_inline">Answer Analysis</h2>
+[[=viewtext]]
+</td></tr>
 
-<p class="h_inline">This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
+[[if quest['factopinion'] == 'Opinion':]]
+<tr>
+<th>Answer Analysis</th>
+<td>
+This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
 
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
@@ -37,11 +39,17 @@
     <INPUT TYPE=button  [[=get_disabled(2, uq and uq.answer)]] title="Click to Answer"
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
            VALUE="[[=quest.answer2]]">
-</p>
-    </div>
-<p> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
-    and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </p>
+</td>
+</tr>
+<tr><td></td>
+<td> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
+    and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </td>
+</tr>
+</tbody>
+</table>
 
+    <div id="newchart">
+       </div>
 <div id="target"></div>
 
 <h2 class="title h5">Urgency and importance</h2>
