@@ -26,7 +26,7 @@
     <td> <input id="complete" type = "range" disabled title="Event is archived" name="compslider"  min="0"    max="100"
                 value="[[=row.eventmap.perccomplete]]" step="5"/></td>
     <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
-           class="[[=get_class('action',1)]]" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
+           class="[[=get_class('action',1)]] mb-1" onclick="quickanswer('[[=row.eventmap.questid]]','1',this)",
            VALUE="Approve">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]]
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)",
