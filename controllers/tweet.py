@@ -20,7 +20,7 @@ def tweeter():
     # Aim to get this reasonably working without actually publishing first - so this just puts records into
     # the tweets table now - most likely this will be little used other than for testing but similar to comments
     # table we could allow almost anything to be tweeted in due course
-    post_tweet = False
+    # post_tweet = False
     form = Form(db.tweets, formstyle=FormStyleBootstrap4inline)
     if form.accepted:
         redirect(URL('tweetgrid'))
