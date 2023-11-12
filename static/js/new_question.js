@@ -23,6 +23,16 @@ $(document).ready(function(){
 
    $('#question_aianswer').attr('readonly', true);
    $('#question_chosenai').attr('readonly', true);
+   $('#question_chosenai').parent().parent().hide();
+
+
+   /* hide optional fields - will move this after working*/
+    $('#question_notes').parent().parent().hide();
+    $('#question_shared_editing').parent().parent().hide();
+    $('#question_social_media').parent().parent().hide();
+    $('#question_question_media').parent().parent().parent().hide();
+    $('#question_question_url').parent().parent().hide();
+
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
