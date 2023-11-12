@@ -1,3 +1,21 @@
+function hide_options() {
+     /* hide optional fields - will move this after working*/
+    $('#question_notes').parent().parent().hide();
+    $('#question_shared_editing').parent().parent().hide();
+    $('#question_social_media').parent().parent().hide();
+    $('#question_question_media').parent().parent().parent().hide();
+    $('#question_question_url').parent().parent().hide();
+};
+
+function show_options() {
+     /* hide optional fields - will move this after working*/
+    $('#question_notes').parent().parent().show();
+    $('#question_shared_editing').parent().parent().show();
+    $('#question_social_media').parent().parent().show();
+    $('#question_question_media').parent().parent().parent().show();
+    $('#question_question_url').parent().parent().show();
+};
+
 $(document).ready(function(){
    $('#question_answertext').hide();
    $("label[for='question_answertext']").hide();
@@ -21,18 +39,14 @@ $(document).ready(function(){
    $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
          'value="Clear" class="btn btn-primary btn-danger" onclick="clear_lookup()"></div>');
 
+   $('#question_aianswer').parent().parent().children().first().append('<div class="btn-group mt-4"><input type="BUTTON" ' +
+                'id="showoptions" value="Show more" class="btn btn-primary" onclick="show_options()">');
+
    $('#question_aianswer').attr('readonly', true);
    $('#question_chosenai').attr('readonly', true);
    $('#question_chosenai').parent().parent().hide();
 
-
-   /* hide optional fields - will move this after working*/
-    $('#question_notes').parent().parent().hide();
-    $('#question_shared_editing').parent().parent().hide();
-    $('#question_social_media').parent().parent().hide();
-    $('#question_question_media').parent().parent().parent().hide();
-    $('#question_question_url').parent().parent().hide();
-
+    hide_options();
 
   /*   $('#question_notes__label').append('<p></p><input type="BUTTON" id="wolflookup" ' + 'value="Lookup Answer on Wolfram Alpha" class="btn btn-primary btn-xs btn-group-xs"
          onclick="wolfram_alpha_lookup()"></p>');
