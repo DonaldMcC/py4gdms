@@ -49,7 +49,7 @@ except ImportError as error:
     wolfram = False
 
 try:
-    import openai
+    from openai import OpenAI
     from ..settings_private import OPENAI_API_KEY
 
     oai = True
@@ -343,18 +343,19 @@ def openai_lookup():
     # This should be a straightforward function called via Ajax to lookup the answer to a question on openai
     # and then return the answer
     qtext = request.json['questiontext']
+    client = OpenAI(api_key=OPENAI_API_KEY)
     # print(qtext)
-    openai.api_key = OPENAI_API_KEY
-    try:
-        result = openai.Completion.create(
-            model="text-davinci-002",
-            max_tokens=100,
-            prompt=qtext,
-            temperature=0.1,
-        )
-        resulttemp = result["choices"][0]["text"]
-    except openai.error.RateLimitError:
-        resulttemp = "API quota exceed"
 
-    resulttext = resulttemp.strip('?').strip()
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages = [
+        {"role": "system", "content": "You are providing advice to make the world better "},
+        {"role": "user", "content": qtext}
+    ],
+    max_tokens = 100,
+    temperature=0.1
+    )
+    print(completion.choices[0].message.content)
+    resulttext = completion.choices[0].message.content
+
     return resulttext
