@@ -36,8 +36,11 @@ $(document).ready(function(){
          'value="Wikipedia" class="btn btn-primary btn-success" onclick="wikipedia_lookup()">');
    $('#wikiplookup').after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
          'value="OpenAI" class="btn btn-primary btn-info" onclick="openai_lookup()">');
+  // $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="bardlookup" ' +
+   //      'value="Bard" class="btn btn-primary btn-warning" onclick="bard_lookup()"></div>');
    $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
          'value="Clear" class="btn btn-primary btn-danger" onclick="clear_lookup()"></div>');
+
 
    $('#question_aianswer').parent().parent().children().first().append('<div class="btn-group mt-4"><input type="BUTTON" ' +
                 'id="showoptions" value="Show more" class="btn btn-primary" onclick="show_options()">');

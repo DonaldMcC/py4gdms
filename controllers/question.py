@@ -57,6 +57,15 @@ except ImportError as error:
     oai = False
 
 
+try:
+    from bardapi import Bard
+    from ..settings_private import BARD_API_KEY
+    _BARD_API_KEY = BARD_API_KEY
+    bardai = True
+except ImportError as error:
+    bardai = False
+    print('failed to import bard')
+
 def check_status(form):
     if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
         form.errors['status'] = 'Fact questions must have status Resolved or Draft'
@@ -352,10 +361,21 @@ def openai_lookup():
         {"role": "system", "content": "You are providing advice to make the world better "},
         {"role": "user", "content": qtext}
     ],
-    max_tokens = 100,
+    max_tokens = 200,
     temperature=0.1
     )
     print(completion.choices[0].message.content)
     resulttext = completion.choices[0].message.content
 
     return resulttext
+
+
+@action('bard_lookup', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def bard_lookup():
+    # This should be a straightforward function called via Ajax to lookup the answer to a question on openai
+    # and then return the answer
+    bard = Bard(token=_BARD_API_KEY)
+    qtext = request.json['questiontext']
+    answer = bard.get_answer(qtext)
+    return answer['content']
