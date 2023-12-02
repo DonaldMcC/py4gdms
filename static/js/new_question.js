@@ -37,7 +37,7 @@ $(document).ready(function(){
    $('#wikiplookup').after('&nbsp&nbsp<input type="BUTTON" id="openailookup" ' +
          'value="OpenAI" class="btn btn-primary btn-info" onclick="openai_lookup()">');
   // $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="bardlookup" ' +
-   //      'value="Bard" class="btn btn-primary btn-warning" onclick="bard_lookup()"></div>');
+   //s      'value="Bard" class="btn btn-primary btn-warning" onclick="bard_lookup()"></div>');
    $('#openailookup').after('&nbsp&nbsp<input type="BUTTON" id="clearlookup" ' +
          'value="Clear" class="btn btn-primary btn-danger" onclick="clear_lookup()"></div>');
 

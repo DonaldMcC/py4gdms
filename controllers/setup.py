@@ -23,7 +23,8 @@
 
 import datetime
 from ..common import db, authenticated, auth
-
+from pydal.tools.tags import Tags
+groups = Tags(db.auth_user)
 
 @authenticated()
 def datasetup():
@@ -74,5 +75,10 @@ def datasetup():
 
     if db(db.knowledge.source == "GPT3").isempty():
         kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3")
+
+    # create current user in manager group if not presently there - this allows actual tweetting
+    # as yet no other user admin functions setup
+    if not groups.find('manager'):
+        groups.add(user.id, 'manager')
 
     return locals()

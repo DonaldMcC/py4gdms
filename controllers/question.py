@@ -74,6 +74,8 @@ def check_status(form):
     return
 
 
+new_question/0/quest/13/603/351/view_event
+
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>", method=['GET', 'POST'])

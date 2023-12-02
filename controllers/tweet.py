@@ -11,6 +11,8 @@ from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from .network import request_link
+from pydal.tools.tags import Tags
+
 flash = Flash()
 
 
@@ -31,6 +33,8 @@ def tweeter():
 @action('tweetgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('tweetgrid.html', session, db, flash, auth.user)
 def tweetgrid(path=None):
+    if not 'manager' in groups.get(auth.get_user()['id']):
+        redirect(URL('not_authorized'))
     pre_action_buttons = [
         lambda row: (
             GridActionButton(
