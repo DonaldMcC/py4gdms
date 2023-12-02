@@ -149,7 +149,7 @@ def viewquest(qid=0, eid=0):
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
                 filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai,
-                eventowner=editable, eventid=eid, projid=0, nodes=nodes, links=links, redraw='false',
+                eventowner=editable, eventid=eid, projid=0, nodes=nodes, links=links, redraw='true',
                 myconverter=myconverter)
 
 

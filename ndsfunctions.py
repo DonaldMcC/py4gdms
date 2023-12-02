@@ -161,7 +161,7 @@ def truncquest(questiontext, maxlen=600, wrap=0, mark=True):
 
 
 def creategraph(itemids, numlevels=0, intralinksonly=True):
-    # Not currently now being used - getd3graph instead
+    # In use and called by  getd3graph instead
     """
     :param itemids: list
     :param numlevels: int
