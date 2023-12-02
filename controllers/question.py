@@ -56,15 +56,16 @@ try:
 except ImportError as error:
     oai = False
 
-
 try:
     from bardapi import Bard
     from ..settings_private import BARD_API_KEY
+
     _BARD_API_KEY = BARD_API_KEY
     bardai = True
 except ImportError as error:
     bardai = False
     print('failed to import bard')
+
 
 def check_status(form):
     if form.vars['status'] == 'In Progress' and form.vars['factopinion'] == 'Fact':
@@ -73,8 +74,6 @@ def check_status(form):
         form.errors['status'] = 'Questions of opinion cannot be submitted as resolved'
     return
 
-
-new_question/0/quest/13/603/351/view_event
 
 @action("new_question/<qid>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>", method=['GET', 'POST'])
@@ -96,6 +95,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     qid = int(qid) if qid and qid.isnumeric() else None
     questrec = None
     # print(auth.user_id)
+
     userdefresolve = db(db.auth_user.id == auth.user_id).select(db.auth_user.default_resolve).first()['default_resolve']
     try:
         defaultresolve = db(db.resolve.resolve_name == userdefresolve).select(db.resolve.id).first()['id']
@@ -147,7 +147,10 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
     db.question.correctanstext.readable = False
     db.question.priority.writable = False
-    form = Form(db.question, record=qid, formstyle=FormStyleBootstrap4inline)
+    if qid:
+        form = Form(db.question, record=qid, formstyle=FormStyleBootstrap4inline)
+    else:
+        form = Form(db.question, formstyle=FormStyleBootstrap4inline)
 
     if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
@@ -359,12 +362,10 @@ def openai_lookup():
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages = [
-        {"role": "system", "content": "You are providing advice to make the world better "},
-        {"role": "user", "content": qtext}
-    ],
-    max_tokens = 200,
-    temperature=0.1
+        messages=[
+            {"role": "system", "content": "You are providing advice to make the world better "},
+            {"role": "user", "content": qtext}
+        ], max_tokens=200, temperature=0.1
     )
     print(completion.choices[0].message.content)
     resulttext = completion.choices[0].message.content

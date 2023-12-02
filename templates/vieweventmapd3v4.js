@@ -92,9 +92,9 @@
 
 
             if (action == 'New') {
-                var urlstring = ['quest', d32py.eventid, posx, posy, 'view_event'].join('/');
-                /*console.log(urlstring)*/
-                window.open("[[=URL('new_question/0/')]]"+urlstring,"_self");
+                var urlstring = ['0','quest', d32py.eventid, posx, posy, 'view_event'].join('/');
+                console.log(urlstring);
+                window.open("[[=URL('new_question')]]"+"/"+urlstring,"_self");
             }
 
             if (action == 'Edit') {
