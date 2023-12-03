@@ -370,9 +370,18 @@ function redrawnodes() {
     //and calling fromdrag for now
 
     function rectclick(d) {
+        // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         location.href = baselowerUrl+'/1/'+d.serverid+'/';
+         d3.event.stopPropagation();
+    };
+
+    function urlclick(d) {
+        // lets replace this with launching question url in new tab
+        //console.log("you clicked rectd ", d.serverid);
+        //think this will become an ajax load presently
+        window.open(d.question_url, '_blank').focus();
          d3.event.stopPropagation();
     };
 
@@ -552,6 +561,7 @@ spliceLinksForNode = function(node) {
         var g = d3.select(this);  // the node (table)
 
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
+
         var qtype = 'Action';
         var notes = '';
         //console.log(d.notes);
@@ -584,6 +594,12 @@ spliceLinksForNode = function(node) {
         
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
             //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
+
+        console.log(d.question_url)
+        if (d.question_url > '') {
+                fieldformat += "<TR><TD><B>Link</B></TD><TD colspan='3'>" + d.question_url + "</TD></TR>";
+            };
+
 
         fieldformat += "</TABLE>";
 
@@ -734,7 +750,7 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              .attr("y", 45)
              .attr("width", 20)
               .attr("height", 20)
-             .on("click", rectclick);
+             .on("click", urlclick);
     //   .text(function(d) { return d.numsubs});
     var rct = gEl.append("text")
              .attr("x", 52)
