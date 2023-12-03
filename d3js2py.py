@@ -44,11 +44,11 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     edges = []
     for i, x in enumerate(quests):
         if eventstatus == 'Archived':  # For archived event quests from questmap table
-            nodes.append(getd3dict(x.questid, i + 2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext, x.status, x.qtype, x.priority, x.answers))
+            nodes.append(getd3dict(x.questid, i + 2, nodepositions[x.id][0], nodepositions[x.id][1], x.questiontext,
+                                    x.correctanstext, x.status, x.qtype, x.priority, x.answers, x.execstatus))
         else:
-            nodes.append(getd3dict(x.id, i + 2, nodepositions[x.id][0], nodepositions[x.id][1],
-                                   x.questiontext, x.correctanstext, x.status, x.qtype, x.priority, x.answers))
+            nodes.append(getd3dict(x.id, i + 2, nodepositions[x.id][0], nodepositions[x.id][1], x.questiontext,
+                                    x.correctanstext, x.status, x.qtype, x.priority, x.answers, x.execstatus))
 
     # if we have siblings and partners and layout is directionless then may need to look at joining to the best port
     # or locating the ports at the best places on the shape - most questions will only have one or two connections
@@ -93,7 +93,7 @@ def merge_two_dicts(x, y):
 
 
 def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
-              status='In Progress', qtype='quest', priority=50, answer1='', answer2=''):
+              status='In Progress', qtype='quest', priority=50, answer1='', answer2='', execstatus='Proposed'):
     # then establish fillcolour based on priority
     # establish border based on status
     # establish shape and round corners based on qtype
@@ -109,7 +109,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['scolour'] = 'lightgreen'
+        d3dict['scolour'] = 'darkgreen' if execstatus == 'Completed' else  'lightgreen'
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx

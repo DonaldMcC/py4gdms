@@ -381,8 +381,11 @@ function redrawnodes() {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
-        window.open(d.question_url, '_blank').focus();
-         d3.event.stopPropagation();
+        if (d.question_url >'') {
+            window.open(d.question_url, '_blank').focus();
+            d3.event.stopPropagation();
+        };
+
     };
 
     function nodeclick(d) {
@@ -748,6 +751,7 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
     var rc = gEl.append("rect")
              .attr("x", 45)
              .attr("y", 45)
+             .attr("stroke", "blue")
              .attr("width", 20)
               .attr("height", 20)
              .on("click", urlclick);
@@ -756,7 +760,8 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              .attr("x", 52)
              .attr("y", 59)
              .attr("font-size", "10px")
-              .text(numsubs.toString());
+              .text("L");
+    //numsubs.toString()  this was when we had layers
 
     if (qtype=='action') {
         var ac = gEl.append("rect")
