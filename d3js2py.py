@@ -43,6 +43,7 @@ def d3graph(quests, links, nodepositions, eventstatus='Open'):
     nodes = []
     edges = []
     for i, x in enumerate(quests):
+        print(x)
         if eventstatus == 'Archived':  # For archived event quests from questmap table
             nodes.append(getd3dict(x.questid, i + 2, nodepositions[x.id][0], nodepositions[x.id][1], x.questiontext,
                                     x.correctanstext, x.status, x.qtype, x.priority, x.answers, x.execstatus))
@@ -275,7 +276,7 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
         else:
             correctanstext = (x.correctans == 1 and x.answer1) or (x.correctans == 2 and x.answer2) or '?'
         dictx = getd3dict(x.id, i + 2, x.xpos, x.ypos, x.questiontext, correctanstext,
-                          x.status, x.qtype, x.priority, x.answer1, x.answer2)
+                          x.status, x.qtype, x.priority, x.answer1, x.answer2, x.execstatus)
         nodes.append(merge_two_dicts(dicty, dictx))
 
     edges = []
