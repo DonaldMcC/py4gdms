@@ -24,7 +24,7 @@
 import datetime
 from ..common import db, authenticated, auth
 from pydal.tools.tags import Tags
-groups = Tags(db.auth_user)
+groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
 
 @authenticated()
 def datasetup():
@@ -78,7 +78,9 @@ def datasetup():
 
     # create current user in manager group if not presently there - this allows actual tweetting
     # as yet no other user admin functions setup
-    if not groups.find('manager'):
-        groups.add(user.id, 'manager')
+    managers = db(groups.find(['manager'])).select()
+    print('man', len(managers))
+    if not len(managers):
+        groups.add(auth.user_id, 'manager')
 
     return locals()

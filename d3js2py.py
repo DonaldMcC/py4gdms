@@ -109,7 +109,7 @@ def getd3dict(objid, counter, posx=100, posy=100, text='default', answer='',
         d3dict['r'] = 160
         d3dict['x'] = posx
         d3dict['y'] = posy
-        d3dict['scolour'] = 'darkgreen' if execstatus == 'Completed' else  'lightgreen'
+        d3dict['scolour'] = 'darkgreen' if execstatus == 'Completed' else 'lightgreen'
     else:  # issue
         d3dict['r'] = 160
         d3dict['x'] = posx

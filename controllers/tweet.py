@@ -12,6 +12,7 @@ from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from .network import request_link
 from pydal.tools.tags import Tags
+groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
 
 flash = Flash()
 
