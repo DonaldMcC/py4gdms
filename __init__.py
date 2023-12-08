@@ -22,7 +22,7 @@ from .controllers import comments
 from .controllers import gdmsapi
 from .controllers import upgrade
 from .controllers import tweet
-
+from .controllers import prompt
 
 # optional parameters
 __version__ = "0.1.1"
