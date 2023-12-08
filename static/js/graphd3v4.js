@@ -596,7 +596,7 @@ spliceLinksForNode = function(node) {
         
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
             //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
-        
+
         if (d.question_url > '') {
                 fieldformat += "<TR><TD><B>Link</B></TD><TD colspan='3'>" + d.question_url + "</TD></TR>";
             };

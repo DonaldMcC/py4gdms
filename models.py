@@ -293,4 +293,12 @@ db.define_table('email_runs',
                 Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
                 Field('error', 'text'))
 
+db.define_table('ai_prompt',
+                Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+                Field('setup', 'string', default='A', label='Current prompt setup'),
+                Field('prompttype', 'string', requires = IS_IN_SET(['system', 'user'])),
+                Field('msgtype', 'string', writable=False, readable=False),
+                Field('prompt', 'text', requires=IS_NOT_EMPTY()))
+
+db.ai_prompt.msgtype.requires = IS_IN_SET(['Std_Answer', 'Related_Actions', 'Related_Issues', 'Related_Questions'])
 db.commit()
