@@ -9,10 +9,9 @@ def get_classBulma(qtype='quest', answer=1):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
 
+    btnclass=''
     if qtype != 'quest':  # issue or action
         btnclass = 'is-success ' if answer == 1 else 'is-danger '
-    else:
-        btnclass = ''
     btnclass += 'button is-small is-rounded'
     return btnclass
 
@@ -20,10 +19,9 @@ def get_classBulma(qtype='quest', answer=1):
 def get_classBootstrap(qtype='quest', answer=1):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
+    btnclass=''
     if qtype != 'quest':  # issue or action
         btnclass = 'btn-success ' if answer == 1 else 'btn-danger '
-    else:
-        btnclass = ''
     btnclass += 'btn btn-small'
     return btnclass
 
