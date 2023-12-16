@@ -26,6 +26,16 @@ from ..common import db, authenticated, auth
 from pydal.tools.tags import Tags
 groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
 
+
+@action('admin', method=['POST', 'GET'])
+@action('tweetgrid/<path:path>', method=['POST', 'GET'])
+@action.uses('admin.html', session, db, flash, auth.user)
+def  admin():
+    if not 'manager' in groups.get(auth.get_user()['id']):
+        redirect(URL('not_authorized'))
+    return locals()
+
+
 @authenticated()
 def datasetup():
     if db(db.website_parameters.id > 0).isempty():
