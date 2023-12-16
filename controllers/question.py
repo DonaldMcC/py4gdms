@@ -36,6 +36,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
+from ..ndsqueries import get_messages
 from .network import request_link
 
 flash = auth.flash
@@ -360,12 +361,16 @@ def openai_lookup():
     client = OpenAI(api_key=OPENAI_API_KEY)
     # print(qtext)
 
+    messages = [
+        {"role": "system", "content": "You are providing advice to make the world better "},
+        {"role": "user", "content": qtext}
+    ]
+    chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
+    testmessages = get_messages(chosenai.id, 'answer', 'A', qtext)
+    print(testmessages)
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are providing advice to make the world better "},
-            {"role": "user", "content": qtext}
-        ], max_tokens=200, temperature=0.1
+        messages=messages, max_tokens=200, temperature=0.1
     )
     print(completion.choices[0].message.content)
     resulttext = completion.choices[0].message.content

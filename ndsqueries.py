@@ -1,5 +1,5 @@
 from .common import db, auth
-
+import pprint
 
 def get_disabled(ans, useranswer):
     return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
@@ -9,7 +9,7 @@ def get_classBulma(qtype='quest', answer=1):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
 
-    btnclass=''
+    btnclass = ''
     if qtype != 'quest':  # issue or action
         btnclass = 'is-success ' if answer == 1 else 'is-danger '
     btnclass += 'button is-small is-rounded'
@@ -19,7 +19,7 @@ def get_classBulma(qtype='quest', answer=1):
 def get_classBootstrap(qtype='quest', answer=1):
     # Function to return button classes - only supporting Bulma.css for now
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
-    btnclass=''
+    btnclass = ''
     if qtype != 'quest':  # issue or action
         btnclass = 'btn-success ' if answer == 1 else 'btn-danger '
     btnclass += 'btn btn-small'
@@ -108,3 +108,31 @@ def make_leftjoin(eventstatus):
         leftjoin = db.userquestion.on((db.eventmap.questid == db.userquestion.questionid)
                                       & (db.userquestion.auth_userid == auth.user_id))
     return leftjoin
+
+
+def get_messages(chosenai, scenario, setup, qtext):
+    """
+    :param chosenai:
+    :param scenario:
+    :param setup:
+    :param qtext:
+    :return:
+
+    This should populate the prompts for openai only currently but most likely other LLMs can be added at some point
+    idea is that these are served first the system prompts and then the user prompts for chosenai, scenario and setup
+    We then serialise them into list of items to return hopefully
+            {"role": "system", "content": "You are providing advice to make the world better "},
+    """
+    # need to change this query to use the title of the chosen ai or pass the integer
+    query = ((db.prompt.chosenai == chosenai) & (db.prompt.scenario == scenario) & (db.prompt.setup == setup)
+             & (db.prompt.status == 'Active'))
+    sortby = db.prompt.prompttype, db.prompt.sequence
+    prompts = db(query).select(orderby=[sortby])
+
+    message = []
+    for row in prompts:
+        stringrow = f'"role": "{row.prompttype}", "content":"{row.prompt_text}"'
+        message.append("{" + stringrow + "},")
+    userprompt = f'"role": "user", "content": {qtext}'
+    message.append("{" + userprompt + "},")
+    return message
