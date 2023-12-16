@@ -22,15 +22,16 @@
 # This controller provides the initial data setup routines
 
 import datetime
-from ..common import db, authenticated, auth
+from ..common import db, authenticated, auth, session
+from py4web import action, request, redirect, URL, Flash
 from pydal.tools.tags import Tags
 groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
-
+flash = Flash()
 
 @action('admin', method=['POST', 'GET'])
-@action('tweetgrid/<path:path>', method=['POST', 'GET'])
+@action('admin/<path:path>', method=['POST', 'GET'])
 @action.uses('admin.html', session, db, flash, auth.user)
-def  admin():
+def admin():
     if not 'manager' in groups.get(auth.get_user()['id']):
         redirect(URL('not_authorized'))
     return locals()

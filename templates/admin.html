@@ -1,3 +1,24 @@
 [[extend 'layoutbs.html']]
+
 <h1 class="h2">Networked Decision Making</h1>
 <p>This will be the admin menu</p>
+
+<h1 title ="This page provides links to the main setup and configuration options.  Setup items are on the left, amend in the middle and admin on the right" data-content="">Application Setup Configuration and Administration</h1>
+<table id='TabConfig'>
+				<thead>
+					<tr>
+						<th>Item</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                    <tbody>
+<tr>
+<td><a href="[[=URL('promptgrid')]]">AI Prompts</a></td>
+<td>This allows editing of prompts for knowledge engines</td>
+</tr>
+<tr>
+<td><a href="[[=URL('tweetgrid')]]">Tweets</a></td>
+<td>This allows review and sending of proposed platform tweets</td>
+</tr>
+</tbody>
+</table>
