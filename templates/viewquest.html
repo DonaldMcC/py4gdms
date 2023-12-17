@@ -74,13 +74,19 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
                         <td><input id="impslide" type = "range" name="impslider"  min="1"    max="11" value="[[=uqrated and ur.importance or 5]]" step="1"/></td>
                     </tr>
                     <tr>
-<td><INPUT TYPE=button class="btn btn-primary btn-sm"
+<td>You can now use AI to suggest 3 related items and if appropriate you create them as related items</td>
+    <td>Click for Open AI suggested: <INPUT TYPE=button class="btn btn-primary btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Issues">
+<INPUT TYPE=button class="btn btn-success btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/quest/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Questions">
+<INPUT TYPE=button class="btn btn-warning btn-sm"
+           onClick="parent.location='[[=URL(f"new_question/None/action/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Actions">
+</td>
+    <td><INPUT TYPE=button class="btn btn-primary btn-sm"
            onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Issue">
-</td>
-    <td><INPUT TYPE=button class="btn btn-success btn-sm"
+<INPUT TYPE=button class="btn btn-success btn-sm"
            onClick="parent.location='[[=URL(f"new_question/None/quest/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Question">
-</td>
-    <td><INPUT TYPE=button class="btn btn-warning btn-sm"
+<INPUT TYPE=button class="btn btn-warning btn-sm"
            onClick="parent.location='[[=URL(f"new_question/None/action/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Action">
 </td>
 </tr>
