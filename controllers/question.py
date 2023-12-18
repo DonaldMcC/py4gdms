@@ -355,26 +355,25 @@ def wikipedia_lookup():
 @action('openai_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def openai_lookup():
-    # This should be a straightforward function called via Ajax to lookup the answer to a question on openai
-    # and then return the answer
+    # This is called via Ajax to lookup the answer to a question on openai and return answer
     qtext = request.json['questiontext']
+    scenario = request.json['scenario']
+    setup = 'A'
     client = OpenAI(api_key=OPENAI_API_KEY)
-    # print(qtext)
 
     messages = [
         {"role": "system", "content": "You are providing advice to make the world better "},
         {"role": "user", "content": qtext}
     ]
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
-    testmessages = get_messages(chosenai.id, 'answer', 'A', qtext)
-    print(testmessages)
+    messages = get_messages(chosenai.id, scenario, setup, qtext)
+    # print(messages)
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=messages, max_tokens=200, temperature=0.1
     )
-    print(completion.choices[0].message.content)
+    # print(completion.choices[0].message.content)
     resulttext = completion.choices[0].message.content
-
     return resulttext
 
 

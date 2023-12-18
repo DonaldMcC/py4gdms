@@ -59,6 +59,7 @@
 
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
             questiontext: qtext
+            scenairio: 'answer'
         }).then(qsuccess).catch(qerror);
 };
 
