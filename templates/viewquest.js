@@ -26,7 +26,7 @@ $(document).on('change', '#impslide', function () {
             //this will need a parameter in a bit for whether we want issue, question or action
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
-        
+
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
             questiontext: qtext
             scenario: 'answer'

@@ -361,18 +361,20 @@ def openai_lookup():
     setup = 'A'
     client = OpenAI(api_key=OPENAI_API_KEY)
 
-    messages = [
-        {"role": "system", "content": "You are providing advice to make the world better "},
-        {"role": "user", "content": qtext}
-    ]
+    # example_messages = [
+    #    {"role": "system", "content": "You are providing advice to make the world better "},
+    #    {"role": "user", "content": qtext}
+    # ]
+
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
-    # print(messages)
+    for item in messages:
+        print(type(item), item)
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=messages, max_tokens=200, temperature=0.1
+        messages=messages, max_tokens=300, temperature=0.1
     )
-    # print(completion.choices[0].message.content)
+
     resulttext = completion.choices[0].message.content
     return resulttext
 

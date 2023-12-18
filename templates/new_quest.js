@@ -58,8 +58,8 @@
     $('#question_chosenai').attr('readonly', true);
 
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
-            questiontext: qtext
-            scenairio: 'answer'
+            questiontext: qtext,
+            scenario: 'answer'
         }).then(qsuccess).catch(qerror);
 };
 

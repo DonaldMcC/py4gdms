@@ -131,8 +131,8 @@ def get_messages(chosenai, scenario, setup, qtext):
 
     message = []
     for row in prompts:
-        stringrow = f'"role": "{row.prompttype}", "content":"{row.prompt_text}"'
-        message.append("{" + stringrow + "},")
-    userprompt = f'"role": "user", "content": {qtext}'
-    message.append("{" + userprompt + "},")
+        dictrow = {"role": row.prompttype, "content":row.prompt_text}
+        message.append(dictrow)
+    userprompt = {"role": "user", "content": qtext}
+    message.append(userprompt)
     return message
