@@ -6,7 +6,7 @@
 
 <table id='TabSummary' class="table table-bordered"><thead>
 <tr><th>[[=quest['qtype'].capitalize()]]:</th>
-<th>[[=quest['questiontext'] ]]</th>
+<th id="questiontext">[[=quest['questiontext'] ]]</th>
 [[include 'questmedia.i']]
 </tr></thead>
     <tbody>
@@ -75,12 +75,12 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
                     </tr>
                     <tr>
 <td>You can now use AI to suggest 3 related items and if appropriate you create them as related items</td>
-    <td>Click for Open AI suggested: <INPUT TYPE=button class="btn btn-primary btn-sm"
-           onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Issues">
+    <td>Click for Open AI suggested:<br> <INPUT TYPE=button class="btn btn-primary btn-sm"
+           onClick="openai_lookup('gen_issues')" VALUE="Related Issues">
 <INPUT TYPE=button class="btn btn-success btn-sm"
-           onClick="parent.location='[[=URL(f"new_question/None/quest/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Questions">
+           onClick="openai_lookup('questions')" VALUE="Related Questions">
 <INPUT TYPE=button class="btn btn-warning btn-sm"
-           onClick="parent.location='[[=URL(f"new_question/None/action/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Related Actions">
+           onClick="openai_lookup('actions')" VALUE="Related Actions">
 </td>
     <td><INPUT TYPE=button class="btn btn-primary btn-sm"
            onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Issue">
@@ -92,10 +92,9 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
 </tr>
                     </tbody>
                 </table>
-
     [[pass]]
     [[pass]]
-
+    <div id="ai_response"></div>
 <script>
 var questid = "[[=quest['id'] ]]";
 /* above is used by viewquest.js for urgency and importance changes */

@@ -130,9 +130,16 @@ def get_messages(chosenai, scenario, setup, qtext):
     prompts = db(query).select(orderby=[sortby])
 
     message = []
+    userprompt = {"role": "user", "content": qtext}
+    written_userprompt = False
     for row in prompts:
         dictrow = {"role": row.prompttype, "content":row.prompt_text}
+        if not written_userprompt and row.sequence > 50:
+            message.append(userprompt)
+            written_userprompt = True
         message.append(dictrow)
-    userprompt = {"role": "user", "content": qtext}
-    message.append(userprompt)
+
+    if not written_userprompt:
+        message.append(userprompt)
+
     return message

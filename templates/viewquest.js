@@ -15,21 +15,22 @@ $(document).on('change', '#impslide', function () {
 
 
     var qsuccess = function(res) {
-    $("#question_aianswer").val(res.data);
+        console.log('success')
+    $("#ai_response").text(res.data);
     };
 
     var qerror = function(res) {
         alert('ERROR in call from viewquest');
     };
 
-        function openai_lookup() {
+        function openai_lookup(scenario) {
             //this will need a parameter in a bit for whether we want issue, question or action
-    var qtext = $('#question_questiontext').val();
+    var qtext = $('#questiontext').text();
     /^ Now we call via ajax and put returned value into notes */
 
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
-            questiontext: qtext
-            scenario: 'answer'
+            questiontext: qtext,
+            scenario: scenario
         }).then(qsuccess).catch(qerror);
 };
 

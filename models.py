@@ -295,11 +295,12 @@ db.define_table('email_runs',
 
 db.define_table('prompt',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
-                Field('scenario', 'string', requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues'])),
+                Field('scenario', 'string',
+                      requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues'])),
                 Field('setup', 'string', default='A', label='Current prompt setup'),
-                Field('prompttype', 'string', requires = IS_IN_SET(['system', 'user'])),
-                Field('sequence', 'integer'),
-                Field('status', 'string', default='Active', requires = IS_IN_SET(['Active', 'Inactive'])),
+                Field('prompttype', 'string', requires=IS_IN_SET(['system', 'user'])),
+                Field('sequence', 'integer', comment='Use numbers above 50 if you want to come after item'),
+                Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('prompt_text', 'text', requires=IS_NOT_EMPTY()))
 
 db.commit()
