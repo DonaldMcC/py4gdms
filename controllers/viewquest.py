@@ -111,7 +111,7 @@ def viewquest(qid=0, eid=0):
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
         if quest['factopinion'] == 'Fact':
-            chosenai = quest.chosenai.title
+            chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
             anstext = f"Submitter or knowledge engines claim the answer is: {quest['answertext']}"
         else:
             correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
