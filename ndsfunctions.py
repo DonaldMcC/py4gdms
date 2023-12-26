@@ -30,7 +30,6 @@ def qtypename(item: str):
 
 
 def get_filetype(filename: str):
-    # print(filename)
     not_used, file_extension = os.path.splitext(filename)
     ext = file_extension.lower()
     # print(ext)

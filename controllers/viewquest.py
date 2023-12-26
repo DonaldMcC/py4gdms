@@ -96,7 +96,6 @@ def viewquest(qid=0, eid=0):
         uqs = db((db.userquestion.auth_userid == auth.user_id) & (db.userquestion.questionid == quest.id)).select()
         uq = uqs.first() if uqs else None
         uqanswered = True if uq else False
-
         uqrates = db((db.uqrating.auth_userid == auth.user_id) & (db.uqrating.questionid == quest.id)).select()
         ur = uqrates.first() if uqrates else None
         uqrated = True if ur else False
@@ -129,8 +128,7 @@ def viewquest(qid=0, eid=0):
         viewtext = f"This {qname} has been rejected."
     else:
         viewtext = f'This {qname} is in progress.'
-        # That will do for now - display of challenges and probably numanswers remaining
-        # and level can be added later
+        # That will do for now - display of challenges and probably numanswers remaining and level can be added later
 
     # need to get priorquests and subsquests as lists which may be empty for each quest now
     priorquestrows = db(db.questlink.targetid == quest.id).select(db.questlink.sourceid)

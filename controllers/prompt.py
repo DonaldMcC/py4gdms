@@ -68,7 +68,6 @@ def promptgrid(path=None):
     orderby = [db.prompt.prompttype, db.prompt.sequence]
     search_queries = [['Search by Name', lambda value: db.prompt.name == value]]
 
-
     grid = Grid(path,
                 db.prompt,
                 fields=fields,

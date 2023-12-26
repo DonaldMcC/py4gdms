@@ -34,11 +34,9 @@ flash = Flash()
 @action.uses(session, db, auth.user)
 def quickanswer():
     """
-    This willl provide a quick method of approving an action or issue by means of approve disapprove buttons
-    basically needs to create a userquestion record and remove the buttons from the relevant row which
-    may be more challenging - it will never apply to questions and there is a question about how scope changes and
-    geography changes should be handled - but for now we are going to implicitly answer that these stay where they are
-    and retrieve them from the question
+    This provides a method to approve items.  It creates a userquestion record it does not apply to questions and
+    there is a question about how scope changes and geography changes should be handled - but for now we are going
+    to implicitly answer that these stay where they are and retrieve them from the question
     """
     questid = request.json['questid']
     answer = request.json['answer']

@@ -21,7 +21,6 @@
 
 # This controller provides options to create resolve methods and rules
 
-
 from py4web import action, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
@@ -35,7 +34,6 @@ flash = Flash()
 @action.uses('new_resolve.html', session, db, auth.user, flash)
 def new_resolve(res_id=None):
     res_id = int(res_id) if res_id and res_id.isnumeric() else None
-
     form = Form(db.resolve, record=res_id, formstyle=FormStyleBootstrap4inline)
     if res_id:
         res_rec = db(db.resolve.id == res_id).select().first()

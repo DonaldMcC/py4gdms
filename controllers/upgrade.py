@@ -2,7 +2,6 @@ import datetime
 from py4web import action, request, redirect, URL, Flash
 from ..common import db, authenticated, auth, session
 
-
 # this will refactor question for the following changes
 # Remove AI_Opinion question type
 # Add question to knowledge engine none

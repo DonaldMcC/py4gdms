@@ -28,6 +28,7 @@ from pydal.tools.tags import Tags
 groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
 flash = Flash()
 
+
 @action('admin', method=['POST', 'GET'])
 @action('admin/<path:path>', method=['POST', 'GET'])
 @action.uses('admin.html', session, db, flash, auth.user)

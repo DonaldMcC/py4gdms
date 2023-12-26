@@ -370,10 +370,8 @@ def openai_lookup():
     messages = get_messages(chosenai.id, scenario, setup, qtext)
     for item in messages:
         print(type(item), item)
-    completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=messages, max_tokens=300, temperature=0.1
-    )
+    completion = client.chat.completions.create(model="gpt-3.5-turbo",
+        messages=messages, max_tokens=300, temperature=0.1)
 
     resulttext = completion.choices[0].message.content
     return resulttext
