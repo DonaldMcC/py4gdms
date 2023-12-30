@@ -1,6 +1,13 @@
 from .common import db, auth
 import pprint
 
+try:
+    from openai import OpenAI
+    from ..settings_private import OPENAI_API_KEY
+    oai = True
+except ImportError as error:
+    oai = False
+
 
 def get_disabled(ans, useranswer):
     return 'disabled title=You_already_answered ' if ans == useranswer else ' title=Click_to_Answer '
@@ -144,3 +151,19 @@ def get_messages(chosenai, scenario, setup, qtext):
         message.append(userprompt)
 
     return message
+
+
+def openai_query(qtext, scenario, setup='A'):
+    #qtext = request.json['questiontext']
+    #scenario = request.json['scenario']
+    #setup = 'A'
+    client = OpenAI(api_key=OPENAI_API_KEY)
+
+    chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
+    messages = get_messages(chosenai.id, scenario, setup, qtext)
+    #for item in messages:
+    #    print(type(item), item)
+    completion = client.chat.completions.create(model="gpt-3.5-turbo",
+        messages=messages, max_tokens=300, temperature=0.1)
+
+    return completion.choices[0].message.content

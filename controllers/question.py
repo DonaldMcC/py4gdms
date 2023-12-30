@@ -36,7 +36,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
-from ..ndsqueries import get_messages
+from ..ndsqueries import get_messages, openai_query
 from .network import request_link
 
 flash = auth.flash
@@ -52,7 +52,6 @@ except ImportError as error:
 try:
     from openai import OpenAI
     from ..settings_private import OPENAI_API_KEY
-
     oai = True
 except ImportError as error:
     oai = False
@@ -361,17 +360,20 @@ def openai_lookup():
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
     setup = 'A'
-    client = OpenAI(api_key=OPENAI_API_KEY)
 
-    chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
-    messages = get_messages(chosenai.id, scenario, setup, qtext)
-    for item in messages:
-        print(type(item), item)
-    completion = client.chat.completions.create(model="gpt-3.5-turbo",
-        messages=messages, max_tokens=300, temperature=0.1)
-
-    resulttext = completion.choices[0].message.content
+    resulttext = openai_query(qtext, scenario, setup)
     return resulttext
+    #client = OpenAI(api_key=OPENAI_API_KEY)
+
+    #chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
+    #messages = get_messages(chosenai.id, scenario, setup, qtext)
+    #for item in messages:
+    #    print(type(item), item)
+    #completion = client.chat.completions.create(model="gpt-3.5-turbo",
+    #    messages=messages, max_tokens=300, temperature=0.1)
+
+    #resulttext = completion.choices[0].message.content
+    #return resulttext
 
 
 @action('bard_lookup', method=['POST', 'GET'])

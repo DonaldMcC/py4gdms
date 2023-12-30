@@ -139,6 +139,14 @@ def viewquest(qid=0, eid=0):
     editable = 'false'  # don't think we can use this on items as could be cross project or event
     quests, nodes, links, resultstring = getd3graph('quest', quest.id, 'Open', 1, 1, 0)
 
+    # new section to cover ai_review of item - thinking now is that all items will be subject to AI review - however
+    # may need a setting to turn this off for testing as could slow down and a bit pointless
+    # so actions would be to find the latest AI_Review - for now there may only be 1 but
+    # there may well be triggers to resubmit in due course so we will get the latest one by date for now
+    # I think if there isn't one then we will generate via async function after displaying the question
+    # so probably return AI_lookup type value for this if not found and setting not to not lookup
+
+
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
     commentform = Form(db.comment, formstyle=FormStyleBootstrap4)
