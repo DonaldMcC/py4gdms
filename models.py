@@ -296,11 +296,24 @@ db.define_table('email_runs',
 db.define_table('prompt',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
                 Field('scenario', 'string',
-                      requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues'])),
+                      requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues',
+                                          'rev_actions','rev_issues', 'rev_questions'])),
                 Field('setup', 'string', default='A', label='Current prompt setup'),
                 Field('prompttype', 'string', requires=IS_IN_SET(['system', 'user'])),
                 Field('sequence', 'integer', comment='Use numbers above 50 if you want to come after item'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('prompt_text', 'text', requires=IS_NOT_EMPTY()))
+
+
+db.define_table('ai_review',
+                Field('parentid', 'integer', writable=False, readable=False),
+                Field('parenttable', 'string', default='question', writable=False, readable=False),
+                Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+                Field('ai_version', 'string', label='AI Version'),
+                Field('scenario', 'string', requires=IS_IN_SET(['rev_actions', 'rev_issues', 'rev_questions'])),
+                Field('setup', 'string', default='A', label='Current prompt setup'),
+                Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
+                Field('review', 'text', requires=IS_NOT_EMPTY()),
+                Field('reviewdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
 db.commit()

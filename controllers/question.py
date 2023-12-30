@@ -356,15 +356,12 @@ def wikipedia_lookup():
 @action.uses(session, db, auth.user)
 def openai_lookup():
     # This is called via Ajax to lookup the answer to a question on openai and return answer
+    # will move into nds functions and add some more config and then should also be callable from
+    # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
     setup = 'A'
     client = OpenAI(api_key=OPENAI_API_KEY)
-
-    # example_messages = [
-    #    {"role": "system", "content": "You are providing advice to make the world better "},
-    #    {"role": "user", "content": qtext}
-    # ]
 
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
