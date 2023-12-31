@@ -15,9 +15,13 @@ $(document).on('change', '#impslide', function () {
 
 
     var qsuccess = function(res) {
-        console.log('success')
     $("#ai_response").text(res.data);
     };
+
+        var qreview = function(res) {
+    $("#ai_review").text(res.data);
+    };
+
 
     var qerror = function(res) {
         alert('ERROR in call from viewquest');
@@ -34,3 +38,10 @@ $(document).on('change', '#impslide', function () {
         }).then(qsuccess).catch(qerror);
 };
 
+        $(document).ready(function () {
+            if (got_ai == 'No') {
+                result = Q.ajax("POST", "[[=URL('openai_review')]]", {
+                    questid: questid
+                }).then(qreview).catch(qerror);
+            };
+});

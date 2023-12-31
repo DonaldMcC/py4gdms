@@ -74,6 +74,12 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
                         <td><input id="impslide" type = "range" name="impslider"  min="1"    max="11" value="[[=uqrated and ur.importance or 5]]" step="1"/></td>
                     </tr>
                     <tr>
+                        <th>AI Review</th>
+                        <td id="ai_review">[[if got_ai=='yes':]]
+                            [[=ai_review.review]]
+                        [[pass]]</td>
+                    </tr>
+                    <tr>
 <td>You can now use AI to suggest 3 related items and if appropriate you create them as related items</td>
     <td>Click for Open AI suggested:<br> <INPUT TYPE=button class="btn btn-primary btn-sm"
            onClick="openai_lookup('gen_issues')" VALUE="Related Issues">
@@ -97,7 +103,8 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
     <div id="ai_response"></div>
 <script>
 var questid = "[[=quest['id'] ]]";
-/* above is used by viewquest.js for urgency and importance changes */
+var got_ai = "[[=got_ai]]"
+/* above is used by viewquest.js for urgency and importance changes and triggering AI Review if not got */
 </script>
 
 

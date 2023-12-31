@@ -376,6 +376,20 @@ def openai_lookup():
     #return resulttext
 
 
+@action('openai_review', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def openai_review():
+    # This is called via Ajax to lookup the answer to a question on openai and return answer
+    # will move into nds functions and add some more config and then should also be callable from
+    # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
+    qid = request.json['questid']
+    scenario = 'bla'
+    setup = 'A'
+
+    #resulttext = openai_query(qtext, scenario, setup)
+    resulttext = 'testing'
+    return resulttext
+
 @action('bard_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def bard_lookup():

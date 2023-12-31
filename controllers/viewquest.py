@@ -146,6 +146,12 @@ def viewquest(qid=0, eid=0):
     # I think if there isn't one then we will generate via async function after displaying the question
     # so probably return AI_lookup type value for this if not found and setting not to not lookup
 
+    query = ((db.ai_review.parentid == quest.id) & (db.ai_review.status == 'Active') &
+             (db.ai_review.parenttable == 'question'))
+    sortby = ~db.ai_review.reviewdate
+    ai_comment = db(query).select(orderby=[sortby]).first()
+
+    got_ai = "Yes" if ai_comment else "No"
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']
@@ -156,7 +162,7 @@ def viewquest(qid=0, eid=0):
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
                 filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai,
                 eventowner=editable, eventid=eid, projid=0, nodes=nodes, links=links, redraw='true',
-                myconverter=myconverter)
+                myconverter=myconverter, ai_comment=ai_comment, got_ai=got_ai)
 
 
 @action('urgency', method=['POST', 'GET'])
