@@ -38,6 +38,7 @@ from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_messages, openai_query
 from .network import request_link
+from ..settings import AI_MODE
 
 flash = auth.flash
 
@@ -379,16 +380,24 @@ def openai_lookup():
 @action('openai_review', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def openai_review():
-    # This is called via Ajax to lookup the answer to a question on openai and return answer
-    # will move into nds functions and add some more config and then should also be callable from
-    # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
-    qid = request.json['questid']
-    scenario = 'bla'
+    # Going to keep this separate from open ai_lookup for now as think I may extend beyond the question
+    # text in a bit and not sure about the scenario piece - but this should work OK for now and lets see how
+    # it operates in simple mode first
+
+    qtext = request.json['questiontext']
+    qtype = request.json['qtype']
+    # think we maybe call with qtype and then want different prompts for scenarios, actions and issues
+    scenario = 'Review'
     setup = 'A'
 
-    #resulttext = openai_query(qtext, scenario, setup)
-    resulttext = 'testing'
+    if AI_MODE == 'Test':
+        return "Testing Mode " + qtype
+
+    resulttext = openai_query(qtext, scenario, setup)
+    #TODO - insert the resulttext data into the table for future use
+
     return resulttext
+
 
 @action('bard_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)

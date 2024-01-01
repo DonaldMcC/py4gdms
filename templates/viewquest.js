@@ -41,7 +41,8 @@ $(document).on('change', '#impslide', function () {
         $(document).ready(function () {
             if (got_ai == 'No') {
                 result = Q.ajax("POST", "[[=URL('openai_review')]]", {
-                    questid: questid
+                    questiontext: qtext,
+                    qtype: [[=quest['qtype'] ]]
                 }).then(qreview).catch(qerror);
             };
 });
