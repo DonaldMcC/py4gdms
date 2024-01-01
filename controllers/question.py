@@ -386,16 +386,19 @@ def openai_review():
 
     qtext = request.json['questiontext']
     qtype = request.json['qtype']
+    qid = request.json['qid']
     # think we maybe call with qtype and then want different prompts for scenarios, actions and issues
-    scenario = 'Review'
+    scenario = qtype
     setup = 'A'
 
     if AI_MODE == 'Test':
-        return "Testing Mode " + qtype
-
-    resulttext = openai_query(qtext, scenario, setup)
+        resulttext =  "Testing Mode " + qtype
+    else:
+        resulttext = openai_query(qtext, scenario, setup)
     #TODO - insert the resulttext data into the table for future use
 
+    if resulttext:
+        db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version='Not Yet', review=resulttext)
     return resulttext
 
 

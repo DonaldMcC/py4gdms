@@ -73,21 +73,36 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
                         <td><input id="urgslide" type = "range" name="urgslider"  min="1"    max="11" value="[[=uqrated and ur.urgency or 5]]" step="1"/></td>
                         <td><input id="impslide" type = "range" name="impslider"  min="1"    max="11" value="[[=uqrated and ur.importance or 5]]" step="1"/></td>
                     </tr>
-                    <tr>
-                        <th>AI Review</th>
-                        <td id="ai_review">[[if got_ai=='yes':]]
-                            [[=ai_review.review]]
-                        [[pass]]</td>
-                    </tr>
-                    <tr>
-<td>You can now use AI to suggest 3 related items and if appropriate you create them as related items</td>
-    <td>Click for Open AI suggested:<br> <INPUT TYPE=button class="btn btn-primary btn-sm"
+                    </tbody>
+                </table>
+    [[pass]]
+    [[pass]]
+    <div id="ai_response"></div>
+
+<div>
+    [[if quest['aianswer']:]]
+<h2 class="subtitle h4">Knowledge Engine Notes ([[=chosenai]])</h2>
+<p id="ai_review">[[=quest['aianswer'] ]]</p>
+   [[else:]]
+     <h2 class="title h5">AI Review</h2>
+    <p id="ai_review">[[if got_ai=='Yes':]]
+        [[=ai_comment.review]]
+            [[pass]]
+         </p>
+    [[pass]]
+    </div>
+
+    <table class="table table-bordered">
+    <tr>
+    <td> <INPUT TYPE=button class="btn btn-primary btn-sm"
            onClick="openai_lookup('gen_issues')" VALUE="Related Issues">
 <INPUT TYPE=button class="btn btn-success btn-sm"
            onClick="openai_lookup('questions')" VALUE="Related Questions">
 <INPUT TYPE=button class="btn btn-warning btn-sm"
-           onClick="openai_lookup('actions')" VALUE="Related Actions">
+           onClick="openai_lookup('actions')" VALUE="Related Actions"><br>
+        Click for Open AI suggested items create them as related items
 </td>
+
     <td><INPUT TYPE=button class="btn btn-primary btn-sm"
            onClick="parent.location='[[=URL(f"new_question/None/issue/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Issue">
 <INPUT TYPE=button class="btn btn-success btn-sm"
@@ -96,12 +111,9 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
            onClick="parent.location='[[=URL(f"new_question/None/action/{quest['eventid']}/0/0/view_event/{quest['id']}")]]'" VALUE="Linked Action">
 </td>
 </tr>
-                    </tbody>
-                </table>
-    [[pass]]
-    [[pass]]
-    <div id="ai_response"></div>
-<script>
+    </table>
+
+    <script>
 var questid = "[[=quest['id'] ]]";
 var got_ai = "[[=got_ai]]"
 /* above is used by viewquest.js for urgency and importance changes and triggering AI Review if not got */
@@ -109,7 +121,6 @@ var got_ai = "[[=got_ai]]"
 
 
 <div class="btn-toolbar ">
-
     [[if can_edit:]]
   <INPUT TYPE=BUTTON class="btn btn-sm btn-primary mx-1"
             onClick="parent.location='[[=URL(f"new_question/{quest['id']}/{quest['qtype']}/{quest['eventid']}/0/0/view_event")]]'" VALUE="Edit"></p>
@@ -117,12 +128,6 @@ var got_ai = "[[=got_ai]]"
  <INPUT TYPE=BUTTON class="btn btn-sm btn-info mx-1"
             onClick="parent.location='[[=URL(f"view_event/{quest['eventid']}")]]'" VALUE="Event">
 </div>
-
-[[if quest['aianswer']:]]
-<div><h1 class="subtitle h4">Knowledge Engine Notes ([[=chosenai]])</h1>
-<p>[[=quest['aianswer'] ]]</p>
-    </div>
-[[pass]]
 
 
 [[if quest['notes']:]]

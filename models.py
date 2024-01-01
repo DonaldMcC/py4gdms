@@ -304,13 +304,12 @@ db.define_table('prompt',
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('prompt_text', 'text', requires=IS_NOT_EMPTY()))
 
-
 db.define_table('ai_review',
                 Field('parentid', 'integer', writable=False, readable=False),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
-                Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+                Field('chosenai', 'string', label='AI/Knowledge Engine'),
                 Field('ai_version', 'string', label='AI Version'),
-                Field('scenario', 'string', requires=IS_IN_SET(['rev_actions', 'rev_issues', 'rev_questions'])),
+                Field('scenario', 'string', default='Review'),
                 Field('setup', 'string', default='A', label='Current prompt setup'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('review', 'text', requires=IS_NOT_EMPTY()),

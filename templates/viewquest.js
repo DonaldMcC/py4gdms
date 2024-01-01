@@ -38,11 +38,16 @@ $(document).on('change', '#impslide', function () {
         }).then(qsuccess).catch(qerror);
 };
 
+         [[if not quest['aianswer']:]]
         $(document).ready(function () {
+              var qtext = $('#questiontext').text();
+
             if (got_ai == 'No') {
                 result = Q.ajax("POST", "[[=URL('openai_review')]]", {
-                    questiontext: qtext,
-                    qtype: [[=quest['qtype'] ]]
+                    questiontext: "[[=quest['questiontext'] ]]",
+                    qtype: "[[=quest['qtype'] ]]",
+                    qid: "[[=quest['id']  ]]"
                 }).then(qreview).catch(qerror);
             };
 });
+         [[pass]]

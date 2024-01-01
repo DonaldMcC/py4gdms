@@ -3,7 +3,7 @@ import pprint
 
 try:
     from openai import OpenAI
-    from ..settings_private import OPENAI_API_KEY
+    from .settings_private import OPENAI_API_KEY
     oai = True
 except ImportError as error:
     oai = False
