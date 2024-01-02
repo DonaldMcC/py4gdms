@@ -84,9 +84,11 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
 <h2 class="subtitle h4">Knowledge Engine Notes ([[=chosenai]])</h2>
 <p id="ai_review">[[=quest['aianswer'] ]]</p>
    [[else:]]
-     <h2 class="title h5">AI Review</h2>
-    <p id="ai_review">[[if got_ai=='Yes':]]
+     <h2 class="title h5">AI Review [[if got_ai=='Yes':]]<small>([[=ai_comment.ai_version]]</small>) </h2>
+    <p id="ai_review">
         [[=ai_comment.review]]
+        [[else:]]
+        </h2> <p id="ai_review">Looking up answer on GPT ...
             [[pass]]
          </p>
     [[pass]]

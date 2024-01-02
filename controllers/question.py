@@ -390,15 +390,16 @@ def openai_review():
     # think we maybe call with qtype and then want different prompts for scenarios, actions and issues
     scenario = qtype
     setup = 'A'
+    ai_model = 'gpt-3.5-turbo-1106'
 
     if AI_MODE == 'Test':
         resulttext =  "Testing Mode " + qtype
     else:
-        resulttext = openai_query(qtext, scenario, setup)
+        resulttext = openai_query(qtext, scenario, setup, model=ai_model)
     #TODO - insert the resulttext data into the table for future use
 
     if resulttext:
-        db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version='Not Yet', review=resulttext)
+        db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version=ai_model, review=resulttext)
     return resulttext
 
 

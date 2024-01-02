@@ -153,7 +153,7 @@ def get_messages(chosenai, scenario, setup, qtext):
     return message
 
 
-def openai_query(qtext, scenario, setup='A'):
+def openai_query(qtext, scenario, setup='A', model="gpt-3.5-turbo"):
     #qtext = request.json['questiontext']
     #scenario = request.json['scenario']
     #setup = 'A'
@@ -163,7 +163,7 @@ def openai_query(qtext, scenario, setup='A'):
     messages = get_messages(chosenai.id, scenario, setup, qtext)
     #for item in messages:
     #    print(type(item), item)
-    completion = client.chat.completions.create(model="gpt-3.5-turbo",
+    completion = client.chat.completions.create(model= model,
         messages=messages, max_tokens=300, temperature=0.1)
 
     return completion.choices[0].message.content
