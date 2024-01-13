@@ -102,7 +102,8 @@ def tweet(recid=0):
 
     print(tweeturl)
     # TODO this will go in try except presently - but not sure what errors are likely yet
-    pub_result = publish('{} {}'.format(tweeturl, tweet_rec.tweet_text))
+    #pub_result = publish('{} {}'.format(tweeturl, tweet_rec.tweet_text))
+    pub_result = publish(f'{tweeturl} {tweet_rec.tweet_text}')
     print(pub_result)
     #  So think we come back to this bit in a bit
     #        quest = db(db.tweeter.id == form.vars['id']).select().first()

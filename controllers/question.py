@@ -322,7 +322,7 @@ def wolfram_alpha_lookup():
     try:
         answer = ''
         for pod in res.pods:
-            # print '{p.title}: {p.text}'.format(p=pod)
+            # print f'{pod.title}: {pod.text}'
             if pod.title == 'Result':
                 for sub in pod.subpods:
                     if sub.plaintext:
@@ -396,11 +396,11 @@ def openai_review():
         resulttext =  "Testing Mode " + qtype
     else:
         resulttext = openai_query(qtext, scenario, setup, model=ai_model)
-    #TODO - insert the resulttext data into the table for future use
 
     if resulttext:
         db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version=ai_model, review=resulttext)
-    return resulttext
+
+    return ai_model.join(' Answers: ', resulttext)
 
 
 @action('bard_lookup', method=['POST', 'GET'])
