@@ -400,7 +400,7 @@ def openai_review():
     if resulttext:
         db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version=ai_model, review=resulttext)
 
-    return ai_model.join(' Answers: ', resulttext)
+    return 'Answers: '.join(resulttext)
 
 
 @action('bard_lookup', method=['POST', 'GET'])
