@@ -390,7 +390,7 @@ def openai_review():
     # think we maybe call with qtype and then want different prompts for scenarios, actions and issues
     scenario = qtype
     setup = 'A'
-    ai_model = 'gpt-3.5-turbo-1106'
+    ai_model = 'gpt-3.5-turbo-0125'
 
     if AI_MODE == 'Test':
         resulttext =  "Testing Mode " + qtype
