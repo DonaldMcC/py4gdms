@@ -28,9 +28,7 @@ class AddBasicAction (FunctionalTest):
         self.url = ROOT + urltxt
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
-        # questiontext = self.browser.find_element_by_name('questiontext')
 
-        # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button = self.browser.find_element(By.ID, "next_event")
         submit_button.click()
 
