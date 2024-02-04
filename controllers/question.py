@@ -364,17 +364,6 @@ def openai_lookup():
 
     resulttext = openai_query(qtext, scenario, setup)
     return resulttext
-    #client = OpenAI(api_key=OPENAI_API_KEY)
-
-    #chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
-    #messages = get_messages(chosenai.id, scenario, setup, qtext)
-    #for item in messages:
-    #    print(type(item), item)
-    #completion = client.chat.completions.create(model="gpt-3.5-turbo",
-    #    messages=messages, max_tokens=300, temperature=0.1)
-
-    #resulttext = completion.choices[0].message.content
-    #return resulttext
 
 
 @action('openai_review', method=['POST', 'GET'])
@@ -400,7 +389,7 @@ def openai_review():
     if resulttext:
         db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version=ai_model, review=resulttext)
 
-    return 'Answers: ' + resulttext
+    return ''.join(('Answer: ', resulttext, ' (', ai_model, ')'))
 
 
 @action('bard_lookup', method=['POST', 'GET'])

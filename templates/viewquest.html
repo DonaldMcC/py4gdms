@@ -77,7 +77,6 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
                 </table>
     [[pass]]
     [[pass]]
-    <div id="ai_response"></div>
 
 <div>
     <h2 class="subtitle h4">Knowledge Engine Notes ([[=chosenai]])</h2>
@@ -115,12 +114,13 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
 </tr>
     </table>
 
+    <div id="ai_response"></div>
+
     <script>
 var questid = "[[=quest['id'] ]]";
 var got_ai = "[[=got_ai]]"
 /* above is used by viewquest.js for urgency and importance changes and triggering AI Review if not got */
 </script>
-
 
 <div class="btn-toolbar ">
     [[if can_edit:]]
