@@ -96,3 +96,38 @@ def datasetup():
         groups.add(auth.user_id, 'manager')
 
     return locals()
+
+
+@authenticated()
+def aisetup():
+    # This should create some default prompts for openai models currently potentially other LLMs
+    # will use similar approach
+    reset_ai = False
+
+    # Think the general approach will be same as datasetup ie
+    # first look for each of the relevant records
+    # if there then unless reset_ai is True we do nothing
+    # if true we would update it
+    model = 'OpenAI GPT-3'
+    aimodel = db(db.knowledge.title == model).select().first()
+    if aimodel:
+        ai = aimodel.id
+    else:
+        print(f'AI model {model} not found')
+        return()
+
+    # let go with scenario, prompt type sequence and prompt_test text in the list
+    # so may need this to be more dynamic based on whether follow on is from question/issue/or action??
+
+    prompts = [["answer", "system", 10, 'You are an expert providing guidance to improve the world'],
+               ["gen_questions", "system", 1, 'You are an expert providing guidance to improve the world'],
+               ["gen_questions", "user", 10, 'The following issue has been identified'],
+               ["gen_questions", "user", 60, 'Suggest 3 follow-on questions to further investigate the issue '],
+               ["gen_questions", "user", 70, 'The questions should be in a format to support yes or no answers'],
+]
+
+    for x in prompts:
+        if db((db.prompt.scenario == x[0]) and (db.prompt.sequence == x[2])).isempty():
+            db.prompt.insert(chosenai=ai, scenario=x[0], prompttype=x[1], sequence=x[2], prompt_text=x[3])
+
+    return locals()
