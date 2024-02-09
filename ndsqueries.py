@@ -136,6 +136,7 @@ def get_messages(chosenai, scenario, setup, qtext):
              & (db.prompt.status == 'Active'))
     sortby = db.prompt.prompttype, db.prompt.sequence
     prompts = db(query).select(orderby=[sortby])
+    print(prompts)
 
     message = []
     userprompt = {"role": "user", "content": qtext}
@@ -149,7 +150,7 @@ def get_messages(chosenai, scenario, setup, qtext):
 
     if not written_userprompt:
         message.append(userprompt)
-
+    print(message)
     return message
 
 
