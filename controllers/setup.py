@@ -121,9 +121,15 @@ def aisetup():
 
     prompts = [["answer", "system", 10, 'You are an expert providing guidance to improve the world'],
                ["gen_questions", "system", 1, 'You are an expert providing guidance to improve the world'],
-               ["gen_questions", "user", 10, 'The following issue has been identified'],
+               ["gen_questions", "user", 10, 'The following item has been identified'],
                ["gen_questions", "user", 60, 'Suggest 3 follow-on questions to further investigate the issue '],
                ["gen_questions", "user", 70, 'The questions should be in a format to support yes or no answers'],
+               ["gen_actions", "system", 1, 'You are an expert providing guidance to improve the world'],
+               ["gen_actions", "user", 10, 'The following issue has been identified'],
+               ["gen_actions", "user", 60, 'Suggest 3 follow-on actions to address'],
+               ["gen_issues", "system", 1, 'You are an expert providing guidance to improve the world'],
+               ["gen_issues", "user", 10, 'The following item has been identified'],
+               ["gen_issues", "user", 60, 'Suggest 3 further issues to investigate']
 ]
 
     for x in prompts:
