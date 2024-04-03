@@ -254,7 +254,7 @@ function redrawnodes() {
 
 
     // add the nodes
-    node.attr("class", function (d) {
+    node.attr("class", function (event, d) {
         return "node " + d.type;
     })
         .attr("transform", function (d) {
@@ -313,7 +313,7 @@ function redrawnodes() {
 
     var link = svg.select("#links").selectAll('.link')
             .data(edges)
-            .classed(consts.selectedClass, function(d){
+            .classed(consts.selectedClass, function(event, d){
             return d === state.selectedEdge;
             })
             .enter()
@@ -324,8 +324,8 @@ function redrawnodes() {
       })
       .classed("link", true)
         .attr("stroke", "purple")
-         .style("stroke-width", function(d){return d.linethickness})
-        .style("stroke-dasharray", function(d){return d.dasharray})
+         .style("stroke-width", function(event, d){return d.linethickness})
+        .style("stroke-dasharray", function(event, d){return d.dasharray})
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
 
@@ -368,26 +368,26 @@ function redrawnodes() {
     //drag event was firing - think we overcome this with a justDragged variable 
     //and calling fromdrag for now
 
-    function rectclick(d) {
+    function rectclick(event, d) {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         location.href = baselowerUrl+'/1/'+d.serverid+'/';
-         d3.event.stopPropagation();
+         event.stopPropagation();
     };
 
-    function urlclick(d) {
+    function urlclick(event, d) {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         if (d.question_url >'') {
             window.open(d.question_url, '_blank').focus();
-            d3.event.stopPropagation();
+            event.stopPropagation();
         };
 
     };
 
-    function nodeclick(d) {
+    function nodeclick(event, d) {
         //alert("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
@@ -396,7 +396,7 @@ function redrawnodes() {
         //console.log("you clicked edit", d.serverid);
         //console.log("calling quetsadd");
         if (d.locked != 'Y') {
-            questadd('Edit', d3.event.x, d3.event.y, d);
+            questadd('Edit', event.x, event.y, d);
         }
         else {
             out("Only draft item text editable")
@@ -472,7 +472,7 @@ function redrawnodes() {
         d3.select("body").select('div.tooltip').remove();
         deleteNode(nodeid, d32py.eventid);
         nodes.splice(nodes.indexOf(d), 1);
-        spliceLinksForNode(d);
+        spliceLinksForNode(event, d);
         graphvars.mousedownnode = null;
         //console.log(nodes);
         redrawlinks();
@@ -489,7 +489,7 @@ function redrawnodes() {
         d3.select("body").select('div.tooltip').remove();
         promoteNode(nodeid, d32py.eventid, 'promote');
         nodes.splice(nodes.indexOf(d), 1);
-        spliceLinksForNode(d);
+        spliceLinksForNode(event, d);
         graphvars.mousedownnode = null;
         //console.log(nodes);
         redrawlinks();
@@ -499,7 +499,7 @@ function redrawnodes() {
     default:
         //console.log("view or add on a node do nothing", d.serverid);
 }
-    //d3.event.stopPropagation();
+    //event.stopPropagation();
         }
 
 
@@ -512,7 +512,7 @@ spliceLinksForNode = function(node) {
     });
   };
 
-    function linkclick(d) {
+    function linkclick(event, d) {
         //console.log("you clicked link", d);
         switch (inputmode) {
             case 'D':
@@ -537,20 +537,20 @@ spliceLinksForNode = function(node) {
                 //console.log("probably do nothing", d.source);
         }
 
-        d3.event.stopPropagation();
+        event.stopPropagation();
     }
 
     link.on("click", linkclick);
     node.on("click", nodeclick);
     svg.on("click", backclick);
 
-    function backclick(d) {
+    function backclick(event, d) {
         //console.log("you clicked background");
         switch(inputmode) {
         case 'A':
         //Edit - this should load the URL and
-        //console.log("this will add a new node at", d3.event.x);
-        questadd('New', Math.floor(rescale(d3.event.x, 1000, width)), Math.floor(rescale(d3.event.y, 1000, width)));
+        //console.log("this will add a new node at", event.x);
+        questadd('New', Math.floor(rescale(event.x, 1000, width)), Math.floor(rescale(event.y, 1000, width)));
         break;
     default:
         //console.log("reset the source if linking");
@@ -558,7 +558,7 @@ spliceLinksForNode = function(node) {
     }
 
 //need to actually figure out what goes in the tooltip 
-    node.on("mouseover", function(d) {
+    node.on("mouseover", function(event, d) {
         //console.log(nodes);
         var g = d3.select(this);  // the node (table)
 
@@ -608,8 +608,8 @@ spliceLinksForNode = function(node) {
         var div = d3.select("body").append("div")  // declare the tooltip div
 	        .attr("class", "tooltip")              // apply the 'tooltip' class
                 .html(fieldformat)
-                .style("left", 10 + (d3.event.pageX + 10) + "px")// or just (d.x + 50 + "px") (d3.event.pageX)
-                .style("top", (d3.event.pageY - 20) + "px")// or ...(d3.event.pageY - 20)
+                .style("left", 10 + (event.pageX + 10) + "px")// or just (d.x + 50 + "px") (event.pageX)
+                .style("top", (event.pageY - 20) + "px")// or ...(event.pageY - 20)
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
@@ -617,17 +617,17 @@ spliceLinksForNode = function(node) {
     });
 
 
-    node.on("mouseout", function(d) {
+    node.on("mouseout", function(event, d) {
         d3.select("body").select('div.tooltip').remove();
     });
 
 
-        function dragnodestarted(d) {
+        function dragnodestarted(event, d) {
             //d.fx = d.x;
             //d.fy = d.y;
         }
 
-        function dragnode(d) {
+        function dragnode(event, d) {
             //console.log('dragging');
             //console.log(d.id);
             //console.log(d.x);
@@ -636,10 +636,10 @@ spliceLinksForNode = function(node) {
             switch (inputmode) {
                 case 'E':
 
-            //d.fx = d3.event.x;
-            //d.fy = d3.event.y;
-            d.x = d3.event.x;
-            d.y = d3.event.y;
+            //d.fx = event.x;
+            //d.fy = event.y;
+            d.x = event.x;
+            d.y = event.y;
             d3.select(this).attr("transform", function (d) {
                 return "translate(" + d.x + "," + d.y + ")";
             });
@@ -650,7 +650,7 @@ spliceLinksForNode = function(node) {
                     }
         }
 
-        function dragnodeended(d) {
+        function dragnodeended(event, d) {
             //console.log('drag ended');
             //d.fx = null;
             //d.fy = null;
@@ -686,7 +686,7 @@ function redrawGraph() {
 
     var simulation = d3.forceSimulation()
         .force("attractForce",attractForce)
-        .force("link", d3.forceLink().id(function(d) { return d.id; }))
+        .force("link", d3.forceLink().id(function(event, d) { return d.id; }))
         .force("repelForce",repelForce)
             .force("center", d3.forceCenter(width / 2, height / 2))
              .force("y", d3.forceY(height / 2).strength(0.07))
