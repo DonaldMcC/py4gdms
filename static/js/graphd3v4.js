@@ -95,9 +95,7 @@
 }
 
     // handle redraw graph
-    d3.select("#redraw-graph").on("click", function(){
-         redrawGraph();
-    });
+    d3.select("#redraw-graph").on("click", function(){redrawGraph();});
 
 
 // below should revert to the iterative with additional link values and link types to be added
@@ -222,7 +220,7 @@ function redrawnodes() {
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         })
-        .on("click", nodeclick)
+        .on("click", function() {nodeclick;})
         .call(d3.drag()
             .on("start", dragnodestarted)
             .on("drag", dragnode)
@@ -338,8 +336,8 @@ function redrawnodes() {
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-            .on("click", nodeclick)
-            .on("touchstart", nodeclick)
+            .on("click", function() {nodeclick;})
+            .on("touchstart", function() {nodeclick;})
              .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
@@ -367,8 +365,7 @@ function redrawnodes() {
     //So getting real problems with click events not triggering instead only the
     //drag event was firing - think we overcome this with a justDragged variable 
     //and calling fromdrag for now
-
-    function rectclick(event, d) {
+function rectclick(event) {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
@@ -376,19 +373,20 @@ function redrawnodes() {
          event.stopPropagation();
     };
 
-    function urlclick(event, d) {
+    function urlclick(event, title) {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
+        console.log('you clicked url')
+        console.log(title)
         if (d.question_url >'') {
             window.open(d.question_url, '_blank').focus();
             event.stopPropagation();
         };
-
     };
 
     function nodeclick(event, d) {
-        //alert("you clicked node", d.serverid);
+        alert("you clicked node", d.serverid);
         switch(inputmode) {
     case 'E':
         //Edit - this should load the URL and possibly view would bring up
@@ -399,7 +397,9 @@ function redrawnodes() {
             questadd('Edit', event.x, event.y, d);
         }
         else {
-            out("Only draft item text editable")
+            console.log("try viewing quest");
+            questadd('View', event.x, event.y, d);
+            //out("Only draft item text editable")
         }
         break;
     case 'L':
@@ -454,7 +454,6 @@ function redrawnodes() {
         redrawlinks();
         redrawnodes();
         redrawnodes();
-
 
         graphvars.mousedownnode = null;
             }
@@ -752,14 +751,27 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              .attr("stroke", "blue")
              .attr("width", 20)
               .attr("height", 20)
-             .on("click", urlclick);
-    //   .text(function(d) { return d.numsubs});
-    var rct = gEl.append("text")
+             .on("click", function() {urlclick(event, title)});
+     var rct = gEl.append("text")
              .attr("x", 52)
              .attr("y", 59)
              .attr("font-size", "10px")
               .text("L");
     //numsubs.toString()  this was when we had layers
+    var lk = gEl.append("rect")
+             .attr("x", -74)
+             .attr("y", -74)
+             .attr("stroke", "blue")
+             .attr("width", 20)
+              .attr("height", 20)
+             .on("click", function() {urlclick(event, title)});
+    var lkt = gEl.append("text")
+             .attr("x", -72)
+             .attr("y", -60)
+             .attr("font-size", "10px")
+              .text("Det");
+    //   .text(function(d) { return d.numsubs});
+
 
     if (qtype=='action') {
         var ac = gEl.append("rect")
@@ -767,7 +779,7 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
             .attr("y", 45)
             .attr("width", 20)
             .attr("height", 20)
-            .on("click", rectclick);
+            .on("click", function() {rectclick()});
         //   .text(function(d) { return d.numsubs});
         var act = gEl.append("text")
             .attr("x", -59)
