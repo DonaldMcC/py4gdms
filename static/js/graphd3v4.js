@@ -11,10 +11,8 @@
     // this will need mapped out and there will be some issues
     // the tooltip setup also needs confirmed and the force graph parameters need sorted
 
-
-    // HOw to get link ids instead of index
+    // How to get link ids instead of index
     // http://stackoverflow.com/questions/23986466/d3-force-layout-linking-nodes-by-name-instead-of-index
-
     // embedding web2py in d3
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
@@ -24,7 +22,6 @@
     connectClass: "connect-node",
     circleGClass: "conceptG",
     nodeRadius: 80
-
   };
 
 // below will all move into some sort of object maybe combine with above
@@ -97,8 +94,7 @@
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){redrawGraph();});
 
-
-// below should revert to the iterative with additional link values and link types to be added
+    // below should revert to the iterative with additional link values and link types to be added
     links.forEach(function(e) {
         var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
             targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
@@ -113,7 +109,7 @@
 
 
 
-// this was being used for some of the force values - to be considered
+    // this was being used for some of the force values - to be considered
     edges.forEach(function(e) {
         if (!e.source["linkcount"]) e.source["linkcount"] = 0;
         if (!e.target["linkcount"]) e.target["linkcount"] = 0;
@@ -149,9 +145,6 @@
         var height = window.innerHeight;
         var width = window.innerWidth - 70;
 
-        //console.log( height);
-        //console.log (width);
-
         nodes.forEach(function(e) {
             //don't think there is a problem here unless debugging
             //e.x = Math.max(consts.nodeRadius, Math.min(width - consts.nodeRadius, rescale(e.xpos, width, 1000)));
@@ -169,9 +162,8 @@
             }
         }
 
-// may look at making this dynamic again at some point 
+    // may look at making this dynamic again at some point
     // will now take from v4js for now var width = 960, height = 600;
-
 
     function redrawlinks() {
       svg = d3.select("#graph").select('svg');
@@ -220,7 +212,7 @@ function redrawnodes() {
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         })
-        .on("click", function() {nodeclick;})
+        .on("click", function(event, d) {nodeclick(event, d);})
         .call(d3.drag()
             .on("start", dragnodestarted)
             .on("drag", dragnode)
@@ -249,7 +241,6 @@ function redrawnodes() {
         { var numquests = d.subquests.length}
         wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete)
         });
-
 
     // add the nodes
     node.attr("class", function (event, d) {
@@ -336,8 +327,8 @@ function redrawnodes() {
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
-            .on("click", function() {nodeclick;})
-            .on("touchstart", function() {nodeclick;})
+            .on("click", function(event, d) {nodeclick(event, d);})
+            .on("touchstart", function(event, d) {nodeclick(event, d);})
              .call(d3.drag()
               .on("start", dragnodestarted)
               .on("drag", dragnode)
@@ -373,12 +364,13 @@ function rectclick(event) {
          event.stopPropagation();
     };
 
-    function urlclick(event, title) {
+    function urlclick(event, d) {
         // lets replace this with launching question url in new tab
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         console.log('you clicked url')
-        console.log(title)
+        console.log(d)
+        event.stopPropagation();
         if (d.question_url >'') {
             window.open(d.question_url, '_blank').focus();
             event.stopPropagation();
@@ -386,123 +378,123 @@ function rectclick(event) {
     };
 
     function nodeclick(event, d) {
-        alert("you clicked node", d.serverid);
+        //alert("you clicked node", d.serverid);
+        //console.log(d.serverid);
         switch(inputmode) {
-    case 'E':
-        //Edit - this should load the URL and possibly view would bring up
-        //full thing as view quest
-        //console.log("you clicked edit", d.serverid);
-        //console.log("calling quetsadd");
-        if (d.locked != 'Y') {
-            questadd('Edit', event.x, event.y, d);
-        }
-        else {
-            console.log("try viewing quest");
-            questadd('View', event.x, event.y, d);
-            //out("Only draft item text editable")
-        }
-        break;
-    case 'L':
-        if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
-        //console.log(" link request to make", d.serverid);
-        var newEdge = {source: graphvars.mousedownnode, target: d};
-        edges.unshift(newEdge);
-        var linksource = graphvars.mousedownnode.serverid.toString();
-        var linkdest = d.serverid.toString();
-            if (linksource == '0') {
-                linksource = graphvars.mousedownnode.title;
-            }
-            if (linksource == '0') {
-                linksource = d.serverid.title;
-            }
-            console.log("calling request link")
-            requestLink(linksource, linkdest, 'create');
-            redrawlinks();
-            graphvars.mousedownnode.selected = false;
-            graphvars.mousedownnode = null;
-            }
-        else {
-            if (graphvars.mousedownnode) {
-                //clicked on same node as previously
-                console.log("clicking same node")
-                {
-                    graphvars.mousedownnode.selected = true
+            case 'E':
+                //Edit - this should load the URL and possibly view would bring up
+                //full thing as view quest
+                //console.log("you clicked edit", d.serverid);
+                //console.log("calling quetsadd");
+                if (d.locked != 'Y') {
+                    questadd('Edit', event.x, event.y, d);
                 }
-            }
-            else {
-            graphvars.mousedownnode = d;
-            graphvars.mousedownnode.selected = true;
+                else {
+                    console.log("try viewing quest");
+                    questadd('View', event.x, event.y, d);
+                    //out("Only draft item text editable")
                 }
-            }
-        redrawnodes();
-        break;
-    case 'M':
+                break;
+            case 'L':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
-        //console.log("move node down into", d.serverid);
-
-        var nodeid = graphvars.mousedownnode.serverid.toString();
-        if (nodeid == '0') {
-            nodeid = graphvars.mousedownnode.serverid.title;
-        }
-        demoteNode(nodeid, d32py.eventid, d.serverid);
-        if (d.subquests) {
-        d.subquests.push(nodeid)}
-        else {d.subquests = [nodeid] }
-        nodes.splice(nodes.indexOf(graphvars.mousedownnode), 1);
-        spliceLinksForNode(graphvars.mousedownnode);
-        graphvars.mousedownnode = null;
-        redrawlinks();
-        redrawnodes();
-        redrawnodes();
-
-        graphvars.mousedownnode = null;
+                    //console.log(" link request to make", d.serverid);
+                    var newEdge = {source: graphvars.mousedownnode, target: d};
+                    edges.unshift(newEdge);
+                    var linksource = graphvars.mousedownnode.serverid.toString();
+                    var linkdest = d.serverid.toString();
+                    if (linksource == '0') {
+                        linksource = graphvars.mousedownnode.title;
+                    }
+                    if (linksource == '0') {
+                        linksource = d.serverid.title;
+                    }
+                    console.log("calling request link")
+                    requestLink(linksource, linkdest, 'create');
+                    redrawlinks();
+                    graphvars.mousedownnode.selected = false;
+                    graphvars.mousedownnode = null;
+                    }
+                else {
+                    if (graphvars.mousedownnode) {
+                        //clicked on same node as previously
+                        console.log("clicking same node")
+                    {
+                        graphvars.mousedownnode.selected = true
+                    }
+                }
+                else {
+                    graphvars.mousedownnode = d;
+                    graphvars.mousedownnode.selected = true;
+                }
             }
-        else {
-            graphvars.mousedownnode = d;
-            graphvars.mousedownnode.selected = true;
-            redrawnodes();
+                redrawnodes();
+                break;
+            case 'M':
+                if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
+                    //console.log("move node down into", d.serverid);
+                    var nodeid = graphvars.mousedownnode.serverid.toString();
+                if (nodeid == '0') {
+                    nodeid = graphvars.mousedownnode.serverid.title;
+                }
+                demoteNode(nodeid, d32py.eventid, d.serverid);
+                if (d.subquests) {
+                    d.subquests.push(nodeid)}
+                else {d.subquests = [nodeid] }
+                nodes.splice(nodes.indexOf(graphvars.mousedownnode), 1);
+                spliceLinksForNode(graphvars.mousedownnode);
+                graphvars.mousedownnode = null;
+                redrawlinks();
+                redrawnodes();
+                redrawnodes();
+
+                graphvars.mousedownnode = null;
+                }
+                else {
+                    graphvars.mousedownnode = d;
+                    graphvars.mousedownnode.selected = true;
+                    redrawnodes();
+                }
+                break;
+            case 'D':
+                var nodeid = d.serverid.toString();
+                if (nodeid == '0') {
+                    nodeid = d.serverid.title;
+                }
+                d3.select("body").select('div.tooltip').remove();
+                deleteNode(nodeid, d32py.eventid);
+                nodes.splice(nodes.indexOf(d), 1);
+                spliceLinksForNode(event, d);
+                graphvars.mousedownnode = null;
+                //console.log(nodes);
+                redrawlinks();
+                redrawnodes();
+                redrawnodes();
+                break;
+            case 'P':
+                //console.log(nodes);
+                //console.log("you clicked promote", d.serverid);
+                var nodeid = d.serverid.toString();
+                if (nodeid == '0') {
+                    nodeid = d.serverid.title;
+                }
+                d3.select("body").select('div.tooltip').remove();
+                promoteNode(nodeid, d32py.eventid, 'promote');
+                nodes.splice(nodes.indexOf(d), 1);
+                spliceLinksForNode(event, d);
+                graphvars.mousedownnode = null;
+                //console.log(nodes);
+                redrawlinks();
+                redrawnodes();
+                redrawnodes();
+                break;
+            default:
+                //console.log("view or add on a node do nothing", d.serverid);
         }
-        break;
-   case 'D':
-        var nodeid = d.serverid.toString();
-        if (nodeid == '0') {
-            nodeid = d.serverid.title;
-        }
-        d3.select("body").select('div.tooltip').remove();
-        deleteNode(nodeid, d32py.eventid);
-        nodes.splice(nodes.indexOf(d), 1);
-        spliceLinksForNode(event, d);
-        graphvars.mousedownnode = null;
-        //console.log(nodes);
-        redrawlinks();
-        redrawnodes();
-        redrawnodes();
-        break;
-        case 'P':
-            //console.log(nodes);
-        //console.log("you clicked promote", d.serverid);
-        var nodeid = d.serverid.toString();
-        if (nodeid == '0') {
-            nodeid = d.serverid.title;
-        }
-        d3.select("body").select('div.tooltip').remove();
-        promoteNode(nodeid, d32py.eventid, 'promote');
-        nodes.splice(nodes.indexOf(d), 1);
-        spliceLinksForNode(event, d);
-        graphvars.mousedownnode = null;
-        //console.log(nodes);
-        redrawlinks();
-        redrawnodes();
-        redrawnodes();
-        break;
-    default:
-        //console.log("view or add on a node do nothing", d.serverid);
-}
-    //event.stopPropagation();
+            //event.stopPropagation();
         }
 
 
-spliceLinksForNode = function(node) {
+    spliceLinksForNode = function(node) {
         toSplice = edges.filter(function(l) {
       return (l.source === node || l.target === node);
     });
@@ -535,34 +527,31 @@ spliceLinksForNode = function(node) {
             default:
                 //console.log("probably do nothing", d.source);
         }
-
         event.stopPropagation();
     }
 
     link.on("click", linkclick);
-    node.on("click", nodeclick);
+    node.on("click", function(event, d) {nodeclick(event, d);});
     svg.on("click", backclick);
 
     function backclick(event, d) {
         //console.log("you clicked background");
         switch(inputmode) {
         case 'A':
-        //Edit - this should load the URL and
-        //console.log("this will add a new node at", event.x);
-        questadd('New', Math.floor(rescale(event.x, 1000, width)), Math.floor(rescale(event.y, 1000, width)));
-        break;
-    default:
-        //console.log("reset the source if linking");
-}
+            //Edit - this should load the URL and
+            //console.log("this will add a new node at", event.x);
+            questadd('New', Math.floor(rescale(event.x, 1000, width)), Math.floor(rescale(event.y, 1000, width)));
+            break;
+            default:
+            //console.log("reset the source if linking");
+        }
     }
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(event, d) {
         //console.log(nodes);
         var g = d3.select(this);  // the node (table)
-
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
-
         var qtype = 'Action';
         var notes = '';
         //console.log(d.notes);
@@ -631,21 +620,19 @@ spliceLinksForNode = function(node) {
             //console.log(d.id);
             //console.log(d.x);
 
-
             switch (inputmode) {
                 case 'E':
-
-            //d.fx = event.x;
-            //d.fy = event.y;
-            d.x = event.x;
-            d.y = event.y;
-            d3.select(this).attr("transform", function (d) {
-                return "translate(" + d.x + "," + d.y + ")";
-            });
-            redrawlines();
+                    //d.fx = event.x;
+                    //d.fy = event.y;
+                    d.x = event.x;
+                    d.y = event.y;
+                    d3.select(this).attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                    });
+                    redrawlines();
                     break;
             default:
-            //console.log("do nothing ");
+                //console.log("do nothing ");
                     }
         }
 
@@ -751,25 +738,25 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              .attr("stroke", "blue")
              .attr("width", 20)
               .attr("height", 20)
-             .on("click", function() {urlclick(event, title)});
+             .on("click", function(event, d) {urlclick(event, d)});
      var rct = gEl.append("text")
              .attr("x", 52)
              .attr("y", 59)
              .attr("font-size", "10px")
               .text("L");
     //numsubs.toString()  this was when we had layers
-    var lk = gEl.append("rect")
-             .attr("x", -74)
-             .attr("y", -74)
-             .attr("stroke", "blue")
-             .attr("width", 20)
-              .attr("height", 20)
-             .on("click", function() {urlclick(event, title)});
-    var lkt = gEl.append("text")
-             .attr("x", -72)
-             .attr("y", -60)
-             .attr("font-size", "10px")
-              .text("Det");
+    //var lk = gEl.append("rect")
+    //         .attr("x", -74)
+    //         .attr("y", -74)
+    //         .attr("stroke", "blue")
+    //         .attr("width", 20)
+    //          .attr("height", 20)
+    //         .on("click", function() {urlclick(event, title)});
+    //var lkt = gEl.append("text")
+    //         .attr("x", -72)
+    //         .attr("y", -60)
+    //         .attr("font-size", "10px")
+    //          .text("Det");
     //   .text(function(d) { return d.numsubs});
 
 
@@ -848,29 +835,22 @@ function calcAllowableWords(maxWidth, words) {
 }
 
 function initLines() {
-
-  var radius  = 80;
-
+    var radius  = 80;
     for (var y = radius * .9; y > -radius; y -= lineHeight) {
-
         var h = Math.abs(radius - y);
-
         if (y - lineHeight < 0) {
             h += 20;
         }
 
         var length = 2 * Math.sqrt(h * (2 * radius - h)) + 5;
-
         if (length && length > 10) {
             lines.push({
                 y: y,
                 maxLength: length
             });
         }
-
     }
 }
-
         function out(m) {
         $('#target').html(m);
         }

@@ -1,4 +1,4 @@
-[[import json]]
+    [[import json]]
     var inputmode = 'V';
     var newitems = false;
     var prevclass = 'graph-V'
@@ -61,7 +61,7 @@
         var links = [[=XML(json.dumps(links, default=myconverter))]];
         var edges = [];
 
-        console.log(nodes);
+        //console.log(nodes);
 
         var itemUrl = '[[=URL('submit', 'new_questload.load')]]';
         var baselowerUrl = '[[=URL('event', 'vieweventmapd3.html')]]';
@@ -83,13 +83,11 @@
             if ($('#notloggedin').is(':contains(logged)')) {
                 out('You must be signed in in to add items')
             }
-
             d32py.xpos = posx;
             d32py.ypos = posy;
             d32py.formaction = action;
             d32py.globalnode = node;
             var serverid = '';
-
 
             if (action == 'New') {
                 var urlstring = ['0','quest', d32py.eventid, posx, posy, 'view_event'].join('/');
@@ -98,23 +96,18 @@
             }
 
             if (action == 'Edit') {
-
                 if (node.serverid == true) {
-                serverid = node.serverid
-                }
-                else  {
+                    serverid = node.serverid
+                } else {
                     serverid = node.title
                 }
-
-                $.web2py.component(itemUrl + '/' + serverid, 'itemload');
-                //let's wait for fire event to do this properly in later version of web2py
-                setTimeout(function () {
-                    initform(posx, posy)
-                }, 1000);
-
+            }
+            if (action == 'View') {
+                var urlstring = [node.serverid,'quest', d32py.eventid, posx, posy, 'view_event'].join('/');
+                console.log(urlstring);
+                window.open("[[=URL('new_question')]]"+"/"+urlstring,"_blank");
             }
         };
-
 
         function amendnode(qtext) {
               updatenode(d32py.globalnode, qtext);
