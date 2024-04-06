@@ -43,12 +43,18 @@ Q.ajax = function(method, url, data, headers) {
     return new Promise(function(resolve, reject) {
             fetch(url, options).then(function(res){
                     res.text().then(function(body){
-                            res.data = body;
+                            res.data = body;                            
                             res.json = function(){return JSON.parse(body);};
                             resolve(res);
                         }, reject);}).catch(reject);
     });
 }
+
+Q.get = (url, headers) => Q.ajax("GET", url, null, headers);
+Q.post = (url, data, headers) => Q.ajax("POST", url, data, headers);
+Q.put = (url, data, headers) => Q.ajax("PUT", url, data, headers);
+Q.delete = (url, headers) => Q.ajax("DELETE", url, null, headers);
+
 // Gets a cookie value
 Q.get_cookie = function (name) {
     var cookie = RegExp("" + name + "[^;]+").exec(document.cookie);
@@ -172,7 +178,6 @@ Q.tags_input = function(elem, options) {
     var fill = function(elem, repl) {
       repl.innerHTML = '';
       tags.forEach(function(x){
-        console.log(x);
         var item = document.createElement('li');
         item.innerHTML = options.labels[x] || x;
         item.dataset.value = x;
@@ -182,12 +187,14 @@ Q.tags_input = function(elem, options) {
           if(item.dataset.selected=='false') keys.push(x); else keys = keys.filter(function(y){ return x!=y; });
           item.dataset.selected = keys.indexOf(x)>=0;          
           elem.value = JSON.stringify(keys);
+          elem.dispatchEvent(new Event('input', { bubbles: true }));
         };
       });
     };
     if (options.freetext) {
       var inp = document.createElement('input');
       elem.parentNode.insertBefore(inp, elem);
+      inp.type = "text";
       inp.classList = elem.classList;
       inp.placeholder = options.placeholder;
       inp.setAttribute('list',  options.autocomplete_list);
@@ -200,6 +207,7 @@ Q.tags_input = function(elem, options) {
         });
         inp.value = '';
         elem.value = JSON.stringify(keys);
+        elem.dispatchEvent(new Event('input', { bubbles: true }));
         fill(elem, repl);
       };
     }
@@ -257,7 +265,6 @@ Q.load_and_trap = function (method, url, form_data, target) {
         if (res.redirected) window.location = res.url;
         Q('#'+target)[0].innerHTML = res.data;
         Q.trap_form(url, target);
-        console.log(res.headers);
         var flash = res.headers.get('component-flash');
         if (flash) Q.flash(JSON.parse(flash));
     };
@@ -295,7 +302,6 @@ Q.handle_flash = function() {
     if (elem) {
         elem.addEventListener('flash', make_handler(elem), false);
         Q.flash = function(detail) {elem.dispatchEvent(new CustomEvent('flash', {detail: detail}));};
-        console.log(elem.dataset.alert);
         if (elem.dataset.alert) Q.flash(Q.eval(elem.dataset.alert));
     }    
 };
