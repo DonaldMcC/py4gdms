@@ -447,7 +447,6 @@ function rectclick(event) {
      var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
         var qtype = 'Action';
         var notes = '';
-        console.log(d.x);
 
         if (d.qtype == 'quest') {
                 qtype = 'Question';
@@ -475,7 +474,6 @@ function rectclick(event) {
         };
 
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
-        fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
 
         if (d.question_url > '') {
                 fieldformat += "<TR><TD><B>Link</B></TD><TD colspan='3'>" + d.question_url + "</TD></TR>";
@@ -506,12 +504,13 @@ function rectclick(event) {
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(event, d) {
-        console.log(this.id);
-        newid = "#tooltip1"
-        var g = d3.select(newid).style("opacity", 1);  // the node (table)
+        newid = "#tooltip" + this.id.substring(6)
+        var g = d3.select(newid).style("opacity", 1);
     });
 
     node.on("mouseout", function(event, d) {
+        newid = "#tooltip" + this.id.substring(6)
+        var g = d3.select(newid).style("opacity", 0);
         //d3.select("#graph").select('div.tooltip').remove();
     });
 
