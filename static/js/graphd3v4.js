@@ -1,13 +1,7 @@
 // This is now main d3 v4 graph layout it should be used for 5 different functions
-    // 1 vieweventmap for eventmap views - redraw usually false
-    // 2 search maps which are not saved - redraw always true ie force layout kicks in
-    // 3 newindex review if map check box is setup and checked
-    // 4 project view which may or may not need positions stored to be considered
-    // 5 default view on home range
+    // 1 vieweventmap for eventmap views
 
     // Basic eventmap now working again - but need the links and nodes to be prettied up a bit
-    // then mainly come back to the other editability and modes to do the different things which 
-    // have been removed - a load screen is now proposed to allow full editing of draft questions
     // this will need mapped out and there will be some issues
     // the tooltip setup also needs confirmed and the force graph parameters need sorted
 
@@ -18,7 +12,6 @@
 
     // tooltips have stopped working - no idea why but think will move to always building and then just showing on
     // mouseover - but not now  https://medium.com/@kj_schmidt/show-data-on-mouse-over-with-d3-js-3bf598ff8fc2
-
 
     //console.log(nodes);
     var consts =  {
@@ -32,7 +25,7 @@
     var textHeight = 10;
     var lineHeight = textHeight + 5;
     var lines = [];
-   initLines();
+    initLines();
 
     var graphvars = {
           selectedNode: null,
@@ -52,98 +45,27 @@
     var lastypos = '';
     var edges = [];
 
-    function addnode(itemtext, posx, posy, qtype) {
-        var nodecolour = "rgb(215,255,215)"
-        if (qtype == 'action') {nodecolour = 'rgb(255,255,220)'};
-        if (qtype == 'issue') {nodecolour = 'rgb(215,215,255)'};
-        nodes.push ({
-            answers: ['yes', 'no'],
-            fillclr: nodecolour,
-            id: nodes.length,
-            locked: "N",
-            priority: 25,
-            qtype: qtype,
-            perccomplete: 0,
-            r: 160,
-            selected: false,
-            fixed: false,
-            scolour: 'orange',
-            linkcount: 0,
-            fontsize: 10,
-            serverid: 0,
-            status: "Draft",
-            swidth: 2,
-            textclr: "white",
-            title: itemtext,
-            xpos: posx,
-            ypos: posy,
-            x: rescale(posx, width, 1000),
-            y: rescale(posy, height, 1000)
-        });
-
-        //console.log('nodes', nodes);
-       redrawnodes();
-
-}
-
-    function updatenode(node, itemtext) {
-        //console.log(node.serverid, itemtext);
-        node.title = itemtext;
-        redrawnodes();
-        //console.log('nodes', nodes);
-       redrawnodes();
-
-}
-
     // handle redraw graph
     d3.select("#redraw-graph").on("click", function(){redrawGraph();});
-
     // below should revert to the iterative with additional link values and link types to be added
     links.forEach(function(e) {
         var sourceNode = nodes.filter(function(n) {return n.serverid === e.source;})[0],
             targetNode = nodes.filter(function(n) {return n.serverid === e.target;})[0];
-
         edges.push({
             source: sourceNode,
             target: targetNode,
             dasharray: e.dasharray,
             value: 1});
-
     });
 
     // this was being used for some of the force values - to be considered
     edges.forEach(function(e) {
         if (!e.source["linkcount"]) e.source["linkcount"] = 0;
         if (!e.target["linkcount"]) e.target["linkcount"] = 0;
-
         e.source["linkcount"]++;
         e.target["linkcount"]++;
     });
 
-    //below from https://bl.ocks.org/shimizu/e6209de87cdddde38dadbb746feaf3a3
-    // but need to deccide on best approach
-/*
-      function setSize(data) {
-        width = document.querySelector("#graph").clientWidth
-        height = document.querySelector("#graph").clientHeight
-
-        margin = {top:0, left:0, bottom:0, right:0 }
-
-
-        chartWidth = width - (margin.left+margin.right)
-        chartHeight = height - (margin.top+margin.bottom)
-
-        svg.attr("width", width).attr("height", height)
-
-
-        chartLayer
-            .attr("width", chartWidth)
-            .attr("height", chartHeight)
-            .attr("transform", "translate("+[margin.left, margin.top]+")")
-    }
-*/
-        //var height = window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
-        //var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth;
         var height = window.innerHeight;
         var width = window.innerWidth - 70;
 
@@ -166,7 +88,6 @@
 
     // may look at making this dynamic again at some point
     // will now take from v4js for now var width = 960, height = 600;
-
     function redrawlinks() {
       svg = d3.select("#graph").select('svg');
 
@@ -202,18 +123,15 @@
     }
 
 function redrawnodes() {
+    //this is main function that draws the graph
     svg = d3.select("#graph").select('svg');
-
     node = svg.select("#nodes").selectAll(".node")
         .data(nodes);
 
     node.enter().append("g")
-        .attr("class", function (d) {
-            return "node " + d.type;
-        })
-        .attr("transform", function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        })
+        .attr("class", function (d) {return "node " + d.type;})
+        .attr("id", function (d) {return "circle" + d.serverid})
+        .attr("transform", function (d) {return "translate(" + d.x + "," + d.y + ")";})
         .on("click", function(event, d) {nodeclick(event, d);})
         .call(d3.drag()
             .on("start", dragnodestarted)
@@ -241,45 +159,33 @@ function redrawnodes() {
             var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length}
-        wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete)
+        wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete);
         });
 
     // add the nodes
-    node.attr("class", function (event, d) {
-        return "node " + d.type;
-    })
+    node.attr("class", function (event, d) {return "node " + d.type;})
+        .attr("id", function (d) {return "circle" + d.serverid})
         .attr("transform", function (d) {
             return "translate(" + d.x + "," + d.y + ")";
-        });
+        })
+    ;
 
     node.select('circle')
         .attr('r', String(consts.nodeRadius))
-        .style("fill", function (d) {
-            return d.fillclr
-        })
-        .style("stroke", function (d) {
-            return d.scolour
-        })
-        .style("stroke-width", function (d) {
-                        if (d.selected) {
-                return (11)
-            } else {
-            return d.swidth}
-        })
-    ;
+        .style("fill", function (d) {return d.fillclr})
+        .style("stroke", function (d) {return d.scolour})
+        .style("stroke-width", function (d) {if (d.selected) {return (11)} else {return d.swidth}});
 
 
     node.each(function (d) {
         clearText(d3.select(this), d.title);
-                var numquests = 0;
+        var numquests = 0;
         if (d.subquests != null)
-        { var numquests = d.subquests.length};
-        wrapText(d3.select(this), d.title, numquests, d.qtype, d.perccomplete);
-
-        node.exit().remove();
-    });
-
-}
+            { var numquests = d.subquests.length};
+            wrapText(d3.select(this), d.title, numquests, d.qtype, d.perccomplete);
+            node.exit().remove();
+            });
+    }
 
     svg = d3.select("#graph").append("svg")
             .attr("width", width)
@@ -298,10 +204,8 @@ function redrawnodes() {
     .attr("orient", "auto")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
-
     svg.append("g").attr("id", "links");
     svg.append("g").attr("id", "nodes");
-
 
     var link = svg.select("#links").selectAll('.link')
             .data(edges)
@@ -314,35 +218,34 @@ function redrawnodes() {
             .attr("d", function(d){
         return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       })
-      .classed("link", true)
+        .classed("link", true)
         .attr("stroke", "purple")
-         .style("stroke-width", function(event, d){return d.linethickness})
+        .style("stroke-width", function(event, d){return d.linethickness})
         .style("stroke-dasharray", function(event, d){return d.dasharray})
         .attr("marker-end", "url(#end-arrow)")
         .style('marker-end', 'url(#end-arrow)');
 
     //below commented out as this now only called on inital load and exit impossible
     //link.exit().remove();
-
-
     var node = svg.select("#nodes").selectAll(".node")
             .data(nodes)
             .enter().append("g")
             .attr("class", function(d) { return "node " + d.type;})
+            .attr("id", function (d) {return "circle" + d.serverid})
             .attr("transform", function(d){return "translate(" + d.x + "," + d.y + ")";})
             .on("click", function(event, d) {nodeclick(event, d);})
             .on("touchstart", function(event, d) {nodeclick(event, d);})
-             .call(d3.drag()
-              .on("start", dragnodestarted)
-              .on("drag", dragnode)
-              .on("end", dragnodeended));
+            .call(d3.drag()
+                .on("start", dragnodestarted)
+                .on("drag", dragnode)
+                .on("end", dragnodeended));
 
     // add the nodes
     node.append('circle')
         .attr('r', String(consts.nodeRadius))
         .style("fill", function(d){return d.fillclr})
         .style("stroke", function(d){return d.scolour})
-         .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1000,1")}}) // make the stroke dashed
+        .style("stroke-dasharray", function(d){if (d.status=='Draft') {return ("8,8")} else {return ("1000,1")}}) // make the stroke dashed
         .style("stroke-width", function(d){return d.swidth})
          /*.attr('height', 25)*/
         ;
@@ -351,8 +254,8 @@ function redrawnodes() {
         var numquests = 0;
         if (d.subquests != null)
         { var numquests = d.subquests.length};
-    wrapText(d3.select(this), d.title,  numquests, d.qtype, d.perccomplete);
-
+        wrapText(d3.select(this), d.title,  numquests, d.qtype, d.perccomplete);
+        drawtooltip(d);
     });
 
     //V E L A D M view, edit, link, add, delete, demote
@@ -364,7 +267,7 @@ function rectclick(event) {
         //console.log("you clicked rectd ", d.serverid);
         //think this will become an ajax load presently
         location.href = baselowerUrl+'/1/'+d.serverid+'/';
-         event.stopPropagation();
+        event.stopPropagation();
     };
 
     function urlclick(event, d) {
@@ -389,13 +292,8 @@ function rectclick(event) {
                 //full thing as view quest
                 //console.log("you clicked edit", d.serverid);
                 //console.log("calling quetsadd");
-                if (d.locked != 'Y') {
-                    questadd('Edit', event.x, event.y, d);
-                }
-                else {
-                    questadd('View', event.x, event.y, d);
-                    //out("Only draft item text editable")
-                }
+                if (d.locked != 'Y') {questadd('Edit', event.x, event.y, d);}
+                else {questadd('View', event.x, event.y, d);}
                 break;
             case 'L':
                 if (graphvars.mousedownnode && graphvars.mousedownnode != d) {
@@ -407,9 +305,7 @@ function rectclick(event) {
                     if (linksource == '0') {
                         linksource = graphvars.mousedownnode.title;
                     }
-                    if (linksource == '0') {
-                        linksource = d.serverid.title;
-                    }
+                    if (linksource == '0') {linksource = d.serverid.title;}
                     console.log("calling request link")
                     requestLink(linksource, linkdest, 'create');
                     redrawlinks();
@@ -448,7 +344,6 @@ function rectclick(event) {
                 redrawlinks();
                 redrawnodes();
                 redrawnodes();
-
                 graphvars.mousedownnode = null;
                 }
                 else {
@@ -547,29 +442,27 @@ function rectclick(event) {
         }
     }
 
-//need to actually figure out what goes in the tooltip 
-    node.on("mouseover", function(event, d) {
-        console.log('mouseover');
-        var g = d3.select(this);  // the node (table)
-        var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
+
+    function drawtooltip(d) {
+     var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
         var qtype = 'Action';
         var notes = '';
-        //console.log(d.notes);
+        console.log(d.x);
 
         if (d.qtype == 'quest') {
-            qtype = 'Question';
-        } else if (d.qtype == 'issue') {
-            qtype = 'Issue';
-        }
+                qtype = 'Question';
+            } else if (d.qtype == 'issue') {
+                qtype = 'Issue';
+        };
 
         if (d.notes != null) {
             notes = d.notes;
             notes = notes.substring(0, 300);
-        }
+        };
         if (d.aianswer != null) {
             notes = 'Notes:' + notes + '<br>AI answer:' + d.aianswer;
             notes = notes.substring(0, 300);
-        }
+        };
 
         if (notes == '') {
             notes = 'No notes or AI Answer';
@@ -580,9 +473,9 @@ function rectclick(event) {
         if (qtype == 'Action') {
             fieldformat += "<TR><TD><B>Due Date</B></TD><TD>" + d.duedate + "</TD><TD><B>" + " Responsible:" + "</B></TD><TD>" + d.responsible + "</TD></TR>";
         };
-        
+
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
-            //fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
+        fieldformat += "<TR><TD>"+ d.notes+"</TD></TR>";
 
         if (d.question_url > '') {
                 fieldformat += "<TR><TD><B>Link</B></TD><TD colspan='3'>" + d.question_url + "</TD></TR>";
@@ -594,24 +487,32 @@ function rectclick(event) {
         //function(d) { return x(d) + "px"; })
 
         fieldformat += "</TABLE>";
-        console.log(event.pageY);
         // Define 'div' for tooltips
-        console.log(g)
-        var div = d3.select(this).append("div")  // declare the tooltip div
+        svgposition = document.getElementById("graph");
+
+        var div = d3.select("#graph").append("div")  // declare the tooltip div
 	            .attr("class", "tooltip")              // apply the 'tooltip' class
+                .attr("id", "tooltip" + d.serverid)
                 .html(fieldformat)
                 .style("position", "absolute")
-                .style("left",  10 + "px")
-                .style("top", 10 + "px")
+                .style("left",  svgposition.offsetLeft + d.x + 20 + "px")
+                .style("top", svgposition.offsetTop + d.y + 30 + "px")
                 .style("width", 50 + "px")
                 .transition()
                 .duration(800)
-                .style("opacity", 0.9);
+                .style("opacity", 0);
+    };
 
+
+//need to actually figure out what goes in the tooltip 
+    node.on("mouseover", function(event, d) {
+        console.log(this.id);
+        newid = "#tooltip1"
+        var g = d3.select(newid).style("opacity", 1);  // the node (table)
     });
 
     node.on("mouseout", function(event, d) {
-        d3.select("#graph").select('div.tooltip').remove();
+        //d3.select("#graph").select('div.tooltip').remove();
     });
 
         function dragnodestarted(event, d) {
@@ -748,21 +649,6 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              .attr("y", 59)
              .attr("font-size", "10px")
               .text("L");
-    //numsubs.toString()  this was when we had layers
-    //var lk = gEl.append("rect")
-    //         .attr("x", -74)
-    //         .attr("y", -74)
-    //         .attr("stroke", "blue")
-    //         .attr("width", 20)
-    //          .attr("height", 20)
-    //         .on("click", function() {urlclick(event, title)});
-    //var lkt = gEl.append("text")
-    //         .attr("x", -72)
-    //         .attr("y", -60)
-    //         .attr("font-size", "10px")
-    //          .text("Det");
-    //   .text(function(d) { return d.numsubs});
-
 
     if (qtype=='action') {
         var ac = gEl.append("rect")
@@ -794,6 +680,7 @@ function wrapText(gEl, title, numsubs, qtype, perccomplete) {
              tspan.attr('x', 0).attr('dy', '15');
          words.splice(0, lineData.count);
      }
+
  }
 
         // calculate how many words will fit on a line
@@ -858,3 +745,47 @@ function initLines() {
         function out(m) {
         $('#target').html(m);
         }
+
+function addnode(itemtext, posx, posy, qtype) {
+    var nodecolour = "rgb(215,255,215)"
+    if (qtype == 'action') {
+        nodecolour = 'rgb(255,255,220)'
+    }
+    ;
+    if (qtype == 'issue') {
+        nodecolour = 'rgb(215,215,255)'
+    }
+    ;
+    nodes.push({
+        answers: ['yes', 'no'],
+        fillclr: nodecolour,
+        id: nodes.length,
+        locked: "N",
+        priority: 25,
+        qtype: qtype,
+        perccomplete: 0,
+        r: 160,
+        selected: false,
+        fixed: false,
+        scolour: 'orange',
+        linkcount: 0,
+        fontsize: 10,
+        serverid: 0,
+        status: "Draft",
+        swidth: 2,
+        textclr: "white",
+        title: itemtext,
+        xpos: posx,
+        ypos: posy,
+        x: rescale(posx, width, 1000),
+        y: rescale(posy, height, 1000)
+    });
+};
+
+function updatenode(node, itemtext) {
+        //console.log(node.serverid, itemtext);
+        node.title = itemtext;
+        redrawnodes();
+        //console.log('nodes', nodes);
+       redrawnodes();
+}
