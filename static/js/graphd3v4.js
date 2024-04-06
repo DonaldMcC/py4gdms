@@ -16,6 +16,10 @@
     // embedding web2py in d3
     // http://stackoverflow.com/questions/34326343/embedding-d3-js-graph-in-a-web2py-bootstrap-page
 
+    // tooltips have stopped working - no idea why but think will move to always building and then just showing on
+    // mouseover - but not now  https://medium.com/@kj_schmidt/show-data-on-mouse-over-with-d3-js-3bf598ff8fc2
+
+
     //console.log(nodes);
     var consts =  {
     selectedClass: "selected",
@@ -106,8 +110,6 @@
             value: 1});
 
     });
-
-
 
     // this was being used for some of the force values - to be considered
     edges.forEach(function(e) {
@@ -281,7 +283,8 @@ function redrawnodes() {
 
     svg = d3.select("#graph").append("svg")
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .attr("id", "svgarea");
 
    svg.append("svg:defs").selectAll("marker-end")
     .data(["end-arrow"])      // Different link/path types can be defined here
@@ -390,7 +393,6 @@ function rectclick(event) {
                     questadd('Edit', event.x, event.y, d);
                 }
                 else {
-                    console.log("try viewing quest");
                     questadd('View', event.x, event.y, d);
                     //out("Only draft item text editable")
                 }
@@ -516,8 +518,6 @@ function rectclick(event) {
                 // so this is failing and deleting the wrong edge despite correct one being selected as d
                 //console.log('index',edges.indexOf(d) );
                 var index = edges.indexOf(d);
-                //console.log(edges);
-                //console.log(indexes);
                 edges.splice(index, 1);
                 //console.log(edges.length)
                 //console.log(edges);
@@ -549,7 +549,7 @@ function rectclick(event) {
 
 //need to actually figure out what goes in the tooltip 
     node.on("mouseover", function(event, d) {
-        //console.log(nodes);
+        console.log('mouseover');
         var g = d3.select(this);  // the node (table)
         var fieldformat = "<TABLE class='table table-bordered table-condensed bg-info'>";
         var qtype = 'Action';
@@ -578,8 +578,7 @@ function rectclick(event) {
         fieldformat += "<TR><TD><B>" + qtype + "</B></TD><TD colspan='3'>" + notes + "</TD></TR>";
 
         if (qtype == 'Action') {
-
-        fieldformat += "<TR><TD><B>Due Date</B></TD><TD>" + d.duedate + "</TD><TD><B>" + " Responsible:" + "</B></TD><TD>" + d.responsible + "</TD></TR>";
+            fieldformat += "<TR><TD><B>Due Date</B></TD><TD>" + d.duedate + "</TD><TD><B>" + " Responsible:" + "</B></TD><TD>" + d.responsible + "</TD></TR>";
         };
         
         fieldformat += "<TR><TD><B>Status</B></TD><TD>"+ d.status+"</TD><TD><B>"+" Priority:"+"</B></TD><TD>"+ d.priority+"</TD></TR>";
@@ -589,26 +588,31 @@ function rectclick(event) {
                 fieldformat += "<TR><TD><B>Link</B></TD><TD colspan='3'>" + d.question_url + "</TD></TR>";
             };
 
+           //             .style("left", 10 + (event.pageX + 10) + "px")// or just (d.x + 50 + "px") (event.pageX)
+           //     .style("top", (event.pageY - 20) + "px")// or ...(event.pageY - 20)
+
+        //function(d) { return x(d) + "px"; })
 
         fieldformat += "</TABLE>";
-
-            // Define 'div' for tooltips
-        var div = d3.select("body").append("div")  // declare the tooltip div
-	        .attr("class", "tooltip")              // apply the 'tooltip' class
+        console.log(event.pageY);
+        // Define 'div' for tooltips
+        console.log(g)
+        var div = d3.select(this).append("div")  // declare the tooltip div
+	            .attr("class", "tooltip")              // apply the 'tooltip' class
                 .html(fieldformat)
-                .style("left", 10 + (event.pageX + 10) + "px")// or just (d.x + 50 + "px") (event.pageX)
-                .style("top", (event.pageY - 20) + "px")// or ...(event.pageY - 20)
+                .style("position", "absolute")
+                .style("left",  10 + "px")
+                .style("top", 10 + "px")
+                .style("width", 50 + "px")
                 .transition()
                 .duration(800)
                 .style("opacity", 0.9);
 
     });
 
-
     node.on("mouseout", function(event, d) {
-        d3.select("body").select('div.tooltip').remove();
+        d3.select("#graph").select('div.tooltip').remove();
     });
-
 
         function dragnodestarted(event, d) {
             //d.fx = d.x;
