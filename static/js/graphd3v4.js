@@ -215,6 +215,8 @@ function redrawnodes() {
             .enter()
             .append("path")
             .attr("class", "link")
+            .on("click", function(event, d) {linkclick(event, d);})
+            .on("touchstart", function(event, d) {linkclick(event, d);})
             .attr("d", function(d){
         return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
       })
@@ -410,8 +412,6 @@ function rectclick(event) {
                     edges[edges.indexOf(d)].target.serverid.toString(), 'delete');
                 //console.log(edges.length);
                 //console.log(d.source,d.target);
-                // so this is failing and deleting the wrong edge despite correct one being selected as d
-                //console.log('index',edges.indexOf(d) );
                 var index = edges.indexOf(d);
                 edges.splice(index, 1);
                 //console.log(edges.length)
@@ -425,8 +425,10 @@ function rectclick(event) {
         event.stopPropagation();
     }
 
-    link.on("click", linkclick);
-    node.on("click", function(event, d) {nodeclick(event, d);});
+    //don't think below are needed now - just define as part of drawing
+    //link.on("click", linkclick);
+    //node.on("click", function(event, d) {nodeclick(event, d);});
+
     svg.on("click", backclick);
 
     function backclick(event, d) {
