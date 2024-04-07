@@ -376,7 +376,7 @@ function redrawnodes() {
   };
 
     function linkclick(event, d) {
-        alert("you clicked link");
+        //alert("you clicked link");
         switch (inputmode) {
             case 'D':
                 //Edit - this should load the URL and
