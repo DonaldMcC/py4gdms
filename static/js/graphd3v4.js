@@ -474,7 +474,7 @@ function redrawnodes() {
         var g = d3.select(newid).style("opacity", 0);});
 
 
-    function(dragnodestarted(event, d) {
+    function dragnodestarted(event, d) {
         //do nothing
     }
 
