@@ -78,12 +78,8 @@
     });
 
         function rescale(point, newscale, oldscale) {
-            if (oldscale != 0 ) {
-                return (point * newscale) / oldscale
-            }
-            else {
-                return point
-            }
+            if (oldscale != 0 ) {return (point * newscale) / oldscale}
+            else {return point}
         }
 
     // may look at making this dynamic again at some point
@@ -95,31 +91,28 @@
         var link = svg.select("#links").selectAll('.link')
             .data(edges)
             .attr("class", "link")
-            .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
-      })
-      .classed("link", true)
-        .attr("stroke", "purple")
-         .style("stroke-width", function(d){return d.linethickness})
-        .style("stroke-dasharray", function(d){return d.dasharray})
-        .attr("marker-end", "url(#end-arrow)")
-        .style('marker-end', 'url(#end-arrow)');
+            .attr("d", function(d){return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;})
+            .classed("link", true)
+            .attr("stroke", "purple")
+            .style("stroke-width", function(d){return d.linethickness})
+            .style("stroke-dasharray", function(d){return d.dasharray})
+            .attr("marker-end", "url(#end-arrow)")
+            .style('marker-end', 'url(#end-arrow)');
 
             link.enter()
-            .append("path")
-            .attr("class", "link")
-            .attr("d", function(d){
-        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;
-      })
-      .classed("link", true)
-        .attr("stroke", "purple")
-         .style("stroke-width", function(d){return d.linethickness})
-        .style("stroke-dasharray", function(d){return d.dasharray})
-        .attr("marker-end", "url(#end-arrow)")
-        .style('marker-end', 'url(#end-arrow)');
+                .append("path")
+                .attr("class", "link")
+                .attr("d", function(d){return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + "," + d.target.y;})
+                .classed("link", true)
+                .attr("stroke", "purple")
+                .style("stroke-width", function(d){return d.linethickness})
+                .style("stroke-dasharray", function(d){return d.dasharray})
+                .attr("marker-end", "url(#end-arrow)")
+                .style('marker-end', 'url(#end-arrow)')
+                .on("click", function(event, d) {linkclick(event, d);})
+                .on("touchstart", function(event, d) {linkclick(event, d);});
 
-    link.exit().remove();
-
+            link.exit().remove();
     }
 
 function redrawnodes() {
@@ -139,36 +132,25 @@ function redrawnodes() {
             .on("end", dragnodeended))
         .append('circle')
         .attr('r', String(consts.nodeRadius))
-        .style("fill", function (d) {
-            return d.fillclr
-        })
-        .style("stroke", function (d) {
-            return d.scolour
-        })
-        .style("stroke-width", function (d) {
-            return d.swidth
-        })
+        .style("fill", function (d) {return d.fillclr})
+        .style("stroke", function (d) {return d.scolour})
+        .style("stroke-width", function (d) {return d.swidth})
         .style("stroke-dasharray", function (d) {
-            if (d.status == 'Draft') {
-                return ("8,8")
-            } else {
-                return ("1,1")
-            }
-        })
+            if (d.status == 'Draft') {return ("8,8")}
+            else {return ("1,1")}
+            })
         .each(function (d) {
             var numquests = 0;
-        if (d.subquests != null)
-        { var numquests = d.subquests.length}
-        wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete);
-        });
+            if (d.subquests != null)
+            { var numquests = d.subquests.length}
+            wrapText(d3.select(this.parentNode), d.title, numquests, d.qtype, d.perccomplete);
+            });
 
-    // add the nodes
-    node.attr("class", function (event, d) {return "node " + d.type;})
+        // add the nodes
+        node.attr("class", function (event, d) {return "node " + d.type;})
         .attr("id", function (d) {return "circle" + d.serverid})
-        .attr("transform", function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
-        })
-    ;
+        .attr("transform", function (d) {return "translate(" + d.x + "," + d.y + ")";})
+        ;
 
     node.select('circle')
         .attr('r', String(consts.nodeRadius))
@@ -490,6 +472,11 @@ function redrawnodes() {
     node.on("mouseout", function(event, d) {
         newid = "#tooltip" + this.id.substring(6)
         var g = d3.select(newid).style("opacity", 0);});
+
+
+    function(dragnodestarted(event, d) {
+        //do nothing
+    }
 
 
     function dragnode(event, d) {
