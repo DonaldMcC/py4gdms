@@ -26,6 +26,12 @@ g.setOptions({
   vEventsChange: {
     taskname: console.log,
     res: console.log,
+    dur: console.log,
+    comp: console.log,
+    start: console.log,
+    end: console.log,
+    planstart: console.log,
+    planend: console.log,
   },
   // EventsClickCell
   vEvents: {
@@ -69,3 +75,17 @@ function editValue(list, task, event, cell, column) {
 /* https://github.com/jsGanttImproved/jsgantt-improved/pull/61  and demo may help*/
 /*https://github.com/jsGanttImproved/jsgantt-improved/blob/master/docs/index.js#L78 */
 /*https://github.com/jsGanttImproved/jsgantt-improved/blob/master/docs/index.js#L199*/
+
+$('#res_actions').on('change', 'input', function () {
+    var row = $(this).closest('tr');
+        var perc = row.find("input[type='range']").val();
+        var resp = row.find("input[type='text']").val();
+        var due = row.find("input[type='date']").val();
+                console.log(due);
+    Q.ajax("POST", "[[=URL('perccomplete')]]", {
+            questid: row.attr('id'),
+            perccomplete: perc,
+            responsible: resp,
+            duedate: due
+        }).then(onsuccess).catch(onerror);
+});
