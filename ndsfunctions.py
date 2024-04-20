@@ -284,6 +284,17 @@ def _test():
     doctest.testmod()
 
 
+def update_action(recid:int, resp, perc, startdate:str, enddate:str):
+
+    quest = db(db.question.id == qid).select().first()
+    if not quest:
+        return False
+
+    # ToDo - need to check the values and fields to update
+    # quest.update_record(importance=imp, bla = resp, startdate=startdate, enddate=enddate, perc=perc)
+    return True
+
+
 if __name__ == '__main__':
     # Can run with -v option if you want to confirm tests were run
     _test()

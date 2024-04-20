@@ -21,7 +21,7 @@
 
 # This controller provides gantt chart items
 
-from ..ndsfunctions import get_gantt_data
+from ..ndsfunctions import get_gantt_data, update_action
 from ..common import db, auth, session
 from py4web import action, request, URL
 from yatl.helpers import XML
@@ -53,6 +53,7 @@ def gantt():
     # print(projxml)
     return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)
 
+
 def process_gantt(xmlstring):
     myroot = ET.fromstring(xmlstring)
     # print(myroot)
@@ -67,6 +68,13 @@ def process_gantt(xmlstring):
                 # to responsible on the way out plus % complete and start and end dates
                 # should potentially be a shared function to update based on pcost being the id and these values
                 print(element.tag, element.text)
+                match element.tag:
+                    case 'project':
+                        recid = element.text
+                    case _:
+                        pass
+
+            update_action('gantt', child.attrib['gantt'])
     return 'yes'
 
 
