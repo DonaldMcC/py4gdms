@@ -14,10 +14,8 @@ function edit_click() {
     g.Draw();
 };
 
-
 g.setShowTaskInfoLink(1);
 g.setEditable(0);
-
 
 g.setOptions({
 // EVENTS
@@ -56,7 +54,6 @@ var textstring = "[[=project]]"
 JSGantt.parseXMLString(textstring,g);
 g.Draw();
 
-
 function editValue(list, task, event, cell, column) {
     console.log('editing');
   /*console.log(list, task, event, cell, column);*/
@@ -67,6 +64,11 @@ function editValue(list, task, event, cell, column) {
   else {
     found[column] = event ? event.target.value : '';
   }
+}
+
+function exportGantt() {
+    outstring = g.getXMLProject();
+    console.log(outstring);
 }
 
 /* now found some events and added in with console logging for now */
