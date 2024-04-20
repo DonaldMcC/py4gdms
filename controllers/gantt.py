@@ -67,14 +67,21 @@ def process_gantt(xmlstring):
                 # just need to figure out what elements we need - seems to be resource if that is mapped
                 # to responsible on the way out plus % complete and start and end dates
                 # should potentially be a shared function to update based on pcost being the id and these values
-                print(element.tag, element.text)
+                #print(element.tag, element.text)
                 match element.tag:
-                    case 'project':
+                    case 'pCost':
                         recid = element.text
+                    case 'pRes':
+                        resp = element.text
+                    case 'pComp':
+                        perc = element.text
+                    case 'pStart':
+                        startdate = element.text
+                    case 'pEnd':
+                        enddate = element.text
                     case _:
                         pass
-
-            update_action('gantt', child.attrib['gantt'])
+            update_action(recid, resp, perc, startdate, enddate)
     return 'yes'
 
 

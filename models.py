@@ -156,8 +156,8 @@ db.define_table('question',
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2])),
                       comment='If populated status moves to resolved'),
                 Field.Virtual('correctanstext', lambda row: (row['factopinion'] == 'Fact' and 'N/A')
-                                                            or (row['correctans'] == 1 and row['answer1'])
-                                                            or (row['correctans'] == 2 and row['answer2']) or '?'),
+                            or (row['correctans'] == 1 and row['answer1'])
+                            or (row['correctans'] == 2 and row['answer2']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Notes'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
@@ -178,14 +178,13 @@ db.define_table('question',
 
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
-
 db.define_table('tweets',
                 Field('parentid', 'integer'),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
                 Field('tweet_text', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='To Send', requires=IS_IN_SET(['To Send', 'Sent', 'Rejected'])),
                 Field('requestdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
-                Field('tweetdate', 'datetime',  writable=False),
+                Field('tweetdate', 'datetime', writable=False),
                 Field('media_id', 'integer'),  # Note this is the twitter url that we get on the status post
                 )
 
@@ -297,7 +296,7 @@ db.define_table('prompt',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
                 Field('scenario', 'string',
                       requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues',
-                                          'rev_actions','rev_issues', 'rev_questions'])),
+                                          'rev_actions', 'rev_issues', 'rev_questions'])),
                 Field('setup', 'string', default='A', label='Current prompt setup'),
                 Field('prompttype', 'string', requires=IS_IN_SET(['system', 'user'])),
                 Field('sequence', 'integer', comment='Use numbers above 50 if you want to come after item'),

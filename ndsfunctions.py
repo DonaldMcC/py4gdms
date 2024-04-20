@@ -63,7 +63,7 @@ def convrow(row, dependlist='', hasdepend=False):
     plink = URL('submit', 'question_plan')
     projrow = '<task>'
     projrow += convxml(row.question.id, 'pID')
-    projrow += convxml(row.question.id, 'pCost') # storing original ID here to support updating
+    projrow += convxml(row.question.id, 'pCost')  # storing original ID here to support updating
     projrow += convxml(row.question.questiontext, 'pName', True, False)
     projrow += convxml(row.question.startdate, 'pStart')
     projrow += convxml(row.question.enddate, 'pEnd')
@@ -284,14 +284,12 @@ def _test():
     doctest.testmod()
 
 
-def update_action(recid:int, resp, perc, startdate:str, enddate:str):
-
-    quest = db(db.question.id == qid).select().first()
+def update_action(recid: int, resp, perc, startdate: str, enddate: str):
+    # for now this is just used by gantt.py but may be other cases later
+    quest = db(db.question.id == recid).select().first()
     if not quest:
         return False
-
-    # ToDo - need to check the values and fields to update
-    # quest.update_record(importance=imp, bla = resp, startdate=startdate, enddate=enddate, perc=perc)
+    quest.update_record(responsible=resp, startdate=startdate, enddate=enddate, perccomplete=perc)
     return True
 
 
