@@ -51,6 +51,7 @@ g.setOptions({
 });
 
 var textstring = "[[=project]]"
+console.log(textstring);
 JSGantt.parseXMLString(textstring,g);
 g.Draw();
 
@@ -69,7 +70,11 @@ function editValue(list, task, event, cell, column) {
 function exportGantt() {
     outstring = g.getXMLProject();
     console.log(outstring);
+        Q.ajax("POST", "[[=URL('exp_gantt')]]", {
+            ganttxml: outstring
+        }).then(onsuccess).catch(onerror);
 }
+
 
 /* now found some events and added in with console logging for now */
 /* hopefully new ajax function similar to ones on the actions grid to update */

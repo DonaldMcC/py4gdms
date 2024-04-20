@@ -54,6 +54,7 @@ def convrow(row, dependlist='', hasdepend=False):
     # pDepend is a list of taskst that this item depends upon
     # pLink will be the url to edit the action which can be derived from the row id
     # expect dependlist will need to be stripped
+    # 20 April 2024 added pCost to store the original id
     colorclass = gantt_colour(row.question.startdate, row.question.enddate, row.question.perccomplete)
     if row.question.startdate == row.question.enddate:
         milestone = 1
@@ -62,6 +63,7 @@ def convrow(row, dependlist='', hasdepend=False):
     plink = URL('submit', 'question_plan')
     projrow = '<task>'
     projrow += convxml(row.question.id, 'pID')
+    projrow += convxml(row.question.id, 'pCost') # storing original ID here to support updating
     projrow += convxml(row.question.questiontext, 'pName', True, False)
     projrow += convxml(row.question.startdate, 'pStart')
     projrow += convxml(row.question.enddate, 'pEnd')
@@ -72,12 +74,10 @@ def convrow(row, dependlist='', hasdepend=False):
     projrow += convxml(row.question.perccomplete, 'pComp')
     projrow += convxml('1', 'pOpen')
     projrow += convxml('', 'pParent')
-
     if hasdepend:
         projrow += convxml('1', 'pGroup')
     else:
         projrow += convxml('0', 'pGroup')
-
     projrow += convxml(dependlist, 'pDepend')
     projrow += convxml('A caption', 'pCaption')
     projrow += convxml(row.question.notes, 'pNotes', True)

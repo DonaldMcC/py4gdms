@@ -23,9 +23,10 @@
 
 from ..ndsfunctions import get_gantt_data
 from ..common import db, auth, session
-from py4web import action
+from py4web import action, request, URL
 from yatl.helpers import XML
 from ..ndsqueries import get_items
+import xml.etree.ElementTree as ET
 
 
 @action("allgantt", method=['GET', 'POST'])
@@ -49,4 +50,37 @@ def gantt():
     else:  # only incomplete actions as too many otherwise
         res_actions = get_items(event=eid, status='Resolved', execstatus='Incomplete')
     projxml = get_gantt_data(res_actions) if res_actions else "<project></project>"
+    # print(projxml)
     return dict(project=XML(projxml), quests=res_actions, eventrow=eventrow)
+
+def process_gantt(xmlstring):
+    myroot = ET.fromstring(xmlstring)
+    # print(myroot)
+    print(myroot.tag)
+    print(myroot[0].attrib)
+    print(myroot[1].tag)
+    for child in myroot.iter():
+        if child.tag == 'task':
+            for element in child.iter():
+                # so this seems to get what is required data wise
+                # just need to figure out what elements we need - seems to be resource if that is mapped
+                # to responsible on the way out plus % complete and start and end dates
+                # should potentially be a shared function to update based on pcost being the id and these values
+                print(element.tag, element.text)
+    return 'yes'
+
+
+@action('exp_gantt', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def exp_gantt():
+    # This will receive updates to the dates if users choose to save edits on the gantt chart
+    ganttxml = request.json['ganttxml']
+    if auth.user is None:
+        return 'You must be logged in to save changes'
+    responsetext = 'OK to update'
+    # print(ganttxml)
+    process_gantt(ganttxml)
+    # questrows = db(db.question.id == qid).select()
+    # quest = questrows.first()
+
+    return responsetext
