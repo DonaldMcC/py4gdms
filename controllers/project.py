@@ -109,8 +109,10 @@ def projectgrid(path=None):
     search_queries = [['Search by Name', lambda value: db.project.name == value]]
     # search = GridSearch(search_queries, queries)
 
+    query = db.project.id > 0
+
     grid = Grid(path,
-                db.project,
+                query,
                 fields=fields,
                 headings=['Name', 'Status', 'Description', 'Shared', 'Priority'],
                 orderby=orderby,
