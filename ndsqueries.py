@@ -154,7 +154,7 @@ def get_messages(chosenai, scenario, setup, qtext):
     return message
 
 
-def openai_query(qtext, scenario, setup='A', model="gpt-3.5-turbo"):
+def openai_query(qtext, scenario, setup='A', model="gpt-4o"):
     client = OpenAI(api_key=OPENAI_API_KEY)
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
