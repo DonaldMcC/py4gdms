@@ -26,11 +26,11 @@ CACHETIME = 1
 STARTSERVER = False
 
 # may update these later but possibly just have 3 options for now
-USERS = {'USER1': 'User1', 'PASSWORD1': 'Testuser1',
-         'USER2': 'User2', 'PASSWORD2': 'Testuser2', 'USER3': 'User3', 'PASSWORD3': 'Testuser3',
-         'USER4': 'User4', 'PASSWORD4': 'Testuser4', 'USER5': 'User5', 'PASSWORD5': 'Testuser5',
-         'USER6': 'User6', 'PASSWORD6': 'Testuser6', 'USER7': 'User7', 'PASSWORD7': 'Testuser7',
-         'USER8': 'User8', 'PASSWORD8': 'Testuser8', 'USER9': 'User9', 'PASSWORD9': 'Testuser9'}
+USERS = {'USER1': 'User1', 'PASSWORD1': 'MoreComplex1?',
+         'USER2': 'User2', 'PASSWORD2': 'MoreComplex2?', 'USER3': 'User3', 'PASSWORD3': 'MoreComplex3?',
+         'USER4': 'User4', 'PASSWORD4': 'MoreComplex4?', 'USER5': 'User5', 'PASSWORD5': 'MoreComplex5?',
+         'USER6': 'User6', 'PASSWORD6': 'MoreComplex6?', 'USER7': 'User7', 'PASSWORD7': 'MoreComplex8?',
+         'USER8': 'User8', 'PASSWORD8': 'MoreComplex8?', 'USER9': 'User9', 'PASSWORD9': 'MoreComplex9?'}
 
 listusers = ['user2', 'user3', 'user4']
 questref = 'functest questref'

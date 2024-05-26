@@ -4,7 +4,6 @@ from ddt import ddt, data, unpack
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-# element = WebDriverWait(driver, 10).until(lambda driver : driver.find_element_by_id("createFolderCreateBtn"))
 
 
 @ddt
@@ -12,15 +11,6 @@ class TestRegisterPage (FunctionalTest):
     def setUp(self):     
         self.url = ROOT + '/auth/register'
         self.browser.get(self.url)
-
-    # def test_can_view_register_page(self):
-    #    response_code = self.get_response_code(self.url)        
-    #    self.assertEqual(response_code, 200)    
-
-    # def test_has_right_title(self):
-    #    title = self.browser.title        
-    #    #self.assertEqual(u'Net Decision Making: Registration', title)
-    #    self.assertIn('Networked Decision Making', title)
 
     @data((USERS['USER1'], USERS['PASSWORD1']))
     @unpack
