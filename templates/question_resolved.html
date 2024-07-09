@@ -23,9 +23,9 @@
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div</td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
 <td class="has-text-centered">[[if row.question.factopinion == 'Fact':
-    =row.question.answertext
+    =XML(markmin2html(row.question.answertext))
     else:
-    =row.question.answer1 if row.question.correctans==1 else row.question.answer2
+    =XML(markmin2html(row.question.answer1)) if row.question.correctans==1 else XML(markmin2html(row.question.answer2))
     pass ]]</td>
     <td class="d-block d-sm-none d-md-none">[[=row.question.aianswer]]</td>
 </tr>
