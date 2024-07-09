@@ -34,7 +34,8 @@ class AddProject (FunctionalTest):
 
         questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'description'))
         questiontext.send_keys(itemdesc)
-
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(1)
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
