@@ -12,13 +12,15 @@
 
       		<script>
 			/**
-			 * https://stackoverflow.com/questions/8788802/prevent-safari-loading-from-cache-when-back-button-is-clicked/13123626#13123626
-			 */
-        $(window).bind("pageshow", function(event) {
-            if (event.originalEvent.persisted) {
-            window.location.reload()
-            }
-            });
+             https://gomakethings.com/fixing-safaris-back-button-browser-cache-issue-with-vanilla-js/
+						 */
+            (function () {
+	            window.onpageshow = function(event) {
+		        if (event.persisted) {
+			    window.location.reload();
+		        }
+	            };
+            })();
 		</script>
 
     <style>.py4web-validation-error{margin-top:-16px; font-size:0.8em;color:red}</style>
