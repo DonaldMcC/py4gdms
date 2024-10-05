@@ -153,7 +153,6 @@ def viewquest(qid=0, eid=0):
     ai_comment = db(query).select(orderby=[sortby]).first()
 
     got_ai = "Yes" if ai_comment else "No"
-    print(got_ai)
 
     db.comment.auth_userid.default = auth.user_id
     db.comment.parentid.default = quest['id']

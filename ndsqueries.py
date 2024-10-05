@@ -3,6 +3,7 @@ import pprint
 
 try:
     from openai import OpenAI
+    from .settings import AI_MODEL
     from .settings_private import OPENAI_API_KEY
     oai = True
 except ImportError as error:
@@ -154,13 +155,13 @@ def get_messages(chosenai, scenario, setup, qtext):
     return message
 
 
-def openai_query(qtext, scenario, setup='A', model="gpt-4o"):
+def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
     client = OpenAI(api_key=OPENAI_API_KEY)
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
     #for item in messages:
     #    print(type(item), item)
-    completion = client.chat.completions.create(model= model,
+    completion = client.chat.completions.create(model=model,
         messages=messages, max_tokens=300, temperature=0.1)
 
     return completion.choices[0].message.content

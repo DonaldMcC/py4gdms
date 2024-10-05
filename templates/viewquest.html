@@ -85,7 +85,7 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
    [[else:]]
      <h2 class="title h5">AI Review [[if got_ai=='Yes':]]<small>([[=ai_comment.ai_version]]</small>) </h2>
     <p id="ai_review">
-        [[=ai_comment.review]]
+        [[=XML(markmin2html(ai_comment.review))]]
         [[else:]]
         </h2> <p id="ai_review">Looking up answer on GPT ...
             [[pass]]

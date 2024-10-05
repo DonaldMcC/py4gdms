@@ -38,7 +38,7 @@ from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_messages, openai_query
 from .network import request_link
-from ..settings import AI_MODE
+from ..settings import AI_MODE, AI_MODEL
 
 flash = auth.flash
 
@@ -379,17 +379,16 @@ def openai_review():
     # think we maybe call with qtype and then want different prompts for scenarios, actions and issues
     scenario = qtype
     setup = 'A'
-    ai_model = 'gpt-3.5-turbo-0125'
 
     if AI_MODE == 'Test':
         resulttext =  "Testing Mode " + qtype
     else:
-        resulttext = openai_query(qtext, scenario, setup, model=ai_model)
+        resulttext = openai_query(qtext, scenario, setup, model=AI_MODEL)
 
     if resulttext:
-        db.ai_review.insert(parentid=qid,  chosenai='GPT-3', ai_version=ai_model, review=resulttext)
+        db.ai_review.insert(parentid=qid,  chosenai='GPT-4', ai_version=AI_MODEL, review=resulttext)
 
-    return ''.join(('Answer: ', resulttext, ' (', ai_model, ')'))
+    return ''.join(('Answer: ', resulttext, ' (', AI_MODEL, ')'))
 
 
 @action('bard_lookup', method=['POST', 'GET'])
