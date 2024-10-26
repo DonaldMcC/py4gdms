@@ -314,4 +314,16 @@ db.define_table('ai_review',
                 Field('review', 'text', requires=IS_NOT_EMPTY()),
                 Field('reviewdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
+# This will be system level defaults for generating new items
+# may well make this configurable at event level later but lets see how it works first and stabilize
+# setup
+db.define_table('ai_item_generation',
+                Field('maxitems', 'integer', default=20, label='Max Items'),
+                Field('maxdepth', 'integer', default=1, label='Max Depth'),
+                Field('chosenai', 'string', label='AI/Knowledge Engine'),
+                Field('ai_version', 'string', label='AI Version'),
+                Field('numissues', 'integer', default=0, label='Number of Issues'),
+                Field('numquestions', 'integer', default=1, label='Number of Questions'),
+                Field('numactions', 'integer', default=1, label='Number of Actions'))
+
 db.commit()
