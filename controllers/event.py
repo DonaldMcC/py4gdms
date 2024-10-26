@@ -207,7 +207,7 @@ def eventgrid(path=None):
                 query,
                 fields=fields,
                 left=[db.locn.on(db.event.locationid == db.locn.id), db.project.on(db.event.projid == db.project.id)],
-                headings=['Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
+                headings=['Event Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_event'),
