@@ -10,19 +10,15 @@
 
 <script>
     $(document).ready(function() {
-               if (window.screen.availWidth <= 1200) {
-                   $(".grid-col-project\\.proj_shared").hide();
-                   $(".grid-col-project_proj_shared").hide();
-                   $(".grid-col-project\\.priority").hide();
-                   $(".grid-col-project_priority").hide();
+        if (window.screen.availWidth <= 1200) {
+                   $(".grid-col-project-proj_shared").hide();
+                   $(".grid-cell-project-proj_shared").hide();
+                   $(".grid-col-project-priority").hide();
+                   $(".grid-cell-project-priority").hide();
         }
         if (window.screen.availWidth <= 800) {
-                   $(".grid-col-project\\.proj_status").hide();
-                   $(".grid-col-project_proj_status").hide();
-                   $(".grid-col-project\\.proj_shared").hide();
-                   $(".grid-col-project_proj_shared").hide();
-                   $(".grid-col-project\\.priority").hide();
-                   $(".grid-col-project_priority").hide();
+                   $(".grid-col-project-proj_status").hide();
+                   $(".grid-col-project-proj_status").hide();
         }
     });
 </script>
