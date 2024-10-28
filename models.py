@@ -1,6 +1,8 @@
 """
 This file defines the database models
 """
+from pydal.validators import IS_DECIMAL_IN_RANGE
+
 from . import settings
 from .common import db, T
 from py4web import Field
@@ -319,11 +321,17 @@ db.define_table('ai_review',
 # setup
 db.define_table('ai_item_generation',
                 Field('maxitems', 'integer', default=20, label='Max Items'),
-                Field('maxdepth', 'integer', default=1, label='Max Depth'),
                 Field('chosenai', 'string', label='AI/Knowledge Engine'),
                 Field('ai_version', 'string', label='AI Version'),
                 Field('numissues', 'integer', default=0, label='Number of Issues'),
                 Field('numquestions', 'integer', default=1, label='Number of Questions'),
-                Field('numactions', 'integer', default=1, label='Number of Actions'))
+                Field('numactions', 'integer', default=1, label='Number of Actions'),
+                Field('probissues', 'decimal(6,2)', default=0, label='%age probability of generating Issues'),
+                Field('probquestions', 'decimal(6,2)', default=100, label='%age probability of generating Questions'),
+                Field('probactions', 'decimal(6,2)', default=100, label='%age probablity of generating Actions'))
+
+db.ai_item_generation.probissues.requires = IS_DECIMAL_IN_RANGE(0,100,'Must be between 0 and 100')
+db.ai_item_generation.probquestions.requires = IS_DECIMAL_IN_RANGE(0,100,'Must be between 0 and 100')
+db.ai_item_generation.probactions.requires = IS_DECIMAL_IN_RANGE(0,100,'Must be between 0 and 100')
 
 db.commit()
