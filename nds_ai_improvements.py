@@ -19,16 +19,23 @@
 
 from ndsqueries import get_items
 
-def add_item(item):
-    """This will actually create the items required.  Let's say it can either be supplied with
+def add_item(parent, questiontext, answer1, answer2):
+    """This will actually create the item required.  Let's say it can either be supplied with
     the details or it will go get them as we may want a more general add_item capability eg to call
     interactively from viewquest suggestions"""
-
+    
+    
+    
 def review_item(item):
     """This should take an item and identify the current number of links and would then use the parameters
     for whether or not to create new linked items to decide to create new items.  If a new item is
     required we will call add_item """
     print(item)
+    
+    quesiontext='Test Question'
+    answer1='Yes'
+    answer2='No'
+    add_item(item.id, questiontext, answer1, answer2)
     return
 
 def get_event_items(eid)
