@@ -18,11 +18,25 @@
 # fine to do that just need to fiddle about a bit with questions
 
 from ndsqueries import get_items
+from common import db, session, auth
 
-def add_item(item):
+def add_item(item, basedict):
     """This will actually create the items required.  Let's say it can either be supplied with
     the details or it will go get them as we may want a more general add_item capability eg to call
-    interactively from viewquest suggestions"""
+    interactively from viewquest suggestions.  The thinking is that basedict can be very limited.
+    However we might want to pass any field in question but we are generally happy to take the
+    default if notthing specified and wasn't necessarily planning to include in the dict in that case"""
+
+    # From review majority of fields not required
+    # but link to auth_user probably goes now that we allow ai_content  - think that just means auth_user
+    # can be null and move on probably won't break until we have some content
+    # Field('resolvemethod', 'reference resolve',
+    # Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+    print(db.question._insert(qtype='quest', eventid=item['eventid'], questiontext='new question',
+                              factopinion='Fact', answertext='', answer1='', answer2='', aianswer=''))
+    questiondict = dict(myfield='somevalue')
+    db.question[None] = questiondict
+
 
 def review_item(item):
     """This should take an item and identify the current number of links and would then use the parameters
