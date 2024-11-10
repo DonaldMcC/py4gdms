@@ -209,6 +209,18 @@ if settings.USE_CELERY:
         "apps.%s.tasks" % settings.APP_NAME, broker=settings.CELERY_BROKER
     )
 
+# #######################################################
+# Define and optionally start the scheduler
+# #######################################################
+if settings.USE_SCHEDULER:
+    scheduler = Scheduler(
+        db, logger=logger, max_concurrent_runs=settings.SCHEDULER_MAX_CONCURRENT_RUNS
+    )
+    scheduler.start()
+else:
+    scheduler = None
+
+
 
 # #######################################################
 # Enable authentication

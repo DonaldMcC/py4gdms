@@ -19,6 +19,8 @@
 # which could still have the run type and we should be able to run the notification immediately with user
 # and runtype
 
+# Below was all for web2py - not yet in use on py4web
+
 import datetime
 from ndsfunctions import score_question, resulthtml, truncquest, getrundates
 from .common import settings, scheduler, db, Field
