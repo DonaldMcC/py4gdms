@@ -2,9 +2,12 @@
 import os
 import sys
 import pprint
+try:
+    import tweepy
+    from tweepy import API, Client, OAuthHandler, TweepyException
+except ImportError:
+    print('Tweepy not installed - tweets will not work')
 
-import tweepy
-from tweepy import API, Client, OAuthHandler, TweepyException
 from py4web import URL
 # below line less than ideal as then can't run this file without relative import no known parent issue
 # however can probably still just call tweet_test from some sort of test controller and keep going
