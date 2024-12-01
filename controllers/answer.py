@@ -116,5 +116,5 @@ def index(qtype=None, qid=None):
     comp_actions = get_items(status='Resolved', qid=qid, execstatus='Completed') if (
             qtype == 'resactions' or qtype == None) else None
     actions = {"allowed_actions": auth.param.allowed_actions}
-    return dict(actions=actions, qactions=qactions, questions=questions, issues=issues, res_actions=res_actions,
-                comp_actions=comp_actions, get_class=get_class, get_disabled=get_disabled, auth=auth, like=like)
+    return dict(actions=actions, qactions=qactions, questions=questions, issues=issues, res_actions=res_actions, comp_actions=comp_actions, get_class=get_class, 
+	    get_disabled=get_disabled, auth=auth, like=like)
