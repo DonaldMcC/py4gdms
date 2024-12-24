@@ -75,7 +75,9 @@ def datasetup():
                                       desc='Creator has resolved themselves or based on knowledge engine answers ')
 
     # These will require a degree of manual setup and the new_question js and new_quest js scripts at least will
-    # require tweaking if new engines are added
+    # require tweaking if new engines are added think we add gemini as second ai engine and put those in 
+    # auth user table to allow them to generate and answer questions within the model will have the user ids created 
+    # by this setup in knowledge table - plan to just setup openai first
     if db(db.knowledge.source == "None").isempty():
         kid = db.knowledge.insert(source="None", title="None", defaultknowledge=True)
 
@@ -86,7 +88,8 @@ def datasetup():
         kid = db.knowledge.insert(source="Wikipedia", title="Wikipedia")
 
     if db(db.knowledge.source == "GPT3").isempty():
-        kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3")
+        uid = db.auth_user.insert(user="GPT", firstname = 'OpenAI', surname ='GPT')
+        kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3", uid=uid)
 
     # create current user in manager group if not presently there - this allows actual tweetting
     # as yet no other user admin functions setup
