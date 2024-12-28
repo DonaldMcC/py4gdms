@@ -32,6 +32,9 @@ from ..d3js2py import getd3graph
 from .answer import like
 from ..ndsfunctions import myconverter
 from pydal.validators import *
+from py4web.utils.factories import Inject
+from ..markmin.markmin2html import markmin2html
+
 flash = Flash()
 
 
@@ -130,7 +133,7 @@ def create_next_event():
 
 @action("view_event/<eid>", method=['GET', 'POST'])
 @action("view_event", method=['GET', 'POST'])
-@action.uses('view_event.html', session, db, flash, auth.user)
+@action.uses('view_event.html', session, db, flash, auth.user, Inject(markmin2html=markmin2html))
 def view_event(eid='0'):
     eventrow = db(db.event.id == eid).select().first()
     next_event_name = ''
