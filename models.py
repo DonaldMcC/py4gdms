@@ -2,12 +2,10 @@
 This file defines the database models
 """
 from pydal.validators import IS_DECIMAL_IN_RANGE
-
+from pydal.validators import *
 from . import settings
 from .common import db, T
 from py4web import Field
-
-from pydal.validators import *
 import datetime
 
 not_empty = IS_NOT_EMPTY()
@@ -24,6 +22,7 @@ db.define_table('resolve',
                 Field('owner', 'reference auth_user', readable=False, writable=False, label='Submitter'),
                 Field('desc', 'text', label='Description'),
                 format='%(resolve_name)s')
+
 
 db.define_table('website_parameters',
                 Field('system_scope', 'string'),
@@ -56,6 +55,7 @@ db.define_table('website_parameters',
                       comment=T('Port of the mailserver (used to send email in forms)')))
 db.website_parameters.website_url.requires = IS_EMPTY_OR(IS_URL())
 
+
 # this was to support document download from site eg manuals setup instructions etc
 db.define_table('download',
                 Field('title'),
@@ -65,11 +65,13 @@ db.define_table('download',
                 format='%(title)s')
 db.download.title.requires = IS_NOT_IN_DB(db, db.download.title)
 
+
 db.define_table('knowledge',
                 Field('source'),
                 Field('title'),
                 Field('defaultknowledge', 'boolean', label='Default Knowledge Engine', default=False),
                 format='%(title)s')
+
 
 db.define_table('locn',
                 Field('location_name', label='Location Name', unique=True, notnull=True),
@@ -89,8 +91,8 @@ db.define_table('locn',
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
                 Field('locked', 'boolean', readable=False, writable=False),
                 format='%(location_name)s')
-
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
+
 
 db.define_table('project',
                 Field('proj_name', label='Project Name', unique=True, notnull=True),
@@ -108,14 +110,15 @@ db.define_table('project',
                 Field('locked', 'boolean', readable=False, writable=False),
                 Field('priority', 'decimal(6,2)', default=0),
                 format='%(proj_name)s')
-
 db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())
+
 
 db.define_table('event',
                 Field('event_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location', notnull=True),
                 Field('projid', 'reference project', label='Project', notnull=True),
-                Field('status', 'string', default='Open', requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
+                Field('status', 'string', default='Open',
+                      requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('startdatetime', 'datetime', label='Start Date Time'),
                 Field('enddatetime', 'datetime', label='End Date Time'),
                 Field('description', 'text'),
@@ -126,6 +129,7 @@ db.define_table('event',
                       requires=IS_IN_SET(['None', 'Daily', 'Weekly', 'Bi-weekly', 'Monthly', 'Quarterly'])),
                 Field('locked', 'boolean', readable=False, writable=False),
                 format='%(event_name)s')
+
 
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
@@ -177,8 +181,8 @@ db.define_table('question',
                       comment='This will load in an iframe for users to review - content not copied'),
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
-
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
+
 
 db.define_table('tweets',
                 Field('parentid', 'integer'),
@@ -190,8 +194,6 @@ db.define_table('tweets',
                 Field('media_id', 'integer'),  # Note this is the twitter url that we get on the status post
                 )
 
-# lambda row: ((row['correctans'] == 1 and row['answer1']) or
-#                                                             (row['correctans'] == 2 and row['answer2']) or '?')),
 
 db.define_table('userquestion',
                 Field('questionid', db.question, writable=False, notnull=True),
@@ -201,6 +203,7 @@ db.define_table('userquestion',
                 Field('answerreason', 'text', label='Reasoning'),
                 Field('ansdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
+
 db.define_table('uqrating',
                 Field('questionid', db.question, writable=False, notnull=True),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False, notnull=True),
@@ -209,6 +212,7 @@ db.define_table('uqrating',
                 Field('importance', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('ratingdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+
 
 db.define_table('questlink',
                 Field('sourceid', 'reference question'),
@@ -222,6 +226,7 @@ db.define_table('questlink',
                 Field('lastaction', 'string', default='create'),
                 Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
 
+
 db.define_table('comment',
                 Field('parentid', 'integer', writable=False, readable=False),
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
@@ -232,8 +237,8 @@ db.define_table('comment',
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
                 Field('commentdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
-
 db.comment.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
+
 
 db.define_table('eventmap',
                 Field('eventid', 'reference event', notnull=True),
@@ -274,7 +279,6 @@ db.define_table('eventmap',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Notes'))
-
 db.eventmap.correctanstext = Field.Virtual(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                         (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
 
@@ -285,6 +289,7 @@ db.define_table("itemlike",
                 Field('liketype', 'string', default='like'),
                 Field('likedate', 'datetime', default=datetime.datetime.utcnow))
 
+
 db.define_table('email_runs',
                 Field('datecreate', 'datetime', default=datetime.datetime.utcnow, writable=False),
                 Field('daterun', 'datetime', writable=False),
@@ -293,6 +298,7 @@ db.define_table('email_runs',
                 Field('dateto', 'datetime'),
                 Field('status', 'string', requires=IS_IN_SET(['Planned', 'Completed', 'Failed'])),
                 Field('error', 'text'))
+
 
 db.define_table('prompt',
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
@@ -304,6 +310,7 @@ db.define_table('prompt',
                 Field('sequence', 'integer', comment='Use numbers above 50 if you want to come after item'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('prompt_text', 'text', requires=IS_NOT_EMPTY()))
+
 
 db.define_table('ai_review',
                 Field('parentid', 'integer', writable=False, readable=False),
