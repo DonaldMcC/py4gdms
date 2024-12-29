@@ -88,7 +88,7 @@ db.define_table('locn',
                 Field('locn_lat', 'double', default=0.0, writable=False, readable=False),
                 Field('description', 'text'),
                 Field('auth_userid', 'reference auth_user', writable=False, readable=False),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False),
                 Field('locked', 'boolean', readable=False, writable=False),
                 format='%(location_name)s')
 db.locn.addrurl.requires = IS_EMPTY_OR(IS_URL())
@@ -100,13 +100,13 @@ db.define_table('project',
                 Field('proj_status', 'string', label='Project Status', default='Open',
                       requires=IS_IN_SET(['Open', 'Archiving', 'Archived'])),
                 Field('answer_group', 'string', default='Unspecified', label='Restrict Project to Group'),
-                Field('startdate', 'date', label='Start Date', default=datetime.datetime.utcnow),
-                Field('enddate', 'date', label='End Date', default=datetime.datetime.utcnow),
+                Field('startdate', 'date', label='Start Date', default=datetime.datetime.now),
+                Field('enddate', 'date', label='End Date', default=datetime.datetime.now),
                 Field('description', 'text'),
                 Field('proj_shared', 'boolean', default=True, label='Shared Project',
                       comment='Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False),
                 Field('locked', 'boolean', readable=False, writable=False),
                 Field('priority', 'decimal(6,2)', default=0),
                 format='%(proj_name)s')
@@ -122,7 +122,7 @@ db.define_table('event',
                 Field('startdatetime', 'datetime', label='Start Date Time'),
                 Field('enddatetime', 'datetime', label='End Date Time'),
                 Field('description', 'text'),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False),
+                Field('createdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False),
                 Field('next_event', 'integer', default=0, writable=False, readable=False),
                 Field('prev_event', 'integer', default=0),
                 Field('recurrence', 'string',
@@ -155,7 +155,7 @@ db.define_table('question',
                 Field('numlike', 'integer', default=0, readable=False, writable=False),
                 Field('priority', compute=lambda r: r['urgency'] * r['importance'],
                       readable=False, writeable=False),
-                Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
+                Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('resolvedate', 'datetime', readable=False, writable=False),
                 Field('responsible', label='Responsible'),
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
@@ -166,8 +166,8 @@ db.define_table('question',
                             or (row['correctans'] == 2 and row['answer2']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Notes'),
-                Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
-                Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
+                Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
+                Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit'),
                 Field('xpos', 'double', default=0.0, label='xcoord'),
                 Field('ypos', 'double', default=0.0, label='ycoord'),
@@ -189,7 +189,7 @@ db.define_table('tweets',
                 Field('parenttable', 'string', default='question', writable=False, readable=False),
                 Field('tweet_text', 'text', requires=IS_NOT_EMPTY()),
                 Field('status', 'string', default='To Send', requires=IS_IN_SET(['To Send', 'Sent', 'Rejected'])),
-                Field('requestdate', 'datetime', default=datetime.datetime.utcnow, writable=False),
+                Field('requestdate', 'datetime', default=datetime.datetime.now, writable=False),
                 Field('tweetdate', 'datetime', writable=False),
                 Field('media_id', 'integer'),  # Note this is the twitter url that we get on the status post
                 )
@@ -201,7 +201,7 @@ db.define_table('userquestion',
                 Field('answer', 'integer', default=0, label='My Answer'),
                 Field('reject', 'boolean', default=False),
                 Field('answerreason', 'text', label='Reasoning'),
-                Field('ansdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+                Field('ansdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 
 
 db.define_table('uqrating',
@@ -211,7 +211,7 @@ db.define_table('uqrating',
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
                 Field('importance', 'integer', default=5,
                       requires=IS_INT_IN_RANGE(1, 11, error_message='Must be between 1 and 10')),
-                Field('ratingdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+                Field('ratingdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 
 
 db.define_table('questlink',
@@ -224,7 +224,7 @@ db.define_table('questlink',
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Draft', 'Active', 'Rejected'])),
                 Field('lastdeleter', 'reference auth_user'),
                 Field('lastaction', 'string', default='create'),
-                Field('createdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+                Field('createdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 
 
 db.define_table('comment',
@@ -236,7 +236,7 @@ db.define_table('comment',
                       requires=IS_IN_SET(['OK', 'NOK'])),
                 Field('numreject', 'integer', default=0, writable=False, readable=False),
                 Field('usersreject', 'list:integer', writable=False, readable=False),
-                Field('commentdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+                Field('commentdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 db.comment.parenttable.requires = IS_IN_SET(['question', 'project', 'event'])
 
 
@@ -263,8 +263,8 @@ db.define_table('eventmap',
                 Field('auth_userid', 'reference auth_user', writable=False, label='Submitter'),
                 Field('adminresolve', 'boolean', default=False,
                       label='True if answer or status adjusted by event owner'),
-                Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
-                Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.utcnow),
+                Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
+                Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('responsible', label='Responsible'),
                 Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
                 Field('eventlevel', 'integer', default=0),
@@ -287,11 +287,11 @@ db.define_table("itemlike",
                 Field('parenttable', 'string', default='question'),
                 Field('createdby', 'reference auth_user'),
                 Field('liketype', 'string', default='like'),
-                Field('likedate', 'datetime', default=datetime.datetime.utcnow))
+                Field('likedate', 'datetime', default=datetime.datetime.now))
 
 
 db.define_table('email_runs',
-                Field('datecreate', 'datetime', default=datetime.datetime.utcnow, writable=False),
+                Field('datecreate', 'datetime', default=datetime.datetime.now, writable=False),
                 Field('daterun', 'datetime', writable=False),
                 Field('runperiod', 'string', requires=IS_IN_SET(['Day', 'Week', 'Month'])),
                 Field('datefrom', 'datetime'),
@@ -321,7 +321,7 @@ db.define_table('ai_review',
                 Field('setup', 'string', default='A', label='Current prompt setup'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('review', 'text', requires=IS_NOT_EMPTY()),
-                Field('reviewdate', 'datetime', default=datetime.datetime.utcnow, writable=False, readable=False))
+                Field('reviewdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 
 # This will be system level defaults for generating new items
 # may well make this configurable at event level later but lets see how it works first and stabilize
