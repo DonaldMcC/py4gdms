@@ -1,5 +1,6 @@
 """
-This file defines the database models
+This file defines the database models - current changes are to support more ai capabilities
+
 """
 from pydal.validators import IS_DECIMAL_IN_RANGE
 from pydal.validators import *
@@ -130,6 +131,10 @@ db.define_table('event',
                 format='%(event_name)s')
 
 
+# This is getting a bit clunky - supporting different structures for questions of fact and opinions seems to be the cause
+# Lets roll this back - think we move to std structure - stick with string and notes for extra details - not sure if we
+# need numanswers or just operate with the number that are not blank??
+
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
                 Field('eventid', 'reference event', label='Event'),
@@ -160,16 +165,19 @@ db.define_table('question',
                 Field('createdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('resolvedate', 'datetime', readable=False, writable=False),
                 Field('responsible', label='Responsible'),
-                Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+                Field('chosenai', 'reference knowledge', label='To be removed'),
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       comment='If populated status moves to resolved'),
-                Field.Virtual('correctanstext', lambda row: (row['factopinion'] == 'Fact' and 'N/A')
-                            or (row['correctans'] == 1 and row['answer1'])
+                Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
+                      comment='If populated status moves to resolved'),
+                Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
+                      comment='If populated status moves to resolved'),
+                Field.Virtual('correctanstext', lambda row: (row['correctans'] == 1 and row['answer1'])
                             or (row['correctans'] == 2 and row['answer2'])
                             or (row['correctans'] == 3 and row['answer3'])
                             or (row['correctans'] == 4 and row['answer4']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
-                Field('notes', 'text', label='Notes'),
+                Field('notes', 'text', label='Submitter Notes'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('enddate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
                 Field('shared_editing', 'boolean', default=False, label='Shared Edit', comment='Allow anyone to edit'),
