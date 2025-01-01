@@ -170,9 +170,9 @@ db.define_table('question',
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       comment='If populated status moves to resolved'),
                 Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
-                      comment='If populated status moves to resolved'),
+                      readable=False, writable=False),
                 Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
-                      comment='If populated status moves to resolved'),
+                      readable=False, writable=False),
                 Field.Virtual('correctanstext', lambda row: (row['correctans'] == 1 and row['answer1'])
                             or (row['correctans'] == 2 and row['answer2'])
                             or (row['correctans'] == 3 and row['answer3'])

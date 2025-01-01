@@ -28,7 +28,7 @@ from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
-from ..bs4inline import FormStyleBootstrap4inline
+from ..bs4inline import FormStyleBootstrap4inline, FormStyleBootstrap3column
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
@@ -153,7 +153,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     if qid:
         form = Form(db.question, record=qid, formstyle=FormStyleBootstrap4inline)
     else:
-        form = Form(db.question, formstyle=FormStyleBootstrap4inline)
+        form = Form(db.question, formstyle=FormStyleBootstrap3column)
 
     if qid and questrec:
         # You can edit quests on shared projects, your projects and always your questions
