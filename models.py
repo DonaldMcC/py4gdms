@@ -105,7 +105,7 @@ db.define_table('project',
                 Field('enddate', 'date', label='End Date', default=datetime.datetime.now),
                 Field('description', 'text'),
                 Field('proj_shared', 'integer', default=1, label='Shared Project',
-                      comment='Allows other users to link events'),
+                      requires=IS_IN_SET([0,1]), comment='1 Allows other users to link events'),
                 Field('proj_owner', 'reference auth_user', writable=False, readable=False),
                 Field('createdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False),
                 Field('locked', 'integer', default=0, readable=False, writable=False),
@@ -114,6 +114,7 @@ db.define_table('project',
 db.project.proj_url.requires = IS_EMPTY_OR(IS_URL())
 
 
+# Not convinced about prev event setup being required
 db.define_table('event',
                 Field('event_name', label='Event Name', unique=False, notnull=True),
                 Field('locationid', 'reference locn', label='Location', notnull=True),
