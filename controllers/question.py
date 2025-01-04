@@ -362,14 +362,17 @@ def openai_lookup():
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
     setup = 'A'
-
-    resulttext = openai_query(qtext, scenario, setup)
+    if AI_MODE == 'Test':
+        resulttext ='Test mode - no lookup'
+    else:
+        resulttext = openai_query(qtext, scenario, setup)
     return resulttext
 
 
 @action('openai_review', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def openai_review():
+    # TODO Review how this fits in with new modeal
     # Going to keep this separate from open ai_lookup for now as think I may extend beyond the question
     # text in a bit and not sure about the scenario piece - but this should work OK for now and lets see how
     # it operates in simple mode first

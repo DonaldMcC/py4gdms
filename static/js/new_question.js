@@ -82,6 +82,10 @@ $(document).ready(function(){
                   $('#question_answertext').parent().parent().show();};
                  });
 
+          $('#question_answer1').click(function(){
+              openai_lookup();
+              });
+
           $('#question_answer2').click(function(){
                  $('#question_answer3').parent().parent().show();
               });
