@@ -56,12 +56,14 @@ from py4web.utils.form import Form, FormStyleBootstrap4
 from ..ndsqueries import get_class, get_disabled
 from ..ndsfunctions import get_filetype, qtypename, myconverter
 from ..d3js2py import getd3graph
+from py4web.utils.factories import Inject
+from ..markmin.markmin2html import markmin2html
 
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
 @action("viewquest/<qid>/<eid>", method=['GET', 'POST'])
 @action('viewquest', method=['POST', 'GET'])
-@action.uses('viewquest.html', session, db, auth.user)
+@action.uses('viewquest.html', session, db, auth.user, Inject(markmin2html=markmin2html))
 def viewquest(qid=0, eid=0):
     # This will be a general view on question details and it will require the
     # question id as an argument Logic will be to only display the question if it

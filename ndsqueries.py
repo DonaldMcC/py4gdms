@@ -1,3 +1,5 @@
+from unittest import case
+
 from .common import db, auth
 import pprint
 
@@ -30,13 +32,21 @@ def get_classBootstrap(qtype='quest', answer=1):
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
     btnclass = ''
     if qtype != 'quest':  # issue or action
-        btnclass = 'btn-success ' if answer == 1 else 'btn-danger '
+        match answer:
+            case 1:
+                btnclass = 'btn-success '
+            case 2:
+                btnclass = 'btn-danger '
+            case 3:
+                btnclass = 'btn-warning '
+            case _:
+                btnclass = 'btn-info '
     btnclass += 'btn btn-small'
     return btnclass
 
 
 def get_class(qtype='quest', answer=1, framework='Bootstrap'):
-    # Function to return button classes - only supporting Bulma.css for now
+    # Function to return button classes
     # is-success and is-danger for agree disagree on issues and approve disapprove on actions
     if framework == 'Bulma':
         return get_classBulma(qtype, answer)

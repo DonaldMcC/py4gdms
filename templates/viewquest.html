@@ -1,4 +1,3 @@
-[[from markmin import markmin2html]]
 [[from yatl.helpers import XML]]
 [[extend 'layoutbs.html']]
 [[load_graph=True]]
@@ -32,18 +31,25 @@ This [[=quest['qtype'] ]] is approved.
 <th>Answer Analysis</th>
 <td>
 This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times. You can answer or change your answer using the buttons.
-
+<p>
 <INPUT TYPE=button  [[=get_disabled(1, uq and uq.answer)]]
            class="[[=get_class('action',1)]]" onclick="quickanswer('[[=quest.id]]','1',this)",
-           VALUE="[[=quest.answer1]]">
+           VALUE="[[=quest.answer1]]"> ([[=quest.numanswer1]])
     <INPUT TYPE=button  [[=get_disabled(2, uq and uq.answer)]] title="Click to Answer"
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=quest.id]]','2',this)",
-           VALUE="[[=quest.answer2]]">
+           VALUE="[[=quest.answer2]]"> ([[=quest.numanswer2]])
+    [[if quest.answer3:]]
+    <INPUT TYPE=button  [[=get_disabled(3, uq and uq.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 3)]]" onclick="quickanswer('[[=quest.id]]','3',this)",
+           VALUE="[[=quest.answer3]]"> ([[=quest.numanswer3]])
+    [[pass]]
+    [[if quest.answer4:]]
+    <INPUT TYPE=button  [[=get_disabled(4, uq and uq.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 4)]]" onclick="quickanswer('[[=quest.id]]','4',this)",
+           VALUE="[[=quest.answer4]]"> ([[=quest.numanswer4]])
+    [[pass]]
+    </p>
 </td>
-</tr>
-<tr><td></td>
-<td> [[=quest.numanswer1]] users have answered [[=quest.answer1]]
-    and [[=quest.numanswer2]] users have answered [[=quest.answer2]] </td>
 </tr>
 </tbody>
 </table>
@@ -79,18 +85,8 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
     [[pass]]
 
 <div>
-    <h2 class="subtitle h4">Knowledge Engine Notes ([[=chosenai]])</h2>
-    [[if quest['aianswer']:]]
-<p id="ai_review">[[=quest['aianswer'] ]]</p>
-   [[else:]]
-     <h2 class="title h5">AI Review [[if got_ai=='Yes':]]<small>([[=ai_comment.ai_version]]</small>) </h2>
-    <p id="ai_review">
-        [[=XML(markmin2html(ai_comment.review))]]
-        [[else:]]
-        </h2> <p id="ai_review">Looking up answer on GPT ...
-            [[pass]]
-         </p>
-    [[pass]]
+    <h2 class="subtitle h4">AI Notes ([[=chosenai]])</h2>
+<p id="ai_review">[[=XML(markmin2html(quest['aianswer'])) ]]</p>
     </div>
 
     <table class="table table-bordered">

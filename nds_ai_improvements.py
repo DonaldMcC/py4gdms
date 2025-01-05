@@ -45,7 +45,7 @@ def review_item(item):
     print(item)
     return
 
-def get_event_items(eid)
+def get_event_items(eid):
     eventrow = db(db.event.id == eid).select().first()
     items = get_items(qtype='all', status='all', event=eid, eventstatus=eventrow.status)
     visited = {}
