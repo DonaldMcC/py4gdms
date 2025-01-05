@@ -9,7 +9,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 @ddt
 class TestRegisterPage (FunctionalTest):
     def setUp(self):     
-        self.url = ROOT + '/auth/register'
+        self.url = f'{ROOT}/auth/register'
         self.browser.get(self.url)
 
     @data((USERS['USER1'], USERS['PASSWORD1']))
@@ -30,7 +30,7 @@ class TestRegisterPage (FunctionalTest):
         last_name.clear()
         last_name.send_keys(user)
 
-        mailstring = user+'@user.com'
+        mailstring = f'{user}@user.com'
         email = self.browser.find_element(By.ID, "auth_user_email")
         email.clear()
         email.send_keys(mailstring)

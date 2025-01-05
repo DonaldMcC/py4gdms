@@ -24,7 +24,7 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(2)
 
     def test_datasetup(self):
-        self.url = ROOT + '/datasetup'
+        self.url = f'{ROOT}/datasetup'
         self.browser.get(self.url)
         time.sleep(1)
         # self.browser.execute_script('alert("hi")')

@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 class AddBasicAction (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
@@ -25,7 +25,7 @@ class AddBasicAction (FunctionalTest):
     @data(('/new_location', 'P1Test', 'Phase 1 test location'), ('/new_location', 'P1Test2', 'Phase 1 test location2'))
     @unpack
     def test_question(self, urltxt, itemtext, itemdesc):
-        self.url = ROOT + urltxt
+        self.url = f'{ROOT}{urltxt}'
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
