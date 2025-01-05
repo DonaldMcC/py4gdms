@@ -1,15 +1,16 @@
 
     var qsuccess = function(res) {
-    $('#question_aianswer').attr('readonly', false);
-    $("#question_aianswer").val(res.data);
-    $('#question_aianswer').attr('readonly', true);
-    $("#question_answertext").val(res.data);
-    //allow selection of answer once knowledge engine used
-    $('#question_correctans').show();
-    $("label[for='question_correctans']").show();
-    $('#question_correctans').parent().nextAll("p").first().show();
+        $('#question_aianswer').attr('readonly', false);
+        $("#question_aianswer").val(res.data);
+        autoResizeTextarea(document.querySelectorAll("#question_aianswer"), {maxHeight: 320});
+        $('#question_aianswer').attr('readonly', true);
+        $("#question_answertext").val(res.data);
+        //allow selection of answer once knowledge engine used
+        $('#question_correctans').show();
+        $("label[for='question_correctans']").show();
+        $('#question_correctans').parent().nextAll("p").first().show();
     };
-    var qerror = function(res) {
+    var qerror = function (res) {
         alert('ERROR in call from new_quest');
     };
 

@@ -365,7 +365,10 @@ def openai_lookup():
     if AI_MODE == 'Test':
         resulttext ='Test mode - no lookup'
     else:
-        resulttext = openai_query(qtext, scenario, setup)
+        if len(qtext) > 10:
+            resulttext = openai_query(qtext, scenario, setup)
+        else:
+            resultext = 'Text too short - update text and then click answer 1 for AI lookup'
     return resulttext
 
 
