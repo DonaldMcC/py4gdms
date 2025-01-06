@@ -17,12 +17,12 @@ class AddBasicQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'User4Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'User5Ph2Quest', 'Yes', 'No', 'Standard'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph2Quest', 'Yes', 'No', '', '', 'Standard'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph2Quest', 'Yes', 'No', 'Maybe', 'Unknown', 'Standard'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'User4Ph2Quest', 'Yes', 'No', 'Perhaps', '', 'Standard'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'User5Ph2Quest', 'Yes', 'No', 'Always',  'Never', 'Standard'))
     @unpack
-    def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
+    def test_question(self, user, passwd, question, answer1, answer2, answer3, answer4, resolvemethod):
         global questiddict
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(user)
@@ -47,6 +47,13 @@ class AddBasicQuestion (FunctionalTest):
         ans1.send_keys(answer1)
         ans2 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "question_answer2"))
         ans2.send_keys(answer2)
+        if answer3 <> '':
+            ans3 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "question_answer3"))
+            ans3.send_keys(answer3)
+        if answer4 <> '': 
+            ans4 = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "question_answer4"))
+            ans4.send_keys(answer4)
+        
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
 
