@@ -166,6 +166,17 @@ def get_messages(chosenai, scenario, setup, qtext):
 
 
 def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
+    #So for now this is taking some text and looking up a scenario and a setup
+    #The thinking was that setups could support basically different sets of prompts for
+    #the same task to allow comparison and scenarios would cater to what we want the ai
+    #to do.  eg comment on the text as an expert, answer the question, generate follow ons etc
+    #I am not overly clear how best to handle the chat history - probably it will need to be
+    #provided somehow at some point as in multi-user mode with one ID any other approach seems
+    #challenging
+    #we have also called this openai_query for now but clearly will be similarities with other
+    #providers LLMs and we may want to setup a class with inheritance later for some of this -
+    #but sticking with openai to get something working for now - and also ignoring history at
+    #this point to keep simple
     client = OpenAI(api_key=OPENAI_API_KEY)
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
