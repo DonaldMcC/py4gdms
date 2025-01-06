@@ -88,7 +88,8 @@ def datasetup():
         kid = db.knowledge.insert(source="Wikipedia", title="Wikipedia")
 
     if db(db.knowledge.source == "GPT3").isempty():
-        uid = db.auth_user.insert(user="GPT", firstname = 'OpenAI', surname ='GPT')
+        uid = db.auth_user.insert(user="GPT", username='OpenAI', password='NotApplicable',
+                                  first_name = 'OpenAI', last_name ='GPT')
         kid = db.knowledge.insert(source="GPT3", title="OpenAI GPT-3", uid=uid)
 
     # create current user in manager group if not presently there - this allows actual tweetting

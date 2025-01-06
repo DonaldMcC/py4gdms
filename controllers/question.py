@@ -39,6 +39,8 @@ from ..ndsfunctions import score_question
 from ..ndsqueries import get_messages, openai_query
 from .network import request_link
 from ..settings import AI_MODE, AI_MODEL
+from py4web.utils.factories import Inject
+from ..markmin.markmin2html import markmin2html
 
 flash = auth.flash
 
@@ -82,7 +84,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>/<sourceq>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db, flash, auth.user)
+@action.uses('new_question.html', session, db, flash, auth.user,  Inject(markmin2html=markmin2html))
 def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select', sourceq=0):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -184,7 +186,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
 @action('questiongrid', method=['POST', 'GET'])
 @action('questiongrid/<path:path>', method=['POST', 'GET'])
-@action.uses('questiongrid.html', session, db, flash, auth.user)
+@action.uses('questiongrid.html', session, db, flash, auth.user, Inject(markmin2html=markmin2html))
 def questiongrid(path=None):
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
@@ -235,7 +237,6 @@ def questiongrid(path=None):
                 deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)
-
 
 @action('datatables', method=['GET', 'POST'])
 @action.uses('datatables.html', session, db, auth.user)

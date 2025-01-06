@@ -26,6 +26,8 @@ from py4web import action, request, Flash
 from ..common import db, auth, session
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_class, get_disabled, get_items
+from py4web.utils.factories import Inject
+from ..markmin.markmin2html import markmin2html
 
 flash = Flash()
 
@@ -102,7 +104,7 @@ def like(itemid, table='question'):
 @action('index', method=['POST', 'GET'])
 @action('index/<qtype>', method=['POST', 'GET'])
 @action('index/<qtype>/<qid>', method=['POST', 'GET'])
-@action.uses('index.html', flash, session, db, auth)
+@action.uses('index.html', flash, session, db, auth, Inject(markmin2html=markmin2html))
 def index(qtype=None, qid=None):
     qid = int(qid) if qid and qid.isnumeric() else None
     qactions = get_items(qtype='action', status='In Progress', qid=qid) if (
