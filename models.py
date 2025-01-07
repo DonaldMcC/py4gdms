@@ -320,10 +320,10 @@ db.define_table('prompt',
                       requires=IS_IN_SET(['answer', 'gen_actions', 'gen_questions', 'gen_issues',
                                           'rev_actions', 'rev_issues', 'rev_questions'])),
                 Field('setup', 'string', default='A', label='Current prompt setup'),
-                Field('prompttype', 'string', requires=IS_IN_SET(['system', 'user'])),
+                Field('role', 'string', requires=IS_IN_SET(['system', 'user', 'assistant'])),
                 Field('sequence', 'integer', comment='Use numbers above 50 if you want to come after item'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
-                Field('prompt_text', 'text', requires=IS_NOT_EMPTY()))
+                Field('content', 'text', requires=IS_NOT_EMPTY()))
 
 
 db.define_table('ai_review',

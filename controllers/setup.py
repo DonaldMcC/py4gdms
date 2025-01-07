@@ -138,7 +138,7 @@ def aisetup():
 
     for x in prompts:
         if db((db.prompt.scenario == x[0]) & (db.prompt.sequence == x[2])).isempty():
-            db.prompt.insert(chosenai=ai, scenario=x[0], prompttype=x[1], sequence=x[2], prompt_text=x[3])
+            db.prompt.insert(chosenai=ai, scenario=x[0], role=x[1], sequence=x[2], content=x[3])
         else:
             print(f'{x[0]}, {x[2]} already exists')
 
