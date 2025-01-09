@@ -22,7 +22,7 @@
 # This controller provides functions to created and edit prompts for AI LLMs - focus on OpenAI models for now
 
 import datetime
-from py4web import action, redirect, URL, Flash
+from py4web import action, redirect, URL, Flash, Field
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session,  auth
@@ -33,6 +33,7 @@ from .answer import like
 from yatl.helpers import XML
 from ..markmin.markmin2html import markmin2html
 from pydal.tools.tags import Tags
+from pydal.validators import IS_IN_SET
 groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
 flash = Flash()
 
@@ -63,15 +64,15 @@ def promptgrid(path=None):
                          formstyle=FormStyleBootstrap4inline,
                          grid_class_style=GridClassStyleBootstrap5)
 
-    fields = [db.prompt.chosenai, db.prompt.scenario, db.prompt.setup, db.prompt.prompttype,
-              db.prompt.sequence, db.prompt.status, db.prompt.prompt_text]
-    orderby = [db.prompt.prompttype, db.prompt.sequence]
+    fields = [db.prompt.chosenai, db.prompt.scenario, db.prompt.setup, db.prompt.role,
+              db.prompt.sequence, db.prompt.status, db.prompt.content]
+    orderby = [db.prompt.role, db.prompt.sequence]
     search_queries = [['Search by Name', lambda value: db.prompt.name == value]]
 
     grid = Grid(path,
                 db.prompt,
                 fields=fields,
-                headings=['Chosen AI', 'Scenario', 'Setup', 'Prompt Type', 'Seq', 'Status', 'Text'],
+                headings=['Chosen AI', 'Scenario', 'Setup', 'Role', 'Seq', 'Status', 'Text'],
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_prompt/'),
@@ -81,3 +82,32 @@ def promptgrid(path=None):
                 **GRID_DEFAULTS)
 
     return dict(grid=grid)
+
+
+
+@action('prompt_test', method=['POST', 'GET'])
+@action.uses('prompt_test.html', session, db, flash, auth.user)
+def prompt_test(path=None):
+    if not 'manager' in groups.get(auth.get_user()['id']):
+        redirect(URL('not_authorized'))
+    #So this will support testing prompts - I think we just get the list of AI's, Scenarios and Setups - these
+    #are actually all fairly hard-coded
+
+    #TODO change this to lookup knowlege engine
+    chosenai = ['OpenAI']
+    #Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
+
+    scenario = ['answer', 'gen_actions', 'gen_questions', 'gen_issues', 'rev_actions',
+                'rev_issues', 'rev_questions']
+    setup = ['A', 'B']
+
+    fields = [Field("chosenai", requires=IS_IN_SET(chosenai)),
+            Field("scenario", requires=IS_IN_SET(scenario)),
+            Field("setup", requires=IS_IN_SET(setup))
+              ]
+    form = Form(fields, formstyle=FormStyleBootstrap4inline)
+    if form.accepted:
+        flash.set("information recorded")
+        redirect(URL('other_page'))
+    return dict(form=form)
+
