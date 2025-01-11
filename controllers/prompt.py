@@ -103,12 +103,14 @@ def prompt_test(path=None):
 
     fields = [Field("chosenai", requires=IS_IN_SET(chosenai)),
             Field("scenario", requires=IS_IN_SET(scenario)),
-            Field("setup", requires=IS_IN_SET(setup))
+            Field("setup", requires=IS_IN_SET(setup)),
+              Field("test_text", 'text')
               ]
     form = Form(fields, formstyle=FormStyleBootstrap4inline)
-    form.param.sidecar = DIV(BUTTON("click me", _onclick="alert('doh!')"))
-    if form.accepted:
-        flash.set("information recorded")
-        redirect(URL('other_page'))
+    form.param.sidecar = DIV(BUTTON("Test Selection", _onclick= "openai_lookup()"))
+    #if form.accepted:
+    #    print('form accepted')
+    #    flash.set("information recorded")
+    #    redirect(URL('other_page'))
     return dict(form=form)
 

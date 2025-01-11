@@ -55,6 +55,7 @@ except ImportError as error:
 try:
     from openai import OpenAI
     from ..settings_private import OPENAI_API_KEY
+
     oai = True
 except ImportError as error:
     oai = False
@@ -84,7 +85,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>", method=['GET', 'POST'])
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>/<sourceq>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
-@action.uses('new_question.html', session, db, flash, auth.user,  Inject(markmin2html=markmin2html))
+@action.uses('new_question.html', session, db, flash, auth.user, Inject(markmin2html=markmin2html))
 def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select', sourceq=0):
     db.question.id.readable = False
     db.question.id.writable = False
@@ -238,6 +239,7 @@ def questiongrid(path=None):
                 **GRID_DEFAULTS)
     return dict(grid=grid)
 
+
 @action('datatables', method=['GET', 'POST'])
 @action.uses('datatables.html', session, db, auth.user)
 def datatables():
@@ -363,12 +365,13 @@ def openai_lookup():
     scenario = request.json['scenario']
     setup = 'A'
     if AI_MODE == 'Test':
-        resulttext ='Test mode - no lookup'
+        resulttext = 'Test mode - no lookup'
     else:
         if len(qtext) > 10:
             resulttext = openai_query(qtext, scenario, setup)
         else:
             resultext = 'Text too short - update text and then click answer 1 for AI lookup'
+    print(resulttext)
     return resulttext
 
 
@@ -388,12 +391,12 @@ def openai_review():
     setup = 'A'
 
     if AI_MODE == 'Test':
-        resulttext =  "Testing Mode " + qtype
+        resulttext = "Testing Mode " + qtype
     else:
         resulttext = openai_query(qtext, scenario, setup, model=AI_MODEL)
 
     if resulttext:
-        db.ai_review.insert(parentid=qid,  chosenai='GPT-4', ai_version=AI_MODEL, review=resulttext)
+        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL, review=resulttext)
 
     return ''.join(('Answer: ', resulttext, ' (', AI_MODEL, ')'))
 

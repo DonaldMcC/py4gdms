@@ -145,7 +145,7 @@ def get_messages(chosenai, scenario, setup, qtext):
     # need to change this query to use the title of the chosen ai or pass the integer
     query = ((db.prompt.chosenai == chosenai) & (db.prompt.scenario == scenario) & (db.prompt.setup == setup)
              & (db.prompt.status == 'Active'))
-    sortby = db.prompt.prompttype, db.prompt.sequence
+    sortby = db.prompt.sequence
     prompts = db(query).select(orderby=[sortby])
     print(prompts)
 
@@ -153,7 +153,7 @@ def get_messages(chosenai, scenario, setup, qtext):
     userprompt = {"role": "user", "content": qtext}
     written_userprompt = False
     for row in prompts:
-        dictrow = {"role": row.prompttype, "content": row.prompt_text}
+        dictrow = {"role": row.role, "content": row.content}
         if not written_userprompt and row.sequence > 50:
             message.append(userprompt)
             written_userprompt = True
