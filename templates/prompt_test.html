@@ -1,7 +1,9 @@
 [[extend 'layoutbs.html']]
         [[=form]]
+
+<div><INPUT TYPE=button class="btn btn-primary btn-sm" onClick="openai_lookup()" VALUE="Test Prompt"> </div>
 <h2>AI Results</h2>
-<div id="airesults">Some blurb - not the answer</div>
+<p id="airesults">Some blurb - not the answer</p>
 
  <script>
  [[include 'prompt_test.js']]
