@@ -30,7 +30,7 @@ from py4web.utils.grid import Grid, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..ndsfunctions import myconverter, get_gantt_data
 from .answer import like
-from yatl.helpers import XML
+from yatl.helpers import DIV, A, BUTTON
 from ..markmin.markmin2html import markmin2html
 from pydal.tools.tags import Tags
 from pydal.validators import IS_IN_SET
@@ -106,6 +106,7 @@ def prompt_test(path=None):
             Field("setup", requires=IS_IN_SET(setup))
               ]
     form = Form(fields, formstyle=FormStyleBootstrap4inline)
+    form.param.sidecar = DIV(BUTTON("click me", _onclick="alert('doh!')"))
     if form.accepted:
         flash.set("information recorded")
         redirect(URL('other_page'))
