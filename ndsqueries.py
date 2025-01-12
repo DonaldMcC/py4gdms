@@ -185,4 +185,4 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
     completion = client.chat.completions.create(model=model,
         messages=messages, max_tokens=300, temperature=0.1)
 
-    return completion.choices[0].message.content
+    return completion.choices[0].message.content, messages

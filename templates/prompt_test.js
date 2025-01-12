@@ -1,24 +1,19 @@
-
     var qsuccess = function(res) {
     console.log('success');
+            console.log(res.data);
     $("#airesults").text('');
         $("#airesults").text(res.data);
         //autoResizeTextarea(document.querySelectorAll("#airesults"), {maxHeight: 320});
-        console.log(res.data);
+
         };
 
     var qerror = function (res) {
         alert('ERROR in call querror function');
     };
 
-    function clear_lookup() {
-        $('#question_aianswer').attr('readonly', false);
-    $("#question_aianswer").val('');
-    $('#question_aianswer').attr('readonly', true);
-    $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=1]").prop('selected', true);
-     $('#question_chosenai').attr('readonly', true);
-    };
+    $(document).ready(function() {
+        $('.btn-primary').parent().parent().hide();
+    });
 
     function openai_lookup() {
     var qtext = $('#no_table_test_text').val();
@@ -30,5 +25,4 @@
             questiontext: qtext,
             scenario: 'answer'
         }).then(qsuccess).catch(qerror);
-    console.log('called')
 };

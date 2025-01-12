@@ -368,11 +368,10 @@ def openai_lookup():
         resulttext = 'Test mode - no lookup'
     else:
         if len(qtext) > 10:
-            resulttext = openai_query(qtext, scenario, setup)
+            resulttext, messages = openai_query(qtext, scenario, setup)
         else:
             resultext = 'Text too short - update text and then click answer 1 for AI lookup'
-    print(resulttext)
-    return resulttext
+    return f'Messages: {messages} Result: {resulttext}'
 
 
 @action('openai_review', method=['POST', 'GET'])

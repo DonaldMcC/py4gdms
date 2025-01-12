@@ -1,9 +1,13 @@
 [[extend 'layoutbs.html']]
-        [[=form]]
-
-<div><INPUT TYPE=button class="btn btn-primary btn-sm" onClick="openai_lookup()" VALUE="Test Prompt"> </div>
+<h1>AI Prompt Testing</h1>
+<p>This uses a form to allow selection of the various AI scenarios supported
+    - the form doesn't actually update anything you need to use the prompt grid for that.</p>
+[[=form]]
+<div class="col-md-6 offset-md-4"><INPUT TYPE=button class="btn btn-warning" onClick="openai_lookup()" VALUE="Test Prompt"> </div>
 <h2>AI Results</h2>
-<p id="airesults">Some blurb - not the answer</p>
+<p id="airesults">Answer will show here</p>
+<div>You can go back and edit the prompts [[=A('here', _href=URL('promptgrid'))]]</div>
+
 
  <script>
  [[include 'prompt_test.js']]

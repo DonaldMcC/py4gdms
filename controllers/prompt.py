@@ -107,10 +107,10 @@ def prompt_test(path=None):
               Field("test_text", 'text')
               ]
     form = Form(fields, formstyle=FormStyleBootstrap4inline)
-    #form.param.sidecar = DIV(BUTTON("Test Selection", _onclick= "openai_lookup()"))
-    #if form.accepted:
-    #    print('form accepted')
-    #    flash.set("information recorded")
-    #    redirect(URL('other_page'))
+
+    if form.accepted:
+        print('form accepted')
+        flash.set("information recorded")
+        redirect(URL('index'))
     return dict(form=form)
 
