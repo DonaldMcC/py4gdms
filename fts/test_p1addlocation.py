@@ -29,10 +29,12 @@ class AddBasicAction (FunctionalTest):
         get_browser = self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'location_name'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'location_name'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'description'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'description'))
         questiontext.send_keys(itemdesc)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
@@ -43,5 +45,6 @@ class AddBasicAction (FunctionalTest):
         time.sleep(1)
 
         # Lookof for body in questiongrid
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)

@@ -28,7 +28,7 @@ class AddBasicQuestion (FunctionalTest):
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        itemtext = "Selenium to be or not to be"
+        itemtext = "Is corruption becoming less common"
         questiontext = WebDriverWait(self, 10).until(lambda self:
                                                      self.browser.find_element(By.ID, 'question_questiontext'))
         questiontext.send_keys(itemtext)

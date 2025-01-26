@@ -25,7 +25,7 @@ class AddBasicAction (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-    @data(('/new_question/None/action', 'Lets get this done', 'p2action'),
+    @data(('/new_question/None/action', 'Reduce world poverty by 20%', 'p2action'),
           ('/new_question/None/issue', 'The world is under-achieving', 'p2issue'))
     @unpack
     def test_question(self, urltxt, itemtext, itemkey):

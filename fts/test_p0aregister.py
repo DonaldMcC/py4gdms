@@ -16,7 +16,8 @@ class TestRegisterPage (FunctionalTest):
     @unpack
     def test_put_values_in_regester_form(self, user, passwd):
 
-        username = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "auth_user_username"))
+        username = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "auth_user_username"))
         username.clear()
         username.send_keys(user)
 
@@ -35,7 +36,8 @@ class TestRegisterPage (FunctionalTest):
         email.clear()
         email.send_keys(mailstring)
 
-        password = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "auth_user_password"))
+        password = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "auth_user_password"))
         password.clear()
         password.send_keys(passwd)
 
@@ -45,8 +47,8 @@ class TestRegisterPage (FunctionalTest):
         password2.send_keys(passwd)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
-        data_consent = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(
-            By.ID, "auth_user_data_consent"))
+        data_consent = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "auth_user_data_consent"))
 
         data_consent.click()
 
@@ -62,13 +64,10 @@ class TestRegisterPage (FunctionalTest):
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
 
-        # register_button = self.browser.find_element_by_id("submit")
-
-        # time.sleep(5)
-        # register_button.click()
         time.sleep(1)
 
         resultstring = "registered"
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         time.sleep(15)
         self.assertIn(resultstring, body.text)

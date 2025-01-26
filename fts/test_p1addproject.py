@@ -14,7 +14,8 @@ class AddProject (FunctionalTest):
         self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD1'])
@@ -25,14 +26,16 @@ class AddProject (FunctionalTest):
     @data(('/new_project', 'P1Test', 'Phase 1 test project'), ('/new_project', 'P1Test2', 'Phase 1 test project2'))
     @unpack
     def test_project(self, urltxt, itemtext, itemdesc):
-        self.url = ROOT + urltxt
+        self.url = f'{ROOT}{urltxt}'
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'proj_name'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'proj_name'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'description'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'description'))
         questiontext.send_keys(itemdesc)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)

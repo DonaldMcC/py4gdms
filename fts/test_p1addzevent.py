@@ -29,16 +29,20 @@ class AddBasicAction (FunctionalTest):
         self.browser.get(self.url)
         time.sleep(2)  # still getting blank category for some reason but not if loaded manually
         # questiontext = self.browser.find_element_by_name('questiontext')
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'event_name'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'event_name'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'locationid'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'locationid'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'projid'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'projid'))
         questiontext.send_keys(itemtext)
 
-        questiontext = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.NAME, 'description'))
+        questiontext = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.NAME, 'description'))
         questiontext.send_keys(itemdesc)
 
         # submit_button = self.browser.find_element_by_css_selector("#submit_record__row input")
@@ -48,5 +52,6 @@ class AddBasicAction (FunctionalTest):
 
         # Lookof for body in questiongrid
         # this is not great as shows up even if form not submitted
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)

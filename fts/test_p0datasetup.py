@@ -15,7 +15,8 @@ class AnswerQuestion (FunctionalTest):
         self.url = ROOT + '/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD1'])
@@ -29,7 +30,6 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(1)
         # self.browser.execute_script('alert("hi")')
         time.sleep(2)
-        # alert = self.browser.switch_to_alert()
-        # alert.accept()
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn('Setup has been completed successfully', body.text)
