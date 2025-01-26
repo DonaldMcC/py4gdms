@@ -165,7 +165,7 @@ def get_messages(chosenai, scenario, setup, qtext):
     return message
 
 
-def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
+def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=None):
     #So for now this is taking some text and looking up a scenario and a setup
     #The thinking was that setups could support basically different sets of prompts for
     #the same task to allow comparison and scenarios would cater to what we want the ai
@@ -177,6 +177,14 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
     #providers LLMs and we may want to setup a class with inheritance later for some of this -
     #but sticking with openai to get something working for now - and also ignoring history at
     #this point to keep simple
+    if aimode == 'Test':
+        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
+                        review='test mode', prompts=qtext)
+        return  f"Testing Mode {qtext}", "test"
+    if len(qtext) < 10:
+        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
+                            review='too short', prompts=qtext)
+        return  f"Text too short {qtext}", "short"
     client = OpenAI(api_key=OPENAI_API_KEY)
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext)
@@ -184,5 +192,8 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL):
     #    print(type(item), item)
     completion = client.chat.completions.create(model=model,
         messages=messages, max_tokens=300, temperature=0.1)
+    # will stick with logging but bit awkward to log the question id as not created yet so putting prompts
+    # into question itself and review table will have qid of None but still show what model etc
+    db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL, review=completion.choices[0].message.content, prompts=messages)
 
     return completion.choices[0].message.content, messages

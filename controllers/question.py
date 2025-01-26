@@ -20,6 +20,11 @@
 # much easier than it used to be
 
 # This controller provides functions to create and edit questions, actions and issues
+# also contains various lookups to knowledge engines and ai - current focus is on ai
+# mainly because it was early - aiming to stick with focus on that just now and then hopefully
+# rely on someone else to build a library at which point openai functions will be removed and
+# generic versions that support more and different models slotted in - not convinced these are there yet
+# but bound to come
 
 
 import json
@@ -363,14 +368,10 @@ def openai_lookup():
     # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
+    qid = request.json['questionid']
     setup = 'A'
-    if AI_MODE == 'Test':
-        resulttext = 'Test mode - no lookup'
-    else:
-        if len(qtext) > 10:
-            resulttext, messages = openai_query(qtext, scenario, setup)
-        else:
-            resultext = 'Text too short - update text and then click answer 1 for AI lookup'
+    resulttext, messages = openai_query(qtext, scenario, setup, AI_MODE, qid)
+    #TODO - put prompts into db.question.prompts
     return f'Messages: {messages} Result: {resulttext}'
 
 

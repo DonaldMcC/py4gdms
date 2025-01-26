@@ -176,6 +176,7 @@ db.define_table('question',
                             or (row['correctans'] == 2 and row['answer2'])
                             or (row['correctans'] == 3 and row['answer3'])
                             or (row['correctans'] == 4 and row['answer4']) or '?'),
+                Field('prompts', 'text'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Submitter Notes'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
@@ -335,6 +336,7 @@ db.define_table('ai_review',
                 Field('setup', 'string', default='A', label='Current prompt setup'),
                 Field('status', 'string', default='Active', requires=IS_IN_SET(['Active', 'Inactive'])),
                 Field('review', 'text', requires=IS_NOT_EMPTY()),
+                Field('prompts', 'text', requires=IS_NOT_EMPTY()),
                 Field('reviewdate', 'datetime', default=datetime.datetime.now, writable=False, readable=False))
 
 # This will be system level defaults for generating new items
