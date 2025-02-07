@@ -45,5 +45,6 @@ class AddProject (FunctionalTest):
         time.sleep(1)
 
         # Lookof for body in questiongrid
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)

@@ -14,7 +14,8 @@ class AddBasicAction (FunctionalTest):
         self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD1'])

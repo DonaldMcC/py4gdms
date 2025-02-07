@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 class AnswerQuestion (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph3Quest'),
@@ -51,6 +51,6 @@ class AnswerQuestion (FunctionalTest):
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 
-        self.url = ROOT + '/auth/logout'
+        self.url = f'{ROOT}/auth/logout'
         self.browser.get(self.url)
         time.sleep(1)

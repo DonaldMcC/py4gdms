@@ -21,11 +21,12 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
     def test_answer(self, user, passwd, result):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         qid = questiddict.get('p2action')
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(user)
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(passwd)
@@ -39,7 +40,8 @@ class AnswerQuestion (FunctionalTest):
         self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(2) > .btn-success").click()
         time.sleep(5)
 
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 
         self.url = f'{ROOT}/auth/logout'

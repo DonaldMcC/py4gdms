@@ -14,7 +14,7 @@ print(questidlist)
 class AddBasicAction (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))

@@ -14,7 +14,7 @@ from selenium.webdriver.common.by import By
 class AddBasicQuestion(FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph3Quest', 'Yes', 'No', 'Standard'),
@@ -54,16 +54,18 @@ class AddBasicQuestion(FunctionalTest):
         time.sleep(1)
 
         # Lookof for body in questiongrid
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(question, body.text)
 
-        alertarea = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, 'alertarea'))
+        alertarea = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, 'alertarea'))
         self.assertIn("ID", alertarea.text)
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos + 9:]
             recordval = int(recordstr) if recordstr.isnumeric() else 0
             questiddict[question] = recordval
-        self.url = ROOT + '/auth/logout'
+        self.url = f'{ROOT}/auth/logout'
         self.browser.get(self.url)
         time.sleep(1)

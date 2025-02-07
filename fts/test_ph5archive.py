@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 class AddBasicAction (FunctionalTest):
 
     def setUp(self):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
@@ -25,7 +25,7 @@ class AddBasicAction (FunctionalTest):
     @data(('/view_event/2', 'Archived', ''))
     @unpack
     def test_archive(self, urltxt, itemtext, itemdesc):
-        self.url = ROOT + urltxt
+        self.url = f'{ROOT}{urltxt}'
         self.browser.get(self.url)
         time.sleep(2)
 
@@ -40,5 +40,6 @@ class AddBasicAction (FunctionalTest):
         self.browser.get(self.url)
 
         # this is not great as shows up even if form not submitted
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(itemtext, body.text)

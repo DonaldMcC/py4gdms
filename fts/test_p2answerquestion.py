@@ -21,12 +21,13 @@ class AnswerQuestion (FunctionalTest):
           (USERS['USER4'], USERS['PASSWORD4'], 'Resolved'))
     @unpack
     def test_answer(self, user, passwd, result):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         qid = questiddict.get('p2quest')
 
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(user)
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(passwd)
@@ -34,7 +35,7 @@ class AnswerQuestion (FunctionalTest):
         submit_button.click()
         time.sleep(1)
 
-        self.url = ROOT + '/index/questions/'+str(qid)
+        self.url = f'{ROOT}/index/questions/'+str(qid)
         self.browser.get(self.url)
         time.sleep(1)
         # self.browser.find_element_by_xpath("(//input[@name='ans'])[2]").click()

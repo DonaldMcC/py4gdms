@@ -24,7 +24,7 @@ class AnswerQuestion (FunctionalTest):
           )
     @unpack
     def test_answer(self, user, passwd, answer, result):
-        self.url = ROOT + '/auth/login'
+        self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
         qid = questiddict.get('ph4quest')
@@ -50,6 +50,6 @@ class AnswerQuestion (FunctionalTest):
         body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 
-        self.url = ROOT + '/auth/logout'
+        self.url = f'{ROOT}/auth/logout'
         self.browser.get(self.url)
         time.sleep(1)
