@@ -26,7 +26,8 @@ class AnswerQuestion (FunctionalTest):
         time.sleep(2)
         qid = questiddict.get('p2issue')
 
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(user)
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(passwd)

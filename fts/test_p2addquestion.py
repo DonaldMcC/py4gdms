@@ -15,7 +15,8 @@ class AddBasicQuestion (FunctionalTest):
         self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
         time.sleep(2)
-        email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
+        email = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER2'])
         password = self.browser.find_element(By.ID, "no_table_password")
         password.send_keys(USERS['PASSWORD2'])
@@ -30,7 +31,7 @@ class AddBasicQuestion (FunctionalTest):
         # questiontext = self.browser.find_element_by_name('questiontext')
         itemtext = "Is corruption becoming less common"
         questiontext = WebDriverWait(self, 10).until(lambda self:
-                                                     self.browser.find_element(By.ID, 'question_questiontext'))
+                self.browser.find_element(By.ID, 'question_questiontext'))
         questiontext.send_keys(itemtext)
 
         ans1 = WebDriverWait(self, 10).until(
@@ -59,10 +60,8 @@ class AddBasicQuestion (FunctionalTest):
         recordpos = alertarea.text.find('RecordID')
         if recordpos > 0:
             recordstr = alertarea.text[recordpos+9:]
-            # print('recstr:'+recordstr)
             recordval = int(recordstr) if recordstr.isnumeric() else 0
             # print(recordval)
             questidlist.append(recordval)
             questiddict['p2quest'] = recordval
-        # print(questidlist)
         time.sleep(CACHETIME)
