@@ -111,11 +111,10 @@ def viewquest(qid=0, eid=0):
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
+        chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
         if quest['factopinion'] == 'Fact':
-            chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
             anstext = f"Submitter or knowledge engines claim the answer is: {quest['answertext']}"
         else:
-            chosenai = 'gpt-3.5-turbo-1106'
             correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
                 quest['correctans'] == 2 and quest['answer2']) or '?'
             anstext = f'Users have decided the correct answer is  {correcttext}'
