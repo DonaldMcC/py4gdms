@@ -368,11 +368,12 @@ def openai_lookup():
     # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
-    qid = request.json['questionid']
+    qid = None
     setup = 'A'
-    resulttext, messages = openai_query(qtext, scenario, setup, AI_MODE, qid)
+    resulttext, messages = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid)
     #TODO - put prompts into db.question.prompts
-    return f'Messages: {messages} Result: {resulttext}'
+    #return f'Messages: {messages} Result: {resulttext}'
+    return resulttext
 
 
 @action('openai_review', method=['POST', 'GET'])
