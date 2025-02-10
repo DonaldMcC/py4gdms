@@ -17,12 +17,36 @@ class AddBasicQuestion (FunctionalTest):
         self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'User2Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'User3Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'User4Ph2Quest', 'Yes', 'No', 'Standard'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'User5Ph2Quest', 'Yes', 'No', 'Standard'))
+    @data((USERS['USER2'], USERS['PASSWORD2'],
+           'Which of the following is considered the most effective way to combat climate change',
+           'Planting trees in urban areas',
+           'Reducing carbon emissions from fossil fuels',
+           'Banning plastic straws',
+           'Increasing the use of nuclear power'
+           'Standard'),
+          (USERS['USER3'], USERS['PASSWORD3'],
+           'What is a key benefit of artificial intelligence in healthcare?',
+           'It replaces human doctors entirely',
+           'It allows for faster and more accurate disease diagnosis',
+           'It eliminates the need for medical research',
+           'It makes hospitals completely automated',
+           'Standard'),
+          (USERS['USER4'], USERS['PASSWORD4'],
+           'Which factor is most critical for global economic development',
+           'Increased government control over all industries',
+           'Free and fair access to quality education',
+           'Dependence on fossil fuel exports',
+           'A shift to fully automated jobs',
+           'Standard'),
+          (USERS['USER5'], USERS['PASSWORD5'],
+           'What is one of the most effective strategies to reduce global poverty',
+           'Providing direct cash transfers to low-income individuals',
+           'Increasing tariffs on international trade',
+           'Encouraging rural communities to rely solely on agriculture',
+           'Reducing access to financial services',
+           'Standard'))
     @unpack
-    def test_question(self, user, passwd, question, answer1, answer2, resolvemethod):
+    def test_question(self, user, passwd, question, answer1, answer2, answer3, answer4, resolvemethod):
         global questiddict
         email = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "no_table_email"))
