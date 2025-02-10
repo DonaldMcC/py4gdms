@@ -192,8 +192,10 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=
     #    print(type(item), item)
     completion = client.chat.completions.create(model=model,
         messages=messages, max_tokens=300, temperature=0.1)
-    # will stick with logging but bit awkward to log the question id as not created yet so putting prompts
-    # into question itself and review table will have qid of None but still show what model etc
-    db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL, review=completion.choices[0].message.content, prompts=messages)
+    # will stick with logging except on initial question creation as then don't have qid and seems to be duplicating
+    # the same information really
+    if qid:
+        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
+                            review=completion.choices[0].message.content, prompts=messages)
 
     return completion.choices[0].message.content, messages
