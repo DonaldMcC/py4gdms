@@ -55,7 +55,7 @@ class AddBasicQuestion (FunctionalTest):
         password.send_keys(passwd)
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
-        time.sleep(1)
+        time.sleep(5)
 
         self.url = f'{ROOT}/new_question/None/quest'
         self.browser.get(self.url)
@@ -74,15 +74,16 @@ class AddBasicQuestion (FunctionalTest):
         ans2 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer2"))
         ans2.send_keys(answer2)
+        time.sleep(3)
         ans3 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer3"))
-        ans3.send_keys(answer2)
+        ans3.send_keys(answer3)
         ans4 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer4"))
-        ans4.send_keys(answer2)
+        ans4.send_keys(answer4)
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         # adding quite a bit of time here for AI response to get populated
-        time.sleep(10)
+        time.sleep(3)
 
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
