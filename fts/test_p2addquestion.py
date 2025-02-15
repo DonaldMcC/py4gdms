@@ -36,11 +36,16 @@ class AddBasicQuestion (FunctionalTest):
 
         ans1 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer1"))
-        ans1.send_keys("be")
+        ans1.send_keys("yes")
 
         ans2 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer2"))
-        ans2.send_keys("not to be")
+        ans2.send_keys("no")
+        time.sleep(2)
+
+        ans3 = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.ID, "question_answer3"))
+        ans3.send_keys("maybe")
 
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
