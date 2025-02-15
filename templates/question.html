@@ -26,6 +26,12 @@
            VALUE="[[=row.question.answer1]]">
     <INPUT TYPE=button  [[=get_disabled(2, row.userquestion.answer)]] title="Click to Answer"
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.question.id]]','2',this)",
+           VALUE="[[=row.question.answer2]]">
+    <INPUT TYPE=button  [[=get_disabled(3, row.userquestion.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 3)]]" onclick="quickanswer('[[=row.question.id]]','3',this)",
+           VALUE="[[=row.question.answer2]]">
+    <INPUT TYPE=button  [[=get_disabled(4, row.userquestion.answer)]] title="Click to Answer"
+           class="[[=get_class('action', 4)]]" onclick="quickanswer('[[=row.question.id]]','4',this)",
            VALUE="[[=row.question.answer2]]"></td>
 [[else:]]
     Login to feedback

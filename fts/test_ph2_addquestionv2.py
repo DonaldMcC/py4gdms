@@ -22,7 +22,7 @@ class AddBasicQuestion (FunctionalTest):
            'Planting trees in urban areas',
            'Reducing carbon emissions from fossil fuels',
            'Banning plastic straws',
-           'Increasing the use of nuclear power'
+           'Increasing the use of nuclear power',
            'Standard'),
           (USERS['USER3'], USERS['PASSWORD3'],
            'What is a key benefit of artificial intelligence in healthcare?',
@@ -81,10 +81,11 @@ class AddBasicQuestion (FunctionalTest):
         ans4 = WebDriverWait(self, 10).until(
             lambda self: self.browser.find_element(By.ID, "question_answer4"))
         ans4.send_keys(answer4)
-        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         # adding quite a bit of time here for AI response to get populated
         time.sleep(3)
 
+        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(2)
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
         time.sleep(1)

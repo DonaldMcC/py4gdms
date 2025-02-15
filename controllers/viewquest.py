@@ -162,7 +162,7 @@ def viewquest(qid=0, eid=0):
     return dict(quest=quest, viewtext=viewtext, uqanswered=uqanswered, uq=uq, urgmessage=urgmessage,
                 priorquests=priorquests, subsquests=subsquests, get_class=get_class, get_disabled=get_disabled, ur=ur,
                 uqrated=uqrated, can_edit=can_edit, commentform=commentform, filetype=filetype,
-                filename=filename, urlpath=urlpath, anstext=anstext, qname=qname, chosenai=chosenai,
+                filename=filename, urlpath=urlpath, anstext=anstext, qname=qname,
                 eventowner=editable, eventid=eid, projid=0, nodes=nodes, links=links, redraw='true',
                 myconverter=myconverter, ai_comment=ai_comment, got_ai=got_ai)
 

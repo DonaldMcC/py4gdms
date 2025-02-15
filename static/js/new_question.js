@@ -38,8 +38,8 @@ $(document).ready(function(){
                 'id="showoptions" value="Show more" class="btn btn-primary" onclick="show_options()">');
 
    $('#question_aianswer').attr('readonly', true);
-   $('#question_chosenai').attr('readonly', true);
-   $('#question_chosenai').parent().parent().hide();
+   $('#question_ai_model').attr('readonly', true);
+   $('#question_ai_model').parent().parent().hide();
 
     hide_options();
 
@@ -82,15 +82,15 @@ $(document).ready(function(){
                   $('#question_answertext').parent().parent().show();};
                  });
 
-          $('#question_answer1').change(function(){
+          $('#question_answer1').focus(function(){
               openai_lookup();
               });
 
-          $('#question_answer2').change(function(){
+          $('#question_answer2').focus(function(){
                  $('#question_answer3').parent().parent().show();
               });
 
-          $('#question_answer3').change(function(){
+          $('#question_answer3').focus(function(){
                  $('#question_answer4').parent().parent().show();
               });
 

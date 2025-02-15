@@ -130,8 +130,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
         pass
 
     try:
-        db.question.chosenai.default = session.get('chosenai', db(db.knowledge.defaultknowledge == True).select(
-            db.knowledge.id).first()['id'])
+        # Want the model we are using but not allowing this to be user chosen - it will take the std setup
+        db.question.ai_model.default = AI_MODEL
     except AttributeError:
         pass
     except TypeError:
@@ -172,7 +172,6 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     if form.accepted:
         session['eventid'] = form.vars['eventid']
         session['resolvemethod'] = form.vars['resolvemethod']
-        session['chosenai'] = form.vars['chosenai']
         # sourceurl = sourceurl + '/' + eid if sourceurl == 'view_event' else sourceurl
         # sourceurl = sourceurl + '/' + eid if int(eid) else sourceurl
         flash.set("Item Created RecordID:" + str(form.vars['id']), sanitize=True)
