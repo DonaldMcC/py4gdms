@@ -82,15 +82,15 @@ $(document).ready(function(){
                   $('#question_answertext').parent().parent().show();};
                  });
 
-          $('#question_answer1').click(function(){
+          $('#question_answer1').change(function(){
               openai_lookup();
               });
 
-          $('#question_answer2').click(function(){
+          $('#question_answer2').change(function(){
                  $('#question_answer3').parent().parent().show();
               });
 
-          $('#question_answer3').click(function(){
+          $('#question_answer3').change(function(){
                  $('#question_answer4').parent().parent().show();
               });
 
