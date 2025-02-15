@@ -111,7 +111,7 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
     except (AttributeError, TypeError):
         try:
             defaultresolve = db(db.resolve.Defaultresolve == True).select(db.resolve.id).first()['id']
-        except (AttributError, TypeError):
+        except (AttributeError, TypeError):
             defaultresolve = 1
 
     try:
