@@ -45,10 +45,25 @@ def review_item(item):
     print(item)
     return
 
-def get_event_items(eid):
+
+def answer_item(item):
+    """This should take an item and identify the current number of links and would then use the parameters
+    for whether or not to create new linked items to decide to create new items.  If a new item is
+    required we will call add_item """
+    print(item)
+    return
+
+
+def get_event_items(eid, ai_action='answer', ai_mode='unanswered'):
+    # This should provide basic navigation around an event to either review items. Answer as an ai
+    # or generate more items
     eventrow = db(db.event.id == eid).select().first()
     items = get_items(qtype='all', status='all', event=eid, eventstatus=eventrow.status)
     visited = {}
+    if ai_action == 'answer':
+        func = answer_item
+    else:
+        func = review_item
     for item in items:
-        review_item(item)
+        func(item)
 
