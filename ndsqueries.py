@@ -2,6 +2,7 @@ from unittest import case
 
 from .common import db, auth
 import pprint
+from .nds_ai_improve import answer_item, review_item
 
 try:
     from openai import OpenAI
@@ -212,3 +213,17 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=
                             review=completion.choices[0].message.content, prompts=messages)
 
     return completion.choices[0].message.content, messages
+
+
+def get_event_items(eid, ai_action='answer', ai_mode='unanswered', ai_model = AI_MODEL):
+    # This should provide basic navigation around an event to either review items. Answer as an ai
+    # or generate more items
+    eventrow = db(db.event.id == eid).select().first()
+    items = get_items(qtype='all', status='all', event=eid, eventstatus=eventrow.status)
+    visited = {}
+    if ai_action == 'answer':
+        func = answer_item
+    else:
+        func = review_item
+    for item in items:
+        func(item, ai_model)

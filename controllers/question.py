@@ -42,6 +42,7 @@ from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
 from ..ndsqueries import get_messages, openai_query
+from ..nds_ai_improve import answer_item
 from .network import request_link
 from ..settings import AI_MODE, AI_MODEL
 from py4web.utils.factories import Inject
@@ -394,11 +395,17 @@ def openai_review():
         resulttext = "Testing Mode " + qtype
     else:
         resulttext = openai_query(qtext, scenario, setup, model=AI_MODEL)
-
     if resulttext:
         db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL, review=resulttext)
-
     return f'Answer: {resulttext} ({AI_MODEL})'
+
+
+@action('openai_answer/<qid>', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def openai_answer(qid):
+    quest = db(db.question.id == qid).select().first()
+    answer = answer_item(quest, AI_MODEL)
+    return f'Answer: {answer} ({AI_MODEL})'
 
 
 @action('bard_lookup', method=['POST', 'GET'])

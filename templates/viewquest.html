@@ -15,6 +15,7 @@
 [[pass]]
 
 
+
 <tr><th>Status:</th> <td>
     [[if quest['status'] == 'Resolved':]]
 [[if quest['qtype'] == 'quest':]]
@@ -51,6 +52,10 @@ This [[=qname]] has been answered [[=quest.numanswer1 + quest.numanswer2]] times
     </p>
 </td>
 </tr>
+    <tr><td></td><td>  <button class="btn btn-sml btn-info"
+           hx-post="[[=URL(f"openai_answer/{quest.id}")]]"
+           hx-swap="outerHTML">
+           AI Answer</button></td> </tr>
 </tbody>
 </table>
 
