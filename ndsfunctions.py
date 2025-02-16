@@ -130,19 +130,34 @@ def score_question(questid: int, answer: int = 0):
     """
     quest = db(db.question.id == questid).select().first()
     resmethod = db(db.resolve.id == quest.resolvemethod).select().first()
-    if answer == '1':
-        quest.numanswer1 += 1
-    elif answer == '2':
-        quest.numanswer2 += 1
+    match answer:
+        case '1':
+            quest.numanswer1 += 1
+        case '2':
+            quest.numanswer2 += 1
+        case '3':
+            quest.numanswer3 += 1
+        case _ :
+            quest.numanswer4 += 1
 
-    numanswers = quest.numanswer1 + quest.numanswer2
+    numanswers = quest.numanswer1 + quest.numanswer2 + quest.numanswer3 + quest.numanswer4
+    topanswercount = max(quest.numanswer1, quest.numanswer2, quest.numanswer3, quest.numanswer4)
+    match topanswercount:
+        case quest.numanswer1:
+            topanswer = 1
+        case quest.numanswer2:
+            topanswer = 2
+        case quest.numanswer3:
+            topanswer = 3
+        case _:
+            topanswer = 4
+
     origstatus = quest.status
     if numanswers >= resmethod.responses:
-        if ((100 * quest.numanswer1) / numanswers >= resmethod.consensus or
-                (100 * quest.numanswer2) / numanswers >= resmethod.consensus):
+        if (100 * topanswercount) / numanswers >= resmethod.consensus:
             quest.status = 'Resolved'
-            quest.resolvedate = datetime.datetime.utcnow()
-            quest.correctans = 1 if quest.numanswer1 > quest.numanswer2 else 2
+            quest.resolvedate = datetime.datetime.now()
+            quest.correctans = topanswer
         else:
             quest.status = 'In Progress'
             quest.correctans = 0
