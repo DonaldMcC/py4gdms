@@ -85,6 +85,8 @@ def viewquest(qid=0, eid=0):
     urgmessage = ''
     can_edit = False
     chosenai = ''
+    if qid == 'None':
+        qid = 0
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
