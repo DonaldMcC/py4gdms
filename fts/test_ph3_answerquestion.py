@@ -16,12 +16,12 @@ class AnswerQuestion (FunctionalTest):
         self.url = f'{ROOT}/auth/login'
         self.browser.get(self.url)
 
-    @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'yes', 'User2Ph3Quest'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User2Ph3Quest'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User2Ph3Quest'),
-          (USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'no', 'User3Ph3Quest'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'no', 'User3Ph3Quest'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'no', 'User3Ph3Quest'))
+    @data((USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'ans1', 'User2Ph3Quest'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'ans2', 'User2Ph3Quest'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'ans2', 'User2Ph3Quest'),
+          (USERS['USER2'], USERS['PASSWORD2'], 'In Progress', 'ans2', 'User3Ph3Quest'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'In Progress', 'ans2', 'User3Ph3Quest'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'Resolved', 'ans2', 'User3Ph3Quest'))
     @unpack
     def test_answer(self, user, passwd, result, answer, question):
         self.url = ROOT + '/auth/login'
@@ -41,14 +41,20 @@ class AnswerQuestion (FunctionalTest):
         self.browser.get(self.url)
         time.sleep(1)
 
-        if answer == 'yes':
-            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-success").click()
-        else:
-            self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-danger").click()
+        match answer:
+            case 'ans1':
+                self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-success").click()
+            case 'ans2':
+                self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-danger").click()
+            case 'ans3':
+                self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-warning").click()
+            case _:
+                self.browser.find_element(By.CSS_SELECTOR, "td:nth-child(5) > .btn-info").click()
 
         time.sleep(1)
 
-        body = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
+        body = WebDriverWait(self, 10).until(
+            lambda self: self.browser.find_element(By.TAG_NAME, 'body'))
         self.assertIn(result, body.text)
 
         self.url = f'{ROOT}/auth/logout'

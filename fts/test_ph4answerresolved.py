@@ -37,9 +37,9 @@ class AnswerQuestion (FunctionalTest):
         self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
 
-        self.url = ROOT + '/viewquest/'+str(qid)
+        self.url = f'{ROOT}/viewquest/{qid}'
         self.browser.get(self.url)
-        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        #self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
         body = WebDriverWait(self, 10).until(
             lambda self:self.browser.find_element(By.CSS_SELECTOR, ".btn-danger").click())
