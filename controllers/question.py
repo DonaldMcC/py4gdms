@@ -41,7 +41,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
-from ..nds_ai_improve import answer_item, openai_query
+from ..nds_ai_improve import answer_item, openai_query, generate_items
 from .network import request_link
 from ..settings import AI_MODE, AI_MODEL
 from py4web.utils.factories import Inject
@@ -359,20 +359,35 @@ def wikipedia_lookup():
     return res
 
 
+def gen_items():
+    return 'do I need this'
+
 @action('openai_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)
 def openai_lookup():
-    # This is called via Ajax to lookup the answer to a question on openai and return answer
+    # This is called via Ajax to lookup the answer to generate follow on items this bit will
+    # just forward on to generate_items in ai improvements
     # will move into nds functions and add some more config and then should also be callable from
     # python as opposed to json parameters (and allow more parameters - want to call from viewquest as well)
+    # but is it call from question - if not let's move that elsewhere as don't have a qid then and
+    # that will always go into the question - so maybe two functions needed
     qtext = request.json['questiontext']
     scenario = request.json['scenario']
     qid = None
     setup = 'A'
-    resulttext, messages = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid)
+    resulttext, messages = generate_items(qtext, scenario, setup, qid, 'text')
+    # resulttext, messages = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid)
     #TODO - put prompts into db.question.prompts
     #return f'Messages: {messages} Result: {resulttext}'
     return resulttext
+
+
+@action('openai_answer/<qid>', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def openai_answer(qid):
+    quest = db(db.question.id == qid).select().first()
+    answer = answer_item(quest, AI_MODEL)
+    return f'Answer: {answer} ({AI_MODEL})'
 
 
 @action('openai_review', method=['POST', 'GET'])
@@ -397,14 +412,6 @@ def openai_review():
     if resulttext:
         db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL, review=resulttext)
     return f'Answer: {resulttext} ({AI_MODEL})'
-
-
-@action('openai_answer/<qid>', method=['POST', 'GET'])
-@action.uses(session, db, auth.user)
-def openai_answer(qid):
-    quest = db(db.question.id == qid).select().first()
-    answer = answer_item(quest, AI_MODEL)
-    return f'Answer: {answer} ({AI_MODEL})'
 
 
 @action('bard_lookup', method=['POST', 'GET'])

@@ -17,7 +17,7 @@
 # but these are currently only suggestions and have not been structured into questions, actions and issues - probably
 # fine to do that just need to fiddle about a bit with questions
 
-from .common import db, session, auth
+from .common import db
 from .settings import AI_MODE, AI_MODEL
 from .ndsqueries import get_items
 import json
@@ -58,27 +58,48 @@ def review_item(item, ai_model):
 
 
 def answer_item(item, ai_model):
-    """This should take an item and identify the current number of links and would then use the parameters
-    for whether or not to create new linked items to decide to create new items.  If a new item is
-    required we will call add_item """
+    # should support answering an item and can be called from viewquest for interactive use
+    # event traversal use should also be possible and we would then store answer separately
+    # and rescore the question
     setup = 'A'
     scenario = 'answer'
     print(item.questiontext)
     answers = (item.answer1, item.answer2, item.answer3, item.answer4)
     if AI_MODE == 'Test':
-        resulttext = "Testing Mode " + item.qtype
+        resulttext = ('json {"answer": 1, "reason": "poverty}',item.questiontext)
     else:
         resulttext = openai_query(item.questiontext, scenario, setup, AI_MODEL, AI_MODE, item.id, answers)
     result =resulttext[0]
     openbracket = result.find('{')
     closebracket = result.rfind('}' )
-    print (result)
-    print (openbracket)
-    print (result[openbracket:closebracket])
     resultjson = json.loads(result[openbracket:closebracket+1])
 
     print(resultjson)
+    return resultjson['answer']
 
+
+def generate_items(qtext, scenario, setup, qid, format='text'):
+    # should support generating more questions from an item and can be called from viewquest for interactive use
+    # event traversal
+    # TODO consider if always switch to JSON and get possible answers or stick with text to review and then put
+    # into question  but this means two different sets of prompts - think we go two routes
+    setup = 'A'
+    print(qtext)
+    answers=None
+    if AI_MODE == 'Test':
+        resulttext = f'generate items {qtext}'
+    else:
+        resulttext = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid, answers)
+
+
+    result = resulttext[0]
+    if format == 'text':
+        return result, resulttext[1]
+    openbracket = result.find('{')
+    closebracket = result.rfind('}' )
+    resultjson = json.loads(result[openbracket:closebracket+1])
+
+    print(resultjson)
     return resultjson['answer']
 
 
@@ -105,8 +126,9 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
     message = []
     userprompt = {"role": "user", "content": qtext}
     answer_intro = {"role": "user",  "content": "And the possible answers are:"}
-    answerlist = '\n'.join(answers)
-    answerprompt = {"role": "user",  "content": answerlist}
+    if answers:
+        answerlist = '\n'.join(answers)
+        answerprompt = {"role": "user",  "content": answerlist}
     written_userprompt = False
     for row in prompts:
         # This writes prompts up to sequence 50 before the item and ones above 50 after it
@@ -152,10 +174,13 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=
     client = OpenAI(api_key=OPENAI_API_KEY)
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext, answers)
-    #for item in messages:
-    #    print(type(item), item)
-    completion = client.chat.completions.create(model=model,
-        messages=messages, max_tokens=300, temperature=0.1)
+    #test option to get json response
+    if answers:
+        completion = client.chat.completions.create(model=model,
+        messages=messages, max_tokens=300, temperature=0.1, response_format = {"type": "json_object"})
+    else:
+        completion = client.chat.completions.create(model=model,
+            messages=messages, max_tokens=300, temperature=0.1)
     # will stick with logging except on initial question creation as then don't have qid and seems to be duplicating
     # the same information really
     if qid:
@@ -176,4 +201,5 @@ def get_event_items(eid, ai_action='answer', ai_mode='unanswered', ai_model = AI
     else:
         func = review_item
     for item in items:
-        func(item, ai_model)
+        result = func(item, ai_model)
+        # for each answer we potentially then update and call score_question again
