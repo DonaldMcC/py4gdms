@@ -2,15 +2,6 @@ from unittest import case
 
 from .common import db, auth
 import pprint
-from .nds_ai_improve import answer_item, review_item
-
-try:
-    from openai import OpenAI
-    from .settings import AI_MODEL
-    from .settings_private import OPENAI_API_KEY
-    oai = True
-except ImportError as error:
-    oai = False
 
 
 def get_disabled(ans, useranswer):
@@ -142,88 +133,3 @@ def make_leftjoin(eventstatus):
                                       & (db.userquestion.auth_userid == auth.user_id))
     return leftjoin
 
-
-def get_messages(chosenai, scenario, setup, qtext):
-    """
-    :param chosenai:
-    :param scenario:
-    :param setup:
-    :param qtext:
-    :return:
-
-    This should populate the prompts for openai only currently but most likely other LLMs can be added at some point
-    idea is that these are served first the system prompts and then the user prompts for chosenai, scenario and setup
-    We then serialise them into list of items to return hopefully
-            {"role": "system", "content": "You are providing advice to make the world better "},
-    """
-    # need to change this query to use the title of the chosen ai or pass the integer
-    query = ((db.prompt.chosenai == chosenai) & (db.prompt.scenario == scenario) & (db.prompt.setup == setup)
-             & (db.prompt.status == 'Active'))
-    sortby = db.prompt.sequence
-    prompts = db(query).select(orderby=[sortby])
-    print(prompts)
-
-    message = []
-    userprompt = {"role": "user", "content": qtext}
-    written_userprompt = False
-    for row in prompts:
-        dictrow = {"role": row.role, "content": row.content}
-        if not written_userprompt and row.sequence > 50:
-            message.append(userprompt)
-            written_userprompt = True
-        message.append(dictrow)
-
-    if not written_userprompt:
-        message.append(userprompt)
-    print(message)
-    return message
-
-
-def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=None):
-    #So for now this is taking some text and looking up a scenario and a setup
-    #The thinking was that setups could support basically different sets of prompts for
-    #the same task to allow comparison and scenarios would cater to what we want the ai
-    #to do.  eg comment on the text as an expert, answer the question, generate follow ons etc
-    #I am not overly clear how best to handle the chat history - probably it will need to be
-    #provided somehow at some point as in multi-user mode with one ID any other approach seems
-    #challenging
-    #we have also called this openai_query for now but clearly will be similarities with other
-    #providers LLMs and we may want to setup a class with inheritance later for some of this -
-    #but sticking with openai to get something working for now - and also ignoring history at
-    #this point to keep simple
-    if aimode == 'Test':
-        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
-                        review='test mode', prompts=qtext)
-        return  f"Testing Mode {qtext}", "test"
-    if len(qtext) < 10:
-        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
-                            review='too short', prompts=qtext)
-        return  f"Text too short {qtext}", "short"
-    client = OpenAI(api_key=OPENAI_API_KEY)
-    chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
-    messages = get_messages(chosenai.id, scenario, setup, qtext)
-    #for item in messages:
-    #    print(type(item), item)
-    completion = client.chat.completions.create(model=model,
-        messages=messages, max_tokens=300, temperature=0.1)
-    # will stick with logging except on initial question creation as then don't have qid and seems to be duplicating
-    # the same information really
-    if qid:
-        db.ai_review.insert(parentid=qid, chosenai='GPT-4', ai_version=AI_MODEL,
-                            review=completion.choices[0].message.content, prompts=messages)
-
-    return completion.choices[0].message.content, messages
-
-
-def get_event_items(eid, ai_action='answer', ai_mode='unanswered', ai_model = AI_MODEL):
-    # This should provide basic navigation around an event to either review items. Answer as an ai
-    # or generate more items
-    eventrow = db(db.event.id == eid).select().first()
-    items = get_items(qtype='all', status='all', event=eid, eventstatus=eventrow.status)
-    visited = {}
-    if ai_action == 'answer':
-        func = answer_item
-    else:
-        func = review_item
-    for item in items:
-        func(item, ai_model)

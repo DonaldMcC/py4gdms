@@ -124,6 +124,10 @@ def aisetup():
     # so may need this to be more dynamic based on whether follow on is from question/issue/or action??
 
     prompts = [["answer", "system", 10, 'You are an expert providing guidance to improve the world'],
+               ["answer", "user", 20, 'To do this you need to answer multiple choice questions'],
+               ["answer", "user", 22, 'There can be up to 4 answers and you should provide the answer in JSON format'],
+               ["answer", "user", 24, 'With the number and the reason for the chosen answer'],
+               ["answer", "user", 48, 'The question is:'],
                ["gen_questions", "system", 1, 'You are an expert providing guidance to improve the world'],
                ["gen_questions", "user", 10, 'The following item has been identified'],
                ["gen_questions", "user", 60, 'Suggest 3 follow-on questions to further investigate the issue '],

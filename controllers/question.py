@@ -41,8 +41,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
-from ..ndsqueries import get_messages, openai_query
-from ..nds_ai_improve import answer_item
+from ..nds_ai_improve import answer_item, openai_query
 from .network import request_link
 from ..settings import AI_MODE, AI_MODEL
 from py4web.utils.factories import Inject
