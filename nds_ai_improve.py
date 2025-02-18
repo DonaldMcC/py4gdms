@@ -20,6 +20,7 @@
 from .common import db, session, auth
 from .settings import AI_MODE, AI_MODEL
 from .ndsqueries import get_items
+import json
 
 try:
     from openai import OpenAI
@@ -68,7 +69,17 @@ def answer_item(item, ai_model):
         resulttext = "Testing Mode " + item.qtype
     else:
         resulttext = openai_query(item.questiontext, scenario, setup, AI_MODEL, AI_MODE, item.id, answers)
-    return resulttext
+    result =resulttext[0]
+    openbracket = result.find('{')
+    closebracket = result.rfind('}' )
+    print (result)
+    print (openbracket)
+    print (result[openbracket:closebracket])
+    resultjson = json.loads(result[openbracket:closebracket+1])
+
+    print(resultjson)
+
+    return resultjson['answer']
 
 
 def get_messages(chosenai, scenario, setup, qtext, answers=None):
@@ -90,7 +101,7 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
     sortby = db.prompt.sequence
     prompts = db(query).select(orderby=[sortby])
     print(prompts)
-
+    print (scenario)
     message = []
     userprompt = {"role": "user", "content": qtext}
     answer_intro = {"role": "user",  "content": "And the possible answers are:"}
@@ -111,6 +122,9 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
 
     if not written_userprompt:
         message.append(userprompt)
+        if scenario[:6] == 'answer':
+            message.append(answer_intro)
+            message.append(answerprompt)
     print(message)
     return message
 
