@@ -176,7 +176,6 @@ db.define_table('question',
                             or (row['correctans'] == 2 and row['answer2'])
                             or (row['correctans'] == 3 and row['answer3'])
                             or (row['correctans'] == 4 and row['answer4']) or '?'),
-                Field('prompts', 'text'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Submitter Notes'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),

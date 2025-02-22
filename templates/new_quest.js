@@ -51,6 +51,10 @@
 
 };
 
+    function lookup_answers() {
+        console.log('I fired')
+    };
+
         function openai_lookup() {
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */

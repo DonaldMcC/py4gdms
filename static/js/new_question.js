@@ -32,9 +32,11 @@ $(document).ready(function(){
    $('#question_correctanstext').parent().parent().hide();
    $("label[for='question_correctans']").hide();
    //$('#question_aianswer').parent().nextAll("label").first().
-    $('#question_aianswer').parent().parent().children().first()
 
-   $('#question_aianswer').parent().parent().children().first().append('<div class="btn-group mt-4"><input type="BUTTON" ' +
+    $('#question_answer1').parent().parent().children('p').first().append('<input type="BUTTON" ' +
+                'id="lookupanswers" value="Create Answers" class="btn btn-primary btn-warning" onclick="lookup_answers()">');
+
+   $('#question_aianswer').parent().parent().children().first().append('<input type="BUTTON" ' +
                 'id="showoptions" value="Show more" class="btn btn-primary" onclick="show_options()">');
 
    $('#question_aianswer').attr('readonly', true);
