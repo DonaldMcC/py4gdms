@@ -91,16 +91,23 @@ def generate_items(qtext, scenario, setup, qid, format='text'):
     else:
         resulttext = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid, answers)
 
+    return resulttext
 
-    result = resulttext[0]
-    if format == 'text':
-        return result, resulttext[1]
-    openbracket = result.find('{')
-    closebracket = result.rfind('}' )
-    resultjson = json.loads(result[openbracket:closebracket+1])
 
-    print(resultjson)
-    return resultjson['answer']
+def generate_answers(qtext, scenario, setup, qid, format='text'):
+    # should support generating more questions from an item and can be called from viewquest for interactive use
+    # event traversal
+    # TODO consider if always switch to JSON and get possible answers or stick with text to review and then put
+    # into question  but this means two different sets of prompts - think we go two routes
+    setup = 'A'
+    print(qtext)
+    answers=None
+    if AI_MODE == 'Test':
+        resulttext = f'generate items {qtext}'
+    else:
+        resulttext = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid, answers)
+
+    return resulttext
 
 
 def get_messages(chosenai, scenario, setup, qtext, answers=None):

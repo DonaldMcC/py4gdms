@@ -18,18 +18,26 @@
         $('#question_aianswer').attr('readonly', false);
     $("#question_aianswer").val('');
     $('#question_aianswer').attr('readonly', true);
-    $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=1]").prop('selected', true);
-     $('#question_chosenai').attr('readonly', true);
+
     }
 
+
+    var ans_success = function(res) {
+        //console.log(res.data);
+        var jsonobj =  JSON.parse(res.data);
+        $('#question_answer3').parent().parent().show();
+        $('#question_answer4').parent().parent().show();
+        $("#question_answer1").val(jsonobj[0].text);
+        $("#question_answer2").val(jsonobj[1].text);
+
+        $("#question_answer3").val(jsonobj[2].text);
+        $("#question_answer4").val(jsonobj[3].text);
+
+    };
 
     function wolfram_alpha_lookup() {
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
-    $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=2]").prop('selected', true);
-     $('#question_chosenai').attr('readonly', true);
 
     //$("#question_chosenai")
     result= Q.ajax("POST", "[[=URL('wolfram_alpha_lookup')]]", {
@@ -41,9 +49,6 @@
     function wikipedia_lookup() {
     var qtext = $('#question_questiontext').val();
     /* Now we call via ajax and put returned value into notes */
-         $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=3]").prop('selected', true);
-    $('#question_chosenai').attr('readonly', true);
 
      result= Q.ajax("POST", "[[=URL('wikipedia_lookup')]]", {
             questiontext: qtext
@@ -51,17 +56,20 @@
 
 };
 
-    function lookup_answers() {
-        console.log('I fired')
+    function gen_answers() {
+    var qtext = $('#question_questiontext').val();
+    var qtype = $('#question_qtype').val();
+    /^ Now we call via ajax and put returned value into notes */
+    result= Q.ajax("POST", "[[=URL('gen_answers')]]", {
+            questiontext: qtext,
+            qtype: qtype,
+            scenario: 'gen_answers'
+        }).then(ans_success).catch(qerror);
     };
 
         function openai_lookup() {
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
-        $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=4]").prop('selected', true);
-    $('#question_chosenai').attr('readonly', true);
-
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
             questiontext: qtext,
             scenario: 'answer'
@@ -71,9 +79,6 @@
                 function bard_lookup() {
     var qtext = $('#question_questiontext').val();
     /^ Now we call via ajax and put returned value into notes */
-        $('#question_chosenai').attr('readonly', false);
-     $("#question_chosenai option[value=5]").prop('selected', true);
-    $('#question_chosenai').attr('readonly', true);
 
     result= Q.ajax("POST", "[[=URL('bard_lookup')]]", {
             questiontext: qtext

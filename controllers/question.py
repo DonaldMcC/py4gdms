@@ -41,7 +41,7 @@ from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResp
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
-from ..nds_ai_improve import answer_item, openai_query, generate_items
+from ..nds_ai_improve import answer_item, openai_query, generate_items, generate_answers
 from .network import request_link
 from ..settings import AI_MODE, AI_MODEL
 from py4web.utils.factories import Inject
@@ -361,6 +361,29 @@ def wikipedia_lookup():
 
 def gen_items():
     return 'do I need this'
+
+
+@action('gen_answers', method=['POST', 'GET'])
+@action.uses(session, db, auth.user)
+def gen_answers():
+    # This is called via Ajax to generate possible answers to questions only
+    # it should not be called for actions or issues but will check if that has happen and might even
+    # return the std approve/disapprove pairs for those in a bit
+    qtext = request.json['questiontext']
+    scenario = request.json['scenario']
+    qtype = request.json['qtype']
+    qid = None
+    setup = 'A'
+    resulttext, messages = generate_answers(qtext, scenario, setup, qid, 'json')
+    # resulttext, messages = openai_query(qtext, scenario, setup, AI_MODEL, AI_MODE, qid)
+    print( f'Messages: {messages} Result: {resulttext}')
+    openbracket = resulttext.find('{')
+    closebracket = resulttext.rfind('}' )
+    resultjson = json.loads(resulttext[openbracket:closebracket+1])
+
+    print(resultjson)
+    return resultjson['answers']
+
 
 @action('openai_lookup', method=['POST', 'GET'])
 @action.uses(session, db, auth.user)

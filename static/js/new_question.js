@@ -34,7 +34,7 @@ $(document).ready(function(){
    //$('#question_aianswer').parent().nextAll("label").first().
 
     $('#question_answer1').parent().parent().children('p').first().append('<input type="BUTTON" ' +
-                'id="lookupanswers" value="Create Answers" class="btn btn-primary btn-warning" onclick="lookup_answers()">');
+                'id="lookupanswers" value="Create Answers" class="btn btn-primary btn-warning" onclick="gen_answers()">');
 
    $('#question_aianswer').parent().parent().children().first().append('<input type="BUTTON" ' +
                 'id="showoptions" value="Show more" class="btn btn-primary" onclick="show_options()">');
