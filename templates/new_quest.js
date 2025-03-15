@@ -72,7 +72,7 @@
     /^ Now we call via ajax and put returned value into notes */
     result= Q.ajax("POST", "[[=URL('openai_lookup')]]", {
             questiontext: qtext,
-            scenario: 'answer'
+            scenario: 'review'
         }).then(qsuccess).catch(qerror);
 };
 

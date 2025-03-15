@@ -142,7 +142,9 @@ def aisetup():
                ["gen_answers", "user", 25, 'You should provide 4 possible answers to the question in JSON format with'],
                ["gen_answers", "user", 27, 'the number and text of each answer provided as separate fields'],
                ["gen_answers", "user", 30, 'At least one answer should be correct but the others need not be'],
-               ["gen_answers", "user", 45, 'The question is:']
+               ["gen_answers", "user", 45, 'The question is:'],
+               ["review", "system", 10, 'You are an expert providing guidance to improve the world'],
+               ["review", "user", 20, 'Please review and advise on the following text:'],
 ]
 
     for x in prompts:
