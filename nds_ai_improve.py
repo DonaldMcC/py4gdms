@@ -132,6 +132,7 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
     print (scenario)
     message = []
     userprompt = {"role": "user", "content": qtext}
+    answerprompt = None
     answer_intro = {"role": "user",  "content": "And the possible answers are:"}
     if answers:
         answerlist = '\n'.join(answers)
@@ -144,7 +145,8 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
             message.append(userprompt)
             if scenario[:6] == 'answer':
                 message.append(answer_intro)
-                message.append(answerprompt)
+                if answerprompt:
+                    message.append(answerprompt)
             written_userprompt = True
 
         message.append(dictrow)
@@ -153,7 +155,8 @@ def get_messages(chosenai, scenario, setup, qtext, answers=None):
         message.append(userprompt)
         if scenario[:6] == 'answer':
             message.append(answer_intro)
-            message.append(answerprompt)
+            if answerprompt:
+                message.append(answerprompt)
     print(message)
     return message
 
