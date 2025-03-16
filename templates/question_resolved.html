@@ -22,11 +22,11 @@
     <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div</td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
-<td class="has-text-centered">[[if row.question.factopinion == 'Fact':
-    =XML(markmin2html(row.question.answertext))
-    else:
-    =XML(markmin2html(row.question.answer1)) if row.question.correctans==1 else XML(markmin2html(row.question.answer2))
-    pass ]]</td>
+<td class="has-text-centered">[[=(row.question.correctans==1 and row.question.answer1) or (
+    row.question.correctans==2 and row.question.answer2) or (
+    row.question.correctans==3 and row.question.answer3) or (
+    row.question.correctans==4 and row.question.answer4)
+    ]]</td>
     <td class="d-block d-sm-none d-md-none">[[=row.question.aianswer]]</td>
 </tr>
 [[pass]]

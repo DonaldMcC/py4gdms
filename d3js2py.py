@@ -270,11 +270,8 @@ def getd3graph(querytype, queryids, status, numlevels=1, eventlevel=0, parentque
 
     for i, x in enumerate(quests):
         dicty = x.as_dict()
-        #TODO fully investigate why I need to repeat virtual field here think not part of joined query
-        if x.factopinion == 'Fact':
-            correctanstext=x.answertext
-        else:
-            correctanstext = (x.correctans == 1 and x.answer1) or (x.correctans == 2 and x.answer2) or '?'
+        correctanstext = ((x.correctans == 1 and x.answer1) or (x.correctans == 2 and x.answer2)
+                          or (x.correctans == 3 and x.answer3) or (x.correctans == 4 and x.answer4) or '?')
         dictx = getd3dict(x.id, i + 2, x.xpos, x.ypos, x.questiontext, correctanstext,
                           x.status, x.qtype, x.priority, x.answer1, x.answer2, x.execstatus)
         nodes.append(merge_two_dicts(dicty, dictx))

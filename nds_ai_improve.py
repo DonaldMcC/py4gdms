@@ -44,7 +44,8 @@ def add_item(item, basedict):
     # Field('resolvemethod', 'reference resolve',
     # Field('chosenai', 'reference knowledge', label='AI/Knowledge Engine'),
     print(db.question._insert(qtype='quest', eventid=item['eventid'], questiontext='new question',
-                              factopinion='Fact', answertext='', answer1='', answer2='', aianswer=''))
+                              factopinion='Fact',  answer1='', answer2='', answer3='',
+                              answer4='', aianswer=''))
     questiondict = dict(myfield='somevalue')
     db.question[None] = questiondict
 

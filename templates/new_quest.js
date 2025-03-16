@@ -4,7 +4,6 @@
         $("#question_aianswer").val(res.data);
         autoResizeTextarea(document.querySelectorAll("#question_aianswer"), {maxHeight: 320});
         $('#question_aianswer').attr('readonly', true);
-        $("#question_answertext").val(res.data);
         //allow selection of answer once knowledge engine used
         $('#question_correctans').show();
         $("label[for='question_correctans']").show();

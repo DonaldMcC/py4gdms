@@ -17,8 +17,6 @@ function show_options() {
 };
 
 $(document).ready(function(){
-   $('#question_answertext').hide();
-   $("label[for='question_answertext']").hide();
    $('#question_responsible').parent().parent().hide();
    $('#question_perccomplete').parent().parent().hide();
    $('#question_execstatus').parent().parent().hide();
@@ -67,13 +65,13 @@ $(document).ready(function(){
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
                   $('#question_answer2').parent().parent().hide();
-                  $('#question_answertext').parent().parent().hide();};
+                 };
                if($('#question_qtype option:selected').text()=='issue' )
                  {$('#question_answer1').val('Approve');
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
                   $('#question_answer2').parent().parent().hide();
-                  $('#question_answertext').parent().parent().show();};
+                  };
               if($('#question_qtype option:selected').text()=='quest'){
                   $('#question_factopinion').parent().parent().show();
                   $('#question_factopinion option:selected').text()=='Opinion';
@@ -81,7 +79,7 @@ $(document).ready(function(){
                   $('#question_answer2').val('');
                   $('#question_answer1').parent().parent().show();
                   $('#question_answer2').parent().parent().show();
-                  $('#question_answertext').parent().parent().show();};
+                  };
                  });
 
           $('#question_answer1').focus(function(){
@@ -98,10 +96,10 @@ $(document).ready(function(){
 
           $('#question_factopinion').change(function(){
               if($('#question_factopinion option:selected').text()=='Fact') {
-                 $('#question_correctans').parent().nextAll("p").first().show();
-                 $('#question_correctans').show();
-                 $('#question_correctanstext').parent().parent().show();
-                 $("label[for='question_correctans']").show();
+                 /*$('#question_correctans').parent().nextAll("p").first().show();
+                 $('#question_correctans').show();*/
+                 $('#question_answer1').parent().parent().hide();
+                  $('#question_answer2').parent().parent().hide();
                  $('#question_status option[value="Resolved"]').prop('selected', true);}
               else {
                   $('#question_status option[value="In Progress"]').prop('selected', true);
