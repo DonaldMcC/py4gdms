@@ -25,10 +25,7 @@ $(document).ready(function(){
    $('#question_shared_editing').parent().parent().hide();
    $('#question_answer3').parent().parent().hide();
    $('#question_answer4').parent().parent().hide();
-   $('#question_correctans').parent().nextAll("p").first().hide();
-   $('#question_correctans').hide();
    $('#question_correctanstext').parent().parent().hide();
-   $("label[for='question_correctans']").hide();
    //$('#question_aianswer').parent().nextAll("label").first().
 
     $('#question_answer1').parent().parent().children('p').first().append('<input type="BUTTON" ' +
@@ -94,18 +91,6 @@ $(document).ready(function(){
                  $('#question_answer4').parent().parent().show();
               });
 
-          $('#question_factopinion').change(function(){
-              if($('#question_factopinion option:selected').text()=='Fact') {
-                 /*$('#question_correctans').parent().nextAll("p").first().show();
-                 $('#question_correctans').show();*/
-                 $('#question_answer1').parent().parent().hide();
-                  $('#question_answer2').parent().parent().hide();
-                 $('#question_status option[value="Resolved"]').prop('selected', true);}
-              else {
-                  $('#question_status option[value="In Progress"]').prop('selected', true);
-              }
-
-                });
 
                 $('#question_qtype').change();
                 $('#question_factopinion').change();

@@ -293,7 +293,9 @@ db.define_table('eventmap',
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Notes'))
 db.eventmap.correctanstext = Field.Virtual(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
-                                                        (row.eventmap.correctans == 2 and row.eventmap.answer2) or ''))
+                                                        (row.eventmap.correctans == 2 and row.eventmap.answer2)
+                                                        (row.eventmap.correctans == 3 and row.eventmap.answer3)
+                                                        (row.eventmap.correctans == 4 and row.eventmap.answer4) or ''))
 
 db.define_table("itemlike",
                 Field('parentid', 'integer'),
