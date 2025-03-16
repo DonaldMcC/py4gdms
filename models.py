@@ -172,10 +172,6 @@ db.define_table('question',
                       readable=False, writable=False),
                 Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
-                Field.Virtual('correctanstext', lambda row: (row['correctans'] == 1 and row['answer1'])
-                            or (row['correctans'] == 2 and row['answer2'])
-                            or (row['correctans'] == 3 and row['answer3'])
-                            or (row['correctans'] == 4 and row['answer4']) or '?'),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Submitter Notes'),
                 Field('startdate', 'datetime', readable=False, writable=False, default=datetime.datetime.now),
@@ -196,6 +192,10 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
+db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
+                                            or (row.question.correctans == 2 and row.question.answer2)
+                                            or (row.question.correctans == 3 and row.question.answer3)
+                                            or (row.question.correctans == 4 and row.question.answer4) or '?')
 
 db.define_table('tweets',
                 Field('parentid', 'integer'),

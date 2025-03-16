@@ -113,15 +113,11 @@ def viewquest(qid=0, eid=0):
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
-        correcttext = (quest['correctans'] == 1 and quest['answer1']) or (
-                quest['correctans'] == 2 and quest['answer2']) or (
-                quest['correctans'] == 3 and quest['answer3']) or (
-                quest['correctans'] == 4 and quest['answer4']) or '?'
         chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
         if quest['factopinion'] == 'Fact':
-            anstext = f"Submitter or knowledge engines claim the answer is: {correcttext}"
+            anstext = f"Submitter or knowledge engines claim the answer is: {quest['correctanstext']}"
         else:
-            anstext = f'Users have decided the correct answer is  {correcttext}'
+            anstext = f'Users have decided the correct answer is  {quest['correctanstext']}'
             # Did the user answer the question
             if uqanswered:
                 if quest['correctans'] == uq.answer:
