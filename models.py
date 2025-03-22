@@ -192,10 +192,15 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
-db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
-                                            or (row.question.correctans == 2 and row.question.answer2)
-                                            or (row.question.correctans == 3 and row.question.answer3)
-                                            or (row.question.correctans == 4 and row.question.answer4) or '?')
+db.question.correctanstext = Field.Virtual(lambda row: (row.correctans == 1 and row.answer1)
+                                            or (row.correctans == 2 and row.answer2)
+                                            or (row.correctans == 3 and row.answer3)
+                                            or (row.correctans == 4 and row.answer4) or '?')
+
+#db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
+#                                            or (row.question.correctans == 2 and row.question.answer2)
+#                                            or (row.question.correctans == 3 and row.question.answer3)
+#                                            or (row.question.correctans == 4 and row.question.answer4) or '?')
 
 db.define_table('tweets',
                 Field('parentid', 'integer'),

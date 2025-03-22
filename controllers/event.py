@@ -48,9 +48,18 @@ def new_event(eid=None):
                                     + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
     db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
                                         'project.id', '%(proj_name)s')
+
+    db.event.locationid.default = db(db.locn.location_name == 'Unspecified').select(db.locn.id).first().id
+
     try:
         db.event.projid.default = session.get('projid',
                                               db(db.project.name == 'Unspecified').select(db.project.id).first().id)
+    except AttributeError:
+        pass
+
+    try:
+        db.event.prev_event.default = session.get('eventid',
+                                                  db(db.event.event_name == 'Unspecified').select(db.event.id).first().id)
     except AttributeError:
         pass
 
@@ -231,8 +240,9 @@ def archive():
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
 
-    eventid = int(request.json['eventid'])
-    event = db(db.event.id == eventid).select().first()
+    eventid=session.get('eventid', None)
+    if eventid:
+        event = db(db.event.id == eventid).select().first()
     if not event:
         return 'No matching event found'
     nexteventid = event.next_event

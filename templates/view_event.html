@@ -40,7 +40,7 @@
 [[else:]]
 [[include 'action_complete_arch.html']]
 [[pass]]
-
+ <!--onclick="archive()"-->
 <script>
  document.querySelectorAll('.modal-button').forEach(function(el) {
   el.addEventListener('click', function() {
@@ -54,4 +54,5 @@
   });
 });
   });
+ document.getElementById("modal-archive").addEventListener("click", archive);
 </script>

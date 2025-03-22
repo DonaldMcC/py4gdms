@@ -60,8 +60,7 @@
         which has been created for this project.[[pass]]
             </div>
        <div class="modal-footer">
-           <button type="button" id="modal_archive" class="btn btn-small btn-warning" data-bs-dismiss="modal"
-                  onclick="archive('[[=eventrow.id]]')">Save changes</button>
+           <button type="button" id="modal_archive" class="btn btn-small btn-warning" data-bs-dismiss="modal">Save changes</button>
                    <button type="button" class="btn btn-small btn-info" data-bs-dismiss="modal">Close</button>
 
        </div>

@@ -227,7 +227,7 @@ def questiongrid(path=None):
         headings = ['Question', 'Answer', 'Status', 'Event', 'Project']
         fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name,
                   db.project.proj_name]
-        fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name]
+        fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name, db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
 
     #event_alias = db.event.with_alias('e')
