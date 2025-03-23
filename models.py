@@ -171,7 +171,11 @@ db.define_table('question',
                 Field.Virtual('correctanstext', lambda row: (row.question.correctans == 1 and row.question.answer1)
                                             or (row.question.correctans == 2 and row.question.answer2)
                                             or (row.question.correctans == 3 and row.question.answer3)
-                                            or (row.quetions.correctans == 4 and row.quetion.answer4) or '?'),
+                                            or (row.question.correctans == 4 and row.question.answer4) or '?'),
+                Field.Virtual('correctanstextforgrid', lambda row: (row.correctans == 1 and row.answer1)
+                                                            or (row.correctans == 2 and row.answer2)
+                                                            or (row.correctans == 3 and row.answer3)
+                                                            or (row.correctans == 4 and row.answer4) or '?'),
                 Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
                 Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),

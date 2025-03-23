@@ -224,16 +224,16 @@ def questiongrid(path=None):
                   db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
     else:
-        headings = ['Question', 'Answer', 'Status', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name,
+        headings = ['Question', 'Correct Answer', 'Status', 'Event', 'Project']
+        fields = [db.question.questiontext, db.question.correctanstextforgrid, db.question.status, db.event.event_name,
                   db.project.proj_name]
-        fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name, db.project.proj_name]
+        fields = [db.question.questiontext, db.question.correctanstextforgrid, db.question.status, db.event.event_name, db.project.proj_name]
         orderby = [db.question.status, db.question.questiontext]
 
     #event_alias = db.event.with_alias('e')
     ##project_alias = db.project.with_alias('p')
 
-    #                left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
+    left=[db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)],
     #left = [event_alias.on(db.question.eventid == event_alias.id),project_alias.on(event_alias.projid == project_alias.id)],
 
     grid = Grid(path,

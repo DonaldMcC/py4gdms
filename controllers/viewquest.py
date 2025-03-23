@@ -90,6 +90,7 @@ def viewquest(qid=0, eid=0):
         qid = 0
 
     quests = db(db.question.id == qid).select()
+    pprint(quests)
     quest = quests.first() if quests else redirect(URL('index'))
     pprint(quest)
     if quest.question_media:
