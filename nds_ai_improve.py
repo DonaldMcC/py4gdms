@@ -186,6 +186,7 @@ def openai_query(qtext, scenario, setup='A', model=AI_MODEL, aimode='Prod', qid=
     chosenai = db(db.knowledge.title == 'OpenAI GPT-3').select().first()
     messages = get_messages(chosenai.id, scenario, setup, qtext, answers)
     #test option to get json response
+    print(messages)
     if answers:
         completion = client.chat.completions.create(model=model,
         messages=messages, max_tokens=300, temperature=0.1, response_format = {"type": "json_object"})
