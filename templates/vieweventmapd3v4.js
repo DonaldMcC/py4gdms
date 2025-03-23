@@ -180,3 +180,4 @@
         Q.ajax("POST", "[[=URL('archive')]]", {
         }).then(onsuccess).catch(onerror);
     };
+
