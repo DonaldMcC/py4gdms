@@ -168,6 +168,10 @@ db.define_table('question',
                 Field('ai_model', 'string', label='AI Model'),
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       comment='If populated status moves to resolved'),
+                Field.Virtual('correctanstext', lambda row: (row.question.correctans == 1 and row.question.answer1)
+                                            or (row.question.correctans == 2 and row.question.answer2)
+                                            or (row.question.correctans == 3 and row.question.answer3)
+                                            or (row.quetions.correctans == 4 and row.quetion.answer4) or '?'),
                 Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
                 Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
@@ -192,10 +196,6 @@ db.define_table('question',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 
-db.question.correctanstext = Field.Virtual(lambda row: (row.correctans == 1 and row.answer1)
-                                            or (row.correctans == 2 and row.answer2)
-                                            or (row.correctans == 3 and row.answer3)
-                                            or (row.correctans == 4 and row.answer4) or '?')
 
 #db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
 #                                            or (row.question.correctans == 2 and row.question.answer2)
@@ -296,11 +296,11 @@ db.define_table('eventmap',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
-                Field('notes', 'text', label='Notes'))
-db.eventmap.correctanstext = Field.Virtual(lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
+                Field('notes', 'text', label='Notes'),
+                Field.Virtual('correctanstext',lambda row: ((row.eventmap.correctans == 1 and row.eventmap.answer1) or
                                                         (row.eventmap.correctans == 2 and row.eventmap.answer2)
                                                         (row.eventmap.correctans == 3 and row.eventmap.answer3)
-                                                        (row.eventmap.correctans == 4 and row.eventmap.answer4) or ''))
+                                                        (row.eventmap.correctans == 4 and row.eventmap.answer4) or '')))
 
 db.define_table("itemlike",
                 Field('parentid', 'integer'),

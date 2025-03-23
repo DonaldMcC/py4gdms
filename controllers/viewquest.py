@@ -58,6 +58,7 @@ from ..ndsfunctions import get_filetype, qtypename, myconverter
 from ..d3js2py import getd3graph
 from py4web.utils.factories import Inject
 from ..markmin.markmin2html import markmin2html
+from pprint import pprint
 
 
 @action("viewquest/<qid>", method=['GET', 'POST'])
@@ -90,6 +91,7 @@ def viewquest(qid=0, eid=0):
 
     quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
+    pprint(quest)
     if quest.question_media:
         (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
         urlpath = r'static/uploads/' + os.path.basename(fullname)
@@ -113,7 +115,7 @@ def viewquest(qid=0, eid=0):
     # Now work out what we can say about this question
     # if resolved we can say if right or wrong and allow the question to be challenged
     if quest['status'] == 'Resolved':
-        chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
+        #chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
         if quest['factopinion'] == 'Fact':
             anstext = f"Submitter or knowledge engines claim the answer is: {quest['correctanstext']}"
         else:

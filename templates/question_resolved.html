@@ -22,7 +22,7 @@
     <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div</td>
 <td class="has-text-centered">[[=row.question.factopinion]]</td>
-<td class="has-text-centered">[[=row.question['correctanstext'] ]]</td>
+<td class="has-text-centered">[[=row.question.correctans ]]</td>
     <td class="d-block d-sm-none d-md-none">[[=row.question.aianswer]]</td>
 </tr>
 [[pass]]
