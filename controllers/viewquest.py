@@ -116,9 +116,9 @@ def viewquest(qid=0, eid=0):
     if quest['status'] == 'Resolved':
         #chosenai = quest.chosenai.title if quest.chosenai else 'Not Known'
         if quest['factopinion'] == 'Fact':
-            anstext = f"Submitter or knowledge engines claim the answer is: {quest['correctanstext']}"
+            anstext = f"Submitter or knowledge engines claim the answer is {quest.correctanstext}"
         else:
-            anstext = f'Users have decided the correct answer is  {quest['correctanstext']}'
+            anstext = f'Users have decided the correct answer is  {quest.correctanstext}'
             # Did the user answer the question
             if uqanswered:
                 if quest['correctans'] == uq.answer:
