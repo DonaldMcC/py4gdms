@@ -62,12 +62,14 @@ $(document).ready(function(){
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
                   $('#question_answer2').parent().parent().hide();
+                  $('#question_correctans').parent().parent().hide();
                  };
                if($('#question_qtype option:selected').text()=='issue' )
                  {$('#question_answer1').val('Approve');
                   $('#question_answer2').val('Disapprove');
                   $('#question_answer1').parent().parent().hide();
                   $('#question_answer2').parent().parent().hide();
+                  $('#question_correctans').parent().parent().hide();
                   };
               if($('#question_qtype option:selected').text()=='quest'){
                   $('#question_factopinion').parent().parent().show();
@@ -76,6 +78,7 @@ $(document).ready(function(){
                   $('#question_answer2').val('');
                   $('#question_answer1').parent().parent().show();
                   $('#question_answer2').parent().parent().show();
+                  $('#question_correctans').parent().parent().show();
                   };
                  });
 
@@ -90,7 +93,6 @@ $(document).ready(function(){
           $('#question_answer3').focus(function(){
                  $('#question_answer4').parent().parent().show();
               });
-
 
                 $('#question_qtype').change();
                 $('#question_factopinion').change();
