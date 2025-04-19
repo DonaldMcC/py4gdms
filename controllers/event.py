@@ -239,6 +239,7 @@ def archive():
     # of what archiving is and current status shows in the event details then probably sort of OK
     # Lets attempt to do this via ajax and come back with a message that explains what archiving is - may well want a
     # pop up on this before submission
+    print('archive got called')
 
     eventid=session.get('eventid', None)
     if eventid:
@@ -278,7 +279,6 @@ def archive():
                                          perccomplete=row.perccomplete,
                                          execstatus=row.execstatus,
                                          importance=row.importance,
-                                         chosenai=row.chosenai,
                                          responsible=row.responsible,
                                          correctans=row.correctans,
                                          queststatus=row.status,

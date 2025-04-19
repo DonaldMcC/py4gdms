@@ -1,5 +1,5 @@
-    [[import json]]
-    var inputmode = 'V';
+[[import json]]
+var inputmode = 'V';
     var newitems = false;
     var prevclass = 'graph-V'
 
@@ -57,8 +57,8 @@
         formaction: '',
         globalnode: []
   };
-        var nodes = [[=XML(json.dumps(nodes, default=myconverter))]];
-        var links = [[=XML(json.dumps(links, default=myconverter))]];
+        var nodes = [[=XML(json.dumps(nodes, default=myconverter)) ]];
+        var links = [[=XML(json.dumps(links, default=myconverter)) ]];
         var edges = [];
 
         //console.log(nodes);

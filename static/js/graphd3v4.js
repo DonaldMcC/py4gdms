@@ -376,7 +376,7 @@ function redrawnodes() {
   };
 
     function linkclick(event, d) {
-        //alert("you clicked link");
+        // alert("you clicked link");
         switch (inputmode) {
             case 'D':
                 //Edit - this should load the URL and
@@ -464,7 +464,7 @@ function redrawnodes() {
                 .duration(800)
                 .style("opacity", 0);};
 
-//need to actually figure out what goes in the tooltip 
+//need to actually figure out what goes in the tooltip
     node.on("mouseover", function(event, d) {
         newid = "#tooltip" + this.id.substring(6)
         var g = d3.select(newid).style("opacity", 1);});
