@@ -137,8 +137,10 @@ def score_question(questid: int, answer: int = 0):
             quest.numanswer2 += 1
         case '3':
             quest.numanswer3 += 1
-        case _ :
+        case '4' :
             quest.numanswer4 += 1
+        case _:
+            pass
 
     numanswers = quest.numanswer1 + quest.numanswer2 + quest.numanswer3 + quest.numanswer4
     topanswercount = max(quest.numanswer1, quest.numanswer2, quest.numanswer3, quest.numanswer4)
@@ -161,6 +163,9 @@ def score_question(questid: int, answer: int = 0):
         else:
             quest.status = 'In Progress'
             quest.correctans = 0
+    else:
+        quest.status = 'In Progress'
+        quest.correctans = 0
     quest.update_record()
     db.commit()
     returnmsg = f'Item changed to status {quest.status}' if origstatus != quest.status else f'Item still {quest.status}'
