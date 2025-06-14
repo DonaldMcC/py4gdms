@@ -4,8 +4,7 @@ from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
-from ..grid_helpers import GridActionButton
-from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
+from py4web.utils.grid import Grid, Column, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
 from pydal.validators import *
 from ..twitter_client import publish
@@ -13,8 +12,23 @@ from ..ndsfunctions import score_question
 from .network import request_link
 from pydal.tools.tags import Tags
 groups = Tags(db.auth_user, tag_table=db.auth_user_tag_groups)
+from yatl.helpers import A, I, XML
 
 flash = Flash()
+
+def reorder_button(row):
+        if row.in_stock > row.reorder_level:
+            return None
+        button = A(
+            I(_class="fas fa-redo"),
+            _href=URL(f"reorder/{row.id}"),
+            _role="button",
+            _title=f"Reorder {row.name}",
+            _message=f"Do you want to reorder {row.name}?",
+            _class="button grid-button is-small",
+        )
+        button.append(XML("&nbsp;Reorder"))
+        return button
 
 
 @action('tweeter', method=['GET', 'POST'])
@@ -36,19 +50,7 @@ def tweeter():
 def tweetgrid(path=None):
     if not 'manager' in groups.get(auth.get_user()['id']):
         redirect(URL('not_authorized'))
-    pre_action_buttons = [
-        lambda row: (
-            GridActionButton(
-                url=URL("tweet"),
-                text=f"Tweet {row.tweet_text}",
-                icon="fa-redo",
-                message=f"Do you want to tweet {row.tweet_text}?",
-                append_id=True,
-            )
-        )
-        if row.status == 'To Send'
-        else None
-    ]
+    pre_action_buttons = [lambda row: reorder_button(row)]
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
