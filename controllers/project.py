@@ -96,7 +96,7 @@ def new_project(pid=None):
 @action('projectgrid', method=['POST', 'GET'])
 @action('projectgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('projectgrid.html', session, db, flash, auth.user)
-def projectgrid(path=None):
+def projectgrid():
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -111,8 +111,7 @@ def projectgrid(path=None):
 
     query = db.project.id > 0
 
-    grid = Grid(path,
-                query,
+    grid = Grid(query,
                 fields=fields,
                 headings=['Name', 'Status', 'Description', 'Shared', 'Priority'],
                 orderby=orderby,

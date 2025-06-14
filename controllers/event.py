@@ -26,7 +26,7 @@ from py4web import action, redirect, request, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
 from ..bs4inline import FormStyleBootstrap4inline
 from ..common import db, session, auth
-from py4web.utils.grid import Grid, GridClassStyleBootstrap5
+from py4web.utils.grid import Grid, Column, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
 from ..d3js2py import getd3graph
 from .answer import like
@@ -34,6 +34,7 @@ from ..ndsfunctions import myconverter
 from pydal.validators import *
 from py4web.utils.factories import Inject
 from ..markmin.markmin2html import markmin2html
+from yatl.helpers import A, I
 
 flash = Flash()
 
@@ -195,7 +196,7 @@ def event_redirect(status=None):
 @action('eventgrid', method=['POST', 'GET'])
 @action('eventgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('eventgrid.html', session, db, flash, auth.user)
-def eventgrid(path=None):
+def eventgrid():
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -215,8 +216,7 @@ def eventgrid(path=None):
     else:
         query = db.event.id > 0
 
-    grid = Grid(path,
-                query,
+    grid = Grid(query,
                 fields=fields,
                 left=[db.locn.on(db.event.locationid == db.locn.id), db.project.on(db.event.projid == db.project.id)],
                 headings=['Event Name', 'Location', 'Project', 'Status', 'Starttime', 'EndTime', 'Description'],

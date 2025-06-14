@@ -37,7 +37,6 @@ from ..bs4inline import FormStyleBootstrap4inline, FormStyleBootstrap3column
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
-# from ..libs.utils import GridSearch
 from pydal.validators import *
 from ..twitter_client import publish
 from ..ndsfunctions import score_question
@@ -190,9 +189,8 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
 
 @action('questiongrid', method=['POST', 'GET'])
-@action('questiongrid/<path:path>', method=['POST', 'GET'])
 @action.uses('questiongrid.html', session, db, flash, auth.user, Inject(markmin2html=markmin2html))
-def questiongrid(path=None):
+def questiongrid():
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -237,8 +235,7 @@ def questiongrid(path=None):
     #left = db.event.on(db.question.eventid == db.event.id)
     #left = [event_alias.on(db.question.eventid == event_alias.id),project_alias.on(event_alias.projid == project_alias.id)],
 
-    grid = Grid(path,
-                queries,
+    grid = Grid(queries,
                 fields=fields,
                 headings=headings,
                 left=left,
