@@ -1,6 +1,30 @@
-"user strict";
+/**
+ * Utility functions for various common tasks.
+ * 
+ * version 2.0 - 2025.06.03
+ * upgrade Vue component registration to Vue3 and Vue.defineAsyncComponent
+ * 
+ * This file contains a collection of utility functions that can be used for:
+ * - String formatting
+ * - DOM manipulation
+ * - AJAX requests
+ * - Cookie handling
+ * - Vue component registration
+ * - File upload handling
+ * - Internationalization
+ * - Debouncing and throttling functions
+ * - Password strength calculation
+ * - Form handling
+ * - Flash message handling
+ */
 
-// Allows "bla {a} bla {b}".format({'a': 'hello', 'b': 'world'})
+"use strict";
+
+/**
+ * Allows "bla {a} bla {b}".format({'a': 'hello', 'b': 'world'})
+ * @param {Object} args - The arguments to replace in the string.
+ * @returns {String} - The formatted string.
+ */
 if (!String.prototype.format) {
     String.prototype.format = function (args) {
         return this.replace(/\{([^}]+)\}/g, function (match, k) { return args[k]; });
@@ -10,12 +34,20 @@ if (!String.prototype.format) {
 // Similar to jQuery $ but lighter
 window.Q = function(sel, el) { return (el||document).querySelectorAll(sel); };
 
-// Clone any object
+/**
+ * Clone any object
+ * @param {Object} data - The object to clone.
+ * @returns {Object} - The cloned object.
+ */
 Q.clone = function (data) { return JSON.parse(JSON.stringify(data)); };
 
 Q.eval = function(text) { return eval('('+text+')'); };
 
-// Given a url retuns an object with parsed query string
+/**
+ * Given a URL returns an object with parsed query string
+ * @param {String} source - The URL to parse.
+ * @returns {Object} - The parsed query string as an object.
+ */
 Q.get_query = function (source) {
     source = source || window.location.search.substring(1);
     var vars = {}, items = source.split('&');
@@ -26,7 +58,14 @@ Q.get_query = function (source) {
     return vars;
 };
 
-// a wrapper for fetch return a promise
+/**
+ * A wrapper for fetch that returns a promise
+ * @param {String} method - The HTTP method.
+ * @param {String} url - The URL to fetch.
+ * @param {Object} data - The data to send.
+ * @param {Object} headers - The headers to include.
+ * @returns {Promise} - The fetch promise.
+ */
 Q.ajax = function(method, url, data, headers) {
     var options = {
         method: method,
@@ -55,18 +94,24 @@ Q.post = (url, data, headers) => Q.ajax("POST", url, data, headers);
 Q.put = (url, data, headers) => Q.ajax("PUT", url, data, headers);
 Q.delete = (url, headers) => Q.ajax("DELETE", url, null, headers);
 
-// Gets a cookie value
+/**
+ * Gets a cookie value
+ * @param {String} name - The name of the cookie.
+ * @returns {String|null} - The cookie value or null if not found.
+ */
 Q.get_cookie = function (name) {
     var cookie = RegExp("" + name + "[^;]+").exec(document.cookie);
     if (!cookie) return null;
     return decodeURIComponent(!!cookie ? cookie.toString().replace(/^[^=]+./, "") : "");
 };
 
-// Load components lazily: https://vuejs.org/v2/guide/components.html#Async-Components
+// Load components lazily: https://v3.vuejs.org/guide/component-dynamic-async.html#async-components
 Q.register_vue_component = function (name, src, onload) {
-    Vue.component(name, function (resolve, reject) {
-            Q.ajax('GET', src).then(function(res){resolve(onload(res));});
+    window.app.component(name, Vue.defineAsyncComponent(() => {
+        return Q.ajax('GET', src).then(function(res){
+            return onload(res);
         });
+    }));
 };
 
 // Passes binary data to callback on drop of file in elem_id
@@ -88,10 +133,14 @@ Q.upload_helper = function (elem_id, callback) {
     }
 };
 
-// Internationalization helper
+/**
+ * Internationalization helper
 // Usage:
 // T.translations = {'dog': {0: 'no cane', 1: 'un case', 2: '{n} cani', 10: 'tanti cani'}};
 // T('dog').format({n: 5}) -> "5 cani"
+ * @param {String} text - The text to translate.
+ * @returns {Object} - The translation object with toString and format methods.
+ */
 var T = function (text) {
     var obj = {
         toString: function () { return T.format(text); },
@@ -100,7 +149,12 @@ var T = function (text) {
     return obj;
 };
 
-// Adds a convenience format method to the client-side translator object
+/**
+ * Adds a convenience format method to the client-side translator object
+ * @param {String} text - The text to format.
+ * @param {Object} args - The arguments for formatting.
+ * @returns {String} - The formatted text.
+ */
 T.format = function (text, args) {
     args = args || {};
     translations = (T.translations || {})[text];
@@ -150,6 +204,23 @@ Q.throttle = (callback, delay) => {
     return throttledEventHandler;
 };
 
+// parse a comma separated list of strings which may be quoted
+Q.parse_list = function(line) {
+  let a = [], i = 0, s = '', q = false, esc = false;
+  for (; i <= line.length; i++) {
+    let c = line[i] || ',', eol = i === line.length;
+    if (q) {
+      if (esc) s += c, esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') q = false;
+      else s += c;
+    } else if (c === '"') q = true;
+    else if (c === ',' || eol) a.push(s.trim()), s = '';
+    else s += c;
+  }
+  return a;
+}
+
 // Renders a JSON field with tags_input
 Q.tags_input = function(elem, options) {
     if (typeof elem === typeof '') elem = Q(elem)[0];
@@ -173,7 +244,14 @@ Q.tags_input = function(elem, options) {
     var repl = document.createElement('ul');
     repl.classList.add('tags-list')
     elem.parentNode.insertBefore(repl, elem);
-    var keys = Q.eval(elem.value||'[]');
+    var keys = [];
+    // case elem.value is missing
+    if (!elem.value) keys = [];
+    // case elem.value is an array
+    else if (elem.value.substr(0,1) == "[") keys = Q.eval(elem.value);
+    // case elem.value is comma separated values
+    else keys = Q.parse_list(elem.value);
+    console.log("keys", keys);
     keys.map(function(x) { if(tags.indexOf(x)<0) tags.push(x); });
     var fill = function(elem, repl) {
       repl.innerHTML = '';
@@ -199,9 +277,9 @@ Q.tags_input = function(elem, options) {
       inp.placeholder = options.placeholder;
       inp.setAttribute('list',  options.autocomplete_list);
       inp.onchange = function(evt) {
-        inp.value.split(',').map(function(x){
-	  x = options.transform(x.trim());
-	  if (options.regex && !x.match(options.regex)) return;
+        Q.parse_list(inp.value).map(function(x){
+	      x = options.transform(x.trim());
+	      if (options.regex && !x.match(options.regex)) return;
           if (x && tags.indexOf(x)<0) tags.push(x); 
           if (x && keys.indexOf(x)<0) keys.push(x); 
         });
@@ -214,7 +292,11 @@ Q.tags_input = function(elem, options) {
     fill(elem, repl);
 };
 
-// Password strenght calculator
+/**
+ * Password strength calculator
+ * @param {String} text - The password text.
+ * @returns {Number} - The password strength score.
+ */
 Q.score_password = function(text) {
     var score = -10, counters = {};
     text.split('').map(function(c){counters[c]=(counters[c]||0)+1; score += 5/counters[c];});
