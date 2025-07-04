@@ -25,6 +25,30 @@ FormStyleBootstrap4inline.classes.update(
     }
 )
 
+FormStyleBootstrap5inline = FormStyleFactory()
+FormStyleBootstrap5inline.classes.update(
+    {
+        "outer": "form-group row",  # Replaced 'form-group' with 'mb-3' for margin-bottom
+        "inner": "col-sm-9",
+        "label": "col-form-label col-sm-3",
+        "info": "form-text small text-center",
+        "error": "form-text small text-center text-danger py4web-validation-error invalid-feedback",
+        "submit": "btn btn-primary",
+        "input": "form-control",
+        "input[type=text]": "form-control",
+        "input[type=date]": "form-control",
+        "input[type=time]": "form-control",
+        "input[type=datetime-local]": "form-control",
+        "input[type=radio]": "form-check-input",
+        "input[type=checkbox]": "form-check-input",
+        "input[type=submit]": "btn btn-primary",
+        "input[type=password]": "form-control",
+        "input[type=file]": "form-control",  # Bootstrap 5 doesn't have a specific 'form-control-file' class
+        "select": "form-select",  # 'form-select' is used in Bootstrap 5 instead of 'form-control' for select elements
+        "textarea": "form-control",
+    }
+)
+
 
 #change form.py line 506 to  if field.type == "notboolean":  # changed so this never applies to support this
 FormStyleBootstrap3column = FormStyleFactory()

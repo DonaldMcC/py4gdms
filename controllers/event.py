@@ -24,7 +24,7 @@
 import datetime
 from py4web import action, redirect, request, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
-from ..bs4inline import FormStyleBootstrap4inline
+from ..bs4inline import FormStyleBootstrap5inline
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, Column, GridClassStyleBootstrap5
 from ..ndsqueries import get_class, get_disabled, get_items
@@ -43,10 +43,8 @@ flash = Flash()
 @action("new_event", method=['GET', 'POST'])
 @action.uses('new_event.html', session, db, flash, auth.user)
 def new_event(eid=None):
-    db.event.startdatetime.default = (datetime.datetime.utcnow()
-                                      + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
-    db.event.enddatetime.default = (datetime.datetime.utcnow()
-                                    + datetime.timedelta(days=10)).strftime("%Y-%m-%d %H:%M:00")
+    db.event.startdatetime.default = (datetime.datetime.now() + datetime.timedelta(days=10))
+    db.event.enddatetime.default = (datetime.datetime.now() + datetime.timedelta(days=10))
     db.event.projid.requires = IS_IN_DB(db((db.project.proj_shared == True) | (db.project.proj_owner == auth.user_id)),
                                         'project.id', '%(proj_name)s')
 
@@ -72,7 +70,7 @@ def new_event(eid=None):
             redirect(URL('eventgrid'))
     else:
         islocked = None
-    form = Form(db.event, record=eid, formstyle=FormStyleBootstrap4inline)
+    form = Form(db.event, record=eid, formstyle=FormStyleBootstrap5inline)
     db.event.prev_event.requires = IS_EMPTY_OR(IS_IN_DB(db, 'event.id', '%(event_name)s'))
 
     if eid:
