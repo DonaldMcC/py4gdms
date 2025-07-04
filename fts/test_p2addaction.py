@@ -21,6 +21,7 @@ class AddBasicAction (FunctionalTest):
             lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER2'])
         password = self.browser.find_element(By.ID, "no_table_password")
+        password.clear()
         password.send_keys(USERS['PASSWORD2'])
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
