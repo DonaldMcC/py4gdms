@@ -198,7 +198,7 @@ def eventgrid():
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
-                         formstyle=FormStyleBootstrap4inline,
+                         formstyle=FormStyleBootstrap5inline,
                          grid_class_style=GridClassStyleBootstrap5)
 
     fields = [db.event.event_name, db.locn.location_name, db.project.proj_name, db.event.status, db.event.startdatetime,

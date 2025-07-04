@@ -49,7 +49,7 @@ def new_location(lid=None):
 @action('locationgrid', method=['POST', 'GET'])
 @action('locationgrid/<path:path>', method=['POST', 'GET'])
 @action.uses('locationgrid.html', session, db, flash, auth.user)
-def locationgrid(path=None):
+def locationgrid():
     GRID_DEFAULTS = dict(rows_per_page=15,
                          include_action_button_text=True,
                          search_button_text='Filter',
@@ -63,8 +63,7 @@ def locationgrid(path=None):
     search_queries = [['Search by Name', lambda value: db.locn.location_name == value]]
     # search = GridSearch(search_queries, queries)
 
-    grid = Grid(path,
-                db.locn,
+    grid = Grid(db.locn,
                 fields=fields,
                 headings=['Name', 'Address1', 'Address2', 'Addrcode', 'Addrurl', 'Country', 'Description'],
                 orderby=orderby,
