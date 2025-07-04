@@ -17,6 +17,7 @@ class AddBasicAction (FunctionalTest):
         email = WebDriverWait(self, 10).until(lambda self: self.browser.find_element(By.ID, "no_table_email"))
         email.send_keys(USERS['USER1'])
         password = self.browser.find_element(By.ID, "no_table_password")
+        password.clear()
         password.send_keys(USERS['PASSWORD1'])
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
