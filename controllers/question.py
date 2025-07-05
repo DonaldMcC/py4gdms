@@ -90,7 +90,7 @@ def check_status(form):
 @action("new_question/<qid>/<qtype>/<eid>/<xpos>/<ypos>/<sourceurl>/<sourceq>", method=['GET', 'POST'])
 @action("new_question", method=['GET', 'POST'])
 @action.uses('new_question.html', session, db, flash, auth.user, Inject(markmin2html=markmin2html))
-def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid/select', sourceq=0):
+def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl='questiongrid', sourceq=0):
     db.question.id.readable = False
     db.question.id.writable = False
     db.question.status.requires = IS_IN_SET(['Draft', 'In Progress', 'Resolved'])
@@ -182,8 +182,9 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
         if sourceq:
             request_link(sourceq, form.vars['id'], 'create')
-        if eid:
-            sourceurl += r'/' + str(eid)
+        #TODO put this back as variable somehow
+        #if eid:
+        #    sourceurl += r'/' + str(eid)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
