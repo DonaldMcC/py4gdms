@@ -182,9 +182,6 @@ def new_question(qid=None, qtype='quest', eid='0', xpos='0', ypos='0', sourceurl
 
         if sourceq:
             request_link(sourceq, form.vars['id'], 'create')
-        #TODO put this back as variable somehow
-        #if eid:
-        #    sourceurl += r'/' + str(eid)
         redirect(URL(sourceurl, vars=dict(qtype=qtype)))
     return dict(form=form)
 
@@ -229,12 +226,7 @@ def questiongrid():
         #fields = [db.question.questiontext, db.question.correctanstextforgrid, db.question.status, db.event.event_name]
         orderby = [db.question.status, db.question.questiontext]
 
-    #event_alias = db.event.with_alias('e')
-    ##project_alias = db.project.with_alias('p')
-
     left= [db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)]
-    #left = db.event.on(db.question.eventid == db.event.id)
-    #left = [event_alias.on(db.question.eventid == event_alias.id),project_alias.on(event_alias.projid == project_alias.id)],
 
     grid = Grid(queries,
                 fields=fields,
