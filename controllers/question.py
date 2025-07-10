@@ -235,8 +235,8 @@ def questiongrid():
                 search_queries=search_queries,
                 orderby=orderby,
                 create=URL('new_question/None/' + qtype),
-                details=URL('viewquest/'),
-                editable=URL('new_question/'),
+                details=URL('viewquest/{id}'),
+                editable = URL('new_question/{id}'),
                 deletable=True,
                 **GRID_DEFAULTS)
     return dict(grid=grid)

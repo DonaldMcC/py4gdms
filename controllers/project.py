@@ -117,8 +117,8 @@ def projectgrid():
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_project/'),
-                details=URL('view_project/'),
-                editable=URL('new_project/'),
+                details=URL('view_project/{id}'),
+                editable=URL('new_project/{id}'),
                 deletable=True,
                 **GRID_DEFAULTS)
 
