@@ -174,7 +174,7 @@ def view_event(eid='0'):
     db.comment.auth_userid.default = auth.user_id
     db.comment.parenttable.default = 'event'
     db.comment.parentid.default = eid
-    commentform = Form(db.comment, formstyle=FormStyleBootstrap4inline)
+    commentform = Form(db.comment, formstyle=FormStyleBootstrap5inline)
 
     return dict(eventrow=eventrow, eventid=eid, qactions=actions, questions=questions,
                 issues=issues, res_actions=res_actions, res_questions=res_questions,
