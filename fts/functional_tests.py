@@ -38,7 +38,7 @@ votequest = 'tempvotetest'
 testconfig = 'standard'
 questidlist = []  # will store records of questions successfully stored - may need to add more details later
 questiddict = {}
-
+#questiddict['ph4quest']=12 - can uncomment to retest answerresolved
 
 class FunctionalTest(unittest.TestCase):
     @classmethod

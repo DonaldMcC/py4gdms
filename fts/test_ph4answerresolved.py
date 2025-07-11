@@ -35,7 +35,7 @@ class AnswerQuestion (FunctionalTest):
         password.send_keys(passwd)
         submit_button = self.browser.find_element(By.CSS_SELECTOR, "input[type=submit]")
         submit_button.click()
-        self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        #self.browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(1)
 
         self.url = f'{ROOT}/viewquest/{qid}'
