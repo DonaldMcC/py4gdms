@@ -221,7 +221,7 @@ def eventgrid():
                 orderby=orderby,
                 search_queries=search_queries,
                 create=URL('new_event'),
-                details=URL('view_event/{id}', lambda row: row.id),
+                details=URL('view_event/{id}'),
                 editable=URL('new_event/{id}'),
                 deletable=True,
                 **GRID_DEFAULTS)
