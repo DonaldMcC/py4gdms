@@ -21,7 +21,7 @@
            class="[[=get_class('action', 2)]]" onclick="quickanswer('[[=row.eventmap.questid]]','2',this)"
            VALUE="Disapprove">
     [[else:]]
-        Login to feedback
+            [[=A('Login to feedback', _href=URL('auth/login'))]]
         [[pass]]
     </td>
 </tr>
