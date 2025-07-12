@@ -31,13 +31,14 @@ from ..ndsqueries import get_class, get_disabled, get_items
 from ..ndsfunctions import myconverter, get_gantt_data
 from .answer import like
 from yatl.helpers import XML
+from py4web.utils.factories import Inject
 from ..markmin.markmin2html import markmin2html
 flash = Flash()
 
 
 @action("view_project/<pid>", method=['GET', 'POST'])
 @action("view_project", method=['GET', 'POST'])
-@action.uses(session, db, flash, auth.user, 'view_project.html')
+@action.uses(session, db, flash, auth.user, 'view_project.html',Inject(markmin2html=markmin2html))
 def view_project(pid='0'):
     projectrow = db(db.project.id == pid).select().first()
     session['projid'] = pid if projectrow else 0
