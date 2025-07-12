@@ -5,9 +5,9 @@
 <table id=questions class='table issuetable2 table-bordered border-success table-striped'>
 				<thead class="table-success">
 					<tr>
-						<th>Status</th>
+						<th class="d-none d-sm-block">Status</th>
                         <th>Question</th>
-                        <th class="min_width">F/O</th>
+                        <th class="d-none d-md-block">F/O</th>
                         <th class="limit_max_width">Knowledge</th>
                         <th>Answers</th>
                     </tr>
@@ -15,10 +15,10 @@
                     <tbody>
 [[for row in questions:]]
 <tr>
-<th>[[=A(row.question.status, _href=URL(f"viewquest/{row.question.id}/{row.question.eventid}"))]]</th>
+<th class="d-none d-sm-block">[[=A(row.question.status, _href=URL(f"viewquest/{row.question.id}/{row.question.eventid}"))]]</th>
 <td>[[=XML(markmin2html(row.question.questiontext))]]
 <div id='btns[[=str(row.question.id)]]'></div></td>
-<td class="min_width has-text-centered">[[=row.question.factopinion]]</td>
+<td class="d-none d-md-block has-text-centered">[[=row.question.factopinion]]</td>
     <td class="limit_max_width">[[=XML(markmin2html(row.question.aianswer))]]</td>
 <td>[[if auth.user_id:]]
     <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
