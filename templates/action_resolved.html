@@ -5,11 +5,11 @@
 <table id=res_actions class='table issuetable2 table-bordered table-striped border-warning'>
 				<thead class='table-warning'>
 					<tr>
-                        <th width="52%">Action</th>
-                        <th width="12%">Due Date</th>
-                        <th width="12%">Responsible</th>
-                        <th width="12%">% Complete</th>
-                        <th width="12%">Feedback</th>
+                        <th>Action</th>
+                        <th class="d-none d-sm-block">Due Date</th>
+                        <th class="d-none d-sm-block">Responsible</th>
+                        <th class="d-none d-sm-block">% Complete</th>
+                        <th>Feedback</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -23,15 +23,15 @@
            [[=row.liked and 'UnLike' or 'Like']]</button>
     <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div></td>
-<td><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
+<td class="d-none d-sm-block"><input class="d-none d-sm-block form-control"  name="duedate" type="date" value="[[if row.question.enddate:
 =row.question.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
     pass]]"> </td>
-<td>
+<td class="d-none d-sm-block">
     <input autocomplete="on" class="type-string form-control" name="question_responsible" type="text"
            size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
+    <td class="d-none d-sm-block"> <input id="complete" type = "range" name="compslider"  min="0"    max="100"
                 value="[[=row.question.perccomplete]]" step="5"  /></td>
     <td>[[if auth.user_id:]]
         <INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
