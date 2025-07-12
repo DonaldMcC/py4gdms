@@ -5,11 +5,11 @@
 <table id=comp_actions class='table issuetable2 table-striped table-bordered border-warning'>
 				<thead class='table-warning'>
 					<tr>
-                        <th width="60%">Action</th>
-                        <th width="10%">Due Date</th>
-                        <th width="10%">Resp</th>
-                        <th width="10%">% Complete</th>
-                        <th width="10%">Feedback</th>
+                        <th>Action</th>
+                        <th class="d-none d-sm-block">Due Date</th>
+                        <th class="d-none d-sm-block">Resp</th>
+                        <th class="d-none d-sm-block">% Complete</th>
+                        <th>Feedback</th>
                     </tr>
                 </thead>
                     <tbody>
@@ -23,13 +23,13 @@
            [[=row.liked and 'UnLike' or 'Like']]</button>
     <INPUT TYPE=button class="btn btn-sml btn-info"  onClick="parent.location='[[=URL(f"viewquest/{row.question.id}")]]'"VALUE="Details"/>
     <div id='btns[[=str(row.question.id)]]' hx-swap-oob="true"></div></sub></div></td>
-<td><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
+<td class="d-none d-sm-block"><input class="form-control"  name="duedate" type="date" value="[[if row.question.enddate:
     =row.question.enddate.date().strftime('%Y-%m-%d')
     else:
     ''
     pass]]"> </td>
-<td><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
-    <td> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
+<td class="d-none d-sm-block"><input autocomplete="on" class="type-string form-control" name="question_responsible" type="text" size="16" value="[[=row.question.responsible]]" style="width:80%;"></td>
+    <td class="d-none d-sm-block"> <input id="complete" type = "range" name="compslider"  min="0"    max="100" value="[[=row.question.perccomplete]]" step="5"  /></td>
     <td><INPUT TYPE=button  [[=get_disabled(1, row.userquestion.answer)]]
            class="[[=get_class('action',1)]] mb-1" onclick="quickanswer('[[=row.question.id]]','1',this)",
            VALUE="Approve">
