@@ -17,10 +17,10 @@ class AnswerQuestion (FunctionalTest):
         pass
 
     @data((USERS['USER2'], USERS['PASSWORD2'], 'Yes', 'Answer recorded'),
-          (USERS['USER3'], USERS['PASSWORD3'], 'Yes', 'Answer recorded'),
-          (USERS['USER4'], USERS['PASSWORD4'], 'Yes', 'Resolved'),
-          (USERS['USER5'], USERS['PASSWORD5'], 'No', 'Answer recorded'),
-          (USERS['USER6'], USERS['PASSWORD6'], 'No', 'Answer recorded'),
+          (USERS['USER3'], USERS['PASSWORD3'], 'No', 'Answer recorded'),
+          (USERS['USER4'], USERS['PASSWORD4'], 'No', 'Resolved'),
+          (USERS['USER5'], USERS['PASSWORD5'], 'Yes', 'Answer recorded'),
+          (USERS['USER6'], USERS['PASSWORD6'], 'Yes', 'Answer recorded'),
           )
     @unpack
     def test_answer(self, user, passwd, answer, result):
