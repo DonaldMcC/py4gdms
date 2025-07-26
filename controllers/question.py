@@ -33,7 +33,7 @@ from functools import reduce
 
 from py4web import action, request, redirect, URL, Flash
 from py4web.utils.form import Form, FormStyleBootstrap4
-from ..bs4inline import FormStyleBootstrap4inline, FormStyleBootstrap3column
+from ..bs4inline import FormStyleBootstrap4inline, FormStyleBootstrap3column, FormStyleBootstrap5inline
 from ..common import db, session, auth
 from py4web.utils.grid import Grid, GridClassStyleBootstrap5, GridClassStyle
 from ..libs.datatables import DataTablesField, DataTablesRequest, DataTablesResponse
@@ -221,9 +221,7 @@ def questiongrid():
         orderby = [db.question.status, db.question.questiontext]
     else:
         headings = ['Question', 'Correct Answer', 'Status', 'Event', 'Project']
-        fields = [db.question.questiontext, db.question.correctanstextforgrid, db.question.status, db.event.event_name,
-                  db.project.proj_name]
-        #fields = [db.question.questiontext, db.question.correctanstextforgrid, db.question.status, db.event.event_name]
+        fields = [db.question.questiontext, db.question.correctanstext, db.question.status, db.event.event_name]
         orderby = [db.question.status, db.question.questiontext]
 
     left= [db.event.on(db.question.eventid == db.event.id), db.project.on(db.event.projid == db.project.id)]

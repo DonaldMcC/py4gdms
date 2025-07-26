@@ -142,7 +142,7 @@ db.define_table('question',
                 Field('questiontext', 'text', label='Item Details', requires=not_empty),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected'])),
-                Field('resolvemethod', 'reference resolve', label='Resolution Method', notnull=True,
+                Field('resolvemethod', 'reference resolve', notnull=True, label='Resolution Meth',
                       comment='Single allows one person to resolve others need consensus'),
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False,
                       label='Submitter'),
@@ -168,14 +168,10 @@ db.define_table('question',
                 Field('ai_model', 'string', label='AI Model'),
                 Field('correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       comment='If populated status moves to resolved'),
-                Field.Virtual('correctanstext', lambda row: (row.question.correctans == 1 and row.question.answer1)
-                                            or (row.question.correctans == 2 and row.question.answer2)
-                                            or (row.question.correctans == 3 and row.question.answer3)
-                                            or (row.question.correctans == 4 and row.question.answer4) or '?'),
-                Field.Virtual('correctanstextforgrid', lambda row: (row.correctans == 1 and row.answer1)
-                                                            or (row.correctans == 2 and row.answer2)
-                                                            or (row.correctans == 3 and row.answer3)
-                                                            or (row.correctans == 4 and row.answer4) or '?'),
+                Field.Virtual('correctanstext', lambda row: (row['correctans'] == 1 and row['answer1'])
+                                            or (row['correctans'] == 2 and row['answer2'])
+                                            or (row['correctans'] == 3 and row['answer3'])
+                                            or (row['correctans'] == 4 and row['answer4']) or '?'),
                 Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
                 Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
@@ -199,6 +195,7 @@ db.define_table('question',
                 Field('execstatus', 'string', label='Execution Status', default='Proposed',
                       requires=IS_IN_SET(['Proposed', 'Planned', 'In Progress', 'Completed'])))
 db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
+db.question.resolvemethod.requires = IS_IN_DB(db(db.resolve), 'resolve.id', '%(resolve_name)s')
 
 
 #db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
