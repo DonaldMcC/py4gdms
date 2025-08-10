@@ -136,13 +136,15 @@ db.define_table('event',
 # Lets roll this back - think we move to std structure - stick with string and notes for extra details - not sure if we
 # need numanswers or just operate with the number that are not blank??
 
+# notnull=True,
+
 db.define_table('question',
                 Field('qtype', 'string', label='Item Type', requires=IS_IN_SET(['quest', 'action', 'issue'])),
                 Field('eventid', 'reference event', label='Event'),
                 Field('questiontext', 'text', label='Item Details', requires=not_empty),
                 Field('status', 'string', default='In Progress',
                       requires=IS_IN_SET(['Draft', 'In Progress', 'Resolved', 'Rejected'])),
-                Field('resolvemethod', 'reference resolve', notnull=True, label='Resolution Meth',
+                Field('resolvemethod', 'reference resolve',  label='Resolution Method',
                       comment='Single allows one person to resolve others need consensus'),
                 Field('auth_userid', 'reference auth_user', readable=False, writable=False,
                       label='Submitter'),
@@ -172,9 +174,9 @@ db.define_table('question',
                                             or (row['correctans'] == 2 and row['answer2'])
                                             or (row['correctans'] == 3 and row['answer3'])
                                             or (row['correctans'] == 4 and row['answer4']) or '?'),
-                Field('ai_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
+                Field('ai_correctans', 'integer', label='AI Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
-                Field('human_correctans', 'integer', label='Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
+                Field('human_correctans', 'integer', label='Human Correct Answer', requires=IS_EMPTY_OR(IS_IN_SET([1, 2, 3, 4])),
                       readable=False, writable=False),
                 Field('aianswer', 'text', label='Answer from AI/Knowledge Engine Lookup'),
                 Field('notes', 'text', label='Submitter Notes'),
@@ -198,10 +200,10 @@ db.question.question_url.requires = IS_EMPTY_OR(IS_URL())
 db.question.resolvemethod.requires = IS_IN_DB(db(db.resolve), 'resolve.id', '%(resolve_name)s')
 
 
-#db.question.correctanstext = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
-#                                            or (row.question.correctans == 2 and row.question.answer2)
-#                                            or (row.question.correctans == 3 and row.question.answer3)
-#                                            or (row.question.correctans == 4 and row.question.answer4) or '?')
+db.question.correctans2 = Field.Virtual(lambda row: (row.question.correctans == 1 and row.question.answer1)
+                                            or (row.question.correctans == 2 and row.question.answer2)
+                                            or (row.question.correctans == 3 and row.question.answer3)
+                                            or (row.question.correctans == 4 and row.question.answer4) or '?')
 
 db.define_table('tweets',
                 Field('parentid', 'integer'),
