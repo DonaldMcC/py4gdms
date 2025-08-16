@@ -89,10 +89,8 @@ def viewquest(qid=0, eid=0):
     if qid == 'None':
         qid = 0
 
-    quests = db(db.question.id == qid).select().first()
+    quests = db(db.question.id == qid).select()
     quest = quests.first() if quests else redirect(URL('index'))
-    for row in quests:
-        print('cr', row['correctans2'])
 
     if quest.question_media:
         (filename, fullname) = db.question.question_media.retrieve(quest.question_media, nameonly=True)
