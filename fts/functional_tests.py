@@ -5,13 +5,15 @@
 #
 import unittest
 import HTMLTestRunner
-import sys
+
+
 try:
     from urllib2 import urlopen
 except ImportError:
     from urllib.request import urlopen
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from playwright.sync_api import sync_playwright
 import subprocess
 import sys
 sys.path.append('./fts/lib')
@@ -39,25 +41,30 @@ testconfig = 'standard'
 questidlist = []  # will store records of questions successfully stored - may need to add more details later
 questiddict = {}
 #questiddict['ph4quest']=12 - can uncomment to retest answerresolved
+framework='Selenium'
 
 class FunctionalTest(unittest.TestCase):
     @classmethod
     def setUpClass(self):
         global STARTSERVER
+        global framework
         if STARTSERVER:
             self.web2py = start_web2py_server()
         # self.browser = webdriver.Firefox()
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--disable-extensions')
-        #ser = Service(r"c:\python311\chromedriver")
-        ser = webdriver.ChromeService()
-        op = webdriver.ChromeOptions()
-        self.browser = webdriver.Chrome(service=ser, options=op)
+        if framework == 'Selenium':
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument('--disable-extensions')
+            #ser = Service(r"c:\python311\chromedriver")
+            ser = webdriver.ChromeService()
+            op = webdriver.ChromeOptions()
+            self.browser = webdriver.Chrome(service=ser, options=op)
+            self.browser.maximize_window()
+            # self.browser = webdriver.Chrome()
+            self.browser.implicitly_wait(10)
+        else: # Playwright
+            with sync_playwright() as p:
+                self.browser = p.chromium.launch(headless=False)
 
-        self.browser.maximize_window()
-
-        # self.browser = webdriver.Chrome()
-        self.browser.implicitly_wait(10)
 
     @classmethod    
     def tearDownClass(self):
